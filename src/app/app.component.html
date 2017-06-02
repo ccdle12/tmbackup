@@ -1,3 +1,20 @@
-<h1>
-  {{title}}
-</h1>
+<header>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a routerLink="/welcome" class="navbar-left"><img src="/assets/tmforum_logo_white_on_alpha.png" height="40"/></a>
+      </div>
+      
+      <ul class="nav navbar-nav">
+        <!--<li><a routerLink="main">See Demo</a></li>
+        <li><a routerLink="">Register</a></li>
+        <li><a routerLink="">Sign in</a></li>-->
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+

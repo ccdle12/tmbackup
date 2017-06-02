@@ -1,0 +1,13 @@
+<h1>This is the team admin</h1>
+
+<div class="container-fluid">
+    <div id="userProfileRow" class="row">
+        <div *ngFor="let userProfile of userProfiles; let i = index" class="userProfileDisplay col-xs-12 col-sm-3">
+            <h4>{{userProfile.app_metadata.user_role}}</h4>
+            <p>{{userProfile.given_name}} {{userProfile.family_name}}</p>
+            <img [src]="userProfile.pictureUrls.values" class="thumbnail centerPosition"/>
+            <p>{{userProfile.headline}}</p>
+            <p>{{userProfile.email}}</p>
+        </div>
+    </div>
+</div>

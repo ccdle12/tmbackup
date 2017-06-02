@@ -1,0 +1,25 @@
+/*Team Admin*/
+#userProfileRow {
+  display: table; 
+}
+
+.userProfileDisplay {
+  text-align: center;
+  /*background: blue;*/
+  float: none;
+  display: table-cell;
+}
+
+.userProfileDisplay:hover {
+  background:blue;
+  cursor: pointer;
+}
+
+.userProfileDisplay p {
+  font-size: 15px;
+}
+
+.thumbnail {
+  text-align: center;
+  height:200px;
+}

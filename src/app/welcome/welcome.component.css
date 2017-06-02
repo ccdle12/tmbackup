@@ -1,0 +1,16 @@
+/* Sponsor Banner */
+#togetherAndSponsorArea {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  background: lightgrey;
+}
+
+.centerPosition {
+  margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+#togetherAssetBanner {
+  padding-bottom: 20px;
+}

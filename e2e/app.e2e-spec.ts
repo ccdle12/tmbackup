@@ -1,10 +1,10 @@
-import { TMFDMMWebAppPage } from './app.po';
+import { FreshStartPage } from './app.po';
 
-describe('tmfdmmweb-app App', () => {
-  let page: TMFDMMWebAppPage;
+describe('fresh-start App', () => {
+  let page: FreshStartPage;
 
   beforeEach(() => {
-    page = new TMFDMMWebAppPage();
+    page = new FreshStartPage();
   });
 
   it('should display message saying app works', () => {

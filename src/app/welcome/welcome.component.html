@@ -1,0 +1,16 @@
+<div>
+    <img id="smartCityPerson" src="assets/smart_city_person.png" width="300"  alt="Picture of Smart City Person"/>
+    <img src="assets/an_app_made_for.png" height="200"  alt="Banner for smart city"/>
+</div>
+
+<div class="btn-group btn-group-justified navigationButtons">
+    <a routerLink="/main" class="btn btn-primary">See Demo</a>
+    <a routerLink="/" class="btn btn-primary">Register My Interest</a>
+    <a *ngIf="!authService.isAuthenticated()" (click)="authService.login()" class="btn btn-primary">Sign-up/Login via Linkedin</a>
+    <a *ngIf="authService.isAuthenticated()"  (click)="authService.logout()" class="btn btn-primary">Logout</a>
+</div>
+
+<div id="togetherAndSponsorArea">
+    <img id="togetherAssetBanner" class="centerPosition" src="assets/together_500.png" width = "800"/>
+    <img class="centerPosition" src="assets/scb_sponsors_desat.png" width = "1100"/>
+</div>
