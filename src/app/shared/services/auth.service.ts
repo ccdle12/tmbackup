@@ -1,62 +1,67 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import 'rxjs/add/operator/filter';
+import { Injectable }      from '@angular/core';
+import { Router }          from '@angular/router';
+import { tokenNotExpired } from 'angular2-jwt';
 import auth0 from 'auth0-js';
+import 'rxjs/add/operator/filter';
 
+declare var Auth0Lock: any;
 
 @Injectable()
 export class AuthService {
+
+ userProfile: any;
+
+ constructor(public router: Router) { }
  
- constructor(public router: Router) {}
-
-  auth0 = new auth0.WebAuth({
-    clientID: 'dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V',
-    domain: 'tmfdmmdev.eu.auth0.com',
-    responseType: 'token id_token',
-    audience: 'https://tmfdmmdev.eu.auth0.com/userinfo',
-    redirectUri: 'http://localhost:4200/main',      
-    scope: 'openid',
-    leeway: 30
-  });
-  
-
-  public login(): void {
-    this.auth0.authorize();
-  }
-
-  public handleAuthentication(): void {
-    this.auth0.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        window.location.hash = '';
-        this.setSession(authResult);
-        this.router.navigateByUrl('/main');
-      } else if (err) {
-        this.router.navigateByUrl('/welcome');
-        console.log(err);
+ lock = new Auth0Lock('dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V','tmfdmmdev.eu.auth0.com', {
+   auth: {
+      redirectUrl: 'http://localhost:4200/main',
+      responseType: 'token id_token',
+      params: {
+        scope: 'openid' // Learn about scopes: https://auth0.com/docs/scopes
       }
-    });
-  }
+    }
+});
 
 
-  private setSession(authResult): void {
-    const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+public handleAuthentication(): void {
+
+  this.lock.on("authenticated", (authResult) => {
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
-    localStorage.setItem('expires_at', expiresAt);
+
+    console.log(authResult);
+
+  this.lock.getUserInfo(authResult.accessToken, (error, userProfile) => {
+    
+    if (error) {
+      console.log("Error: ", error);
+      return;
+    }
+
+    this.userProfile = userProfile;
+
+    localStorage.setItem('user_meta_data', JSON.stringify(userProfile.app_metadata));
+    });
+  });
+}
+
+public login(): void {
+      this.lock.show();
   }
 
 
-  public logout(): void {
+public logout(): void {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
-    localStorage.removeItem('expires_at');
+    localStorage.removeItem('user_meta_data');
 
-    this.router.navigate(['/']);
+    //Optional - if we have the logout button not on the welcome screen
+    // this.router.navigate(['/']);
   }
 
-
   public isAuthenticated(): boolean {
-    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    return new Date().getTime() < expiresAt;
+    console.log(tokenNotExpired('id_token'));
+    return tokenNotExpired('id_token');
   }
 }
