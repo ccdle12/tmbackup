@@ -9,9 +9,9 @@ declare var Auth0Lock: any;
 @Injectable()
 export class AuthService {
 
- userProfile: any;
+// userProfile: any;
 
- constructor(public router: Router) { }
+constructor(public router: Router) { }
  
  lock = new Auth0Lock('dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V','tmfdmmdev.eu.auth0.com', {
    auth: {
@@ -39,12 +39,13 @@ public handleAuthentication(): void {
       return;
     }
 
-    this.userProfile = userProfile;
-
-    localStorage.setItem('user_meta_data', JSON.stringify(userProfile.app_metadata));
+    // this.userProfile = userProfile;
+    // console.log("Set user Profile", this.userProfile);
+    localStorage.setItem('user', JSON.stringify(userProfile));
     });
   });
 }
+
 
 public login(): void {
       this.lock.show();
@@ -54,14 +55,28 @@ public login(): void {
 public logout(): void {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
-    localStorage.removeItem('user_meta_data');
+    localStorage.removeItem('user');
+    // this.userProfile = undefined;
 
     //Optional - if we have the logout button not on the welcome screen
     // this.router.navigate(['/']);
   }
 
+
   public isAuthenticated(): boolean {
     console.log(tokenNotExpired('id_token'));
     return tokenNotExpired('id_token');
+  }
+
+
+  public isLeaderConsultant(): boolean {
+    var userLeaderConsultant = JSON.parse(localStorage.getItem('user'));
+    return userLeaderConsultant.app_metadata.user_role == 'Leader' || userLeaderConsultant.app_metadata.user_role == 'Consultant' ;
+  }
+
+
+  public isVerified(): boolean {
+    var userProfile = JSON.parse(localStorage.getItem('user'));
+    return userProfile.app_metadata.verfied != 0;
   }
 }

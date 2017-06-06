@@ -3,6 +3,7 @@ import { ModuleWithProviders }     from '@angular/core'
 
 import { MainAppComponent }        from './mainApp.component';
 import { MainAppSectionComponent } from './mainAppSection.component';
+import { AuthGuardService }        from '../shared/services/auth-guard.service';
 
 const mainAppRoutes: Routes = [
     {
@@ -15,7 +16,8 @@ const mainAppRoutes: Routes = [
         },
         {
             path: 'teamadmin',
-            loadChildren: './team_admin/teamAdmin.module#TeamAdminModule'
+            loadChildren: './team_admin/teamAdmin.module#TeamAdminModule',
+            canActivate: [AuthGuardService]
         }
     ]
     }

@@ -1,8 +1,9 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule }      from '@angular/core';
-import { FormsModule }   from '@angular/forms';
-import { HttpModule }    from '@angular/http';
-import { AuthService }   from './shared/services/auth.service';
+import { BrowserModule }         from '@angular/platform-browser';
+import { NgModule }              from '@angular/core';
+import { FormsModule }           from '@angular/forms';
+import { HttpModule }            from '@angular/http';
+import { AuthService }           from './shared/services/auth.service';
+import { WelcomeGuardService }   from './shared/services/welcome-guard.service';
 
 import { appRouting}             from './app.routing';
 import { AppComponent }          from './app.component';
@@ -12,7 +13,7 @@ import { NotFoundComponent }     from './not_found/notFound.component';
 @NgModule({
   imports: [BrowserModule, FormsModule, HttpModule, appRouting],
   declarations: [AppComponent, WelcomeComponent, NotFoundComponent],
-  providers: [AuthService],
+  providers: [AuthService, WelcomeGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
