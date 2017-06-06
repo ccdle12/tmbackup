@@ -18,6 +18,10 @@ const mainAppRoutes: Routes = [
             path: 'teamadmin',
             loadChildren: './team_admin/teamAdmin.module#TeamAdminModule',
             canActivate: [AuthGuardService]
+        },
+        {
+            path: 'takesurvey',
+            loadChildren: './take_survey/takeSurvey.module#TakeSurveyModule'
         }
     ]
     }

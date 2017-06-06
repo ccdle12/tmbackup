@@ -7,7 +7,6 @@
     <a routerLink="/main" class="btn btn-primary">See Demo</a>
     <a routerLink="/" class="btn btn-primary">Register My Interest</a>
     <a *ngIf="!authService.isAuthenticated()" (click)="authService.login()" class="btn btn-primary">Sign-up/Login via Linkedin</a>
-    <a *ngIf="authService.isAuthenticated()" (click)="authService.logout()" class="btn btn-primary">Logout</a>
 </div>
 
 <div id="togetherAndSponsorArea">

@@ -11,17 +11,9 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class AuthGuardService implements CanActivate {
 
-  constructor(private auth: AuthService, private router: Router) {console.log('in constructor'); }
+  constructor(private auth: AuthService, private router: Router) { }
   
-
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    // If user is not logged in we'll send them to the welcome page
-    console.log('in can activate');
-    console.log('this.auth.loggedin status  ', this.auth.isAuthenticated());
-    console.log('state url', state.url);
-    console.log('activatedroutesnapshot', next.url);
-    // console.log('this.auth.isLeaderstatus  ', this.auth.isLeaderConsultant());
-
     if (!this.auth.isAuthenticated()) {
       this.router.navigate(['welcome']);
       return false;
