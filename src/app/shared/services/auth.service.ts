@@ -9,7 +9,6 @@ declare var Auth0Lock: any;
 @Injectable()
 export class AuthService {
 
-// userProfile: any;
 
 constructor(public router: Router) { }
  
@@ -18,7 +17,7 @@ constructor(public router: Router) { }
       redirectUrl: 'http://localhost:4200/main',
       responseType: 'token id_token',
       params: {
-        scope: 'openid' // Learn about scopes: https://auth0.com/docs/scopes
+        scope: 'openid email'
       }
     }
 });
@@ -39,8 +38,6 @@ public handleAuthentication(): void {
       return;
     }
 
-    // this.userProfile = userProfile;
-    // console.log("Set user Profile", this.userProfile);
     localStorage.setItem('user', JSON.stringify(userProfile));
     });
   });
@@ -56,10 +53,9 @@ public logout(): void {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('user');
-    // this.userProfile = undefined;
 
-    //Optional - if we have the logout button not on the welcome screen
-    // this.router.navigate(['/']);
+    // Optional - if we have the logout button not on the welcome screen
+    this.router.navigate(['/']);
   }
 
 

@@ -1,6 +1,8 @@
 import { Component }  from '@angular/core';
 import { UserProfilesService } from '../../shared/services/userProfiles.service';
 
+
+
 @Component({
   moduleId: module.id,
   selector: 'teamAdmin',
