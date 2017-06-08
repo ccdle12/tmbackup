@@ -29,11 +29,13 @@ const mainAppRoutes: Routes = [
         },
         {
             path: 'publication',
-            loadChildren: './publication/publication.module#PublicationModule'
+            loadChildren: './publication/publication.module#PublicationModule',
+            canActivate: [AuthGuardService]
         },
         {
             path: 'benchmark',
-            loadChildren: './benchmark/benchmark.module#BenchmarkModule'
+            loadChildren: './benchmark/benchmark.module#BenchmarkModule',
+            canActivate: [AuthGuardService]
         }
     ]
     }

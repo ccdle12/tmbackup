@@ -5,6 +5,7 @@ import { FormsModule }           from '@angular/forms';
 import { HttpModule }            from '@angular/http';
 import { AuthService }           from './shared/services/auth.service';
 import { WelcomeGuardService }   from './shared/services/welcome-guard.service';
+import { LocalStorageService }   from './shared/services/localStorage.service';
 
 import { appRouting}             from './app.routing';
 import { AppComponent }          from './app.component';
@@ -14,7 +15,7 @@ import { NotFoundComponent }     from './not_found/notFound.component';
 @NgModule({
   imports: [BrowserModule, BrowserAnimationsModule, FormsModule, HttpModule, appRouting],
   declarations: [AppComponent, WelcomeComponent, NotFoundComponent],
-  providers: [AuthService, WelcomeGuardService],
+  providers: [AuthService, WelcomeGuardService, LocalStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

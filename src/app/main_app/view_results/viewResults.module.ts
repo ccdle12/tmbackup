@@ -6,9 +6,11 @@ import { viewResultsRouting } from './viewResults.routing';
 
 import { ViewResultsComponent } from './viewResults.component';
 
+import {GoogleChart} from 'angular2-google-chart/directives/angular2-google-chart.directive';
+
 @NgModule({
   imports: [viewResultsRouting, CommonModule],
-  declarations: [ViewResultsComponent],
+  declarations: [ViewResultsComponent, GoogleChart],
   providers: [],
 })
 export class ViewResultsModule { }

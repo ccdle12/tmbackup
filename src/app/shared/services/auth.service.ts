@@ -32,7 +32,6 @@ public handleAuthentication(): void {
     console.log(authResult);
 
   this.lock.getUserInfo(authResult.accessToken, (error, userProfile) => {
-    
     if (error) {
       console.log("Error: ", error);
       return;
@@ -54,7 +53,6 @@ public logout(): void {
     localStorage.removeItem('id_token');
     localStorage.removeItem('user');
 
-    // Optional - if we have the logout button not on the welcome screen
     this.router.navigate(['/']);
   }
 
@@ -64,15 +62,34 @@ public logout(): void {
     return tokenNotExpired('id_token');
   }
 
-
   public isLeaderConsultant(): boolean {
-    var userLeaderConsultant = JSON.parse(localStorage.getItem('user'));
-    return userLeaderConsultant.app_metadata.user_role == 'Leader' || userLeaderConsultant.app_metadata.user_role == 'Consultant' ;
-  }
+    if (localStorage.getItem('user') !== null) {
+      var userLeaderConsultant = JSON.parse(localStorage.getItem('user'));
+      return userLeaderConsultant.app_metadata.user_role == 'Leader' || userLeaderConsultant.app_metadata.user_role == 'Consultant' ;
+    }
+
+    return false;
+}
 
 
   public isVerified(): boolean {
-    var userProfile = JSON.parse(localStorage.getItem('user'));
-    return userProfile.app_metadata.verfied != 0;
+    if (localStorage.getItem('user') !== null) {
+      var userProfile = JSON.parse(localStorage.getItem('user'));
+      return userProfile.app_metadata.verified != 0;
+    }
+
+    return false;
   }
+
+  public isAuthenticatedAndIsLeaderAndNotDemo(): boolean {
+    if (!this.isAuthenticated()) {
+      return false;
+    }
+    
+    if (this.isAuthenticated() && !this.isLeaderConsultant()) {
+      return false;
+    }
+    return true;
+  }
+
 }

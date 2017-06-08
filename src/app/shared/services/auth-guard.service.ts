@@ -15,7 +15,7 @@ export class AuthGuardService implements CanActivate {
   
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (!this.auth.isAuthenticated()) {
-      this.router.navigate(['welcome']);
+      this.router.navigate(['/main']);
       return false;
     }
     
@@ -24,13 +24,14 @@ export class AuthGuardService implements CanActivate {
       return false;
     }
 
-    if (this.auth.isAuthenticated() && (state.url === '/main/teamadmin' || state.url === '/main/publication' || state.url === '/main/benchmark') && !this.auth.isLeaderConsultant()) {
+    // if (this.auth.isAuthenticated() && (state.url === '/main/teamadmin' || state.url === '/main/publication' || state.url === '/main/benchmark') && !this.auth.isLeaderConsultant()) {
 
-      this.router.navigate(['main']);
-      return false;
-    }
+    //   this.router.navigate(['main']);
+    //   return false;
+    // }
 
     return true;
   }
+
 
 }
