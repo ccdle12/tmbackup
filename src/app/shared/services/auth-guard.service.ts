@@ -20,18 +20,10 @@ export class AuthGuardService implements CanActivate {
     }
     
     if (this.auth.isAuthenticated() && !this.auth.isVerified()) {
-      this.router.navigate(['unverified']);
+      this.router.navigate(['welcome']);
       return false;
     }
 
-    // if (this.auth.isAuthenticated() && (state.url === '/main/teamadmin' || state.url === '/main/publication' || state.url === '/main/benchmark') && !this.auth.isLeaderConsultant()) {
-
-    //   this.router.navigate(['main']);
-    //   return false;
-    // }
-
     return true;
   }
-
-
 }

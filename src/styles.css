@@ -7,5 +7,15 @@ h1 {
 }
 
 body {
-  padding-top: 87px; 
+  padding-top: 87px;
+}
+
+.loading-overlay {
+  position: absolute;
+    height: 100px;
+    width: 100px;
+    top: 50%;
+    left: 50%;
+    margin-left: -50px;
+    margin-top: -50px;
 }

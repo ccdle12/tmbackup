@@ -5,19 +5,20 @@ export class LocalStorageService {
 
 public getUserName(): string {
     if (localStorage.getItem('user') !== null) {
-        var userProfile = JSON.parse(localStorage.getItem('user'));
-        return userProfile.given_name + " " + userProfile.family_name;
+        var userName = JSON.parse(localStorage.getItem('userName'));
+        return userName;
     }
-
     return "Demo User";
+    // return " ";
   }
 
 public getUserCity(): string {
     if (localStorage.getItem('user') !== null) {
         var userProfile = JSON.parse(localStorage.getItem('user'));
-        return userProfile.app_metadata.city;
+        return userProfile.city;
         }
      return "Demo City";
+    // return " ";
     }
 
 public getUserVerified(): string {
@@ -25,20 +26,20 @@ public getUserVerified(): string {
     
     if (localStorage.getItem('user') !== null) {
         var userProfile = JSON.parse(localStorage.getItem('user'));
-        var userVerifiedStatus: string = userProfile.app_metadata.verified;
-
+        var userVerifiedStatus: string = userProfile.verified;
         return verification = userVerifiedStatus == "1" ? "verified" : "unverified";
     }
 
     return "unverified";
+    // return " ";
 }
 
 public getUserRole(): string {
      if (localStorage.getItem('user') !== null) {
         var userProfile = JSON.parse(localStorage.getItem('user'));
-        return userProfile.app_metadata.user_role;
-     }
-     
+        return userProfile.user_role;
+    }   
      return "Demo Role";
+    // return " ";
     }
 };

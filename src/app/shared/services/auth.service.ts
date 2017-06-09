@@ -17,7 +17,18 @@ constructor(public router: Router) { }
       redirectUrl: 'http://localhost:4200/main',
       responseType: 'token id_token',
       params: {
-        scope: 'openid email'
+        scope: 'openid email app_metadata'
+      }
+    }
+});
+
+registerLock = new Auth0Lock('dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V','tmfdmmdev.eu.auth0.com', {
+   auth: {
+      redirectUrl: 'http://localhost:4200/registration',
+      // redirect: false,
+      responseType: 'token id_token',
+      params: {
+        scope: 'openid email app_metadata'
       }
     }
 });
@@ -26,19 +37,21 @@ constructor(public router: Router) { }
 public handleAuthentication(): void {
 
   this.lock.on("authenticated", (authResult) => {
-    localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('id_token', authResult.idToken);
-
-    console.log(authResult);
-
-  this.lock.getUserInfo(authResult.accessToken, (error, userProfile) => {
+    this.lock.getUserInfo(authResult.accessToken, (error, userProfile) => {
+    
     if (error) {
       console.log("Error: ", error);
       return;
     }
 
-    localStorage.setItem('user', JSON.stringify(userProfile));
-    });
+    localStorage.setItem('user', JSON.stringify(userProfile.app_metadata));
+    localStorage.setItem('userName', JSON.stringify(userProfile.given_name + " " + userProfile.family_name));
+    localStorage.setItem('userEmail', JSON.stringify(userProfile.email));
+    localStorage.setItem('access_token', authResult.accessToken);
+    localStorage.setItem('id_token', authResult.idToken);
+  });
+  
+    
   });
 }
 
@@ -47,15 +60,15 @@ public login(): void {
       this.lock.show();
   }
 
+public registerInterest(): void {
+      this.registerLock.show();
+  }
 
 public logout(): void {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('id_token');
-    localStorage.removeItem('user');
+    localStorage.clear();
 
     this.router.navigate(['/']);
   }
-
 
   public isAuthenticated(): boolean {
     console.log(tokenNotExpired('id_token'));
@@ -65,19 +78,16 @@ public logout(): void {
   public isLeaderConsultant(): boolean {
     if (localStorage.getItem('user') !== null) {
       var userLeaderConsultant = JSON.parse(localStorage.getItem('user'));
-      return userLeaderConsultant.app_metadata.user_role == 'Leader' || userLeaderConsultant.app_metadata.user_role == 'Consultant' ;
+      return userLeaderConsultant.user_role == 'Leader' || userLeaderConsultant.user_role == 'Consultant' ;
     }
-
     return false;
-}
-
+  }
 
   public isVerified(): boolean {
     if (localStorage.getItem('user') !== null) {
       var userProfile = JSON.parse(localStorage.getItem('user'));
-      return userProfile.app_metadata.verified != 0;
+      return userProfile.verified != 0;
     }
-
     return false;
   }
 
@@ -88,7 +98,7 @@ public logout(): void {
     
     if (this.isAuthenticated() && !this.isLeaderConsultant()) {
       return false;
-    }
+    } 
     return true;
   }
 

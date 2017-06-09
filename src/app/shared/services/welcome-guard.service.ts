@@ -20,7 +20,7 @@ export class WelcomeGuardService {
     if (this.auth.isAuthenticated() && this.auth.isVerified()) {
       this.router.navigate(['main']);
       return false;
-    }
+    } 
     
     return true;
   }
