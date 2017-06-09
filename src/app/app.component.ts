@@ -31,7 +31,7 @@ export class AppComponent {
                private renderer: Renderer, public authService: AuthService, 
                public localStorageService: LocalStorageService) {
 
-        authService.handleAuthentication();
+        this.authService.handleAuthentication();
 
         router.events.subscribe((event: RouterEvent) => {
             this.navigationInterceptor(event);

@@ -4,7 +4,7 @@ import { WelcomeComponent }      from './welcome/welcome.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { NotFoundComponent}      from './not_found/notFound.component';
 import { WelcomeGuardService }   from './shared/services/welcome-guard.service';
-import { AuthGuardService }      from './shared/services/auth-guard.service';
+import { AuthCallbackComponent } from './authCallback/authCallback.component';
 
 import { MainAppModule}  from './main_app/mainApp.module'
 
@@ -17,11 +17,14 @@ const appRoutes: Routes = [
     {
         path: 'main',
         loadChildren: 'app/main_app/mainApp.module#MainAppModule',
-        // canActivate: [AuthGuardService]
     },
     {
         path: 'registration',
         component: RegistrationComponent, 
+    },
+    {
+        path: 'callback',
+        component: AuthCallbackComponent,
     },
     {
         path: 'welcome',  

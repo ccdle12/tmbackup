@@ -9,7 +9,6 @@ public getUserName(): string {
         return userName;
     }
     return "Demo User";
-    // return " ";
   }
 
 public getUserCity(): string {
@@ -18,7 +17,6 @@ public getUserCity(): string {
         return userProfile.city;
         }
      return "Demo City";
-    // return " ";
     }
 
 public getUserVerified(): string {
@@ -31,7 +29,6 @@ public getUserVerified(): string {
     }
 
     return "unverified";
-    // return " ";
 }
 
 public getUserRole(): string {
@@ -40,6 +37,5 @@ public getUserRole(): string {
         return userProfile.user_role;
     }   
      return "Demo Role";
-    // return " ";
     }
 };

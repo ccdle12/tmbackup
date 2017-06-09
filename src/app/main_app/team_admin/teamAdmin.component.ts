@@ -1,8 +1,6 @@
 import { Component }  from '@angular/core';
 import { UserProfilesService } from '../../shared/services/userProfiles.service';
 
-
-
 @Component({
   moduleId: module.id,
   selector: 'teamAdmin',
@@ -18,13 +16,13 @@ export class TeamAdminComponent  {
     this.userProfilesServices.getUserProfiles().subscribe(userProfiles => {
           this.userProfiles = userProfiles
     });
- }
+  }
 }
 
- interface UserProfile {
-    userRole:  string;
-    userPic:   string;
-    userName:  string;
-    userTitle: string;
-    email:     string;
+interface UserProfile {
+  userRole:  string;
+  userPic:   string;
+  userName:  string;
+  userTitle: string;
+  email:     string;
  }

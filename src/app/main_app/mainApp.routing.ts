@@ -16,8 +16,7 @@ const mainAppRoutes: Routes = [
         },
         {
             path: 'teamadmin',
-            loadChildren: './team_admin/teamAdmin.module#TeamAdminModule',
-            canActivate: [AuthGuardService]
+            loadChildren: './team_admin/teamAdmin.module#TeamAdminModule'
         },
         {
             path: 'takesurvey',
@@ -29,13 +28,11 @@ const mainAppRoutes: Routes = [
         },
         {
             path: 'publication',
-            loadChildren: './publication/publication.module#PublicationModule',
-            canActivate: [AuthGuardService]
+            loadChildren: './publication/publication.module#PublicationModule'
         },
         {
             path: 'benchmark',
-            loadChildren: './benchmark/benchmark.module#BenchmarkModule',
-            canActivate: [AuthGuardService]
+            loadChildren: './benchmark/benchmark.module#BenchmarkModule'
         }
     ]
     }
