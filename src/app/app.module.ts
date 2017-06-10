@@ -11,14 +11,13 @@ import { appRouting } from './app.routing';
 import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { NotFoundComponent } from './not_found/notFound.component';
-import { RegistrationComponent } from './registration/registration.component';
 import { AuthCallbackComponent } from './authCallback/authCallback.component';
 
-import {MdProgressSpinnerModule} from '@angular/material';
+import { MdProgressSpinnerModule } from '@angular/material';
 
 @NgModule({
   imports: [BrowserModule, BrowserAnimationsModule, FormsModule, HttpModule, appRouting, MdProgressSpinnerModule],
-  declarations: [AppComponent, WelcomeComponent, NotFoundComponent, RegistrationComponent, AuthCallbackComponent],
+  declarations: [AppComponent, WelcomeComponent, NotFoundComponent, AuthCallbackComponent],
   providers: [AuthService, WelcomeGuardService, LocalStorageService],
   bootstrap: [AppComponent]
 })

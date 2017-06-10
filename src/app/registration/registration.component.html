@@ -1,3 +1,44 @@
-<p>
-    this is the registration page
-    </p>
+<div class="container">
+    <h2>Registration</h2>
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" formControlName="name" ngModel required>
+            <div [hidden]="!registrationForm.name.errors.required">
+              Name is required
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Job Title</label>
+            <input type="text" class="form-control" formControlName="jobTitle">
+        </div>
+
+        <div class="form-group">
+            <label>Organization</label>
+            <input type="text" class="form-control" formControlName="organization">
+        </div>
+
+        <div class="form-group">
+            <label>Country</label>
+            <input type="text" class="form-control" formControlName="country">
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="text" class="form-control" formControlName="email">
+        </div>
+
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="text" class="form-control" formControlName="phone">
+        </div>
+
+        <div class="form-group">
+            <label>User Detail</label>
+            <input type="text" class="form-control" formControlName="userDetail">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

@@ -1,12 +1,12 @@
-import { ModuleWithProviders }   from '@angular/core'
-import { Routes, RouterModule }  from '@angular/router';
-import { WelcomeComponent }      from './welcome/welcome.component';
-import { RegistrationComponent } from './registration/registration.component';
-import { NotFoundComponent}      from './not_found/notFound.component';
-import { WelcomeGuardService }   from './shared/services/welcome-guard.service';
+import { ModuleWithProviders } from '@angular/core'
+import { Routes, RouterModule } from '@angular/router';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { NotFoundComponent} from './not_found/notFound.component';
+import { WelcomeGuardService } from './shared/services/welcome-guard.service';
 import { AuthCallbackComponent } from './authCallback/authCallback.component';
 
-import { MainAppModule}  from './main_app/mainApp.module'
+import { MainAppModule } from './main_app/mainApp.module'
+import { RegistrationModule } from './registration/registration.module'
 
 const appRoutes: Routes = [
     {
@@ -20,7 +20,7 @@ const appRoutes: Routes = [
     },
     {
         path: 'registration',
-        component: RegistrationComponent, 
+        loadChildren: './registration/registration.module#RegistrationModule',
     },
     {
         path: 'callback',
