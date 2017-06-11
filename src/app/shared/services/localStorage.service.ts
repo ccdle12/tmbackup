@@ -38,4 +38,13 @@ public getUserRole(): string {
     }   
      return "Demo Role";
     }
+
+public getUserJWT(): string {
+    if (localStorage.getItem('id_token') !== null) {
+        var userJWT: string = JSON.stringify(localStorage.getItem('id_token'));
+        userJWT = userJWT.replace('"', '');
+        return userJWT;
+    }
+    return '';
+    }
 };
