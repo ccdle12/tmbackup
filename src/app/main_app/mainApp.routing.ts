@@ -34,7 +34,7 @@ const mainAppRoutes: Routes = [
             path: 'benchmark',
             loadChildren: './benchmark/benchmark.module#BenchmarkModule'
         }
-    ]
+    ],
     }
 ]
 

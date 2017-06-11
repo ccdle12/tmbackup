@@ -60,7 +60,13 @@ public logout(): void {
 }
 
 public isAuthenticated(): boolean {
-  return tokenNotExpired('id_token');
+  var isTokenExpired: boolean = tokenNotExpired('id_token');
+  
+  if (!isTokenExpired) {
+    localStorage.clear();
+  }
+
+  return isTokenExpired;
 }
 
 public isLeaderConsultant(): boolean {

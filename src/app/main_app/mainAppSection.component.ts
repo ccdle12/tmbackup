@@ -8,4 +8,15 @@ import { Router }      from '@angular/router';
 
 export class MainAppSectionComponent {
     constructor(public authService: AuthService, private router: Router) { }
+
+    inTakeSurvey(): boolean {
+        let currentUrl = this.router.url;
+        console.log(this.router.url);
+
+        if (currentUrl == '/main/takesurvey/customerengagement') {
+            return false;
+        }
+
+        return true;
+    }
 };

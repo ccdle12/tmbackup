@@ -1,4 +1,4 @@
-<div class="btn-group btn-group-justified navigationButtons">
+<div *ngIf="inTakeSurvey()" class="btn-group btn-group-justified navigationButtons">
 
         <a *ngIf="!authService.isDemoOrMain()" routerLink="teamadmin" class="btn btn-primary">Team Admin</a>
         <a *ngIf="!authService.isVerified()"  class="btn btn-primary">Team Admin</a>

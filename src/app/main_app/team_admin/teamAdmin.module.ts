@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MdCardModule } from '@angular/material';
-import { MdButtonModule } from '@angular/material';
-import { MdGridListModule } from '@angular/material';
+import { MdCardModule, MdButtonModule, MdGridListModule } from '@angular/material';
 
 
 import { teamAdminRouting } from './teamAdmin.routing';

@@ -8,11 +8,11 @@ import { MdDialog } from '@angular/material';
     templateUrl: './welcome.component.html',
     styleUrls: ['./welcome.component.css']
 }) 
-export class WelcomeComponent  {
+export class WelcomeComponent   {
 
  constructor(public authService: AuthService, public dialog: MdDialog) { }
 
-  openDialog() {
+  openDialog(): void {
     this.dialog.open(RegisterCityDialog);
   }
 
@@ -28,19 +28,20 @@ export class RegisterCityDialog {
 
   constructor(public kumulosService: KumulosService) {
     this.initializeInstanceVariables();
-    this.getAllCitiesFromKumulos();
+    this.getAllCitiesFromKumulos();  
   }
 
-  initializeInstanceVariables() {
+  initializeInstanceVariables(): void {
     this.allCities = new Array();
   }
 
   getAllCitiesFromKumulos(): void {
-    this.kumulosService.getAllCities().subscribe(val => {
-      for (var i = 0; i < val.payload.length; i++) {
-        this.allCities.push(val.payload[i].name);
-      }
-    });
+    this.kumulosService.getAllCities()
+      .subscribe(responseJSON => {
+        responseJSON.payload.map(eachCity => { this.allCities.push(eachCity.name); }); 
+      });
+    
     console.log('allCities', this.allCities);
   }
+
 }
