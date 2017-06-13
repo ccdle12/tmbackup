@@ -4,12 +4,12 @@ import { takeSurveyRouting } from './takeSurvey.routing';
 import { MdCardModule } from '@angular/material';
 
 import { TakeSurveyComponent } from './takeSurvey.component';
-import { CustomerEngagementComponent } from './customerEngagement/customerEngagement.component';
+import { KumulosService } from '../../shared/services/kumulos.service';
 
 @NgModule({
   imports: [takeSurveyRouting, CommonModule, MdCardModule],
-  declarations: [TakeSurveyComponent, CustomerEngagementComponent],
-  providers: [],
+  declarations: [TakeSurveyComponent],
+  providers: [KumulosService],
   
 })
 export class TakeSurveyModule { }

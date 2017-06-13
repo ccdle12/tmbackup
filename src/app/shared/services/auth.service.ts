@@ -87,17 +87,17 @@ public isVerified(): boolean {
 
 public isDemoOrMain(): boolean {
   if (!this.isVerified()) {
-    console.log('user not verified');
+    // console.log('user not verified');
     return true;
   }
 
   if (this.isVerified() && this.isLeaderConsultant()) {
-    console.log('user is verified and a leader');
+    // console.log('user is verified and a leader');
     return false;
   }
     
   if (this.isVerified() && !this.isLeaderConsultant()) {    
-    console.log('user is verified and is not a leader');
+    // console.log('user is verified and is not a leader');
     return true;
   } 
 }

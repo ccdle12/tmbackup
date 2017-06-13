@@ -2,17 +2,22 @@ import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core'
 
 import { TakeSurveyComponent } from './takeSurvey.component';
-import { CustomerEngagementComponent } from './customerEngagement/customerEngagement.component';
 
-const mainAppRoutes: Routes = [
+const takeSurveyRoutes: Routes = [
     {
         path: '',
         component: TakeSurveyComponent,
-    }, 
-    {
-        path: 'customerengagement',
-        component: CustomerEngagementComponent,
-    }                                                                           
+        children: [
+            {
+                path: 'customerengagement',
+                loadChildren: './customer_engagement/customerEngagement.module#CustomerEngagementModule'
+            },
+            {
+                path: 'customerexperience',
+                loadChildren: './customer_experience/customerExperience.module#CustomerExperienceModule'
+            }
+        ]
+    },                                                                        
 ]   
 
-export const takeSurveyRouting: ModuleWithProviders = RouterModule.forChild(mainAppRoutes); 
+export const takeSurveyRouting: ModuleWithProviders = RouterModule.forChild(takeSurveyRoutes); 

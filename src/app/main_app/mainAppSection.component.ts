@@ -11,9 +11,9 @@ export class MainAppSectionComponent {
 
     inTakeSurvey(): boolean {
         let currentUrl = this.router.url;
-        console.log(this.router.url);
-
-        if (currentUrl == '/main/takesurvey/customerengagement') {
+        
+        let urlRegex = '(\/takesurvey\/.*)'
+        if (currentUrl.match(urlRegex)) {
             return false;
         }
 

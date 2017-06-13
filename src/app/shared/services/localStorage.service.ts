@@ -1,11 +1,11 @@
-import { Injectable }      from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class LocalStorageService {
 
 public getUserName(): string {
     if (localStorage.getItem('user') !== null) {
-        var userName = JSON.parse(localStorage.getItem('userName'));
+        let userName = JSON.parse(localStorage.getItem('userName'));
         return userName;
     }
     return "Demo User";
@@ -13,7 +13,7 @@ public getUserName(): string {
 
 public getUserCity(): string {
     if (localStorage.getItem('user') !== null) {
-        var userProfile = JSON.parse(localStorage.getItem('user'));
+        let userProfile = JSON.parse(localStorage.getItem('user'));
         return userProfile.city;
         }
      return "Demo City";
@@ -23,8 +23,8 @@ public getUserVerified(): string {
     var verification: string;
     
     if (localStorage.getItem('user') !== null) {
-        var userProfile = JSON.parse(localStorage.getItem('user'));
-        var userVerifiedStatus: string = userProfile.verified;
+        let userProfile = JSON.parse(localStorage.getItem('user'));
+        let userVerifiedStatus: string = userProfile.verified;
         return verification = userVerifiedStatus == "1" ? "verified" : "unverified";
     }
 
@@ -33,7 +33,7 @@ public getUserVerified(): string {
 
 public getUserRole(): string {
      if (localStorage.getItem('user') !== null) {
-        var userProfile = JSON.parse(localStorage.getItem('user'));
+        let userProfile = JSON.parse(localStorage.getItem('user'));
         return userProfile.user_role;
     }   
      return "Demo Role";
@@ -41,10 +41,20 @@ public getUserRole(): string {
 
 public getUserJWT(): string {
     if (localStorage.getItem('id_token') !== null) {
-        var userJWT: string = JSON.stringify(localStorage.getItem('id_token'));
+        let userJWT: string = JSON.stringify(localStorage.getItem('id_token'));
         userJWT = userJWT.replace('"', '');
         return userJWT;
     }
     return '';
     }
+
+public getUserCityId(): string {
+    if (localStorage.getItem('user') !== null) {
+        let userProfile: any = JSON.parse(localStorage.getItem('user'));
+        console.log('city_id', userProfile.city_id);
+        return userProfile.city_id;
+    }
+    
+    return '34';
+    }    
 };

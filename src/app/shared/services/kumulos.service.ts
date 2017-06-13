@@ -6,25 +6,25 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class KumulosService {
     
-    host : string;
-    basePath : string;
-
-    getAllCitiesJSON: string;
+    domain: string;
+    getAllCitiesURI: string;
+    getActiveVersionForCityURI: string;
+    getWebDashboardURI: string;
 
     constructor(private http: Http, private localStorageService: LocalStorageService) {
         this.initializeAllInstanceVariables();
     }
 
     initializeAllInstanceVariables(): void {
-        this.host = "https://api.kumulos.com/";
-        this.basePath = "b2.2/ee263e29-20c7-471f-92eb-5fe34a19e80f/";
+        this.domain = "https://api.kumulos.com/b2.2/ee263e29-20c7-471f-92eb-5fe34a19e80f/";
 
-        this.getAllCitiesJSON = "getAllCities.json/"
-        
+        this.getAllCitiesURI = "getAllCities.json/"
+        this.getActiveVersionForCityURI = "getActiveVersionForCity.json/"
+        this.getWebDashboardURI = "webGetDashboard.json/"
     }
 
     createAuthorizationHeader(): Headers {
-        var headers = new Headers();
+        let headers = new Headers();
 
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         headers.append('Authorization', 'Basic ZWUyNjNlMjktMjBjNy00NzFmLTkyZWItNWZlMzRhMTllODBmOmx2WElGZUlpQlNkOXErNnVIbXFEUlJrUVA4TzNNVXlKdmV3MA=='); 
@@ -32,21 +32,52 @@ export class KumulosService {
         return headers;
     }
 
-    createBody(): String {
-        var urlSearchParams: URLSearchParams = new URLSearchParams();
-        var userJWT: string = this.localStorageService.getUserJWT();
-        urlSearchParams.append('params[jwt]', userJWT);
-        var body: string = urlSearchParams.toString()
+    createBody(): URLSearchParams {
+        let urlSearchParams: URLSearchParams = new URLSearchParams();
 
-        return body;
+        let userJWT: string = this.localStorageService.getUserJWT();
+        urlSearchParams.append('params[jwt]', userJWT);
+        
+        return urlSearchParams;
     }
 
     getAllCities(): any {
-        var headers: Headers = this.createAuthorizationHeader();
-        var body: String = this.createBody();
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+        let body: String = urlSearchParams.toString();
         
-        return this.http.post(this.host + this.basePath + this.getAllCitiesJSON, body, {headers: headers})
+        return this.http.post(this.domain + this.getAllCitiesURI, body, {headers: headers})
                 .map(response => {
-                    return response.json()});
-                };
+                    return response.json()
+                });
+    };
+
+    getActiveVersionForCity(): any {
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+         urlSearchParams.append('params[cityID]', this.localStorageService.getUserCityId());
+
+         let body: String = urlSearchParams.toString();
+
+         return this.http.post(this.domain + this.getActiveVersionForCityURI, body, {headers: headers})
+                .map(response => {
+                    return response.json()
+        });
+    }
+
+    getWebDashboard(activeVersionNumber: string): any {
+        var headers: Headers = this.createAuthorizationHeader();
+        var urlSearchParams: URLSearchParams = this.createBody();
+        var activeVersionNumber = this.localStorageService.getUserCityId();
+        
+        urlSearchParams.append('params[version]', activeVersionNumber);
+
+        var body: String = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.getWebDashboardURI, body, {headers: headers})
+            .map(response => {
+                    return response.json()
+            });
+    }
 }
