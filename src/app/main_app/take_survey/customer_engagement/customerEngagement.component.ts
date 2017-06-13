@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component  } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'customerEngagement',
@@ -6,6 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./customerEngagement.component.css']
 })
 export class CustomerEngagementComponent {
-  constructor() { }
 
+    constructor(public router: Router) { 
+          this.router.navigateByUrl('/main/takesurvey/customerengagement/survey');
+        }  
+
+    
 }

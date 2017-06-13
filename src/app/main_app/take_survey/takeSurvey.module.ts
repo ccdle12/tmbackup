@@ -5,11 +5,12 @@ import { MdCardModule } from '@angular/material';
 
 import { TakeSurveyComponent } from './takeSurvey.component';
 import { KumulosService } from '../../shared/services/kumulos.service';
+import { TakeSurveyDashboardService } from '../../shared/services/takeSurveyDashboard.service'
 
 @NgModule({
   imports: [takeSurveyRouting, CommonModule, MdCardModule],
   declarations: [TakeSurveyComponent],
-  providers: [KumulosService],
+  providers: [KumulosService, TakeSurveyDashboardService],
   
 })
 export class TakeSurveyModule { }

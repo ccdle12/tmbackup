@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../shared/services/kumulos.service';
+import { CustomerEngagementComponent } from './customer_engagement/customerEngagement.component';
+import { TakeSurveyDashboardService } from '../../shared/services/takeSurveyDashboard.service'
 
 @Component({
   selector: 'app-takesurvey',
@@ -9,41 +11,39 @@ import { KumulosService } from '../../shared/services/kumulos.service';
 })
 export class TakeSurveyComponent {
 
-  activeCityVersion: string;
-  takeSurveyDashboard: Array<JSON>;
+  private takeSurveyDashboard: Array<JSON>;
 
-  constructor(public router: Router, public kumulosService: KumulosService) {
+  constructor(public router: Router, public kumulosService: KumulosService, public takeSurveyService: TakeSurveyDashboardService) {
     
     this.intializeInstanceVariables();
 
     this.getActiveVersionForCity();
   }
 
-  intializeInstanceVariables(): void {
+  private intializeInstanceVariables(): void {
      this.takeSurveyDashboard = new Array();
   }
 
-  getActiveVersionForCity(): void {
+  private getActiveVersionForCity(): void {
     this.kumulosService.getActiveVersionForCity()
       .subscribe(responseJSON => {
-        this.activeCityVersion = responseJSON.payload;
-        console.log("active city version: ", this.activeCityVersion);
+        
+        let activeCityVersion: string = responseJSON.payload;
+        this.takeSurveyService.setActiveCityVersion(activeCityVersion);
 
-        this.getWebDashboard();
+        this.getWebDashboard(activeCityVersion);
       });
   }
 
-  getWebDashboard(): void {
-    this.kumulosService.getWebDashboard(this.activeCityVersion)
+  private getWebDashboard(activeCityVersion: string): void {
+    this.kumulosService.getWebDashboard(activeCityVersion)
       .subscribe(responseJSON => { 
         this.takeSurveyDashboard = responseJSON.payload;
-        console.log(this.takeSurveyDashboard[5]);
-        console.log(this.takeSurveyDashboard[0]['dimensionText']);
+        this.takeSurveyService.setSurveyDashboard(responseJSON.payload);
     });
   }
-
   
-  inChildComponents(): boolean {
+  private inChildComponents(): boolean {
         let currentUrl = this.router.url;
 
         let urlRegex = '(\/takesurvey\/.*)'
