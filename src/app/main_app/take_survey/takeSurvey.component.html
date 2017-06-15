@@ -1,5 +1,5 @@
 <router-outlet></router-outlet>
-<div *ngIf="inChildComponents()" class="container">
+<!--<div *ngIf="inChildComponents()" class="container">
   <h1>Customer</h1>
   <div class="row">
     <md-card class="col-sm-2" routerLink="customerengagement">
@@ -50,4 +50,11 @@
         <p>{{takeSurveyDashboard[8]?.statementCount}}</p>
     </md-card>
   </div>
+</div>-->
+
+<div *ngIf="inChildComponents()" class="container">
+    <md-card class="col-sm-2" *ngFor="let eachSurvey of takeSurveyDashboard; let i = index" (click)="navigateToSurveyModule(i)">
+        <md-card-title>{{takeSurveyDashboard[i].dimensionText}}</md-card-title>
+        <p>{{takeSurveyDashboard[i]?.surveyCount}} / {{takeSurveyDashboard[i]?.statementCount}}</p>
+    </md-card>
 </div>

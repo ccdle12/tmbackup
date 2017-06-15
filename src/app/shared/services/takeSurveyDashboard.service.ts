@@ -19,11 +19,19 @@ export class TakeSurveyDashboardService {
     }
 
     public setSurveyDashboard(surveyDashboard: Array<JSON>) {
-        this.surveyDashboard = surveyDashboard;
-        console.log('from set Survey Dashboard', this.surveyDashboard[0]);
+        // this.surveyDashboard = surveyDashboard;
+        console.log('take survey dashboard', surveyDashboard);
+        localStorage.setItem('surveydashboard', JSON.stringify(surveyDashboard));   
     }
 
     public getSurveyDashboard(): Array<JSON> {
         return this.surveyDashboard;
+    }
+
+    public getObjectFromDashboard(index: number) {
+        
+        let surveyDashboard = localStorage.getItem('surveydashboard');
+        surveyDashboard = JSON.parse(surveyDashboard);
+        return surveyDashboard[index];
     }
 }

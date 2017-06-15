@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class LocalStorageService {
 
+
+
 public getUserName(): string {
     if (localStorage.getItem('user') !== null) {
         let userName = JSON.parse(localStorage.getItem('userName'));
@@ -54,7 +56,6 @@ public getUserCityId(): string {
         console.log('city_id', userProfile.city_id);
         return userProfile.city_id;
     }
-    
-    return '34';
+    return '21';
     }    
 };

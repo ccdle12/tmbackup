@@ -4,6 +4,7 @@ import { KumulosService } from '../../shared/services/kumulos.service';
 import { CustomerEngagementComponent } from './customer_engagement/customerEngagement.component';
 import { TakeSurveyDashboardService } from '../../shared/services/takeSurveyDashboard.service'
 
+
 @Component({
   selector: 'app-takesurvey',
   templateUrl: './takeSurvey.component.html',
@@ -14,10 +15,9 @@ export class TakeSurveyComponent {
   private takeSurveyDashboard: Array<JSON>;
 
   constructor(public router: Router, public kumulosService: KumulosService, public takeSurveyService: TakeSurveyDashboardService) {
-    
     this.intializeInstanceVariables();
-
     this.getActiveVersionForCity();
+ 
   }
 
   private intializeInstanceVariables(): void {
@@ -29,6 +29,7 @@ export class TakeSurveyComponent {
       .subscribe(responseJSON => {
         
         let activeCityVersion: string = responseJSON.payload;
+        console.log('takeSurvey', activeCityVersion);
         this.takeSurveyService.setActiveCityVersion(activeCityVersion);
 
         this.getWebDashboard(activeCityVersion);
@@ -39,6 +40,7 @@ export class TakeSurveyComponent {
     this.kumulosService.getWebDashboard(activeCityVersion)
       .subscribe(responseJSON => { 
         this.takeSurveyDashboard = responseJSON.payload;
+        
         this.takeSurveyService.setSurveyDashboard(responseJSON.payload);
     });
   }
@@ -51,5 +53,20 @@ export class TakeSurveyComponent {
             return false;
         }
         return true;
+  }
+
+  public navigateToSurveyModule(index: number) {
+    switch(index) {
+      case 0:
+        this.router.navigateByUrl('/main/takesurvey/customerengagement');
+        console.log('user clicked on customerengagement');
+        break;
+
+      case 1:
+        this.router.navigateByUrl('/main/takesurvey/customerexperience');
+        console.log('user clicked on customerexperience');
+        break;
+    }
+    
   }
 }

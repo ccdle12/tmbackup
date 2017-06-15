@@ -2,7 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core'
 
 import { CustomerEngagementComponent } from './customerEngagement.component';
-import { CustomerEngagementSurveyComponent } from './survey/customerEngagementSurvey.component';
+// import { CustomerEngagementSurveyComponent } from './survey/customerEngagementSurvey.component';
 
 const customerEngagementRoutes: Routes = [
     {

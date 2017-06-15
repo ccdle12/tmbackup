@@ -61,10 +61,6 @@ public logout(): void {
 
 public isAuthenticated(): boolean {
   var isTokenExpired: boolean = tokenNotExpired('id_token');
-  
-  if (!isTokenExpired) {
-    localStorage.clear();
-  }
 
   return isTokenExpired;
 }

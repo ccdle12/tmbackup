@@ -10,7 +10,5 @@ export class CustomerEngagementComponent {
 
     constructor(public router: Router) { 
           this.router.navigateByUrl('/main/takesurvey/customerengagement/survey');
-        }  
-
-    
+    }  
 }

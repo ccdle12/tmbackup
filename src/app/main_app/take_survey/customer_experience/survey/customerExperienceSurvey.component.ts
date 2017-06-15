@@ -6,11 +6,11 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'customerEngagementSurvey',
-  templateUrl: './customerEngagementSurvey.component.html',
-  styleUrls: ['./customerEngagementSurvey.component.css']
+  selector: 'customerExperienceSurvey',
+  templateUrl: './customerExperienceSurvey.component.html',
+  styleUrls: ['./customerExperienceSurvey.component.css']
 })
-export class CustomerEngagementSurveyComponent implements OnInit {
+export class CustomerExperienceSurveyComponent implements OnInit {
 
     private activeCityVersion: string;
     private surveyQuestions: Array<JSON>;
@@ -21,20 +21,13 @@ export class CustomerEngagementSurveyComponent implements OnInit {
     private capabilityValues: Array<any>;
     private capabilityToolTips: any[];
 
-    private twoYearTargetValues: Array<string>;
-
-    private surveyCount: any;
+    private twoYearTargetValues: Array<string>;;
 
     constructor(public takeSurveyService: TakeSurveyDashboardService, public kumulosService: KumulosService, public router: Router) { }
 
     ngOnInit() {
       //Update importance values with the data from kumulos
       this.importanceValues = new Array();
-      
-      // let dashboard = this.takeSurveyService.getObjectFromDashboard(0);
-      // console.log('in customer engagement', dashboard)
-      // let test = this.takeSurveyService.getActiveCityVersion();
-      // console.log(test);
 
       this.importanceToolTips = new Array();
       this.importanceToolTips[0] = "1 - Little Importance";
@@ -52,19 +45,19 @@ export class CustomerEngagementSurveyComponent implements OnInit {
     }
 
     private getWebSurveyQuestions() {
-      this.kumulosService.getWebSurvey(this.getActiveCityVersion(), '1', '1.1' )
+      this.kumulosService.getWebSurvey(this.getActiveCityVersion(), '1', '1.2' )
         .subscribe(responseJSON => {
          this.surveyQuestions = responseJSON.payload;
          
          this.updateCapabilityToolTips();
-         console.log('survey questions', responseJSON.payload); 
+         console.log('survey questions from customer experience', responseJSON.payload); 
       });
   }
 
     private updateCapabilityToolTips(): void {
       var tempArray = new Array();
 
-      for (var i = 0; i <= 5; i++) {
+      for (var i = 0; i <= 10; i++) {
         for (var j = 1; j <= 5; j++) {
           tempArray[j] = j + " - " + this.surveyQuestions[i]['scoringID' + j + 'Text'];  
         }
@@ -82,6 +75,10 @@ export class CustomerEngagementSurveyComponent implements OnInit {
   }
 
   public nextModule(): void {
-    this.router.navigateByUrl('/main/takesurvey/customerexperience')
+    this.router.navigateByUrl('/main/takesurvey/customerexperience');
+  }
+
+  public previousModule(): void {
+    this.router.navigateByUrl('/main/takesurvey/customerengagement');
   }
 }

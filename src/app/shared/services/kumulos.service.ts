@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { LocalStorageService } from './localStorage.service';
+import { AuthService } from '../../shared/services/auth.service'
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -12,7 +13,10 @@ export class KumulosService {
     private getWebDashboardURI: string;
     private getWebSurveyURI: string;
 
-    constructor(private http: Http, private localStorageService: LocalStorageService) {
+    //Temporary Solution until I find out from James or Dominic how to retrieve data when user is not logged in
+    private tempDemoJWT = 'C0tham1969';
+
+    constructor(private http: Http, private localStorageService: LocalStorageService, public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
 
@@ -38,7 +42,13 @@ export class KumulosService {
         let urlSearchParams: URLSearchParams = new URLSearchParams();
 
         let userJWT: string = this.localStorageService.getUserJWT();
-        urlSearchParams.append('params[jwt]', userJWT);
+
+        if (this.authService.isAuthenticated()) {
+            urlSearchParams.append('params[jwt]', userJWT);
+        } else {
+            urlSearchParams.append('params[jwt]', this.tempDemoJWT);
+        }
+        
         
         return urlSearchParams;
     }
@@ -71,9 +81,9 @@ export class KumulosService {
     public getWebDashboard(activeVersionNumber: string): any {
         let headers: Headers = this.createAuthorizationHeader();
         let urlSearchParams: URLSearchParams = this.createBody();
-        // var activeVersionNumber = this.localStorageService.getUserCityId();
         
-        urlSearchParams.append('params[version]', activeVersionNumber);
+        console.log('kumulos get web dashboard', 'active version number: ' + activeVersionNumber);
+        urlSearchParams.append('params[version]', activeVersionNumber.toString());
 
         var body: String = urlSearchParams.toString();
 
