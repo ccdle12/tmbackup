@@ -1,4 +1,4 @@
-<div *ngIf="inTakeSurvey()" class="btn-group btn-group-justified navigationButtons">
+<!--<div *ngIf="inTakeSurvey()" class="btn-group btn-group-justified navigationButtons">
 
         <a *ngIf="!authService.isDemoOrMain()" routerLink="teamadmin" class="btn btn-primary">Team Admin</a>
         <a *ngIf="!authService.isVerified()"  class="btn btn-primary">Team Admin</a>
@@ -12,5 +12,16 @@
         <a *ngIf="!authService.isDemoOrMain()" routerLink="benchmark" class="btn btn-primary">Benchmark</a>
         <a *ngIf="!authService.isVerified()"  class="btn btn-primary">Benchmark</a>
 
-</div>
+</div>-->
+
+<nav md-tab-nav-bar *ngIf="inTakeSurvey()">
+  <a md-tab-link *ngIf="!authService.isDemoOrMain()" routerLink="teamadmin"> Team Admin</a>
+  <a md-tab-link *ngIf="!authService.isVerified()"> Team Admin</a>
+  <a md-tab-link routerLink="takesurvey"> Take Survey</a>
+  <a md-tab-link routerLink="viewresults"> View Results</a>
+  <a md-tab-link *ngIf="!authService.isDemoOrMain()" routerLink="publication"> Publication</a>
+  <a md-tab-link *ngIf="!authService.isVerified()"> Publication</a>
+  <a md-tab-link *ngIf="!authService.isDemoOrMain()" routerLink="benchmark">Benchmark</a>
+  <a md-tab-link *ngIf="!authService.isVerified()">Benchmark</a>
+</nav>
 <router-outlet></router-outlet>

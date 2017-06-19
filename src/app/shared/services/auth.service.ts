@@ -30,8 +30,11 @@ public handleAuthentication(): void {
         return;
       }
 
+      localStorage.clear();
+      
       console.log("User JSON", JSON.stringify(userProfile));
       localStorage.setItem('user', JSON.stringify(userProfile.app_metadata));
+      localStorage.setItem('userPicture', JSON.stringify(userProfile.picture));
       localStorage.setItem('userName', JSON.stringify(userProfile.given_name + " " + userProfile.family_name));
       localStorage.setItem('userEmail', JSON.stringify(userProfile.email));
       localStorage.setItem('access_token', authResult.accessToken);
@@ -54,8 +57,8 @@ public login(): void {
 }
 
 public logout(): void {
+  window.location.reload();
   localStorage.clear();
-
   this.router.navigate(['/welcome']);
 }
 

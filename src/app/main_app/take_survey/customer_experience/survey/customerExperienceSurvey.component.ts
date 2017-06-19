@@ -21,9 +21,15 @@ export class CustomerExperienceSurveyComponent implements OnInit {
     private capabilityValues: Array<any>;
     private capabilityToolTips: any[];
 
-    private twoYearTargetValues: Array<string>;;
+    private twoYearTargetValues: Array<string>;
 
-    constructor(public takeSurveyService: TakeSurveyDashboardService, public kumulosService: KumulosService, public router: Router) { }
+    private areaID: any;
+    private dimensionID: any;
+    private dimensionText: any;
+
+    constructor(public takeSurveyService: TakeSurveyDashboardService, 
+                public kumulosService: KumulosService, 
+                public router: Router) { }
 
     ngOnInit() {
       //Update importance values with the data from kumulos
@@ -41,11 +47,16 @@ export class CustomerExperienceSurveyComponent implements OnInit {
 
       this.twoYearTargetValues = new Array();
 
+      let parsedSurveyDashboard = JSON.parse(localStorage.getItem('surveydashboard'));
+      this.areaID = parsedSurveyDashboard[1]['areaID'];
+      this.dimensionID = parsedSurveyDashboard[1]['dimensionID'];
+      this.dimensionText = parsedSurveyDashboard[1]['dimensionText'];
+
       this.getWebSurveyQuestions(); 
     }
 
     private getWebSurveyQuestions() {
-      this.kumulosService.getWebSurvey(this.getActiveCityVersion(), '1', '1.2' )
+      this.kumulosService.getWebSurvey(this.getActiveCityVersion(), this.areaID, this.dimensionID )
         .subscribe(responseJSON => {
          this.surveyQuestions = responseJSON.payload;
          

@@ -47,7 +47,7 @@ public getUserJWT(): string {
         userJWT = userJWT.replace('"', '');
         return userJWT;
     }
-    return '';
+    return localStorage.getItem('demoJWT');
     }
 
 public getUserCityId(): string {
@@ -56,6 +56,6 @@ public getUserCityId(): string {
         console.log('city_id', userProfile.city_id);
         return userProfile.city_id;
     }
-    return '21';
+    return localStorage.getItem('demoCity');
     }    
 };

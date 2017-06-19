@@ -2,26 +2,41 @@
     <md-spinner></md-spinner>
 </div>
 
-<header>
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a routerLink="/welcome" class="navbar-left"><img src="/assets/tmforum_logo_white_on_alpha.png" height="40"/></a>
-      </div>
-    
-      <ul class="nav navbar-nav">
-        <li *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserName()}} -</li>
-        <li *ngIf="this.authService.isAuthenticated()"> {{this.localStorageService.getUserCity()}} -</li>
-        <li *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserRole()}}</li>
-        <li *ngIf="!this.authService.isAuthenticated()">Demo User -</li>
-        <li *ngIf="!this.authService.isAuthenticated()"> Demo Organization -</li>
-        <li *ngIf="!this.authService.isAuthenticated()">Demo Role</li>
-        <li><button *ngIf="authService.isAuthenticated()" (click)="this.authService.logout()">Logout</button></li>
-      </ul>
 
-    </div>
-  </nav>
-</header>
+  <header>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-header">
+          <a routerLink="/welcome" class="navbar-left" id="logo"><img src="/assets/tmforum_logo_white_on_alpha.png" height="40"/></a>
+        </div>
+      
+        <ul id="menu">
+          <li *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserName()}} -</li>
+          <li *ngIf="this.authService.isAuthenticated()"> {{this.localStorageService.getUserCity()}} -</li>
+          <li *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserRole()}}</li>
+          <li *ngIf="!this.authService.isAuthenticated()">Demo User -</li>
+          <li *ngIf="!this.authService.isAuthenticated()"> Demo Organization -</li>
+          <li *ngIf="!this.authService.isAuthenticated()">Demo Role</li>
+          <!--<li><button *ngIf="authService.isAuthenticated()" (click)="this.authService.logout()">Logout</button></li>-->
+          
+        </ul>
+
+
+      <img class='nav-avatar img-circle' [src]="getUserAvatar()" [mdMenuTriggerFor]="menu">
+
+      <md-menu #menu="mdMenu">
+        <button md-menu-item *ngIf="authService.isAuthenticated()">
+          <md-icon></md-icon>
+          <span></span>
+        </button>
+        <button md-menu-item *ngIf="authService.isAuthenticated()" (click)="this.authService.logout()">
+          <span>Log out</span>
+        </button>
+      </md-menu>
+     
+        
+    </nav>
+  </header>
+
 
 <main>
   <router-outlet>

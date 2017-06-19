@@ -53,8 +53,12 @@
 </div>-->
 
 <div *ngIf="inChildComponents()" class="container">
+    <div class="row" id="cardsContainer">
     <md-card class="col-sm-2" *ngFor="let eachSurvey of takeSurveyDashboard; let i = index" (click)="navigateToSurveyModule(i)">
         <md-card-title>{{takeSurveyDashboard[i].dimensionText}}</md-card-title>
-        <p>{{takeSurveyDashboard[i]?.surveyCount}} / {{takeSurveyDashboard[i]?.statementCount}}</p>
+        <div class="progressBox" [ngStyle]="changeBackground(i)">
+            <p>{{takeSurveyDashboard[i]?.surveyCount}} / {{takeSurveyDashboard[i]?.statementCount}}</p>
+        </div>
     </md-card>
+    </div>
 </div>

@@ -14,11 +14,10 @@ import { WelcomeComponent, RegisterCityDialog } from './welcome/welcome.componen
 import { NotFoundComponent } from './not_found/notFound.component';
 import { AuthCallbackComponent } from './authCallback/authCallback.component';
 
-import { MdProgressSpinnerModule } from '@angular/material';
-import { MdDialogModule } from '@angular/material';
+import { MdProgressSpinnerModule, MdDialogModule, MdMenuModule } from '@angular/material';
 
 @NgModule({
-  imports: [BrowserModule, BrowserAnimationsModule, FormsModule, HttpModule, appRouting, MdProgressSpinnerModule, MdDialogModule],
+  imports: [BrowserModule, BrowserAnimationsModule, FormsModule, HttpModule, appRouting, MdProgressSpinnerModule, MdDialogModule, MdMenuModule],
   declarations: [AppComponent, WelcomeComponent, RegisterCityDialog, NotFoundComponent, AuthCallbackComponent],
   entryComponents: [RegisterCityDialog],
   providers: [AuthService, WelcomeGuardService, LocalStorageService, KumulosService],

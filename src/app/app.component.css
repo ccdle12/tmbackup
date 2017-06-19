@@ -1,6 +1,41 @@
 
-nav ul li {
-    color: white;
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    overflow:hidden;
+    margin-top: 12px;
 }
 
+li {
+    color: white;
+    display:inline-block;
+}
 
+#menu {
+    text-align:center;
+    margin-right: 150px;
+}
+
+.img-circle {
+    border-radius: 50%;
+    float: right;
+    height: 35px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin-right: 50px;
+    margin-top: 5px;
+}
+
+header {
+    position: relative;
+}
+
+#logo {
+    padding-left: 20px;
+}
+
+md-menu-item {
+    padding-top: 100px;
+}

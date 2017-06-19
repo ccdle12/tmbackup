@@ -3,6 +3,7 @@ import { AuthService }       from './shared/services/auth.service';
 import { LocalStorageService } from './shared/services/localStorage.service';
 
 
+
 import {
     Router,
     // import as RouterEvent to avoid confusion with the DOM Event
@@ -21,6 +22,19 @@ import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+    public getUserAvatar(): any {
+
+        var userAvatar;
+
+        if (this.authService.isAuthenticated() && localStorage.getItem('userPicture')) {
+            userAvatar = JSON.parse(localStorage.getItem('userPicture')); 
+        } else {
+            userAvatar = '../assets/default_avatar.png';
+        }
+
+        return userAvatar;
+    }
    
   // Instead of holding a boolean value for whether the spinner
     // should show or not, we store a reference to the spinner element,

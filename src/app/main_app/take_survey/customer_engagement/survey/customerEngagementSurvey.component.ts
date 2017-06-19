@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { TakeSurveyDashboardService } from '../../../../shared/services/takeSurveyDashboard.service';
 import { KumulosService } from '../../../../shared/services/kumulos.service';
-import { MdSliderModule } from '@angular/material';
+import { MdSliderModule, MdSidenavModule  } from '@angular/material';
 import { Router } from '@angular/router';
 
 
@@ -25,17 +25,20 @@ export class CustomerEngagementSurveyComponent implements OnInit {
 
     private surveyCount: any;
 
-    constructor(public takeSurveyService: TakeSurveyDashboardService, public kumulosService: KumulosService, public router: Router) { }
+    private areaID: any;
+    private dimensionID: any;
+    private dimensionText: any;
+
+    constructor(public takeSurveyService: TakeSurveyDashboardService, 
+                public kumulosService: KumulosService, 
+                public router: Router) { }
+                
+    @ViewChild('start') sidenav: MdSidenavModule;
 
     ngOnInit() {
       //Update importance values with the data from kumulos
       this.importanceValues = new Array();
       
-      // let dashboard = this.takeSurveyService.getObjectFromDashboard(0);
-      // console.log('in customer engagement', dashboard)
-      // let test = this.takeSurveyService.getActiveCityVersion();
-      // console.log(test);
-
       this.importanceToolTips = new Array();
       this.importanceToolTips[0] = "1 - Little Importance";
       this.importanceToolTips[1] = "2 - Some Importance";
@@ -48,11 +51,34 @@ export class CustomerEngagementSurveyComponent implements OnInit {
 
       this.twoYearTargetValues = new Array();
 
+      let parsedSurveyDashboard = JSON.parse(localStorage.getItem('surveydashboard'));
+      this.areaID = parsedSurveyDashboard[0]['areaID'];
+      this.dimensionID = parsedSurveyDashboard[0]['dimensionID'];
+      this.dimensionText = parsedSurveyDashboard[0]['dimensionText'];
+
       this.getWebSurveyQuestions(); 
     }
 
+     public routeToPage(surveyPage: String) {
+       console.log('routetoPage activated: ' + surveyPage);
+        switch(surveyPage) {
+          case('survey'):
+            this.router.navigateByUrl('main/takesurvey/customerengagement/survey');
+            break;
+          case ('evidence'):
+            this.router.navigateByUrl('main/takesurvey/customerengagement/evidence');
+            break;
+          case ('bestPractice'):
+            this.router.navigateByUrl('main/takesurvey/customerengagement/bestpractice');
+            break;
+          case ('caseStudies'):
+            this.router.navigateByUrl('main/takesurvey/customerengagement/casestudies');
+            break;
+        }
+    }
+
     private getWebSurveyQuestions() {
-      this.kumulosService.getWebSurvey(this.getActiveCityVersion(), '1', '1.1' )
+      this.kumulosService.getWebSurvey(this.getActiveCityVersion(), this.areaID, this.dimensionID )
         .subscribe(responseJSON => {
          this.surveyQuestions = responseJSON.payload;
          

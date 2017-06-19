@@ -29,7 +29,7 @@ export class TakeSurveyComponent {
       .subscribe(responseJSON => {
         
         let activeCityVersion: string = responseJSON.payload;
-        console.log('takeSurvey', activeCityVersion);
+        // console.log('takeSurvey', activeCityVersion);
         this.takeSurveyService.setActiveCityVersion(activeCityVersion);
 
         this.getWebDashboard(activeCityVersion);
@@ -40,7 +40,7 @@ export class TakeSurveyComponent {
     this.kumulosService.getWebDashboard(activeCityVersion)
       .subscribe(responseJSON => { 
         this.takeSurveyDashboard = responseJSON.payload;
-        
+        console.log('take survey dashboard', responseJSON.payload);
         this.takeSurveyService.setSurveyDashboard(responseJSON.payload);
     });
   }
@@ -69,4 +69,19 @@ export class TakeSurveyComponent {
     }
     
   }
+
+  public changeBackground(index: number): any {
+    let surveyCount = this.takeSurveyDashboard[index]['surveyCount'];
+    let statementCount = this.takeSurveyDashboard[index]['statementCount'];
+    if (surveyCount == 0) {
+      return { 'background-color': 'grey' };
+    }
+    else if (surveyCount < statementCount) {
+      return { 'background-color': 'red' };
+    }
+    else {
+      return { 'background-color': 'lightgreen' };
+    }    
+    
+  } 
 }

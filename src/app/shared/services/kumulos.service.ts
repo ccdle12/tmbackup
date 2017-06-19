@@ -12,9 +12,8 @@ export class KumulosService {
     private getActiveVersionForCityURI: string;
     private getWebDashboardURI: string;
     private getWebSurveyURI: string;
-
-    //Temporary Solution until I find out from James or Dominic how to retrieve data when user is not logged in
-    private tempDemoJWT = 'C0tham1969';
+    private getDemoCityURI: string;
+    private getDemoUserJWTURI: string;
 
     constructor(private http: Http, private localStorageService: LocalStorageService, public authService: AuthService) {
         this.initializeAllInstanceVariables();
@@ -27,6 +26,8 @@ export class KumulosService {
         this.getActiveVersionForCityURI = "getActiveVersionForCity.json/";
         this.getWebDashboardURI = "webGetDashboard.json/";
         this.getWebSurveyURI = "/webGetSurvey.json/";
+        this.getDemoCityURI = "/getDemoCityID.json/";
+        this.getDemoUserJWTURI = "/getDemoUserJWT.json";
     }
 
     public createAuthorizationHeader(): Headers {
@@ -41,15 +42,9 @@ export class KumulosService {
     public createBody(): URLSearchParams {
         let urlSearchParams: URLSearchParams = new URLSearchParams();
 
-        let userJWT: string = this.localStorageService.getUserJWT();
-
-        if (this.authService.isAuthenticated()) {
-            urlSearchParams.append('params[jwt]', userJWT);
-        } else {
-            urlSearchParams.append('params[jwt]', this.tempDemoJWT);
-        }
-        
-        
+        let userJWT: string = this.localStorageService.getUserJWT();    
+        urlSearchParams.append('params[jwt]', userJWT);
+    
         return urlSearchParams;
     }
 
@@ -83,7 +78,7 @@ export class KumulosService {
         let urlSearchParams: URLSearchParams = this.createBody();
         
         console.log('kumulos get web dashboard', 'active version number: ' + activeVersionNumber);
-        urlSearchParams.append('params[version]', activeVersionNumber.toString());
+        urlSearchParams.append('params[version]', activeVersionNumber);
 
         var body: String = urlSearchParams.toString();
 
@@ -105,6 +100,26 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getWebSurveyURI, body, {headers: headers})
             .map(response => {
+                return response.json();
+            });
+    }
+
+    public getDemoCity() {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        return this.http.post(this.domain + this.getDemoCityURI, null, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            });
+    }
+
+    public getDemoUserJWT() {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        return this.http.post(this.domain + this.getDemoUserJWTURI, null, {headers: headers})
+            .map(response => {
+                console.log(response.json());
                 return response.json();
             });
     }
