@@ -3,6 +3,7 @@ import { TakeSurveyDashboardService } from '../../../../shared/services/takeSurv
 import { KumulosService } from '../../../../shared/services/kumulos.service';
 import { MdSliderModule, MdSidenavModule  } from '@angular/material';
 import { Router } from '@angular/router';
+import { MdDialog } from '@angular/material';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class CustomerEngagementSurveyComponent implements OnInit {
     private capabilityValues: Array<any>;
     private capabilityToolTips: any[];
 
-    private twoYearTargetValues: Array<string>;
+    private twoYearTargetValues: Array<any>;
 
     private surveyCount: any;
 
@@ -29,13 +30,19 @@ export class CustomerEngagementSurveyComponent implements OnInit {
     private dimensionID: any;
     private dimensionText: any;
 
+    private userSaved: boolean;
+
     constructor(public takeSurveyService: TakeSurveyDashboardService, 
                 public kumulosService: KumulosService, 
-                public router: Router) { }
+                public router: Router,
+                public dialog: MdDialog) { }
                 
     @ViewChild('start') sidenav: MdSidenavModule;
 
     ngOnInit() {
+
+      this.userSaved = false;
+
       //Update importance values with the data from kumulos
       this.importanceValues = new Array();
       
@@ -78,9 +85,12 @@ export class CustomerEngagementSurveyComponent implements OnInit {
     }
 
     private getWebSurveyQuestions() {
+      //Replace values below for testing w/ '129', '1', '1.1' to show values from kumulos updating the sliders
       this.kumulosService.getWebSurvey(this.getActiveCityVersion(), this.areaID, this.dimensionID )
         .subscribe(responseJSON => {
          this.surveyQuestions = responseJSON.payload;
+         console.log('looking for data', responseJSON);
+         console.log('survey question length: ', this.surveyQuestions.length);
          
          this.updateCapabilityToolTips();
          console.log('survey questions', responseJSON.payload); 
@@ -90,10 +100,16 @@ export class CustomerEngagementSurveyComponent implements OnInit {
     private updateCapabilityToolTips(): void {
       var tempArray = new Array();
 
-      for (var i = 0; i <= 5; i++) {
-        for (var j = 1; j <= 5; j++) {
-          tempArray[j] = j + " - " + this.surveyQuestions[i]['scoringID' + j + 'Text'];  
+      for (var eachQuestion = 0; eachQuestion < this.surveyQuestions.length; eachQuestion++) {
+        
+        this.importanceValues[eachQuestion] = this.surveyQuestions[eachQuestion]['importance'];
+        this.capabilityValues[eachQuestion] = this.surveyQuestions[eachQuestion]['score'];
+        this.twoYearTargetValues[eachQuestion] = this.surveyQuestions[eachQuestion]['target'];
+
+        for (var scoreText = 1; scoreText <= 5; scoreText++) {
+          tempArray[scoreText] = scoreText + " - " + this.surveyQuestions[eachQuestion]['scoringID' + scoreText + 'Text'];  
         }
+
         this.capabilityToolTips.push(tempArray);
         tempArray = [];
       }
@@ -107,7 +123,22 @@ export class CustomerEngagementSurveyComponent implements OnInit {
     this.router.navigateByUrl('/main/takesurvey');
   }
 
+  public saveSurveyInput(): void {
+    this.userSaved = true;
+  }
+
   public nextModule(): void {
+    if (!this.userSaved) {
+      this.dialog.open(RemindUserToSaveDialog);
+      return;
+    }
     this.router.navigateByUrl('/main/takesurvey/customerexperience')
   }
+
 }
+
+@Component({
+  selector: 'remindUserToSave-dialog',
+  templateUrl: 'remindUserToSaveDialog.html',
+})
+export class RemindUserToSaveDialog { }

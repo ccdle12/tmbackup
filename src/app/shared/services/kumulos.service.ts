@@ -42,7 +42,9 @@ export class KumulosService {
     public createBody(): URLSearchParams {
         let urlSearchParams: URLSearchParams = new URLSearchParams();
 
-        let userJWT: string = this.localStorageService.getUserJWT();    
+        let userJWT: string = this.localStorageService.getUserJWT();   
+
+        //Replace value below for testing w/ C0tham1969' to show values from kumulos updating the sliders 
         urlSearchParams.append('params[jwt]', userJWT);
     
         return urlSearchParams;
@@ -123,5 +125,6 @@ export class KumulosService {
                 return response.json();
             });
     }
+
 
 }
