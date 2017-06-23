@@ -5,13 +5,13 @@ import { MdCardModule, MdButtonModule, MdGridListModule } from '@angular/materia
 
 import { teamAdminRouting } from './teamAdmin.routing';
 import { TeamAdminComponent } from './teamAdmin.component';
-import { UserProfilesService } from '../../shared/services/userProfiles.service';
+import { KumulosService } from '../../shared/services/kumulos.service';
 
 
 @NgModule({
     imports: [teamAdminRouting, CommonModule, MdCardModule, MdButtonModule, MdGridListModule],
     declarations: [TeamAdminComponent],
-    providers: [UserProfilesService],
+    providers: [KumulosService],
 })
 
 export class TeamAdminModule {};

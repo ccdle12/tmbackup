@@ -14,6 +14,9 @@ export class KumulosService {
     private getWebSurveyURI: string;
     private getDemoCityURI: string;
     private getDemoUserJWTURI: string;
+    private getCreateUpdateUserSurveyDataURI: string;
+    private getWebUsersURI: string;
+    private getCaseStudiesURI: string;
 
     constructor(private http: Http, private localStorageService: LocalStorageService, public authService: AuthService) {
         this.initializeAllInstanceVariables();
@@ -28,6 +31,9 @@ export class KumulosService {
         this.getWebSurveyURI = "/webGetSurvey.json/";
         this.getDemoCityURI = "/getDemoCityID.json/";
         this.getDemoUserJWTURI = "/getDemoUserJWT.json";
+        this.getCreateUpdateUserSurveyDataURI = "create_updateUserSurveyData.json";
+        this.getWebUsersURI = "webGetUsers.json/";
+        this.getCaseStudiesURI = "/getCaseStudiesByDimension.json/";
     }
 
     public createAuthorizationHeader(): Headers {
@@ -126,5 +132,54 @@ export class KumulosService {
             });
     }
 
+    public getCreateUpdateUserSurveyData(surveyData: string) {
+        let headers: Headers = this.createAuthorizationHeader();
 
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[surveyData]', surveyData);
+
+        let body: String = urlSearchParams.toString();
+
+        return this.http.post(this. domain + this.getCreateUpdateUserSurveyDataURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            }); 
+    }
+
+    public getWebUsers() {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+        let userJSON: JSON = JSON.parse(localStorage.getItem('user'));
+        let cityId: string = userJSON['city_id'];
+
+        urlSearchParams.append('params[groupId]', cityId);
+
+        let body: String = urlSearchParams.toString();
+        
+        return this.http.post(this. domain + this.getWebUsersURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            }); 
+    }
+
+    public getCaseStudies(areaID: string, dimensionID: string): any {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+         urlSearchParams.append('params[areaId]', "1");
+         urlSearchParams.append('params[dimensionId]', "1.1");
+
+         let body: String = urlSearchParams.toString();
+
+          return this.http.post(this. domain + this.getCaseStudiesURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            });
+    }
 }

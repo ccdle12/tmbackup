@@ -17,6 +17,9 @@ import { AuthCallbackComponent } from './authCallback/authCallback.component';
 
 import { MdProgressSpinnerModule, MdDialogModule, MdMenuModule } from '@angular/material';
 
+// import { NvD3Component } from 'ng2-nvd3';
+
+
 @NgModule({
   imports: [BrowserModule, BrowserAnimationsModule, FormsModule, HttpModule, appRouting, MdProgressSpinnerModule, MdDialogModule, MdMenuModule],
   declarations: [AppComponent, WelcomeComponent, RegisterCityDialog, RemindUserToSaveDialog, NotFoundComponent, AuthCallbackComponent],

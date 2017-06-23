@@ -2,7 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core'
 
 import { CustomerEngagementComponent } from './customerEngagement.component';
-// import { CustomerEngagementSurveyComponent } from './survey/customerEngagementSurvey.component';
+import { CustomerEngagementCaseStudies } from './case_studies/caseStudies.component';
 
 const customerEngagementRoutes: Routes = [
     {
@@ -12,7 +12,11 @@ const customerEngagementRoutes: Routes = [
             {
             path: 'survey',
             loadChildren: './survey/customerEngagementSurvey.module#CustomerEngagementSurveyModule',
-            },
+        },
+        {
+            path: 'casestudies',
+            component: CustomerEngagementCaseStudies,
+        }
         ]
     },                                                                   
 ]   

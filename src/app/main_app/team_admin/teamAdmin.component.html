@@ -1,50 +1,23 @@
-<!--<div class="container-fluid">
-    <div id="userProfileRow" class="row">
-        <div *ngFor="let userProfile of userProfiles; let i = index" class="userProfileDisplay col-xs-12 col-sm-3">
-            <h4>{{userProfile.app_metadata.user_role}}</h4>
-            <p>{{userProfile.given_name}} {{userProfile.family_name}}</p>
-            <img [src]="userProfile.pictureUrls.values" class="thumbnail centerPosition"/>
-            <p>{{userProfile.headline}}</p>
-            <p>{{userProfile.email}}</p>
-        </div>
-    </div>
-</div>-->
-
-    <!--<md-card class="teamAdmin-card" *ngFor="let userProfile of userProfiles; let i = index">
+<div class="container">
+    <div class="row" id="cardsContainer">
+     <md-card class="col-sm-2" *ngFor="let userProfile of userProfiles; let i = index">
         <md-card-title>{{userProfile.app_metadata.user_role}}</md-card-title>
         <md-card-subtitle>{{userProfile.given_name}} {{userProfile.family_name}}</md-card-subtitle>
 
-        
-        <img md-card-md-image class="thumbnail" [src]="userProfile.pictureUrls.values"/>
-        
-        <md-card-content>
-            <p>{{userProfile.headline}}</p>
-            <p>{{userProfile.email}}</p>
-        </md-card-content>
-        <md-card-actions>
-            <button md-button>EDIT</button>
-            <button md-button>DELETE</button>
-        </md-card-actions>
-        </md-card>-->
-
-<md-grid-list cols="4">
-  <md-grid-tile *ngFor="let userProfile of userProfiles; let i = index">
-    <md-card class="teamAdmin-card">
-        <md-card-title>Hello 1</md-card-title>
-        <md-card-subtitle>{{userProfile.given_name}} {{userProfile.family_name}}</md-card-subtitle>
-
-        <img md-card-md-image class="thumbnail" [src]="userProfile.pictureUrls.values"/>
+        <img id="centerImage" md-card-md-image class="thumbnail" [src]="userProfile.pictureUrls.values"/>
         
         <md-card-content>
             <p>{{userProfile.headline}}</p>
             <p>{{userProfile.email}}</p>
         </md-card-content>
+
         <md-card-actions>
             <button md-button>EDIT</button>
             <button md-button>DELETE</button>
         </md-card-actions>
-    </md-card>
-  </md-grid-tile>
-</md-grid-list>
+     </md-card>
+    </div>
+</div>
+
 
 

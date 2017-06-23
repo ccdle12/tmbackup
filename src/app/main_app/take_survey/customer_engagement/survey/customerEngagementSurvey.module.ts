@@ -9,7 +9,6 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   imports: [CommonModule, customerEngagementSurveyRouting, MdSliderModule, FormsModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule],
   declarations: [CustomerEngagementSurveyComponent],
-  // entryComponents: [RemindUserToSaveDialog],
   providers: [KumulosService],
   
 })

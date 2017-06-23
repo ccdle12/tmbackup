@@ -1,28 +1,21 @@
 import { Component }  from '@angular/core';
-import { UserProfilesService } from '../../shared/services/userProfiles.service';
+import { KumulosService } from '../../shared/services/kumulos.service';
 
 @Component({
-  moduleId: module.id,
+  // moduleId: module.id,
   selector: 'teamAdmin',
   templateUrl: 'teamAdmin.component.html',
-  styleUrls: ['./teamAdmin.component.css'],
-  providers: [UserProfilesService]
+  styleUrls: ['./teamAdmin.component.css']
 })
 
 export class TeamAdminComponent  { 
-  userProfiles:  UserProfile[];
+  userProfiles:  JSON[];
 
-  constructor(private userProfilesServices: UserProfilesService) {
-    this.userProfilesServices.getUserProfiles().subscribe(userProfiles => {
-          this.userProfiles = userProfiles
+  constructor(private kumulosService: KumulosService) {
+    this.kumulosService.getWebUsers().subscribe(response => {
+          console.log("response", response.payload);
+          this.userProfiles = response.payload
+          console.log(this.userProfiles);
     });
-  }
+  } 
 }
-
-interface UserProfile {
-  userRole:  string;
-  userPic:   string;
-  userName:  string;
-  userTitle: string;
-  email:     string;
- }

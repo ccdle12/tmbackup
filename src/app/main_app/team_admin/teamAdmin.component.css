@@ -1,53 +1,74 @@
 /*Team Admin*/
-#userProfileRow {
-  display: table; 
+
+md-card {
+    height: 350px;
+    width: 300px;
+    margin: 0 0 25px 10px;
+    /*position:relative;*/
 }
 
-.userProfileDisplay {
+#cardsContainer {
+    text-align: center;
+    padding-left: 100px;
+}
+
+img {
+  margin-bottom: 10px;
   text-align: center;
-  /*background: blue;*/
-  float: none;
-  display: table-cell;
 }
 
-.userProfileDisplay:hover {
+md-card-content {
+  margin-bottom: 10px;
+}
+
+#centerImage {
+  margin-left: 70px;
+}
+/*#userProfileRow {
+  display: table; 
+}*/
+
+/*.userProfileDisplay {*/
+  /*text-align: center;*/
+  /*background: blue;*/
+  /*float: none;*/
+  /*display: table-cell;*/
+/*}*/
+
+/*.userProfileDisplay:hover {
   background:blue;
   cursor: pointer;
 }
 
 .userProfileDisplay p {
   font-size: 15px;
-}
+}*/
 
-.thumbnail {
-  text-align: center;
+/*.thumbnail {*/
+  /*text-align: center;*/
   /*height:200px;*/
-  margin-bottom: 25px;
-}
+  /*margin-bottom: 25px;*/
+/*}*/
 
-.teamAdmin-card {
-  width: 300px;
-   text-align: center;
+/*.teamAdmin-card {*/
+  /*width: 300px;*/
+   /*text-align: center;*/
   /*background: blue;*/
-  float: none;
+  /*float: none;*/
   /*display: table-cell;*/
-}
+/*}*/
 
- /*md-grid-tile figure {
-     align-items: flex-start!important;
-   }*/
+/*.gridListdemoBasicUsage md-grid-list {*/
+  /*margin: 8px;*/
+/*}*/
 
-.gridListdemoBasicUsage md-grid-list {
-  margin: 8px;
-}
+/*.gridListdemoBasicUsage .gray {*/
+  /*background: #f5f5f5;*/
+/*}*/
 
-.gridListdemoBasicUsage .gray {
-  background: #f5f5f5;
-}
-
-.gridListdemoBasicUsage md-grid-tile {
-  transition: all 400ms ease-out 50ms;
-}
+/*.gridListdemoBasicUsage md-grid-tile {*/
+  /*transition: all 400ms ease-out 50ms;*/
+/*}*/
 
 /*md-grid-tile {
   background: lightblue;

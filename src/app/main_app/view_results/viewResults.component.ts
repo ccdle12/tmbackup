@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+// declare let d3: any;
+
+import * as d3 from 'd3';
+
+import {GoogleChart} from 'angular2-google-chart/directives/angular2-google-chart.directive';
 
 @Component({
   selector: 'app-takesurvey',
@@ -6,23 +11,23 @@ import { Component } from '@angular/core';
   styleUrls: ['./viewResults.component.css']
 })
 export class ViewResultsComponent {
-  constructor() { }
 
     public candle_ChartData = [
-        ['Day', 'Low', 'Opening value', 'Closing value', 'High'],
-        ['Mon', 28, 32, 50, 68],
-        ['Tue', 38, 38, 55, 55],
-        ['Wed', 55, 55, 77, 77],
-        ['Thu', 77, 77, 66, 66],
-        ['Fri', 66, 66, 22, 22]
+        ['Sections', 'Low', 'Opening value', 'Closing value', 'High'],
+        ['1.1.1', 1, 1.2, 3, 3],
+        ['1.1.2', 1, 1.2, 4, 4.2],
+        ['1.1.3', 1, 1.2, 4, 4.2],
+        ['1.1.4', 1, 1.2, 4, 4.2],
+        ['1.1.5', 1, 1.2, 4, 4.2]
     ];
 
     public candle_ChartOptions = {
         legend: 'none',
-        bar: { groupWidth: '100%' }, // Remove space between bars.
+        bar: { groupWidth: '25%' }, // Remove space between bars.
         candlestick: {
-            fallingColor: { strokeWidth: 0, fill: '#a52714' }, // red
-            risingColor: { strokeWidth: 0, fill: '#0f9d58' }   // green
+            fallingColor: { strokeWidth: 0, fill: '#A9A9A9' }, // red
+            risingColor: { strokeWidth: 0, fill: '#A9A9A9' }   // green
         }
     };
+    
 }

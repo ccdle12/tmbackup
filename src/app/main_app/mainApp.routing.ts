@@ -1,9 +1,11 @@
-import { Routes, RouterModule }    from '@angular/router';
-import { ModuleWithProviders }     from '@angular/core'
+import { Routes, RouterModule } from '@angular/router';
+import { ModuleWithProviders } from '@angular/core'
 
-import { MainAppComponent }        from './mainApp.component';
+import { MainAppComponent } from './mainApp.component';
 import { MainAppSectionComponent } from './mainAppSection.component';
-import { AuthGuardService }        from '../shared/services/auth-guard.service';
+import { AuthGuardService } from '../shared/services/auth-guard.service';
+
+import { ChartComponent } from './chart/chart.component';
 
 const mainAppRoutes: Routes = [
     {
@@ -33,6 +35,10 @@ const mainAppRoutes: Routes = [
         {
             path: 'benchmark',
             loadChildren: './benchmark/benchmark.module#BenchmarkModule'
+        },
+        {
+            path: 'chart',
+            component: ChartComponent
         }
     ],
     }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../shared/services/kumulos.service';
 import { CustomerEngagementComponent } from './customer_engagement/customerEngagement.component';
@@ -10,27 +10,29 @@ import { TakeSurveyDashboardService } from '../../shared/services/takeSurveyDash
   templateUrl: './takeSurvey.component.html',
   styleUrls: ['./takeSurvey.component.css']
 })
-export class TakeSurveyComponent {
+export class TakeSurveyComponent implements OnInit {
 
   private takeSurveyDashboard: Array<JSON>;
+
 
   constructor(public router: Router, public kumulosService: KumulosService, public takeSurveyService: TakeSurveyDashboardService) {
     this.intializeInstanceVariables();
     this.getActiveVersionForCity();
- 
   }
+
+  ngOnInit() {}
 
   private intializeInstanceVariables(): void {
      this.takeSurveyDashboard = new Array();
   }
 
   private getActiveVersionForCity(): void {
+    
     this.kumulosService.getActiveVersionForCity()
       .subscribe(responseJSON => {
-        
         let activeCityVersion: string = responseJSON.payload;
-        // console.log('takeSurvey', activeCityVersion);
-        this.takeSurveyService.setActiveCityVersion(activeCityVersion);
+        console.log('get active city cached', activeCityVersion);
+        localStorage.setItem('activeCityVersion', activeCityVersion);
 
         this.getWebDashboard(activeCityVersion);
       });
@@ -45,7 +47,7 @@ export class TakeSurveyComponent {
     });
   }
   
-  private inChildComponents(): boolean {
+  public inChildComponents(): boolean {
         let currentUrl = this.router.url;
 
         let urlRegex = '(\/takesurvey\/.*)'
@@ -67,12 +69,12 @@ export class TakeSurveyComponent {
         console.log('user clicked on customerexperience');
         break;
     }
-    
   }
 
-  public changeBackground(index: number): any {
+  public changeSurveyProgressBackground(index: number): any {
     let surveyCount = this.takeSurveyDashboard[index]['surveyCount'];
     let statementCount = this.takeSurveyDashboard[index]['statementCount'];
+
     if (surveyCount == 0) {
       return { 'background-color': 'grey' };
     }

@@ -14,7 +14,7 @@ import { MdDialog } from '@angular/material';
 export class CustomerEngagementSurveyComponent implements OnInit {
 
     private activeCityVersion: string;
-    private surveyQuestions: Array<JSON>;
+    public surveyQuestions: Array<JSON>;
 
     private importanceValues: Array<any>;
     private importanceToolTips: Array<string>;
@@ -28,7 +28,7 @@ export class CustomerEngagementSurveyComponent implements OnInit {
 
     private areaID: any;
     private dimensionID: any;
-    private dimensionText: any;
+    public dimensionText: any;
 
     private userSaved: boolean;
 
@@ -43,7 +43,6 @@ export class CustomerEngagementSurveyComponent implements OnInit {
 
       this.userSaved = false;
 
-      //Update importance values with the data from kumulos
       this.importanceValues = new Array();
       
       this.importanceToolTips = new Array();
@@ -63,10 +62,103 @@ export class CustomerEngagementSurveyComponent implements OnInit {
       this.dimensionID = parsedSurveyDashboard[0]['dimensionID'];
       this.dimensionText = parsedSurveyDashboard[0]['dimensionText'];
 
+      this.activeCityVersion = localStorage.getItem('activeCityVersion');
+
       this.getWebSurveyQuestions(); 
     }
 
-     public routeToPage(surveyPage: String) {
+    private getWebSurveyQuestions() {
+      this.kumulosService.getWebSurvey(this.activeCityVersion, this.areaID, this.dimensionID )
+        .subscribe(responseJSON => {
+         this.surveyQuestions = responseJSON.payload;
+         console.log('looking for data', responseJSON);
+         console.log('survey question length: ', this.surveyQuestions.length);
+         
+         this.updateToolTipsAndSurveyValues();
+         console.log('survey questions', responseJSON.payload); 
+      });
+  }
+    
+    private updateToolTipsAndSurveyValues(): void {
+      var tempArray = new Array();
+
+      for (var eachQuestion = 0; eachQuestion < this.surveyQuestions.length; eachQuestion++) {
+        
+        if (this.surveyQuestions[eachQuestion]['importance'] == " " || this.surveyQuestions[eachQuestion]['importance'] == "0") {
+          this.importanceValues[eachQuestion] = " ";
+        } else {
+          this.importanceValues[eachQuestion] = this.surveyQuestions[eachQuestion]['importance'];
+        }
+
+         if (this.surveyQuestions[eachQuestion]['score'] == " " || this.surveyQuestions[eachQuestion]['score'] == "0") {
+          this.capabilityValues[eachQuestion] = " ";
+        } else {
+          this.capabilityValues[eachQuestion] = this.surveyQuestions[eachQuestion]['score'];
+        }
+
+        if (this.surveyQuestions[eachQuestion]['target'] == " " || this.surveyQuestions[eachQuestion]['target'] == "0") {
+          this.capabilityValues[eachQuestion] = " ";
+        } else {
+        this.twoYearTargetValues[eachQuestion] = this.surveyQuestions[eachQuestion]['target'];
+        }
+
+        for (var scoreText = 1; scoreText <= 5; scoreText++) {
+          tempArray[scoreText] = scoreText + " - " + this.surveyQuestions[eachQuestion]['scoringID' + scoreText + 'Text'];  
+        }
+
+        this.capabilityToolTips.push(tempArray);
+        tempArray = [];
+      }
+    }
+
+  public backToTakeSurvey(): void {
+    window.location.reload();
+    this.router.navigateByUrl('/main/takesurvey');
+  }
+
+  public saveSurveyInput(): void {
+    console.log('saveSurveyClicked');
+    this.userSaved = true;
+    this.createUpdateSurvey();
+    
+  }
+
+  public nextModule(): void {
+    if (!this.userSaved) {
+      this.dialog.open(RemindUserToSaveDialog);
+      return;
+    }
+    this.router.navigateByUrl('/main/takesurvey/customerexperience')
+  }
+
+  public createUpdateSurvey(): void {
+    
+    var activeCityVersion = localStorage.getItem('activeCityVersion');
+    var JsonArray = new Array();
+
+    for (var eachQuestion = 0; eachQuestion < this.surveyQuestions.length; eachQuestion++) {
+      var userSurveyID = this.surveyQuestions[eachQuestion]['userSurveyID'];
+      var statementID = this.surveyQuestions[eachQuestion]['statementID'];
+      var dimensionID = this.surveyQuestions[eachQuestion]['dimensionID'];
+      var areaID = this.surveyQuestions[eachQuestion]['areaID'];
+
+      var importanceScore = this.importanceValues[eachQuestion];
+      var asIsCapabilityScore = this.capabilityValues[eachQuestion];
+      var targetScore = this.twoYearTargetValues[eachQuestion];
+
+      var surveyJsonObject = {"areaID":areaID,"dimensionID": dimensionID,"statementID": statementID,"importance": importanceScore,"score": asIsCapabilityScore,"target": targetScore,"version": activeCityVersion,"userSurveyID": userSurveyID};
+      console.log('customerEnagementSurvey: ', surveyJsonObject);
+      JsonArray.push({"areaID":areaID,"dimensionID": dimensionID,"statementID": statementID,"importance": importanceScore,"score": asIsCapabilityScore,"target": targetScore,"version": activeCityVersion,"userSurveyID": userSurveyID});
+    }
+
+    let hardCodeJson = {"surveyData": JsonArray };
+    let surveyDataString = JSON.stringify(hardCodeJson);
+
+    this.kumulosService.getCreateUpdateUserSurveyData(surveyDataString)
+      .subscribe(responseJSON => {} );
+  }
+
+  public routeToPage(surveyPage: String) {
        console.log('routetoPage activated: ' + surveyPage);
         switch(surveyPage) {
           case('survey'):
@@ -83,58 +175,6 @@ export class CustomerEngagementSurveyComponent implements OnInit {
             break;
         }
     }
-
-    private getWebSurveyQuestions() {
-      //Replace values below for testing w/ '129', '1', '1.1' to show values from kumulos updating the sliders
-      this.kumulosService.getWebSurvey(this.getActiveCityVersion(), this.areaID, this.dimensionID )
-        .subscribe(responseJSON => {
-         this.surveyQuestions = responseJSON.payload;
-         console.log('looking for data', responseJSON);
-         console.log('survey question length: ', this.surveyQuestions.length);
-         
-         this.updateCapabilityToolTips();
-         console.log('survey questions', responseJSON.payload); 
-      });
-  }
-
-    private updateCapabilityToolTips(): void {
-      var tempArray = new Array();
-
-      for (var eachQuestion = 0; eachQuestion < this.surveyQuestions.length; eachQuestion++) {
-        
-        this.importanceValues[eachQuestion] = this.surveyQuestions[eachQuestion]['importance'];
-        this.capabilityValues[eachQuestion] = this.surveyQuestions[eachQuestion]['score'];
-        this.twoYearTargetValues[eachQuestion] = this.surveyQuestions[eachQuestion]['target'];
-
-        for (var scoreText = 1; scoreText <= 5; scoreText++) {
-          tempArray[scoreText] = scoreText + " - " + this.surveyQuestions[eachQuestion]['scoringID' + scoreText + 'Text'];  
-        }
-
-        this.capabilityToolTips.push(tempArray);
-        tempArray = [];
-      }
-    }
-
-  public getActiveCityVersion(): string {
-    return this.takeSurveyService.getActiveCityVersion();
-  }
-
-  public backToTakeSurvey(): void {
-    this.router.navigateByUrl('/main/takesurvey');
-  }
-
-  public saveSurveyInput(): void {
-    this.userSaved = true;
-  }
-
-  public nextModule(): void {
-    if (!this.userSaved) {
-      this.dialog.open(RemindUserToSaveDialog);
-      return;
-    }
-    this.router.navigateByUrl('/main/takesurvey/customerexperience')
-  }
-
 }
 
 @Component({

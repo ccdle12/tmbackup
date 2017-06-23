@@ -13,7 +13,8 @@ constructor(public router: Router) { }
 
 lock = new Auth0Lock('dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V','tmfdmmdev.eu.auth0.com', {
   auth: {
-    redirectUrl: 'http://localhost:4200/callback',
+    redirectUrl: 'https://tmf-dmm-web-app.firebaseapp.com/callback',
+    // redirectUrl: 'http://localhost:4200/callback',
     responseType: 'token id_token',
     params: {
       scope: 'openid email app_metadata'

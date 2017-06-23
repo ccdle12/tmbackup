@@ -1,62 +1,10 @@
 <router-outlet></router-outlet>
-<!--<div *ngIf="inChildComponents()" class="container">
-  <h1>Customer</h1>
-  <div class="row">
-    <md-card class="col-sm-2" routerLink="customerengagement">
-        <md-card-title>{{takeSurveyDashboard[0]?.dimensionText}}</md-card-title>
-        <p>{{takeSurveyDashboard[0]?.statementCount}}</p>
-    </md-card>
-
-    <md-card class="col-sm-2" routerLink="customerexperience">
-        <md-card-title>{{takeSurveyDashboard[1]?.dimensionText}}</md-card-title>
-        <p>{{takeSurveyDashboard[1]?.statementCount}}</p>
-    </md-card>
-
-    <md-card class="col-sm-2">
-        <md-card-title>{{takeSurveyDashboard[2]?.dimensionText}}</md-card-title>
-        <p>{{takeSurveyDashboard[2]?.statementCount}}</p>
-    </md-card>
-
-    <md-card class="col-sm-2">
-        <md-card-title>{{takeSurveyDashboard[3]?.dimensionText}}</md-card-title>
-        <p>{{takeSurveyDashboard[3]?.statementCount}}</p>
-    </md-card>
-  </div>
-
-  <h1>Strategy</h1>
-  <div class="row">
-    <md-card class="col-sm-2">
-        <md-card-title>{{takeSurveyDashboard[4]?.dimensionText}}</md-card-title>
-        <p>{{takeSurveyDashboard[4]?.statementCount}}</p>
-    </md-card>
-
-    <md-card class="col-sm-2">
-        <md-card-title>{{takeSurveyDashboard[5]?.dimensionText}}</md-card-title>
-        <p>{{takeSurveyDashboard[5]?.statementCount}}</p>
-    </md-card>
-
-    <md-card class="col-sm-2">
-        <md-card-title>{{takeSurveyDashboard[6]?.dimensionText}}</md-card-title>
-        <p>{{takeSurveyDashboard[6]?.statementCount}}</p>
-    </md-card>
-
-    <md-card class="col-sm-2">
-        <md-card-title>{{takeSurveyDashboard[7]?.dimensionText}}</md-card-title>
-        <p>{{takeSurveyDashboard[7]?.statementCount}}</p>
-    </md-card>
-
-    <md-card class="col-sm-2">
-        <md-card-title>{{takeSurveyDashboard[8]?.dimensionText}}</md-card-title>
-        <p>{{takeSurveyDashboard[8]?.statementCount}}</p>
-    </md-card>
-  </div>
-</div>-->
 
 <div *ngIf="inChildComponents()" class="container">
     <div class="row" id="cardsContainer">
     <md-card class="col-sm-2" *ngFor="let eachSurvey of takeSurveyDashboard; let i = index" (click)="navigateToSurveyModule(i)">
         <md-card-title>{{takeSurveyDashboard[i].dimensionText}}</md-card-title>
-        <div class="progressBox" [ngStyle]="changeBackground(i)">
+        <div class="progressBox" [ngStyle]="changeSurveyProgressBackground(i)">
             <p>{{takeSurveyDashboard[i]?.surveyCount}} / {{takeSurveyDashboard[i]?.statementCount}}</p>
         </div>
     </md-card>
