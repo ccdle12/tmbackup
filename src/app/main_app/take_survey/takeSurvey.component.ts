@@ -1,7 +1,7 @@
 import { Component, OnInit, } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../shared/services/kumulos.service';
-import { CustomerEngagementComponent } from './customer_engagement/customerEngagement.component';
+// import { CustomerEngagementComponent } from './survey_module/customerEngagement.component';
 import { TakeSurveyDashboardService } from '../../shared/services/takeSurveyDashboard.service'
 
 
@@ -13,7 +13,7 @@ import { TakeSurveyDashboardService } from '../../shared/services/takeSurveyDash
 export class TakeSurveyComponent implements OnInit {
 
   private takeSurveyDashboard: Array<JSON>;
-
+  public indexModuleSelected: any;
 
   constructor(public router: Router, public kumulosService: KumulosService, public takeSurveyService: TakeSurveyDashboardService) {
     this.intializeInstanceVariables();
@@ -30,6 +30,7 @@ export class TakeSurveyComponent implements OnInit {
     
     this.kumulosService.getActiveVersionForCity()
       .subscribe(responseJSON => {
+        console.log("Why is the responseJSON Null?", responseJSON);
         let activeCityVersion: string = responseJSON.payload;
         console.log('get active city cached', activeCityVersion);
         localStorage.setItem('activeCityVersion', activeCityVersion);
@@ -58,17 +59,11 @@ export class TakeSurveyComponent implements OnInit {
   }
 
   public navigateToSurveyModule(index: number) {
-    switch(index) {
-      case 0:
-        this.router.navigateByUrl('/main/takesurvey/customerengagement');
-        console.log('user clicked on customerengagement');
-        break;
 
-      case 1:
-        this.router.navigateByUrl('/main/takesurvey/customerexperience');
-        console.log('user clicked on customerexperience');
-        break;
-    }
+    this.indexModuleSelected = index;
+    localStorage.setItem('userSelectedModule', index.toString());
+    console.log("index module: ", this.indexModuleSelected);
+    this.router.navigateByUrl('/main/takesurvey/surveymodule');
   }
 
   public changeSurveyProgressBackground(index: number): any {

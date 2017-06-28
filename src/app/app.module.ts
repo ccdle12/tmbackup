@@ -11,19 +11,16 @@ import { KumulosService} from './shared/services/kumulos.service';
 import { appRouting } from './app.routing';
 import { AppComponent } from './app.component';
 import { WelcomeComponent, RegisterCityDialog } from './welcome/welcome.component';
-import { CustomerEngagementSurveyComponent, RemindUserToSaveDialog } from './main_app/take_survey/customer_engagement/survey/customerEngagementSurvey.component';
+import { SurveyComponent, RemindUserToSaveDialog, InDemoModeDialog } from './main_app/take_survey/survey_module/survey/survey.component';
 import { NotFoundComponent } from './not_found/notFound.component';
 import { AuthCallbackComponent } from './authCallback/authCallback.component';
 
 import { MdProgressSpinnerModule, MdDialogModule, MdMenuModule } from '@angular/material';
 
-// import { NvD3Component } from 'ng2-nvd3';
-
-
 @NgModule({
   imports: [BrowserModule, BrowserAnimationsModule, FormsModule, HttpModule, appRouting, MdProgressSpinnerModule, MdDialogModule, MdMenuModule],
-  declarations: [AppComponent, WelcomeComponent, RegisterCityDialog, RemindUserToSaveDialog, NotFoundComponent, AuthCallbackComponent],
-  entryComponents: [RegisterCityDialog, RemindUserToSaveDialog],
+  declarations: [AppComponent, WelcomeComponent, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, NotFoundComponent, AuthCallbackComponent],
+  entryComponents: [RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog],
   providers: [AuthService, WelcomeGuardService, LocalStorageService, KumulosService],
   bootstrap: [AppComponent]
 })

@@ -11,10 +11,5 @@ import { KumulosService } from '../shared/services/kumulos.service';
 }) 
 
 export class MainAppComponent{
-    constructor(public authService: AuthService, public kumulosService: KumulosService) {
-        if (!authService.isAuthenticated()) {
-            let demoCity = this.kumulosService.getDemoCity();
-            console.log
-        }
-    }
+    constructor(public authService: AuthService, public kumulosService: KumulosService) {}
  }

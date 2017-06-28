@@ -15,6 +15,7 @@ export class WelcomeComponent   {
   openDialog(): void {
     this.dialog.open(RegisterCityDialog);
   }
+  
 }
 
 @Component({

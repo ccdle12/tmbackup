@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ValidationService } from '../shared/services/validation.service';
+import { KumulosService } from '../shared/services/kumulos.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'registration-page',
@@ -13,7 +15,8 @@ export class RegistrationComponent implements OnInit  {
 
     registrationForm: FormGroup;
 
-    constructor(private formBuilder: FormBuilder) { };
+    constructor(private formBuilder: FormBuilder, private kumulosService: KumulosService,
+                private router: Router) { };
 
     ngOnInit() {
         this.registrationForm = this.formBuilder.group({
@@ -28,6 +31,15 @@ export class RegistrationComponent implements OnInit  {
     }
 
     onSubmit() {
-        console.log(this.registrationForm.value);
+        this.kumulosService.getSubmitInterestRequest(
+            this.registrationForm.value.name,
+            this.registrationForm.value.organization,
+            this.registrationForm.value.jobTitle,
+            this.registrationForm.value.country,
+            this.registrationForm.value.email,
+            this.registrationForm.value.phone,
+            this.registrationForm.value.comments).subscribe(response => {
+                this.router.navigate(['welcome']);
+            }) 
     }
 }

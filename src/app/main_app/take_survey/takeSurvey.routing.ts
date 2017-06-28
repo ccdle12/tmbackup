@@ -9,12 +9,8 @@ const takeSurveyRoutes: Routes = [
         component: TakeSurveyComponent,
         children: [
             {
-                path: 'customerengagement',
-                loadChildren: './customer_engagement/customerEngagement.module#CustomerEngagementModule'
-            },
-            {
-                path: 'customerexperience',
-                loadChildren: './customer_experience/customerExperience.module#CustomerExperienceModule'
+                path: 'surveymodule',
+                loadChildren: './survey_module/surveyModule.module#SurveyModule'
             }
         ]
     },                                                                        

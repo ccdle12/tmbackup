@@ -4,6 +4,7 @@ import { LocalStorageService } from './localStorage.service';
 import { AuthService } from '../../shared/services/auth.service'
 import 'rxjs/add/operator/map';
 
+
 @Injectable()
 export class KumulosService {
     
@@ -17,8 +18,12 @@ export class KumulosService {
     private getCreateUpdateUserSurveyDataURI: string;
     private getWebUsersURI: string;
     private getCaseStudiesURI: string;
+    private getBestPracticesURI: string;
+    private getWebEvidenceURI: string;
+    private getSubmitInterestRequestURI: string;
 
-    constructor(private http: Http, private localStorageService: LocalStorageService, public authService: AuthService) {
+    constructor(private http: Http, private localStorageService: LocalStorageService, 
+                public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
 
@@ -34,6 +39,9 @@ export class KumulosService {
         this.getCreateUpdateUserSurveyDataURI = "create_updateUserSurveyData.json";
         this.getWebUsersURI = "webGetUsers.json/";
         this.getCaseStudiesURI = "/getCaseStudiesByDimension.json/";
+        this.getBestPracticesURI = "getBestPracticesByDimension.json/";
+        this.getWebEvidenceURI = "webGetEvidence.json/";
+        this.getSubmitInterestRequestURI = "webSubmitInterestRequest.json/";
     }
 
     public createAuthorizationHeader(): Headers {
@@ -47,8 +55,15 @@ export class KumulosService {
 
     public createBody(): URLSearchParams {
         let urlSearchParams: URLSearchParams = new URLSearchParams();
+        let userJWT: string;
 
-        let userJWT: string = this.localStorageService.getUserJWT();   
+        if (!this.authService.isVerified() || !this.authService.isAuthenticated()) {
+            console.log('using demo JWT');
+            userJWT = localStorage.getItem('demoJWT');
+        } else {
+            console.log('using id_token JWT');
+            userJWT = localStorage.getItem('id_token');
+        }
 
         //Replace value below for testing w/ C0tham1969' to show values from kumulos updating the sliders 
         urlSearchParams.append('params[jwt]', userJWT);
@@ -68,15 +83,31 @@ export class KumulosService {
     };
 
     public getActiveVersionForCity(): any {
+        let userCityId;
         let headers: Headers = this.createAuthorizationHeader();
         let urlSearchParams: URLSearchParams = this.createBody();
 
-         urlSearchParams.append('params[cityID]', this.localStorageService.getUserCityId());
+        if (!this.authService.isVerified() || !this.authService.isAuthenticated()) {
+            userCityId = localStorage.getItem('demoCity');
+            console.log("getting demo city: " + userCityId);
+        } else {
+            let userProfile: any = JSON.parse(localStorage.getItem('user'));
+            userCityId = userProfile.city_id;
+            console.log("getting User Profile City Id");
+        }
 
-         let body: String = urlSearchParams.toString();
+        // userCityId = this.localStorageService.getUserCityId();
+        // console.log("user city id in kumulos service: " + userCityId);
 
+        console.log("getting demo city in body: " + userCityId);
+        urlSearchParams.append('params[cityID]', userCityId);
+
+        let body: String = urlSearchParams.toString();
+
+        console.log("body for active city versions: " + body);
          return this.http.post(this.domain + this.getActiveVersionForCityURI, body, {headers: headers})
                 .map(response => {
+                    console.log("response from active city", response.json());
                     return response.json()
         });
     }
@@ -117,7 +148,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getDemoCityURI, null, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                console.log("Demo City: " + response.toString());
                 return response.json();
             });
     }
@@ -127,7 +158,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getDemoUserJWTURI, null, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                console.log("Demo JWT: " + response.toString());
                 return response.json();
             });
     }
@@ -171,15 +202,75 @@ export class KumulosService {
 
         let urlSearchParams: URLSearchParams = this.createBody();
 
-         urlSearchParams.append('params[areaId]', "1");
-         urlSearchParams.append('params[dimensionId]', "1.1");
+         urlSearchParams.append('params[areaID]', areaID);
+         urlSearchParams.append('params[dimensionID]', dimensionID);
 
          let body: String = urlSearchParams.toString();
 
-          return this.http.post(this. domain + this.getCaseStudiesURI, body, {headers: headers})
+          return this.http.post(this.domain + this.getCaseStudiesURI, body, {headers: headers})
             .map(response => {
                 console.log(response.json());
                 return response.json();
             });
+    }
+
+    public getBestPractices(areaID: string, dimensionID: string): any {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+         urlSearchParams.append('params[areaID]', areaID);
+         urlSearchParams.append('params[dimensionID]', dimensionID);
+
+         let body: String = urlSearchParams.toString();
+
+          return this.http.post(this.domain + this.getBestPracticesURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            });
+    }
+
+    public getWebGetEvidence(activeVersionNumber: string, areaID: string, dimensionID: string): any {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+         urlSearchParams.append('params[version]', activeVersionNumber);
+         urlSearchParams.append('params[areaID]', areaID);
+         urlSearchParams.append('params[dimensionID]', dimensionID);
+
+         let body: String = urlSearchParams.toString();
+
+          return this.http.post(this.domain + this.getWebEvidenceURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            });
+    }
+
+    public getSubmitInterestRequest(name: string, organization: string, jobTitle: string, country: string,
+                                    email: string, phone: string, comments: string) {
+
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+        urlSearchParams.append('params[name]', name);
+        urlSearchParams.append('params[organization]', organization);
+        urlSearchParams.append('params[jobTitle]', jobTitle);
+        urlSearchParams.append('params[country]', country);
+        urlSearchParams.append('params[email]', email);
+        urlSearchParams.append('params[phone]', phone);
+        urlSearchParams.append('params[comments]', comments);
+        urlSearchParams.append('params[userProfile]', localStorage.getItem('userProfile'));
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.getSubmitInterestRequestURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            });
+
     }
 }

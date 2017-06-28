@@ -4,7 +4,7 @@
         <md-card-title>{{userProfile.app_metadata.user_role}}</md-card-title>
         <md-card-subtitle>{{userProfile.given_name}} {{userProfile.family_name}}</md-card-subtitle>
 
-        <img id="centerImage" md-card-md-image class="thumbnail" [src]="userProfile.pictureUrls.values"/>
+        <img id="centerImage" md-card-md-image class="thumbnail" [src]="userProfile.picture"/>
         
         <md-card-content>
             <p>{{userProfile.headline}}</p>

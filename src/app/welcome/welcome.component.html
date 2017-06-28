@@ -7,7 +7,7 @@
 <div class="btn-group btn-group-justified navigationButtons">
     <a routerLink="/main" class="btn btn-primary">See Demo</a>
     
-    <a *ngIf="!authService.isAuthenticated()" (click)="authService.login()" class="btn btn-primary">Register My Interest</a>
+    <a *ngIf="!authService.isAuthenticated()" class="btn btn-primary">Register My Interest</a>
     <a *ngIf="authService.isAuthenticated()" (click)="openDialog()" class="btn btn-primary">Register My Interest</a>
 
     <a *ngIf="!authService.isAuthenticated()" (click)="authService.login()" class="btn btn-primary">Sign-up/Login via Linkedin</a>

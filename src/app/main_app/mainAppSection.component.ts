@@ -10,7 +10,7 @@ import { KumulosService } from '../shared/services/kumulos.service';
 
 export class MainAppSectionComponent {
     constructor(public authService: AuthService, private router: Router, public kumulosService: KumulosService) {
-        if (!authService.isAuthenticated()) {
+        if (!authService.isVerified() || !authService.isAuthenticated()) {
             this.kumulosService.getDemoCity()
                 .subscribe(response => localStorage.setItem('demoCity', response.payload));
 
@@ -19,18 +19,27 @@ export class MainAppSectionComponent {
         }
      }
 
-    public inTakeSurvey(): boolean {
-        let currentUrl = this.router.url;
+    public hideNavBar(): boolean {
+        let currentUrl: string = this.router.url;
+        console.log("Current Url: " + currentUrl);
         
-        let urlRegex = '(\/takesurvey\/.*)'
-        if (currentUrl.match(urlRegex)) {
+        let urlRegexTakeSurvey: string = '(\/takesurvey\/.*)';
+        let urlRegexViewResults: string = '(\/viewresults\/*)';
+
+        if (currentUrl.match(urlRegexTakeSurvey) || currentUrl.match(urlRegexViewResults)) {
             return false;
         }
 
         return true;
     }
 
+
     public navigateToTakeSurvey(): void {
         this.router.navigate(['takesurvey']);
+    }
+
+    public activeBackgroundColor() {
+        return { 'background-color': '#1e90ff',
+                  'color': 'white' };
     }
 };

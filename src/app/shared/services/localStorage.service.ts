@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 export class LocalStorageService {
 
 
-
 public getUserName(): string {
     if (localStorage.getItem('user') !== null) {
         let userName = JSON.parse(localStorage.getItem('userName'));
@@ -43,17 +42,20 @@ public getUserRole(): string {
 
 public getUserJWT(): string {
     if (localStorage.getItem('id_token') !== null) {
-        let userJWT: string = JSON.stringify(localStorage.getItem('id_token'));
-        userJWT = userJWT.replace('"', '');
+        let userJWT = localStorage.getItem('id_token');
+       
+        // userJWT = userJWT.replace('"', '');
+        console.log("localstorage userJWT", userJWT);
         return userJWT;
     }
+    console.log("demoJWT", localStorage.getItem('demoJWT'));
     return localStorage.getItem('demoJWT');
     }
 
 public getUserCityId(): string {
     if (localStorage.getItem('user') !== null) {
         let userProfile: any = JSON.parse(localStorage.getItem('user'));
-        console.log('city_id', userProfile.city_id);
+        console.log('city_id in local storage service', userProfile.city_id);
         return userProfile.city_id;
     }
     return localStorage.getItem('demoCity');

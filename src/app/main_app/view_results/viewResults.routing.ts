@@ -1,13 +1,28 @@
-import { Routes, RouterModule }    from '@angular/router';
-import { ModuleWithProviders }     from '@angular/core'
+import { Routes, RouterModule } from '@angular/router';
+import { ModuleWithProviders } from '@angular/core'
 
-import { ViewResultsComponent }    from './viewResults.component';
+import { ViewResultsComponent } from './viewResults.component';
+import { MyOwnResultsComponent } from './my_own_results/myOwnResults.component';
+import { OrganizationResultsComponent } from './our_organization_results/organizationResults.component';
+import { TeamDynamicsComponent } from './team_dynamics/teamDynamics.component';
 
-const mainAppRoutes: Routes = [
+const viewResultsRoutes: Routes = [
     {
         path: '',
-        component: ViewResultsComponent
+        component: ViewResultsComponent,
+    },
+    {
+        path: 'myownresults',
+        component: MyOwnResultsComponent,
+    },
+    {
+        path: 'organizationresults',
+        component: OrganizationResultsComponent
+    },
+    {
+        path: 'teamdynamics',
+        component: TeamDynamicsComponent
     }                                                                           
 ]   
 
-export const viewResultsRouting: ModuleWithProviders = RouterModule.forChild(mainAppRoutes); 
+export const viewResultsRouting: ModuleWithProviders = RouterModule.forChild(viewResultsRoutes); 
