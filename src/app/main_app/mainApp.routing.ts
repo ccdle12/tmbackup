@@ -5,8 +5,6 @@ import { MainAppComponent } from './mainApp.component';
 import { MainAppSectionComponent } from './mainAppSection.component';
 import { AuthGuardService } from '../shared/services/auth-guard.service';
 
-import { ChartComponent } from './chart/chart.component';
-
 const mainAppRoutes: Routes = [
     {
         path: '',
@@ -35,10 +33,6 @@ const mainAppRoutes: Routes = [
         {
             path: 'benchmark',
             loadChildren: './benchmark/benchmark.module#BenchmarkModule'
-        },
-        {
-            path: 'chart',
-            component: ChartComponent
         }
     ],
     }

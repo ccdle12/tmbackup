@@ -8,13 +8,10 @@
 
 <div class="container">
             <div class="row">
-                <!--<button md-button class="col-xs-1" id="navigationButton" (click)="this.start.toggle()"> Navigation</button>-->
                 <button md-button class="col-xs-3" (click)="backToDashboard()">Back To Dashboard</button>
-                <!--<button md-button class="col-xs-4 col-xs-offset-6" (click)="backToTakeSurvey()">Are you responsible for parts of this section?</button>-->
             </div>
 </div>
 
-<!--<button (click)="showCandleChart()">candle chart</button>-->
-<!--<button (click)="showComboChart()">combo chart</button>-->
-<div id="candle_chart" [chartData]="candle_ChartData" [chartOptions] = "candle_ChartOptions" chartType="CandlestickChart" GoogleChart></div>
-<!--<div><google-chart [data]="comboChartData"></google-chart></div>-->
+<div class="googleComboChart" *ngFor="let eachChart of candleChartsForDisplay, let i = index">
+  <div id="candle_chart" [chartData]="candleChartsForDisplay[i]" [chartOptions] = "candle_ChartOptions" chartType="CandlestickChart" GoogleChart></div>
+</div>

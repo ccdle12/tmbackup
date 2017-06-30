@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
-import { LocalStorageService } from './localStorage.service';
 import { AuthService } from '../../shared/services/auth.service'
 import 'rxjs/add/operator/map';
 
@@ -21,9 +20,11 @@ export class KumulosService {
     private getBestPracticesURI: string;
     private getWebEvidenceURI: string;
     private getSubmitInterestRequestURI: string;
+    private getWebAggregatesByVersionandUserURI: string;
+    private getWebAggregatesForOrganizationResultsURI: string;
+    private getWebWhiskerBoxDataByVersionURI: string;
 
-    constructor(private http: Http, private localStorageService: LocalStorageService, 
-                public authService: AuthService) {
+    constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
 
@@ -42,6 +43,9 @@ export class KumulosService {
         this.getBestPracticesURI = "getBestPracticesByDimension.json/";
         this.getWebEvidenceURI = "webGetEvidence.json/";
         this.getSubmitInterestRequestURI = "webSubmitInterestRequest.json/";
+        this.getWebAggregatesByVersionandUserURI = "webgetAggregatesByVersionandUser.json/";
+        this.getWebAggregatesForOrganizationResultsURI =  "webgetAggregatesByVersion.json/";
+        this.getWebWhiskerBoxDataByVersionURI = "webgetWhiskerBoxDatabyVersion.json/";
     }
 
     public createAuthorizationHeader(): Headers {
@@ -58,10 +62,10 @@ export class KumulosService {
         let userJWT: string;
 
         if (!this.authService.isVerified() || !this.authService.isAuthenticated()) {
-            console.log('using demo JWT');
+            // console.log('using demo JWT');
             userJWT = localStorage.getItem('demoJWT');
         } else {
-            console.log('using id_token JWT');
+            // console.log('using id_token JWT');
             userJWT = localStorage.getItem('id_token');
         }
 
@@ -89,25 +93,22 @@ export class KumulosService {
 
         if (!this.authService.isVerified() || !this.authService.isAuthenticated()) {
             userCityId = localStorage.getItem('demoCity');
-            console.log("getting demo city: " + userCityId);
+            // console.log("getting demo city: " + userCityId);
         } else {
             let userProfile: any = JSON.parse(localStorage.getItem('user'));
             userCityId = userProfile.city_id;
-            console.log("getting User Profile City Id");
+            // console.log("getting User Profile City Id");
         }
 
-        // userCityId = this.localStorageService.getUserCityId();
-        // console.log("user city id in kumulos service: " + userCityId);
-
-        console.log("getting demo city in body: " + userCityId);
+        // console.log("getting demo city in body: " + userCityId);
         urlSearchParams.append('params[cityID]', userCityId);
 
         let body: String = urlSearchParams.toString();
 
-        console.log("body for active city versions: " + body);
+        // console.log("body for active city versions: " + body);
          return this.http.post(this.domain + this.getActiveVersionForCityURI, body, {headers: headers})
                 .map(response => {
-                    console.log("response from active city", response.json());
+                    // console.log("response from active city", response.json());
                     return response.json()
         });
     }
@@ -116,7 +117,7 @@ export class KumulosService {
         let headers: Headers = this.createAuthorizationHeader();
         let urlSearchParams: URLSearchParams = this.createBody();
         
-        console.log('kumulos get web dashboard', 'active version number: ' + activeVersionNumber);
+        // console.log('kumulos get web dashboard', 'active version number: ' + activeVersionNumber);
         urlSearchParams.append('params[version]', activeVersionNumber);
 
         var body: String = urlSearchParams.toString();
@@ -148,7 +149,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getDemoCityURI, null, {headers: headers})
             .map(response => {
-                console.log("Demo City: " + response.toString());
+                // console.log("Demo City: " + response.toString());
                 return response.json();
             });
     }
@@ -158,7 +159,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getDemoUserJWTURI, null, {headers: headers})
             .map(response => {
-                console.log("Demo JWT: " + response.toString());
+                // console.log("Demo JWT: " + response.toString());
                 return response.json();
             });
     }
@@ -174,7 +175,7 @@ export class KumulosService {
 
         return this.http.post(this. domain + this.getCreateUpdateUserSurveyDataURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                // console.log(response.json());
                 return response.json();
             }); 
     }
@@ -192,7 +193,7 @@ export class KumulosService {
         
         return this.http.post(this. domain + this.getWebUsersURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                // console.log(response.json());
                 return response.json();
             }); 
     }
@@ -226,7 +227,7 @@ export class KumulosService {
 
           return this.http.post(this.domain + this.getBestPracticesURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                // console.log(response.json());
                 return response.json();
             });
     }
@@ -244,7 +245,7 @@ export class KumulosService {
 
           return this.http.post(this.domain + this.getWebEvidenceURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                // console.log(response.json());
                 return response.json();
             });
     }
@@ -268,9 +269,57 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getSubmitInterestRequestURI, body, {headers: headers})
             .map(response => {
+                // console.log(response.json());
+                return response.json();
+            });
+    }
+
+    public getAggregatesByVersionandUser(activeVersionNumber: string, userID: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[version]', activeVersionNumber);
+        urlSearchParams.append('params[userID]', userID);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.getWebAggregatesByVersionandUserURI, body, {headers: headers})
+            .map(response => {
+                // console.log(response.json());
+                return response.json();
+            });
+    }
+
+    public getAggregatesForOrganizationResults(activeVersionNumber: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[version]', activeVersionNumber);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.getWebAggregatesForOrganizationResultsURI, body, {headers: headers})
+            .map(response => {
+                // console.log(response.json());
+                return response.json();
+            });
+    }
+
+    public getWhiskerBoxDataByVersion(activeVersionNumber: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[version]', activeVersionNumber);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.getWebWhiskerBoxDataByVersionURI, body, {headers: headers})
+            .map(response => {
                 console.log(response.json());
                 return response.json();
             });
-
     }
 }

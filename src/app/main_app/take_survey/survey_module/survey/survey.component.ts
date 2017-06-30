@@ -1,18 +1,18 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
-import { TakeSurveyDashboardService } from '../../../../shared/services/takeSurveyDashboard.service';
 import { KumulosService } from '../../../../shared/services/kumulos.service';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { MdSliderModule, MdSidenavModule  } from '@angular/material';
 import { Router } from '@angular/router';
 import { MdDialog } from '@angular/material';
+import { MdSnackBar } from '@angular/material';
 
 
 @Component({
   selector: 'customerEngagementSurvey',
-  templateUrl: './customerEngagementSurvey.component.html',
-  styleUrls: ['./customerEngagementSurvey.component.css']
+  templateUrl: './survey.component.html',
+  styleUrls: ['./survey.component.css']
 })
-export class SurveyComponent implements OnInit {
+export class SurveyComponent {
 
     private activeCityVersion: string;
     public surveyQuestions: Array<JSON>;
@@ -34,21 +34,22 @@ export class SurveyComponent implements OnInit {
     private userSaved: boolean;
 
     private userSelectedModule: any;
-
     private sizeOfModules: number;
 
-    constructor(public takeSurveyService: TakeSurveyDashboardService, 
-                public kumulosService: KumulosService, 
+    constructor(public kumulosService: KumulosService, 
                 public router: Router,
                 public dialog: MdDialog,
-                public authService: AuthService) { 
+                public authService: AuthService,
+                public snackBar: MdSnackBar) { 
       
-     this.userSelectedModule = localStorage.getItem('userSelectedModule');
+      this.initializeMemberVariables();
+      this.getWebSurveyQuestions(); 
     }
                 
     @ViewChild('start') sidenav: MdSidenavModule;
 
-    ngOnInit() {
+    private initializeMemberVariables(): void {
+      this.userSelectedModule = localStorage.getItem('userSelectedModule');
 
       let surveyDashboard: JSON = JSON.parse(localStorage.getItem('surveydashboard'));
       this.sizeOfModules = Object.keys(surveyDashboard).length - 1;
@@ -56,7 +57,7 @@ export class SurveyComponent implements OnInit {
       this.userSaved = false;
 
       this.importanceValues = new Array();
-      
+
       this.importanceToolTips = new Array();
       this.importanceToolTips[0] = "1 - Little Importance";
       this.importanceToolTips[1] = "2 - Some Importance";
@@ -76,23 +77,20 @@ export class SurveyComponent implements OnInit {
 
       this.activeCityVersion = localStorage.getItem('activeCityVersion');
 
-      this.getWebSurveyQuestions(); 
     }
 
     private getWebSurveyQuestions() {
       this.kumulosService.getWebSurvey(this.activeCityVersion, this.areaID, this.dimensionID )
         .subscribe(responseJSON => {
          this.surveyQuestions = responseJSON.payload;
-         console.log('looking for data', responseJSON);
-         console.log('survey question length: ', this.surveyQuestions.length);
          
-         this.updateToolTipsAndSurveyValues();
+         this.updateSurveyValues();
+         this.updateToolTips();
          console.log('survey questions', responseJSON.payload); 
       });
   }
     
-    private updateToolTipsAndSurveyValues(): void {
-      var tempArray = new Array();
+    private updateSurveyValues(): void {
 
       for (var eachQuestion = 0; eachQuestion < this.surveyQuestions.length; eachQuestion++) {
         
@@ -111,15 +109,21 @@ export class SurveyComponent implements OnInit {
         if (this.surveyQuestions[eachQuestion]['target'] == " " || this.surveyQuestions[eachQuestion]['target'] == "0") {
           this.capabilityValues[eachQuestion] = " ";
         } else {
-        this.twoYearTargetValues[eachQuestion] = this.surveyQuestions[eachQuestion]['target'];
+          this.twoYearTargetValues[eachQuestion] = this.surveyQuestions[eachQuestion]['target'];
         }
+      }
+    }
 
+    private updateToolTips(): void {
+      let toolTipsTexts = new Array();
+
+      for (var eachQuestion = 0; eachQuestion < this.surveyQuestions.length; eachQuestion++) {
         for (var scoreText = 1; scoreText <= 5; scoreText++) {
-          tempArray[scoreText] = scoreText + " - " + this.surveyQuestions[eachQuestion]['scoringID' + scoreText + 'Text'];  
+          toolTipsTexts[scoreText] = scoreText + " - " + this.surveyQuestions[eachQuestion]['scoringID' + scoreText + 'Text'];  
         }
 
-        this.capabilityToolTips.push(tempArray);
-        tempArray = [];
+        this.capabilityToolTips.push(toolTipsTexts);
+        toolTipsTexts = [];
       }
     }
 
@@ -141,38 +145,35 @@ export class SurveyComponent implements OnInit {
   }
 
   public nextModule(): void {
-    if (this.authService.inDemoMode()) {
-      let userSelectedModule: number = parseInt(localStorage.getItem('userSelectedModule'));
-      let incrementUserSelectedModule = userSelectedModule += 1;
+    if (!this.authService.inDemoMode() && !this.userSaved) {
+      this.dialog.open(RemindUserToSaveDialog);
 
-      localStorage.setItem('userSelectedModule', incrementUserSelectedModule.toString());
-
-      window.location.reload();
       return;    
     }
 
-    if (!this.userSaved) {
-      this.dialog.open(RemindUserToSaveDialog);
-      return;
-    }
+    this.incrementSelectedModule();
+    window.location.reload();
+  }
 
+  private incrementSelectedModule(): void {
     let userSelectedModule: number = parseInt(localStorage.getItem('userSelectedModule'));
-      let incrementUserSelectedModule = userSelectedModule += 1;
+    let incrementUserSelectedModule = userSelectedModule += 1;
 
-      localStorage.setItem('userSelectedModule', incrementUserSelectedModule.toString());
-
-      window.location.reload();
+    localStorage.setItem('userSelectedModule', incrementUserSelectedModule.toString());
   }
 
   public previousModule(): void {
-    let userSelectedModule: number = parseInt(localStorage.getItem('userSelectedModule'));
-
-    let incrementUserSelectedModule = userSelectedModule -= 1;
-
-    localStorage.setItem('userSelectedModule', incrementUserSelectedModule.toString());
+    this.decrementSelectedModule();
 
     window.location.reload();
     return;    
+  }
+
+  private decrementSelectedModule(): void {
+    let userSelectedModule: number = parseInt(localStorage.getItem('userSelectedModule'));
+    let decrementUserSelectedModule = userSelectedModule -= 1;
+
+    localStorage.setItem('userSelectedModule', decrementUserSelectedModule.toString());
   }
 
   public notAtStartOfModules(): boolean {
@@ -195,37 +196,48 @@ export class SurveyComponent implements OnInit {
   }
 
   public updateSurveyData(): void {
-    
-    var activeCityVersion = localStorage.getItem('activeCityVersion');
-    var JsonArray = new Array();
+    let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+    let JSONArray = new Array();
 
     for (var eachQuestion = 0; eachQuestion < this.surveyQuestions.length; eachQuestion++) {
-      var userSurveyID = this.surveyQuestions[eachQuestion]['userSurveyID'];
-      var statementID = this.surveyQuestions[eachQuestion]['statementID'];
-      var dimensionID = this.surveyQuestions[eachQuestion]['dimensionID'];
-      var areaID = this.surveyQuestions[eachQuestion]['areaID'];
 
-      var importanceScore = this.importanceValues[eachQuestion];
-      var asIsCapabilityScore = this.capabilityValues[eachQuestion];
-      var targetScore = this.twoYearTargetValues[eachQuestion];
+      let importance: number = this.importanceValues[eachQuestion];
+      let score: number = this.capabilityValues[eachQuestion];
+      let target: number = this.twoYearTargetValues[eachQuestion];
 
-      var surveyJsonObject = {"areaID":areaID,"dimensionID": dimensionID,"statementID": statementID,"importance": importanceScore,"score": asIsCapabilityScore,"target": targetScore,"version": activeCityVersion,"userSurveyID": userSurveyID};
-      console.log('customerEnagementSurvey: ', surveyJsonObject);
-      JsonArray.push({"areaID":areaID,"dimensionID": dimensionID,"statementID": statementID,"importance": importanceScore,"score": asIsCapabilityScore,"target": targetScore,"version": activeCityVersion,"userSurveyID": userSurveyID});
+      if (importance != 0 && score != 0 && target != 0) {
+        let userSurveyID = this.surveyQuestions[eachQuestion]['userSurveyID'];
+        let statementID = this.surveyQuestions[eachQuestion]['statementID'];
+        let dimensionID = this.surveyQuestions[eachQuestion]['dimensionID'];
+        let areaID = this.surveyQuestions[eachQuestion]['areaID'];
+
+        let surveyJsonObject = {"areaID":areaID,"dimensionID": dimensionID,"statementID": statementID,"importance": importance,"score": score,"target": target,"version": activeCityVersion,"userSurveyID": userSurveyID};
+        JSONArray.push({"areaID":areaID,"dimensionID": dimensionID,"statementID": statementID,"importance": importance,"score": score,"target": target,"version": activeCityVersion,"userSurveyID": userSurveyID});
+      }
     }
 
-    let hardCodeJson = {"surveyData": JsonArray };
+    console.log("JSON ARRAY: ", JSONArray);
+    let hardCodeJson = {"surveyData": JSONArray };
     let surveyDataString = JSON.stringify(hardCodeJson);
 
     this.kumulosService.getCreateUpdateUserSurveyData(surveyDataString)
-      .subscribe(responseJSON => {} );
+      .subscribe(responseJSON => {
+        this.showSnackBar();
+      });
   }
 
     public activeBackgroundColor() {
         return { 'background-color': '#1e90ff',
                   'color': 'white' };
     }
+
+  public showSnackBar(): void {
+    this.snackBar.openFromComponent(SaveSnackBarComponent, {
+      duration: 1000,
+    });
+  }
 }
+
 
 @Component({
   selector: 'remindUserToSave-dialog',
@@ -238,3 +250,10 @@ export class RemindUserToSaveDialog { }
   templateUrl: 'inDemoMode.html',
 })
 export class InDemoModeDialog { }
+
+@Component({
+  selector: 'saveSnackBar',
+  templateUrl: 'saveSnackBarComponent.html',
+  styleUrls: ['saveSnackBarComponent.css'],
+})
+export class SaveSnackBarComponent {}

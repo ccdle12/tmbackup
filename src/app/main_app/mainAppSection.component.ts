@@ -9,20 +9,60 @@ import { KumulosService } from '../shared/services/kumulos.service';
 })
 
 export class MainAppSectionComponent {
-    constructor(public authService: AuthService, private router: Router, public kumulosService: KumulosService) {
-        if (!authService.isVerified() || !authService.isAuthenticated()) {
-            this.kumulosService.getDemoCity()
-                .subscribe(response => localStorage.setItem('demoCity', response.payload));
 
-            this.kumulosService.getDemoUserJWT()
-                .subscribe(response => localStorage.setItem('demoJWT', response.payload));
-        }
+    constructor(public authService: AuthService, private router: Router, public kumulosService: KumulosService) {
+        this.inDemoOrInMainApp();
      }
+
+    private inDemoOrInMainApp(): void {
+        if (this.isUserUnverifiedOrTokenExpired())
+            this.getDemoCity();
+        else {
+            this.getActiveVersionForCity(); 
+            console.log("RETRIEVING ACTIVE CITY VERSION...");    
+        }
+    }
+
+    private isUserUnverifiedOrTokenExpired() {
+        return !this.authService.isVerified() || !this.authService.isAuthenticated() ? true : false;
+    }
+
+    private getDemoCity(): void {
+        this.kumulosService.getDemoCity()
+            .subscribe(response => { 
+                localStorage.setItem('demoCity', response.payload);
+                this.getDemoUserJWT();
+            });
+    }
+
+    private getDemoUserJWT(): void {
+        this.kumulosService.getDemoUserJWT()
+            .subscribe(response => { 
+                localStorage.setItem('demoJWT', response.payload);
+                this.getActiveVersionForCity(); 
+        });
+    }
+
+    private getActiveVersionForCity(): void {
+        this.kumulosService.getActiveVersionForCity()
+        .subscribe(responseJSON => {
+            let activeCityVersion: string = responseJSON.payload;
+            localStorage.setItem('activeCityVersion', activeCityVersion);
+
+            this.getWebDashboard(activeCityVersion);
+        });
+    }
+
+    private getWebDashboard(activeCityVersion: string): void {
+        this.kumulosService.getWebDashboard(activeCityVersion)
+        .subscribe(responseJSON => { 
+            localStorage.setItem('surveydashboard', JSON.stringify(responseJSON.payload));
+        });
+    }
 
     public hideNavBar(): boolean {
         let currentUrl: string = this.router.url;
-        console.log("Current Url: " + currentUrl);
-        
+
         let urlRegexTakeSurvey: string = '(\/takesurvey\/.*)';
         let urlRegexViewResults: string = '(\/viewresults\/*)';
 
@@ -31,11 +71,6 @@ export class MainAppSectionComponent {
         }
 
         return true;
-    }
-
-
-    public navigateToTakeSurvey(): void {
-        this.router.navigate(['takesurvey']);
     }
 
     public activeBackgroundColor() {

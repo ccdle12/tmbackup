@@ -3,14 +3,15 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class LocalStorageService {
 
-
 public getUserName(): string {
-    if (localStorage.getItem('user') !== null) {
-        let userName = JSON.parse(localStorage.getItem('userName'));
+    if (localStorage.getItem('userName') !== null) {
+        let userName = localStorage.getItem('userName');
+        userName = this.removeQuotesFromString(userName);
+
         return userName;
     }
     return "Demo User";
-  }
+}
 
 public getUserCity(): string {
     if (localStorage.getItem('user') !== null) {
@@ -21,7 +22,7 @@ public getUserCity(): string {
     }
 
 public getUserVerified(): string {
-    var verification: string;
+    let verification: string;
     
     if (localStorage.getItem('user') !== null) {
         let userProfile = JSON.parse(localStorage.getItem('user'));
@@ -38,19 +39,17 @@ public getUserRole(): string {
         return userProfile.user_role;
     }   
      return "Demo Role";
-    }
+}
 
 public getUserJWT(): string {
     if (localStorage.getItem('id_token') !== null) {
         let userJWT = localStorage.getItem('id_token');
        
-        // userJWT = userJWT.replace('"', '');
-        console.log("localstorage userJWT", userJWT);
         return userJWT;
     }
     console.log("demoJWT", localStorage.getItem('demoJWT'));
     return localStorage.getItem('demoJWT');
-    }
+}
 
 public getUserCityId(): string {
     if (localStorage.getItem('user') !== null) {
@@ -59,5 +58,10 @@ public getUserCityId(): string {
         return userProfile.city_id;
     }
     return localStorage.getItem('demoCity');
-    }    
+}
+
+private removeQuotesFromString(text: string) {
+    return text.split('"').join('');
+}
+
 };

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-
 import { Router } from '@angular/router';
+import { KumulosService } from '../../../shared/services/kumulos.service';
 
 @Component({
   selector: 'organizationResultsComponent',
@@ -9,19 +9,30 @@ import { Router } from '@angular/router';
 })
 export class OrganizationResultsComponent { 
 
-  constructor(public router: Router) {
-    console.log('ORGANIZATION RESULTS CONSTRUCTED');
+  public comboCharts: Array<any>;
+  public graphData: Array<any>;
+
+  constructor(public router: Router, public kumulosService: KumulosService) {
+    this.initializeMemberVariables();
+    this.getOwnResultsData();
   }
 
-  public backToDashboard(): void {
-    window.location.reload();
-    this.router.navigateByUrl('/main');
+   private initializeMemberVariables(): void {
+    this.graphData = new Array();
+    this.comboCharts = new Array();
   }
 
-  public activeBackgroundColor() {
-        return { 'background-color': '#1e90ff',
-                  'color': 'white' };
-    }
+  private getOwnResultsData(): any { 
+    let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+    let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
+    
+    this.kumulosService.getAggregatesForOrganizationResults(activeCityVersion)
+        .subscribe(responseJSON => {
+          this.graphData = responseJSON.payload;
+          this.createComboCharts();
+    });
+  }
+
 
   public routeToPage(surveyPage: String) {
     console.log('routetoPage activated: ' + surveyPage);
@@ -39,22 +50,72 @@ export class OrganizationResultsComponent {
     }
 
   
-  public comboChartData: any =  {
-    chartType: 'ComboChart',
-    dataTable: [
-      ['Month',    'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Average', 'Test 5', 'TEST 6' ],
-      ['Customer',    1,          2,         3,               4,              5,          1,      1,     ],
-      ['Strategy',    1,          2,         3,               4,              5,          2,      2,     ],
-      ['Technology',  1,          2,         3,               4,              5,          3,      3,     ],
-      ['Operations',  1,          2,         3,               4,              5,          4,      4,     ],
-      ['Culture',     1,          2,         3,               4,              5,          5,      5,     ]
-    ],
-    options: {
-      // title : 'Monthly Coffee Production by Country',
-      // vAxis: {title: 'Cups'},
-      // hAxis: {title: 'Month'},
-      seriesType: 'bars',
-      // series: {5: {type: 'line'}}
+  private createComboCharts(): void {
+    
+    let numberOfAreaModules = this.getSizeOfAreaModules();
+    this.addToComboChartArray(numberOfAreaModules);
+  }
+
+  private getSizeOfAreaModules(): number {
+    let surveyDashboard: JSON = JSON.parse(localStorage.getItem('surveydashboard'));
+    let sizeOfDashboard: number = Object.keys(surveyDashboard).length;
+
+    let numberOfAreaModules: number = surveyDashboard[sizeOfDashboard - 2]['areaID'];
+
+    return numberOfAreaModules;
+  }
+
+  private addToComboChartArray(numberOfModules: number): void {
+    for (var currentModule = 1; currentModule <= numberOfModules; currentModule++) {
+      let areaText;
+
+      let dataTableArray: any = new Array();
+      dataTableArray.push(['SurveyData', 'Importance', 'Score', '2 Year Target' ]);
+
+
+      for (var i = 0; i < this.graphData.length; i++) {
+        let areaID = this.graphData[i]['areaID'];
+
+        if (areaID == currentModule) {
+          areaText = this.graphData[i]['areaText'];
+          let dimensionText: string = this.graphData[i]['dimensionText']
+          let importance: number = Number(this.graphData[i]['importance']);
+          let score: number = Number(this.graphData[i]['score']);
+          let target: number = Number(this.graphData[i]['target']);
+
+          dataTableArray.push([ dimensionText, importance, score, target ]);
+
+        }
+      }
+
+      console.log("CREATING COMBOCHART");
+      console.log("current area text: " + areaText);
+      let comboChart = {
+            chartType: 'ComboChart',
+            dataTable: dataTableArray,
+            options: {
+              title : areaText,
+              seriesType: 'bars',
+              vAxis: {
+                viewWindow: {
+                  min: 0,
+                  max: 5
+                },
+                  ticks: [0, 1, 2, 3, 4, 5] 
+                }
+              }
+            }
+      this.comboCharts[currentModule] = comboChart;
     }
-  };
+  }
+
+  public backToDashboard(): void {
+    window.location.reload();
+    this.router.navigateByUrl('/main');
+  }
+
+  public activeBackgroundColor() {
+        return { 'background-color': '#1e90ff',
+                  'color': 'white' };
+    }   
 }

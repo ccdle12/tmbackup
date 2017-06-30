@@ -8,38 +8,4 @@
   <a md-tab-link [ngStyle]="activeBackgroundColor()" *ngIf="!authService.inDemoMode()" (click)="routeToPage('caseStudies')">Case Studies</a>
   <a md-tab-link *ngIf="authService.inDemoMode()">Case Studies</a>
 </nav>
-        
-<!--<div class="btn-group btn-group-justified hidden-xs">
-        <a class="btn btn-primary" routerLink='survey'>Survey</a>
-        <a class="btn btn-primary" routerLink='evidence'>Evidence</a>
-        <a class="btn btn-primary" routerLink='bestpractices'>Best Practices</a>
-        <a class="btn btn-primary" routerLink='casestudies'>Case Studies</a>
-</div>
-
-<div class="btn-group btn-group-vertical visible-xs">
-        <a class="btn btn-primary" routerLink='survey'>Survey</a>
-        <a class="btn btn-primary" routerLink='evidence'>Evidence</a>
-        <a class="btn btn-primary" routerLink='bestpractices'>Best Practices</a>
-        <a class="btn btn-primary" routerLink='casestudies'>Case Studies</a>
-</div>-->
-
-<!--<md-sidenav-container class="example-container">
-         <md-sidenav-container fullscreen>
-                <md-sidenav #start mode="push" style="width: 200px;" [opened]="true">
-                Jolly good!
-                </md-sidenav>
-        </md-sidenav-container>
-</md-sidenav-container>
-    
-
-    <!--<div class="example-sidenav-content">
-        <button md-button (click)="sidenav.open()">
-            Open sidenav
-        </button>
-    </div>-->
-
-<!--</md-sidenav-container>-->
-
-
-
 <router-outlet></router-outlet>

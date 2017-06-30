@@ -46,6 +46,7 @@ export class AppComponent {
                public localStorageService: LocalStorageService) {
 
         this.authService.handleAuthentication();
+        this.authService.revertToDemoIfTokenExpires();
 
         router.events.subscribe((event: RouterEvent) => {
             this.navigationInterceptor(event);
