@@ -15,13 +15,15 @@ import { SurveyComponent, RemindUserToSaveDialog, InDemoModeDialog, SaveSnackBar
 import { NotFoundComponent } from './not_found/notFound.component';
 import { AuthCallbackComponent } from './authCallback/authCallback.component';
 
+import { EmailSentSnackBarComponent } from './main_app/view_results/my_own_results/myOwnResults.component';
 
-import { MdProgressSpinnerModule, MdDialogModule, MdMenuModule } from '@angular/material';
+
+import { MdProgressSpinnerModule, MdDialogModule, MdMenuModule, MdIconModule } from '@angular/material';
 
 @NgModule({
-  imports: [BrowserModule, BrowserAnimationsModule, FormsModule, HttpModule, appRouting, MdProgressSpinnerModule, MdDialogModule, MdMenuModule],
-  declarations: [AppComponent, WelcomeComponent, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, NotFoundComponent, AuthCallbackComponent, SaveSnackBarComponent],
-  entryComponents: [RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, SaveSnackBarComponent],
+  imports: [BrowserModule, BrowserAnimationsModule, FormsModule, HttpModule, appRouting, MdProgressSpinnerModule, MdDialogModule, MdMenuModule, MdIconModule],
+  declarations: [AppComponent, WelcomeComponent, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, NotFoundComponent, AuthCallbackComponent, SaveSnackBarComponent, EmailSentSnackBarComponent],
+  entryComponents: [RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, SaveSnackBarComponent, EmailSentSnackBarComponent],
   providers: [AuthService, WelcomeGuardService, LocalStorageService, KumulosService],
   bootstrap: [AppComponent]
 })

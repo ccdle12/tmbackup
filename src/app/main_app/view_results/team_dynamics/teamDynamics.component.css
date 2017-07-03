@@ -13,3 +13,11 @@ button {
   background: #1e90ff;
   color: white;
 }
+
+#candleStickChart {
+    margin-bottom: 50px;
+}
+
+#sendRequest {
+    float: right;
+}

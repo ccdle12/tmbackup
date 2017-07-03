@@ -13,3 +13,8 @@ button {
   background: #1e90ff;
   color: white;
 }
+
+
+#sendRequest {
+    float: right;
+}

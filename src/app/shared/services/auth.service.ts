@@ -16,7 +16,6 @@ constructor(public router: Router) {
 
 this.lock = new Auth0Lock('dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V','tmfdmmdev.eu.auth0.com', {
   auth: {
-    // redirectUrl: 'https://tmf-dmm-web-app.firebaseapp.com/callback',
     redirectUrl: window.location.origin + '/callback',
     redirect: true,
     responseType: 'token id_token',

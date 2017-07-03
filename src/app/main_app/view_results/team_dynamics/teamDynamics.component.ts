@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
+import { MdSnackBar } from '@angular/material';
+import { EmailSentSnackBarComponent } from '../my_own_results/myOwnResults.component';
 
 @Component({
   selector: 'teamDynamicsComponent',
@@ -15,15 +17,20 @@ export class TeamDynamicsComponent {
 
   private sortedDataForEachGraph: Array<any>;
 
-  constructor(public router: Router, public kumulosService: KumulosService) {
+  public graphTitles: Map<number, string>;
+
+  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar) {
     this.initializeMemberVariables();
     this.getTeamDynamicsData();
   }
 
   private initializeMemberVariables(): void {
-    this.graphData = new Array();
-    this.sortedDataForEachGraph = new Array();
     this.candleChartsForDisplay = new Array();
+    this.graphData = new Array();
+
+    this.sortedDataForEachGraph = new Array();
+    
+    this.graphTitles = new Map<number, string>();
   }
 
   private getTeamDynamicsData(): void {
@@ -34,6 +41,7 @@ export class TeamDynamicsComponent {
           this.graphData = responseJSON.payload;
           this.numberOfGraphs = this.graphData.length;
           this.createCandleCharts();
+          this.addGraphTitles();
         })
   }
 
@@ -67,7 +75,6 @@ export class TeamDynamicsComponent {
     }
 
     private addToCandleChartArray(graphIndexPosition: number): any {
-
       if (graphIndexPosition < 0)
         return;
 
@@ -102,13 +109,61 @@ export class TeamDynamicsComponent {
       return this.addToCandleChartArray(graphIndexPosition - 1);
     }
 
+    private addGraphTitles(): void {
+      let graphDataIndexPos: number = 0;
+      let chartsDisplayedIndexPos: number = 0;
+
+      while (graphDataIndexPos < this.graphData.length - 1) {
+        let lengthOfEachDisplayedGraph: number = this.candleChartsForDisplay[chartsDisplayedIndexPos].length;
+        let dimensionTextIndexPos: number = (graphDataIndexPos + lengthOfEachDisplayedGraph) - 1;
+
+        let dimensionTextData: string = this.graphData[dimensionTextIndexPos]['dimensionText'];
+
+        this.graphTitles.set(chartsDisplayedIndexPos, dimensionTextData);
+
+        chartsDisplayedIndexPos++;
+        graphDataIndexPos = dimensionTextIndexPos
+      }
+    }
+
+    public getGraphTitles(indexPos: number): any {
+      return this.graphTitles.get(indexPos);
+    }
+
     public candle_ChartOptions = {
         legend: 'none',
         bar: { groupWidth: '25%' }, // Remove space between bars.
         candlestick: {
             fallingColor: { strokeWidth: 0, fill: '#A9A9A9' }, // red
             risingColor: { strokeWidth: 0, fill: '#A9A9A9' }   // green
+        },
+        vAxis: {
+          viewWindow: {
+            min: 0,
+            max: 5
+          },
+          ticks: [0, 1, 2, 3, 4, 5] 
         }
     };
+
+    public requestSurveyCSV(): void {
+      let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+      let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
+
+      let emailAddress: string = userProfile['email'];
+
+      this.kumulosService.sendRequestSurveyCSV(activeCityVersion, emailAddress)
+        .subscribe(responseJSON => {
+          console.log(responseJSON.payload)
+          this.showSnackBar();
+      });
+    }
+
+    public showSnackBar(): void {
+    this.snackBar.openFromComponent(EmailSentSnackBarComponent, {
+      duration: 1000,
+    });
+  } 
+
   
 }

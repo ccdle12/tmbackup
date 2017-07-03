@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
+import { MdSnackBar } from '@angular/material';
+import { EmailSentSnackBarComponent } from '../my_own_results/myOwnResults.component';
+
 
 @Component({
   selector: 'organizationResultsComponent',
@@ -12,7 +15,7 @@ export class OrganizationResultsComponent {
   public comboCharts: Array<any>;
   public graphData: Array<any>;
 
-  constructor(public router: Router, public kumulosService: KumulosService) {
+  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar) {
     this.initializeMemberVariables();
     this.getOwnResultsData();
   }
@@ -114,8 +117,30 @@ export class OrganizationResultsComponent {
     this.router.navigateByUrl('/main');
   }
 
+  public requestSurveyCSV(): void {
+    let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+    let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
+
+    let emailAddress: string = userProfile['email'];
+
+    console.log("Active city version: ", activeCityVersion);
+    console.log("emailAddress: ", emailAddress);
+
+    this.kumulosService.sendRequestSurveyCSV(activeCityVersion, emailAddress)
+      .subscribe(responseJSON => {
+        console.log(responseJSON.payload);
+        this.showSnackBar();
+    });
+  }
+
   public activeBackgroundColor() {
         return { 'background-color': '#1e90ff',
                   'color': 'white' };
-    }   
+    }
+
+  public showSnackBar(): void {
+    this.snackBar.openFromComponent(EmailSentSnackBarComponent, {
+      duration: 1000,
+    });
+  }   
 }

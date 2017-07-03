@@ -1,20 +1,21 @@
 <div class="container">
     <div class="row" id="cardsContainer">
      <md-card class="col-sm-2" *ngFor="let userProfile of userProfiles; let i = index">
-        <md-card-title>{{userProfile.app_metadata.user_role}}</md-card-title>
-        <md-card-subtitle>{{userProfile.given_name}} {{userProfile.family_name}}</md-card-subtitle>
+        <h4>{{userProfile.app_metadata.user_role}}</h4>
+        <h6>{{getUsersName(i)}}</h6>
 
-        <img id="centerImage" md-card-md-image class="thumbnail" [src]="userProfile.picture"/>
+        <!--<img id="centerImage" md-card-md-image class="thumbnail" [src]="userProfile.picture"/>-->
+        <img id="centerImage" [src]="userProfile.picture"/>
         
         <md-card-content>
-            <p>{{userProfile.headline}}</p>
-            <p>{{userProfile.email}}</p>
+            <h6>{{getUsersTitle(i)}}</h6>
+            <h6>{{userProfile.email}}</h6>
         </md-card-content>
 
-        <md-card-actions>
+        <!--<md-card-actions>
             <button md-button>EDIT</button>
             <button md-button>DELETE</button>
-        </md-card-actions>
+        </md-card-actions>-->
      </md-card>
     </div>
 </div>

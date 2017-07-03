@@ -23,6 +23,8 @@ export class KumulosService {
     private getWebAggregatesByVersionandUserURI: string;
     private getWebAggregatesForOrganizationResultsURI: string;
     private getWebWhiskerBoxDataByVersionURI: string;
+    private requestSurveyURI: string;
+    
 
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
@@ -46,6 +48,7 @@ export class KumulosService {
         this.getWebAggregatesByVersionandUserURI = "webgetAggregatesByVersionandUser.json/";
         this.getWebAggregatesForOrganizationResultsURI =  "webgetAggregatesByVersion.json/";
         this.getWebWhiskerBoxDataByVersionURI = "webgetWhiskerBoxDatabyVersion.json/";
+        this.requestSurveyURI = "requestSurveyCSV.json/";
     }
 
     public createAuthorizationHeader(): Headers {
@@ -53,6 +56,7 @@ export class KumulosService {
 
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         headers.append('Authorization', 'Basic ZWUyNjNlMjktMjBjNy00NzFmLTkyZWItNWZlMzRhMTllODBmOmx2WElGZUlpQlNkOXErNnVIbXFEUlJrUVA4TzNNVXlKdmV3MA=='); 
+        
 
         return headers;
     }
@@ -317,6 +321,41 @@ export class KumulosService {
         let body: string = urlSearchParams.toString();
 
         return this.http.post(this.domain + this.getWebWhiskerBoxDataByVersionURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            });
+    }
+
+    public sendRequestSurveyCSV(activeVersionNumber: string, emailAddress: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[version]', activeVersionNumber);
+        urlSearchParams.append('params[emailAddress]', emailAddress);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.requestSurveyURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            });
+    }
+
+    public requestIndividualSurveyCSV(activeVersionNumber: string, emailAddress: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[version]', activeVersionNumber);
+        urlSearchParams.append('params[emailAddress]', emailAddress);
+        urlSearchParams.append('params[individualDataOnly]', '1');
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.requestSurveyURI, body, {headers: headers})
             .map(response => {
                 console.log(response.json());
                 return response.json();

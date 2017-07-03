@@ -1,15 +1,18 @@
 /*Team Admin*/
 
 md-card {
-    height: 350px;
-    width: 300px;
+    /*height: 350px;*/
+    /*width: 300px;*/
+    height: 200px;
+    width: 200px;
     margin: 0 0 25px 10px;
+    padding: 2.5px;
     /*position:relative;*/
 }
 
 #cardsContainer {
     text-align: center;
-    padding-left: 100px;
+    padding-left: 50px;
 }
 
 img {
@@ -22,54 +25,8 @@ md-card-content {
 }
 
 #centerImage {
-  margin-left: 70px;
+  border-radius: 50%;
+  text-align: center;
+  width: 70px; /*set the width or max-width*/
+  height: auto; /*this makes sure to maintain the aspect ratio*/
 }
-/*#userProfileRow {
-  display: table; 
-}*/
-
-/*.userProfileDisplay {*/
-  /*text-align: center;*/
-  /*background: blue;*/
-  /*float: none;*/
-  /*display: table-cell;*/
-/*}*/
-
-/*.userProfileDisplay:hover {
-  background:blue;
-  cursor: pointer;
-}
-
-.userProfileDisplay p {
-  font-size: 15px;
-}*/
-
-/*.thumbnail {*/
-  /*text-align: center;*/
-  /*height:200px;*/
-  /*margin-bottom: 25px;*/
-/*}*/
-
-/*.teamAdmin-card {*/
-  /*width: 300px;*/
-   /*text-align: center;*/
-  /*background: blue;*/
-  /*float: none;*/
-  /*display: table-cell;*/
-/*}*/
-
-/*.gridListdemoBasicUsage md-grid-list {*/
-  /*margin: 8px;*/
-/*}*/
-
-/*.gridListdemoBasicUsage .gray {*/
-  /*background: #f5f5f5;*/
-/*}*/
-
-/*.gridListdemoBasicUsage md-grid-tile {*/
-  /*transition: all 400ms ease-out 50ms;*/
-/*}*/
-
-/*md-grid-tile {
-  background: lightblue;
-}*/

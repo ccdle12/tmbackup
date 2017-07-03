@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
+import { MdSnackBar } from '@angular/material';
+
 
 @Component({
   selector: 'myOwnResultsComponent',
@@ -11,16 +13,16 @@ export class MyOwnResultsComponent {
 
   public comboCharts: Array<any>;
   public graphData: Array<any>;
+  public graphTitles: Map<number, string>;
 
-  constructor(public router: Router, public kumulosService: KumulosService) {
+  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar) {
     this.initializeMemberVariables();
     this.getOwnResultsData();
-    
   }
 
   private initializeMemberVariables(): void {
-    this.graphData = new Array();
     this.comboCharts = new Array();
+    this.graphData = new Array();
   }
 
   private getOwnResultsData(): any { 
@@ -75,8 +77,6 @@ export class MyOwnResultsComponent {
         }
       }
 
-      // console.log("CREATING COMBOCHART");
-      // console.log("current area text: " + areaText);
       let comboChart = {
             chartType: 'ComboChart',
             dataTable: dataTableArray,
@@ -121,4 +121,29 @@ export class MyOwnResultsComponent {
       this.router.navigateByUrl('/main');
     }
 
+    public requestSurveyCSV(): void {
+      let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+      let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
+
+      let emailAddress: string = userProfile['email'];
+
+      this.kumulosService.requestIndividualSurveyCSV(activeCityVersion, emailAddress)
+        .subscribe(responseJSON => {
+          console.log(responseJSON.payload)
+          this.showSnackBar();
+      });
+  }
+
+  public showSnackBar(): void {
+    this.snackBar.openFromComponent(EmailSentSnackBarComponent, {
+      duration: 1000,
+    });
+  }
 }
+
+@Component({
+  selector: 'emailSentSnackBar',
+  templateUrl: '../emailSentSnackBarComponent.html',
+  styleUrls: ['../emailSentSnackBarComponent.css'],
+})
+export class EmailSentSnackBarComponent {}
