@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService }       from './shared/services/auth.service';
 import { LocalStorageService } from './shared/services/localStorage.service';
-
-
-
+import { KumulosService } from './shared/services/kumulos.service';
+import { MdDialog } from '@angular/material';
 
 import {
     Router,
@@ -44,10 +43,11 @@ export class AppComponent {
 
    constructor(private router: Router,  private ngZone: NgZone,
                private renderer: Renderer, public authService: AuthService, 
-               public localStorageService: LocalStorageService) {
+               public localStorageService: LocalStorageService, public dialog: MdDialog) {
 
         this.authService.handleAuthentication();
         this.authService.revertToDemoIfTokenExpires();
+        this.inSeeDemo();
 
         router.events.subscribe((event: RouterEvent) => {
             this.navigationInterceptor(event);
@@ -105,4 +105,106 @@ export class AppComponent {
             );
         });
     }
+
+    public inSeeDemo(): boolean {
+        let urlLocation = window.location.pathname;
+        return !this.authService.isAuthenticated() && urlLocation === "/main" ? true : false;
+    }
+
+    public editUserDetails(): void {
+        this.dialog.open(EditUserDetailsDialog)
+    }
+}
+
+@Component({
+  selector: 'editUserDetailDialog',
+  templateUrl: './shared/dialogs/editUserDetailDialog.html',
+  styleUrls: ['./shared/dialogs/editUserDetailDialog.css']
+})
+export class EditUserDetailsDialog {
+
+  userName: string;
+  userTitle: string;
+
+  httpRequestFlag: boolean;
+  
+  @ViewChild('spinnerElement') loadingElement: ElementRef;
+
+  constructor(public kumulosService: KumulosService, public authService: AuthService) { 
+      this.setUserNameAndTitle();
+  }
+
+  public setUserNameAndTitle(): void {
+    this.userName = this.getUserName();
+    this.userTitle = this.getUserTitle();
+  }
+
+  public updateUserDetails(): void {
+    let userId: string = this.getUserId();
+    console.log(userId);
+    this.httpRequestFlag = true;
+    this.kumulosService.updateUserNameAndJobTitle(userId, this.userName, this.userTitle)
+        .subscribe(responseJSON => {
+            console.log(responseJSON.payload);
+            this.updateUserProfile();
+            this.reloadPage();
+        }
+        );
+  }
+
+  private getUserId(): string {
+    let userProfile: JSON = this.getUserProfile();
+    return userProfile['user_id'];
+  }
+
+  private getUserName(): string {
+    let userProfile: JSON = this.getUserProfile();
+    console.log(this.isUserMetaData(userProfile));
+    console.log(userProfile['user_metadata']['name']);
+    return this.isUserMetaData(userProfile) ? userProfile['user_metadata']['name'] : "";
+  }
+
+  private getUserTitle(): string {
+      let userProfile: JSON = this.getUserProfile();
+      return this.isUserMetaData(userProfile) ? userProfile['user_metadata']['jobTitle'] : "";
+  }
+
+  private getUserProfile(): JSON {
+    let parsedUserProfile: JSON = JSON.parse(localStorage.getItem('userProfile')); 
+    return parsedUserProfile;
+  }
+
+  private isUserMetaData(userProfile: JSON): boolean {
+    return userProfile['user_metadata'] ? true : false;
+  }
+
+
+  private updateUserProfile(): void {
+    this.requestUpdatedUserProfile();
+  }
+
+  private requestUpdatedUserProfile(): void {
+      let userId: string = this.getUserId();
+      this.kumulosService.getUserProfile(userId)
+        .subscribe(responseJSON => {
+            let userProfile = JSON.stringify(responseJSON.payload);
+            this.cacheUserProfile(userProfile);
+            this.cacheUserName(userProfile);
+            this.reloadPage();
+            
+    });
+  }
+
+  private cacheUserProfile(userProfile: string): void {
+    localStorage.setItem('userProfile', userProfile);
+  }
+
+  private cacheUserName(userProfile: string): void {
+    let userName: string = this.getUserName();
+    localStorage.setItem('userName', userName);
+  }
+
+  private reloadPage(): void {
+      window.location.reload();
+  }
 }

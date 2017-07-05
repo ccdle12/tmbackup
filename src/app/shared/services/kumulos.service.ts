@@ -24,7 +24,9 @@ export class KumulosService {
     private getWebAggregatesForOrganizationResultsURI: string;
     private getWebWhiskerBoxDataByVersionURI: string;
     private requestSurveyURI: string;
-    
+    private updateNameAndTitleURI: string;
+    private userProfileURI: string;
+    private inviteUsersURI: string;
 
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
@@ -49,6 +51,9 @@ export class KumulosService {
         this.getWebAggregatesForOrganizationResultsURI =  "webgetAggregatesByVersion.json/";
         this.getWebWhiskerBoxDataByVersionURI = "webgetWhiskerBoxDatabyVersion.json/";
         this.requestSurveyURI = "requestSurveyCSV.json/";
+        this.updateNameAndTitleURI = "webUpdateNameTitle.json/";
+        this.userProfileURI = "webGetUserProfile.json/";
+        this.inviteUsersURI = "webInviteUser.json/";
     }
 
     public createAuthorizationHeader(): Headers {
@@ -306,7 +311,6 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getWebAggregatesForOrganizationResultsURI, body, {headers: headers})
             .map(response => {
-                // console.log(response.json());
                 return response.json();
             });
     }
@@ -360,5 +364,57 @@ export class KumulosService {
                 console.log(response.json());
                 return response.json();
             });
+    }
+
+    public updateUserNameAndJobTitle(userId: string, name: string, jobTitle: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[userId]', userId);
+        urlSearchParams.append('params[name]', name);
+        urlSearchParams.append('params[jobTitle]', jobTitle);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.updateNameAndTitleURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            });
+    }
+
+    public getUserProfile(userId: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[userId]', userId);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.userProfileURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            });
+    }
+
+    public inviteUser(email: string, cityName: string, cityId: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[email]', email);
+        urlSearchParams.append('params[city]', cityName);
+        urlSearchParams.append('params[city_id]', cityId);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.inviteUsersURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
     }
 }

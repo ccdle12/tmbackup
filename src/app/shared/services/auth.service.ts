@@ -9,7 +9,6 @@ declare var Auth0Lock: any;
 @Injectable()
 export class AuthService {
 
-options: any;
 lock: any;
 
 constructor(public router: Router) { 
@@ -28,11 +27,8 @@ this.lock = new Auth0Lock('dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V','tmfdmmdev.eu.auth0
 
 public handleAuthentication(): void {
   this.lock.on("authenticated", (authResult) => {
-    // console.log("Auth Result: ", authResult);
-    // console.log("WINDOWS ORIGIN: ", window.location.origin);
-
+    console.log("handle auth called");
     this.lock.getUserInfo(authResult.accessToken, (error, userProfile) => {
-      // console.log("AUTHENTICATING USER FROMA AUTH0");
 
       if (error) {
         console.log("Error: ", error);
@@ -42,8 +38,6 @@ public handleAuthentication(): void {
       localStorage.clear();
 
       this.persistDataToLocalStorage(userProfile, authResult);
-
-      // console.log("User profile: ", userProfile);
 
       this.handleRouting(userProfile);
     });
@@ -60,21 +54,23 @@ private persistDataToLocalStorage(userProfile: any, authResult: any): void {
       localStorage.setItem('access_token', authResult.accessToken);
       localStorage.setItem('id_token', authResult.idToken);
 
-      if (this.userHasNameInMetaData(userProfile)) {
-        localStorage.setItem('userName', JSON.stringify(userProfile.user_metadata.name));
-      } else if (this.userDoesNotHaveMetaData(userProfile)) {
-        localStorage.setItem('userName', JSON.stringify(userProfile.email)); 
+      if (this.userHasMetaData(userProfile)) {
+        if (this.userHasNameInMetaData(userProfile)) 
+          localStorage.setItem('userName', JSON.stringify(userProfile.user_metadata.name));
+        else 
+          localStorage.setItem('userName', JSON.stringify(userProfile.name));
+
       } else {
-        localStorage.setItem('userName', JSON.stringify(userProfile.name));
+        localStorage.setItem('userName', JSON.stringify(userProfile.email)); 
       }
 }
 
 private userHasNameInMetaData(userProfile: any): boolean {
-  return userProfile.user_metadata.name ? true : false;
+  return userProfile.user_metadata.name != null ? true : false;
 }
 
-private userDoesNotHaveMetaData(userProfile: any): boolean {
-  return userProfile.user_metadata ? false: true;
+private userHasMetaData(userProfile: any): boolean {
+  return userProfile.user_metadata != null ? true: false;
 }
 
 private handleRouting(userProfile: any): void {
@@ -104,12 +100,9 @@ public isAuthenticated(): boolean {
 }
 
 public revertToDemoIfTokenExpires(): void {
-  // console.log('revert to demo called');
   let user = localStorage.getItem('user');
 
-  // console.log('USER: ', user);
    if (user && !this.isAuthenticated()) {
-    // console.log("AUTH EXPIRED, REVERTING TO MAIN");
     localStorage.clear();
     this.router.navigate(['welcome']);
    }
@@ -138,19 +131,27 @@ public isVerified(): boolean {
 
 public inDemoMode(): boolean {
   if (!this.isVerified()) {
-    // console.log('user not verified');
+    // console.log("not verified");
     return true;
   }
 
   if (this.isVerified() && this.isLeaderConsultant()) {
-    // console.log('user is verified and a leader');
+    
+    // console.log("verified and leader or consultant");
     return false;
   }
     
-  if (this.isVerified() && !this.isLeaderConsultant()) {    
-    // console.log('user is verified and is not a leader');
+  if (this.isVerified() && !this.isLeaderConsultant()) { 
+    // console.log("verified but not leader or consultant");   
     return true;
   } 
+}
+
+public canSaveSurvey(): boolean {
+  if (!this.isVerified()) {
+
+    return true;
+  }
 }
 
 }

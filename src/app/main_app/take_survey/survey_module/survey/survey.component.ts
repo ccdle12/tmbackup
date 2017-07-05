@@ -135,7 +135,12 @@ export class SurveyComponent {
   public saveSurveyInput(): void {
     console.log('saveSurveyClicked');
 
-    if (this.authService.inDemoMode()) {
+    // if (this.authService.inDemoMode()) {
+    //   this.dialog.open(InDemoModeDialog);
+    //   return;
+    // }
+
+    if (this.authService.canSaveSurvey()) {
       this.dialog.open(InDemoModeDialog);
       return;
     }

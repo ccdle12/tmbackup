@@ -16,14 +16,18 @@ import { NotFoundComponent } from './not_found/notFound.component';
 import { AuthCallbackComponent } from './authCallback/authCallback.component';
 
 import { EmailSentSnackBarComponent } from './main_app/view_results/my_own_results/myOwnResults.component';
+import { MdProgressSpinnerModule, MdDialogModule, MdMenuModule, MdIconModule, MdInputModule, MdButtonModule } from '@angular/material';
+import { EditUserDetailsDialog } from './app.component';
+import { InviteUserDialog } from './main_app/team_admin/teamAdmin.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
-
-import { MdProgressSpinnerModule, MdDialogModule, MdMenuModule, MdIconModule } from '@angular/material';
+import { ControlMessagesComponent } from './shared/dialogs/controlMessages.component';
 
 @NgModule({
-  imports: [BrowserModule, BrowserAnimationsModule, FormsModule, HttpModule, appRouting, MdProgressSpinnerModule, MdDialogModule, MdMenuModule, MdIconModule],
-  declarations: [AppComponent, WelcomeComponent, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, NotFoundComponent, AuthCallbackComponent, SaveSnackBarComponent, EmailSentSnackBarComponent],
-  entryComponents: [RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, SaveSnackBarComponent, EmailSentSnackBarComponent],
+  imports: [BrowserModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, HttpModule, appRouting, MdProgressSpinnerModule, MdDialogModule, MdMenuModule, MdIconModule, MdInputModule, MdButtonModule],
+  declarations: [AppComponent, WelcomeComponent, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, NotFoundComponent, AuthCallbackComponent, 
+                 SaveSnackBarComponent, EmailSentSnackBarComponent, EditUserDetailsDialog, InviteUserDialog, ControlMessagesComponent],
+  entryComponents: [RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, SaveSnackBarComponent, EmailSentSnackBarComponent, EditUserDetailsDialog, InviteUserDialog],
   providers: [AuthService, WelcomeGuardService, LocalStorageService, KumulosService],
   bootstrap: [AppComponent]
 })

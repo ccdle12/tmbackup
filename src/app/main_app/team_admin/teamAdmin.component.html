@@ -1,5 +1,9 @@
 <div class="container">
-    <div class="row" id="cardsContainer">
+        <div class="row">
+            <!--<button md-button class="col-xs-3">Add New User</button>-->
+            <button md-mini-fab class="col-xs-3" (click)="addNewUser()"><md-icon>add</md-icon></button>
+        </div>
+    <div class="row"  id="cardsContainer">
      <md-card class="col-sm-2" *ngFor="let userProfile of userProfiles; let i = index">
         <h4>{{userProfile.app_metadata.user_role}}</h4>
         <h6>{{getUsersName(i)}}</h6>

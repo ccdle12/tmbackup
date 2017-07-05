@@ -5,12 +5,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { registrationRouting } from './registration.routing';
 import { RegistrationComponent } from './registration.component';
 
-import { ControlMessagesComponent } from './controlMessages.component';
+// import { ControlMessagesComponent } from './controlMessages.component';
 import { ValidationService } from '../shared/services/validation.service';
 
 @NgModule({
     imports: [registrationRouting, CommonModule, ReactiveFormsModule],
-    declarations: [RegistrationComponent, ControlMessagesComponent],
+    declarations: [RegistrationComponent],
     providers: [ValidationService],
 })
 

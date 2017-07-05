@@ -74,7 +74,7 @@ export class MainAppSectionComponent {
     }
 
     public activeBackgroundColor() {
-        return { 'background-color': '#1e90ff',
+        return { 'background-color': '#62B3D1',
                   'color': 'white' };
     }
 };

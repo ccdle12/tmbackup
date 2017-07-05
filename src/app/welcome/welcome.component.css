@@ -1,8 +1,19 @@
+body {
+  display: flex;
+  min-height: 100%;
+}
+
+/*#mainWelcome {
+  max-height: 50px;
+height: 100%;
+}*/
+
 /* Sponsor Banner */
 #togetherAndSponsorArea {
   padding-top: 25px;
-  padding-bottom: 25px;
   background: lightgrey;
+  flex: 1;
+  height: 250px;
 }
 
 .centerPosition {
@@ -11,10 +22,50 @@
 	display: block;
 }
 
-#togetherAssetBanner {
-  padding-bottom: 20px;
-}
+
 
 #welcomeComponent {
-  margin-top: 80px;
+  margin-top: 70px;
+}
+
+#smartCityPerson {
+  float: left;
+  margin-right: 50px;
+  /*width: 340px;  you can use % */
+  /*height: auto;*/
+  /*height: 100px;*/
+  /*display: inline-block;*/
+  /*overflow: hidden;*/
+  /*height: 100px;*/
+  /*width: auto;*/
+  /*transform: scale(1,1);*/
+}
+
+#tmForumBanner {
+  width: 800px; /* you can use % */
+  height: auto;
+  margin-top: 40px;
+  margin-bottom: 65px;
+}
+
+#sloganBanner {
+  width: 800px; /* you can use % */
+  height: auto;
+  margin-left: 25px;
+}
+
+#seeDemo {
+  background-color: #EEB242;
+  /*height: 25px;*/
+}
+
+#footer {
+    clear: both;
+    position: relative;
+    z-index: 10;
+    height: 3em;
+    /*margin-top: -3em;*/
+    background-color: #88C158;
+    /*margin-top: 100px;*/
+    /*padding-top: 100px*/
 }

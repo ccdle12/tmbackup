@@ -12,33 +12,34 @@
             <li *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserName()}} -</li>
             <li *ngIf="this.authService.isAuthenticated()"> {{this.localStorageService.getUserCity()}} -</li>
             <li *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserRole()}}</li>
-            <li *ngIf="!this.authService.isAuthenticated()">Demo User -</li>
-            <li *ngIf="!this.authService.isAuthenticated()"> Demo Organization -</li>
-            <li *ngIf="!this.authService.isAuthenticated()">Demo Role</li>
-            <li></li>
+            <li *ngIf="inSeeDemo()">Demo User -</li>
+            <li *ngIf="inSeeDemo()"> Demo Organization -</li>
+            <li *ngIf="inSeeDemo()">Demo Role</li>
          </ul>
-
-          <img class='nav-avatar img-circle' [src]="getUserAvatar()"/>
-          <md-icon  id="menuIcon" [mdMenuTriggerFor]="menu" onMouseOver="this.style.cursor='pointer'">md_more_vert</md-icon>      
-        
-        </div>  
+          
+        </div>      
+    
+        <img *ngIf="this.authService.isAuthenticated()" class='nav-avatar img-circle' [src]="getUserAvatar()"/>
+        <md-icon *ngIf="this.authService.isAuthenticated()"  id="menuIcon" [mdMenuTriggerFor]="menu" onMouseOver="this.style.cursor='pointer'">md_more_vert</md-icon> 
     </nav>
 
       <md-menu #menu="mdMenu">
-        <button md-menu-item *ngIf="authService.isAuthenticated()">
-          <md-icon></md-icon>
-          <span></span>
+        <button md-menu-item *ngIf="authService.isAuthenticated()" (click)="editUserDetails()" id="firstMenuButton">
+          <span>View/Edit Details</span>
         </button>
+        
         <button md-menu-item *ngIf="authService.isAuthenticated()" (click)="this.authService.logout()">
           <span>Log out</span>
         </button>
       </md-menu>
-  </header>
 
+  </header>
 
 <main>
   <router-outlet>
   </router-outlet>
 </main>
+
+
 
 

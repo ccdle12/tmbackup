@@ -30,3 +30,12 @@ md-card-content {
   width: 70px; /*set the width or max-width*/
   height: auto; /*this makes sure to maintain the aspect ratio*/
 }
+
+button {
+  background: #1e90ff;
+  color: white;
+  margin-top: 10px;
+  margin-right: 80px;
+  margin-bottom: 15px;
+  float: right;
+}
