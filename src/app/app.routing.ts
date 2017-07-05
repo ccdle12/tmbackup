@@ -5,8 +5,7 @@ import { NotFoundComponent} from './not_found/notFound.component';
 import { WelcomeGuardService } from './shared/services/welcome-guard.service';
 import { AuthCallbackComponent } from './authCallback/authCallback.component';
 
-import { MainAppModule } from './main_app/mainApp.module'
-import { RegistrationModule } from './registration/registration.module'
+import { MainAppModule } from './main_app/mainApp.module';
 
 const appRoutes: Routes = [
     {
@@ -17,10 +16,6 @@ const appRoutes: Routes = [
     {
         path: 'main',
         loadChildren: 'app/main_app/mainApp.module#MainAppModule',
-    },
-    {
-        path: 'registration',
-        loadChildren: './registration/registration.module#RegistrationModule',
     },
     {
         path: 'callback',

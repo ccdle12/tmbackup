@@ -43,8 +43,7 @@ export class CaseStudiesComponent {
         }
     }
 
-    public backToTakeSurvey(): void {
-      window.location.reload();
-      this.router.navigateByUrl('/main/takesurvey');
-  }
+     public backToTakeSurvey(): void {
+      this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/takesurvey'));
+    }
 }

@@ -9,15 +9,24 @@ nav a {
     color:white;
 }
 
-button {
+/*button {
   background: #1e90ff;
   color: white;
-}
+}*/
 
 #candleStickChart {
+    margin-top: 0px;
     margin-bottom: 50px;
+}
+
+h5 {
+    margin-bottom: 0px;
 }
 
 #sendRequest {
     float: right;
+}
+
+.whiteText {
+    color:white;
 }

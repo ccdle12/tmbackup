@@ -128,8 +128,7 @@ export class SurveyComponent {
     }
 
   public backToTakeSurvey(): void {
-    window.location.reload();
-    this.router.navigateByUrl('/main/takesurvey');
+    this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/takesurvey'));
   }
 
   public saveSurveyInput(): void {

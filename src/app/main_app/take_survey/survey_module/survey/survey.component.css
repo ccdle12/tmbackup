@@ -18,11 +18,6 @@ md-button-toggle {
   text-align: center;
 }
 
-button {
-  background: #1e90ff;
-  color: white;
-}
-
 #navigationButton {
   margin-right: 10px;
 }
@@ -44,4 +39,8 @@ nav  {
 nav a {
     background-color: darkgrey;
     color:white;
+}
+
+.whiteText {
+  color: white;
 }

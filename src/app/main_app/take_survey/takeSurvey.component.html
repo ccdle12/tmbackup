@@ -19,13 +19,15 @@
 </div>-->
 
 <div *ngIf="inChildComponents()" class="container">
-    <div class="row" id="cardsContainer" *ngFor="let eachSurvey of surveyModules; let i = index">
-        <h4>{{surveyModules[i][0]}}</h4>
+    <div class="row" *ngFor="let eachSurvey of surveyModules; let i = index">
+        <h4 class="moduleHeader">{{surveyModules[i][0]?.areaText}}</h4>
+        <div id="cardsContainer">
         <md-card class="col-xs-2" *ngFor="let test of eachSurvey; let j = index" (click)="navigateToSurveyModule(i, j)">
-             <h5>{{surveyModules[i][j]?.dimensionText}}</h5>
-        <div class="progressBox" [ngStyle]="changeSurveyProgressBackground(i)">
+             <h6>{{surveyModules[i][j]?.dimensionText}}</h6>
+        <div class="progressBox" [ngStyle]="changeSurveyProgressBackground(i, j)">
             <p>{{surveyModules[i][j]?.surveyCount}} / {{surveyModules[i][j]?.statementCount}}</p>
         </div>
         </md-card>
+        </div>
     </div>
 </div>

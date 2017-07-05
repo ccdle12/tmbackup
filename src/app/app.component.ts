@@ -108,7 +108,9 @@ export class AppComponent {
 
     public inSeeDemo(): boolean {
         let urlLocation = window.location.pathname;
-        return !this.authService.isAuthenticated() && urlLocation === "/main" ? true : false;
+        let urlRegex = '\/main\/?|\/main\/.*';
+        
+        return !this.authService.isAuthenticated() && urlLocation.match(urlRegex) ? true : false;
     }
 
     public editUserDetails(): void {
@@ -147,7 +149,6 @@ export class EditUserDetailsDialog {
         .subscribe(responseJSON => {
             console.log(responseJSON.payload);
             this.updateUserProfile();
-            this.reloadPage();
         }
         );
   }

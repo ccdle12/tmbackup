@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
+import { AuthService } from '../../../shared/services/auth.service';
 import { MdSnackBar } from '@angular/material';
 import { EmailSentSnackBarComponent } from '../my_own_results/myOwnResults.component';
 
@@ -19,7 +20,7 @@ export class TeamDynamicsComponent {
 
   public graphTitles: Map<number, string>;
 
-  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar) {
+  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar, public authService: AuthService) {
     this.initializeMemberVariables();
     this.getTeamDynamicsData();
   }
@@ -46,12 +47,11 @@ export class TeamDynamicsComponent {
   }
 
    public backToDashboard(): void {
-    window.location.reload();
-    this.router.navigateByUrl('/main');
+    this.authService.backToDashboard();
   }
 
   public activeBackgroundColor() {
-        return { 'background-color': '#1e90ff',
+        return { 'background-color': '#62B3D1',
                   'color': 'white' };
     }
 
@@ -94,13 +94,16 @@ export class TeamDynamicsComponent {
       let boxValueHigh: number = Number(currentGraphData['boxValueHigh']);
       let boxValueQ1: number = Number(currentGraphData['boxValueQ1']);
       let boxValueQ2: number = Number(currentGraphData['boxValueQ2']);
+      let statementText: string = currentGraphData['statementText'];
+
+      let toolTip: string = statementId + ": " + statementText;
       
 
       if (currentDimensionID == 0 || currentDimensionID == nextDimensionID) {
-        this.sortedDataForEachGraph.unshift([statementId, boxValueLow, boxValueQ1, boxValueQ2, boxValueHigh]);
+        this.sortedDataForEachGraph.unshift([statementId, boxValueLow, boxValueQ1, boxValueQ2, boxValueHigh, toolTip]);
       } else {
-        this.sortedDataForEachGraph.unshift([statementId, boxValueLow, boxValueQ1, boxValueQ2, boxValueHigh]);
-        this.sortedDataForEachGraph.unshift(['Sections', 'Low', 'Opening value', 'Closing value', 'High']);
+        this.sortedDataForEachGraph.unshift([statementId, boxValueLow, boxValueQ1, boxValueQ2, boxValueHigh, toolTip]);
+        this.sortedDataForEachGraph.unshift(['Sections', 'Low', 'Opening value', 'Closing value', 'High', {role: 'tooltip'}]);
         this.candleChartsForDisplay.unshift(this.sortedDataForEachGraph);
         console.log(this.sortedDataForEachGraph);
         this.sortedDataForEachGraph = [];
@@ -136,6 +139,11 @@ export class TeamDynamicsComponent {
         candlestick: {
             fallingColor: { strokeWidth: 0, fill: '#A9A9A9' }, // red
             risingColor: { strokeWidth: 0, fill: '#A9A9A9' }   // green
+        },
+        tooltip: {
+          trigger: 'focus',
+          ignoreBounds: 'false',
+          isHtml: 'true',
         },
         vAxis: {
           viewWindow: {

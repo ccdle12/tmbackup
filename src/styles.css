@@ -44,7 +44,9 @@ h1 {
 
 .defaultBtn {
   background-color: #62B3D1;
+  color: white;
 }
+
 
 .btn {
   color: white;
@@ -57,4 +59,8 @@ h1 {
     height: 3em;
     margin-top: -3em;
     background-color: #88C158;
+}
+
+.orangeBtn {
+  background-color: #EEB242;
 }

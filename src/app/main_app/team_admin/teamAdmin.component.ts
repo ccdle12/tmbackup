@@ -79,7 +79,7 @@ export class InviteUserDialog {
 
   constructor(private formBuilder: FormBuilder, public kumulosService: KumulosService, 
               public renderer: Renderer, private ngZone: NgZone) {
-
+    
     this.inviteUserForm = this.formBuilder.group({
      email: ['', [Validators.required, ValidationService.emailValidator]],
     });

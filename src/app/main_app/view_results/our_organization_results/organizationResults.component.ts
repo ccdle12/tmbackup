@@ -4,6 +4,8 @@ import { KumulosService } from '../../../shared/services/kumulos.service';
 import { MdSnackBar } from '@angular/material';
 import { EmailSentSnackBarComponent } from '../my_own_results/myOwnResults.component';
 
+import { AuthService } from '../../../shared/services/auth.service';
+
 
 @Component({
   selector: 'organizationResultsComponent',
@@ -15,7 +17,8 @@ export class OrganizationResultsComponent {
   public comboCharts: Array<any>;
   public graphData: Array<any>;
 
-  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar) {
+  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar,
+             public authService: AuthService) {
     this.initializeMemberVariables();
     this.getOwnResultsData();
   }
@@ -113,9 +116,8 @@ export class OrganizationResultsComponent {
   }
 
   public backToDashboard(): void {
-    window.location.reload();
-    this.router.navigateByUrl('/main');
-  }
+      this.authService.backToDashboard();
+    }
 
   public requestSurveyCSV(): void {
     let activeCityVersion: string = localStorage.getItem('activeCityVersion');
@@ -134,7 +136,7 @@ export class OrganizationResultsComponent {
   }
 
   public activeBackgroundColor() {
-        return { 'background-color': '#1e90ff',
+        return { 'background-color': '#62B3D1',
                   'color': 'white' };
     }
 

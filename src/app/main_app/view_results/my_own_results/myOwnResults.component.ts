@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
+import { AuthService } from '../../../shared/services/auth.service';
 import { MdSnackBar } from '@angular/material';
 
 
@@ -15,7 +16,8 @@ export class MyOwnResultsComponent {
   public graphData: Array<any>;
   public graphTitles: Map<number, string>;
 
-  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar) {
+  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar, 
+              public authService: AuthService) {
     this.initializeMemberVariables();
     this.getOwnResultsData();
   }
@@ -97,7 +99,7 @@ export class MyOwnResultsComponent {
   }   
 
   public activeBackgroundColor() {
-        return { 'background-color': '#1e90ff',
+        return { 'background-color': '#62B3D1',
                   'color': 'white' };
     }
 
@@ -117,8 +119,7 @@ export class MyOwnResultsComponent {
     }
 
     public backToDashboard(): void {
-      window.location.reload();
-      this.router.navigateByUrl('/main');
+      this.authService.backToDashboard();
     }
 
     public requestSurveyCSV(): void {

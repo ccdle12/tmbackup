@@ -12,6 +12,7 @@ export class MainAppSectionComponent {
 
     constructor(public authService: AuthService, private router: Router, public kumulosService: KumulosService) {
         this.inDemoOrInMainApp();
+        console.log("Main Constructed");
      }
 
     private inDemoOrInMainApp(): void {

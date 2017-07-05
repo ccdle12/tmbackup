@@ -1,9 +1,10 @@
 md-card {
     height: 100px;
-    width: 180px;
+    width: 150px;
     margin: 0 0 25px 10px;
     position:relative;
     /*font-style: italic;*/
+    /*float: right;*/
 }
 
 md-card:hover {
@@ -22,8 +23,8 @@ md-card:hover {
 
 #cardsContainer {
     text-align:center;
-    padding-left: 70px;
-    margin-top: 50px;
+    /*padding-left: 70px;*/
+    margin-top: 5px;
 }
 
 .example-h2 {
@@ -39,4 +40,8 @@ md-card:hover {
 
 .example-margin {
   margin: 0 10px;
+}
+
+.moduleHeader {
+    /*float: left;*/
 }

@@ -76,24 +76,28 @@ export class TakeSurveyComponent {
 
   public navigateToSurveyModule(outerIndex: number, innerIndex: number) {
 
-    this.indexModuleSelected = this.calculateIndexPosition(outerIndex ,innerIndex)
+    this.indexModuleSelected = this.calculateIndexPosition(outerIndex, innerIndex);
+
+    console.log("selected module: " + this.indexModuleSelected);
  
     this.storeSelectedModule();
 
     this.router.navigateByUrl('/main/takesurvey/surveymodule');
   }
 
-  private calculateIndexPosition(outerIndex:number, innerIndex:number): number {
+  private calculateIndexPosition(outerIndexPosition:number, innerIndexPosition:number): number {
     let lastObjectPosition: number = 0;
-    let lengthOfCurrentModule = this.surveyModules[outerIndex].length - 1;
+    let lengthOfCurrentModule = this.surveyModules[outerIndexPosition].length - 1;
 
-    for (let k = 0; k < outerIndex + 1; k++) {
-      lastObjectPosition += this.surveyModules[k].length - 1;
+    for (let i = 0; i <= outerIndexPosition; i++) {
+      lastObjectPosition += this.surveyModules[i].length;
     }
 
     lastObjectPosition -= 1;
+    console.log("last object pos: " + lastObjectPosition);
+    console.log("innerIndexPos: " + innerIndexPosition);
 
-    let difference: number = lengthOfCurrentModule - innerIndex;
+    let difference: number = lengthOfCurrentModule - innerIndexPosition;
     let correctIndexPosition: number = lastObjectPosition - difference;
 
     return correctIndexPosition;
@@ -103,9 +107,9 @@ export class TakeSurveyComponent {
     localStorage.setItem('userSelectedModule', this.indexModuleSelected.toString());
   }
 
-  public changeSurveyProgressBackground(index: number): any {
-    let surveyCount = this.takeSurveyDashboard[index]['surveyCount'];
-    let statementCount = this.takeSurveyDashboard[index]['statementCount'];
+  public changeSurveyProgressBackground(i: number, j: number): any {
+    let surveyCount = this.surveyModules[i][j]['surveyCount'];
+    let statementCount = this.surveyModules[i][j]['statementCount'];
 
     if (surveyCount == 0) {
       return { 'background-color': 'grey' };
@@ -131,16 +135,12 @@ export class TakeSurveyComponent {
       nextAreaId = Number(this.takeSurveyDashboard[size - 1]['areaID']);
     
     let currentObject: any = this.takeSurveyDashboard[size];
-    let sectionTitle: string = currentObject['areaText'];
 
     if (currentAreaId == 0 || currentAreaId == nextAreaId) {
       this.sectionModules.unshift(currentObject);
     } else {
       this.sectionModules.unshift(currentObject);
-      this.sectionModules.unshift(sectionTitle);
-
       this.surveyModules.unshift(this.sectionModules);
-
       this.sectionModules = [];
     }
     return this.addModules(size - 1);
