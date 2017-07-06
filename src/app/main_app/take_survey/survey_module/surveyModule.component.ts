@@ -2,13 +2,14 @@ import { Component, Input  } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
 
+
 @Component({
   moduleId: module.id,
   selector: 'surveyModuel',
   templateUrl: './surveyModule.component.html',
   styleUrls: ['./surveyModule.component.css']
 })
-export class SurveyModuleComponent {
+export class SurveyModuleComponent  {
 
     constructor(public router: Router, public authService: AuthService) { 
           this.router.navigateByUrl('/main/takesurvey/surveymodule/survey');

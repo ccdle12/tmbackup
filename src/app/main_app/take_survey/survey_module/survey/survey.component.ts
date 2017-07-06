@@ -6,13 +6,16 @@ import { Router } from '@angular/router';
 import { MdDialog } from '@angular/material';
 import { MdSnackBar } from '@angular/material';
 
+import { ComponentCanDeactivate } from '../../../../shared/services/saveSurvey-guard.service';
+import {Observable} from 'rxjs/Observable';
+
 
 @Component({
-  selector: 'customerEngagementSurvey',
+  selector: 'survey',
   templateUrl: './survey.component.html',
   styleUrls: ['./survey.component.css']
 })
-export class SurveyComponent {
+export class SurveyComponent implements ComponentCanDeactivate {
 
     private activeCityVersion: string;
     public surveyQuestions: Array<JSON>;
@@ -31,7 +34,7 @@ export class SurveyComponent {
     private dimensionID: any;
     public dimensionText: any;
 
-    private userSaved: boolean;
+    public userSaved: boolean;
 
     private userSelectedModule: any;
     private sizeOfModules: number;
@@ -46,7 +49,11 @@ export class SurveyComponent {
       this.getWebSurveyQuestions(); 
     }
                 
-    @ViewChild('start') sidenav: MdSidenavModule;
+    canDeactivate(): Observable<boolean> | boolean {
+      return true;
+    }
+
+    // @ViewChild('start') sidenav: MdSidenavModule;
 
     private initializeMemberVariables(): void {
       this.userSelectedModule = localStorage.getItem('userSelectedModule');
@@ -77,6 +84,10 @@ export class SurveyComponent {
 
       this.activeCityVersion = localStorage.getItem('activeCityVersion');
 
+    }
+
+    public getUserSaved(): boolean {
+      return this.userSaved;
     }
 
     private getWebSurveyQuestions() {

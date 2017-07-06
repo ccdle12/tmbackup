@@ -3,6 +3,7 @@ import { ModuleWithProviders } from '@angular/core'
 
 import { TakeSurveyComponent } from './takeSurvey.component';
 
+
 const takeSurveyRoutes: Routes = [
     {
         path: '',
