@@ -10,7 +10,7 @@
             <control-messages [control]="inviteUserForm.controls.email"></control-messages>
         </md-input-container>
     </div>
-    <button md-button>Cancel</button>
+    <button md-button md-dialog-close>Cancel</button>
     <button md-button (click)="inviteNewUser()" [disabled]="!inviteUserForm.valid">Send Invite</button>
 </form>
 

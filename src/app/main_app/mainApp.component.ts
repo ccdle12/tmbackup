@@ -4,9 +4,10 @@ import { KumulosService } from '../shared/services/kumulos.service';
 
 @Component({
     selector: 'mainApp-page',
+    styleUrls: ['./mainApp.component.css'],
     template:
     `   
-    
+    <div class="marginBottomMainApp"></div>
     `
 }) 
 

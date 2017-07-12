@@ -1,7 +1,7 @@
 <router-outlet></router-outlet>
 
  <md-progress-bar *ngIf="inChildComponents()"
-          [color]="warm"
+          color="accent"
           [mode]="determinate"
           [value]="progressValue">
       </md-progress-bar>
@@ -25,9 +25,11 @@
         <md-card class="col-xs-2" *ngFor="let test of eachSurvey; let j = index" (click)="navigateToSurveyModule(i, j)">
              <h6>{{surveyModules[i][j]?.dimensionText}}</h6>
         <div class="progressBox" [ngStyle]="changeSurveyProgressBackground(i, j)">
-            <p>{{surveyModules[i][j]?.surveyCount}} / {{surveyModules[i][j]?.statementCount}}</p>
+            <p><strong>{{surveyModules[i][j]?.surveyCount}} / {{surveyModules[i][j]?.statementCount}}</strong></p>
         </div>
         </md-card>
         </div>
     </div>
 </div>
+
+<!--<div class="marginBottomMainApp"></div>-->

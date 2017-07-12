@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AuthService } from './shared/services/auth.service';
 import { WelcomeGuardService } from './shared/services/welcome-guard.service';
+import { UserSaveGuardService } from './shared/services/userSave-guard.service';
 import { LocalStorageService } from './shared/services/localStorage.service';
 import { KumulosService} from './shared/services/kumulos.service';
 
@@ -15,20 +16,25 @@ import { SurveyComponent, RemindUserToSaveDialog, InDemoModeDialog, SaveSnackBar
 import { NotFoundComponent } from './not_found/notFound.component';
 import { AuthCallbackComponent } from './authCallback/authCallback.component';
 
-import { EmailSentSnackBarComponent } from './main_app/view_results/my_own_results/myOwnResults.component';
-import { MdProgressSpinnerModule, MdDialogModule, MdMenuModule, MdIconModule, MdInputModule, MdButtonModule } from '@angular/material';
+import { EmailSentSnackBarComponent, EmailMyOwnResultsDialog } from './main_app/view_results/my_own_results/myOwnResults.component';
+import { MdProgressSpinnerModule, MdDialogModule, MdMenuModule, MdIconModule, MdInputModule, MdButtonModule, MdSelectModule} from '@angular/material';
 import { EditUserDetailsDialog } from './app.component';
-import { InviteUserDialog } from './main_app/team_admin/teamAdmin.component';
+import { InviteUserDialog, DeleteUserDialog } from './main_app/team_admin/teamAdmin.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { ControlMessagesComponent } from './shared/dialogs/controlMessages.component';
 
+import { DeleteUserService } from './shared/services/deleteUser.service';
+import { UserSavedService } from './shared/services/userSaved.service'; 
+import { EmailTeamDynamicsDialog } from './main_app/view_results/team_dynamics/teamDynamics.component';
+import { EmailOrganizationResultsDialog } from './main_app/view_results/our_organization_results/organizationResults.component' 
+
 @NgModule({
-  imports: [BrowserModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, HttpModule, appRouting, MdProgressSpinnerModule, MdDialogModule, MdMenuModule, MdIconModule, MdInputModule, MdButtonModule],
+  imports: [BrowserModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, HttpModule, appRouting, MdProgressSpinnerModule, MdDialogModule, MdMenuModule, MdIconModule, MdInputModule, MdButtonModule, MdSelectModule],
   declarations: [AppComponent, WelcomeComponent, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, NotFoundComponent, AuthCallbackComponent, 
-                 SaveSnackBarComponent, EmailSentSnackBarComponent, EditUserDetailsDialog, InviteUserDialog, ControlMessagesComponent],
-  entryComponents: [RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, SaveSnackBarComponent, EmailSentSnackBarComponent, EditUserDetailsDialog, InviteUserDialog],
-  providers: [AuthService, WelcomeGuardService, LocalStorageService, KumulosService],
+                 SaveSnackBarComponent, EmailSentSnackBarComponent, EditUserDetailsDialog, InviteUserDialog, DeleteUserDialog, ControlMessagesComponent, EmailMyOwnResultsDialog, EmailTeamDynamicsDialog, EmailOrganizationResultsDialog],
+  entryComponents: [RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, SaveSnackBarComponent, EmailSentSnackBarComponent, EditUserDetailsDialog, InviteUserDialog, DeleteUserDialog, EmailMyOwnResultsDialog, EmailTeamDynamicsDialog, EmailOrganizationResultsDialog],
+  providers: [AuthService, WelcomeGuardService, UserSaveGuardService, LocalStorageService, KumulosService, DeleteUserService, UserSavedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

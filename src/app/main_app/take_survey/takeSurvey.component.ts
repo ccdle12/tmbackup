@@ -112,13 +112,13 @@ export class TakeSurveyComponent {
     let statementCount = this.surveyModules[i][j]['statementCount'];
 
     if (surveyCount == 0) {
-      return { 'background-color': 'grey' };
+      return { 'background-color': '#7abed8' };
     }
     else if (surveyCount < statementCount) {
-      return { 'background-color': 'red' };
+      return { 'background-color': '#f1be5e' };
     }
     else {
-      return { 'background-color': 'lightgreen' };
+      return { 'background-color': '#9aca71' };
     }    
   }
 

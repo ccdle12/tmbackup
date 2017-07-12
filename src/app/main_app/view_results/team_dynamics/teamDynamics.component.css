@@ -16,7 +16,7 @@ nav a {
 
 #candleStickChart {
     margin-top: 0px;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
 }
 
 h5 {
@@ -29,4 +29,9 @@ h5 {
 
 .whiteText {
     color:white;
+}
+
+button {
+  background-color: #62B3D1;
+  color: white;
 }

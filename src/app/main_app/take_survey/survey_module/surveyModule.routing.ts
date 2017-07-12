@@ -6,7 +6,7 @@ import { CaseStudiesComponent } from './case_studies/caseStudies.component';
 import { BestPracticeComponent } from './best_practice/bestPractice.component';
 import { EvidenceComponent } from './evidence/evidence.component';
 
-import { SaveSurveyGuardService } from '../../../shared/services/saveSurvey-guard.service';
+import { UserSaveGuardService} from '../../../shared/services/userSave-guard.service';
 
 const surveyModuleRoutes: Routes = [
     {
@@ -16,7 +16,7 @@ const surveyModuleRoutes: Routes = [
             {
             path: 'survey',
             loadChildren: './survey/survey.module#SurveyModule',
-            canDeactivate: [SaveSurveyGuardService]
+            // canDeactivate: [UserSaveGuardService]
         },
         {
             path: 'casestudies',

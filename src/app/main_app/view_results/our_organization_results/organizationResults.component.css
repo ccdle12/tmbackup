@@ -21,3 +21,8 @@ nav  {
 #sendRequest {
     float: right;
 }
+
+button {
+  background-color: #62B3D1;
+  color: white;
+}

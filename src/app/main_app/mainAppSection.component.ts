@@ -12,7 +12,7 @@ export class MainAppSectionComponent {
 
     constructor(public authService: AuthService, private router: Router, public kumulosService: KumulosService) {
         this.inDemoOrInMainApp();
-        console.log("Main Constructed");
+        // console.log("Main Constructed");
      }
 
     private inDemoOrInMainApp(): void {
@@ -20,7 +20,7 @@ export class MainAppSectionComponent {
             this.getDemoCity();
         else {
             this.getActiveVersionForCity(); 
-            console.log("RETRIEVING ACTIVE CITY VERSION...");    
+            // console.log("RETRIEVING ACTIVE CITY VERSION...");    
         }
     }
 
@@ -74,8 +74,57 @@ export class MainAppSectionComponent {
         return true;
     }
 
-    public activeBackgroundColor() {
+    public activeBackgroundColor(urlNavigationBtn: string) {
+        let currentUrl: string = window.location.pathname;
+
+  
+        console.log(window.location.pathname);
         return { 'background-color': '#62B3D1',
                   'color': 'white' };
+        
     }
+
+    public inTeamAdmin() {
+        let currentUrl: string = window.location.pathname;
+
+        if (currentUrl ===  "/main/teamadmin") {
+            // console.log("in team admin");
+            return { 'background-color': '#e28a1d',
+                  'color': 'white' };    
+        } else {
+        // console.log(window.location.pathname);
+        return { 'background-color': '#62B3D1',
+                  'color': 'white' };
+        }
+    }
+
+    public inSurvey() {
+        let currentUrl: string = window.location.pathname;
+
+        if (currentUrl ===  "/main/takesurvey") {
+            console.log("in team admin");
+            return { 'background-color': '#e28a1d',
+                  'color': 'white' };    
+        } else {
+        // console.log(window.location.pathname);
+        return { 'background-color': '#62B3D1',
+                  'color': 'white' };
+        }
+    }
+
+    public inViewResults() {
+        let currentUrl: string = window.location.pathname;
+
+        if (currentUrl ===  "/main/viewresults") {
+            console.log("in team admin");
+            return { 'background-color': '#e28a1d',
+                  'color': 'white' };    
+        } else {
+        // console.log(window.location.pathname);
+        return { 'background-color': '#62B3D1',
+                  'color': 'white' };
+        }
+    }
+
+
 };

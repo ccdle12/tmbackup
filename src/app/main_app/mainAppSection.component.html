@@ -15,13 +15,13 @@
 </div>-->
 
 <nav md-tab-nav-bar *ngIf="hideNavBar()">
-  <a md-tab-link [ngStyle]="activeBackgroundColor()" *ngIf="!authService.inDemoMode()" routerLink="teamadmin"> Team Admin</a>
+  <a md-tab-link [ngStyle]="inTeamAdmin()" *ngIf="!authService.inDemoMode()" routerLink="teamadmin"> Team Admin</a>
   <a md-tab-link *ngIf="!authService.isVerified()"> Team Admin</a>
-  <a md-tab-link [ngStyle]="activeBackgroundColor()" routerLink="takesurvey"> Take Survey</a>
-  <a md-tab-link [ngStyle]="activeBackgroundColor()" routerLink="viewresults"> View Results</a>
-  <a md-tab-link [ngStyle]="activeBackgroundColor()" *ngIf="!authService.inDemoMode()" routerLink="publication"> Publication</a>
+  <a md-tab-link [ngStyle]="inSurvey()" routerLink="takesurvey"> Take Survey</a>
+  <a md-tab-link [ngStyle]="inViewResults()" routerLink="viewresults"> View Results</a>
+  <!--<a md-tab-link [ngStyle]="activeBackgroundColor()" *ngIf="!authService.inDemoMode()" routerLink="publication"> Publication</a>
   <a md-tab-link *ngIf="!authService.isVerified()"> Publication</a>
   <a md-tab-link [ngStyle]="activeBackgroundColor()" *ngIf="!authService.inDemoMode()" routerLink="benchmark">Benchmark</a>
-  <a md-tab-link *ngIf="!authService.isVerified()">Benchmark</a>
+  <a md-tab-link *ngIf="!authService.isVerified()">Benchmark</a>-->
 </nav>
 <router-outlet></router-outlet>

@@ -7,6 +7,8 @@ import { AuthCallbackComponent } from './authCallback/authCallback.component';
 
 import { MainAppModule } from './main_app/mainApp.module';
 
+import { RegistrationModule } from './registration/registration.module';
+
 const appRoutes: Routes = [
     {
         path: '', 
@@ -25,6 +27,10 @@ const appRoutes: Routes = [
         path: 'welcome',  
         component: WelcomeComponent, 
         canActivate: [WelcomeGuardService]
+    },
+    {
+        path: 'registration',
+        loadChildren: 'app/registration/registration.module#RegistrationModule'
     },
     {path: '**', component: NotFoundComponent},
 ]

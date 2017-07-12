@@ -7,12 +7,12 @@ import { AuthService } from '../../../../shared/services/auth.service';
 import { MdSliderModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule} from '@angular/material';
 import { FormsModule } from '@angular/forms';
 
-import { SaveSurveyGuardService } from '../../../../shared/services/saveSurvey-guard.service';
+// import { SaveSurveyGuardService } from '../../../../shared/services/saveSurvey-guard.service';
 
 @NgModule({
   imports: [CommonModule, surveyRouting, MdSliderModule, FormsModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule],
   declarations: [SurveyComponent],
-  providers: [KumulosService, AuthService, SaveSurveyGuardService],
+  providers: [KumulosService, AuthService],
   
 })
 export class SurveyModule { }

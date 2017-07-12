@@ -4,6 +4,8 @@ import { KumulosService } from '../../../shared/services/kumulos.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { MdSnackBar } from '@angular/material';
 
+import { MdDialog } from '@angular/material';
+
 
 @Component({
   selector: 'myOwnResultsComponent',
@@ -17,7 +19,7 @@ export class MyOwnResultsComponent {
   public graphTitles: Map<number, string>;
 
   constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar, 
-              public authService: AuthService) {
+              public authService: AuthService, public dialog: MdDialog) {
     this.initializeMemberVariables();
     this.getOwnResultsData();
   }
@@ -123,22 +125,57 @@ export class MyOwnResultsComponent {
     }
 
     public requestSurveyCSV(): void {
-      let activeCityVersion: string = localStorage.getItem('activeCityVersion');
-      let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
+      this.dialog.open(EmailMyOwnResultsDialog);
+      // let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+      // let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
 
-      let emailAddress: string = userProfile['email'];
+      // let emailAddress: string = userProfile['email'];
 
-      this.kumulosService.requestIndividualSurveyCSV(activeCityVersion, emailAddress)
-        .subscribe(responseJSON => {
-          console.log(responseJSON.payload)
-          this.showSnackBar();
-      });
+      // this.kumulosService.requestIndividualSurveyCSV(activeCityVersion, emailAddress)
+      //   .subscribe(responseJSON => {
+      //     console.log(responseJSON.payload)
+      //     this.showSnackBar();
+      // });
   }
 
   public showSnackBar(): void {
     this.snackBar.openFromComponent(EmailSentSnackBarComponent, {
       duration: 1000,
     });
+  }
+
+   public inMyOwnResults() {
+        let currentUrl: string = window.location.pathname;
+
+        if (currentUrl ===  "/main/viewresults/myownresults") {
+            // console.log("in team admin");
+            return { 'background-color': '#e28a1d',
+                  'color': 'white' };    
+        } else {
+        console.log(window.location.pathname);
+        return { 'background-color': '#62B3D1',
+                  'color': 'white' };
+        }
+    }
+
+  public showResultsTab() {
+    let loggedIn: boolean = this.authService.isAuthenticated();
+    let isLeaderOrConsultant: boolean = this.authService.isLeaderConsultant();
+
+    if (!loggedIn) {
+      return true;
+    } else {
+      if (isLeaderOrConsultant) {
+        return true;
+      }
+    }
+
+    console.log("Is Logged In: " + loggedIn);
+    console.log("Is Leader: " + isLeaderOrConsultant);
+
+    return false;
+
+    // return false;
   }
 }
 
@@ -148,3 +185,31 @@ export class MyOwnResultsComponent {
   styleUrls: ['../emailSentSnackBarComponent.css'],
 })
 export class EmailSentSnackBarComponent {}
+
+@Component({
+  selector: 'emailMyOwnResultsDialog',
+  templateUrl: '../emailMyOwnResultsDialog.html',
+  styleUrls: ['../emailMyOwnResultsDialog.css'],
+})
+export class EmailMyOwnResultsDialog {
+  constructor(public router: Router,  public authService: AuthService, public kumulosService: KumulosService,
+              public dialog: MdDialog) {
+    console.log(this.router.url);
+  }
+
+  public sendSurveyRequest(): void {
+    let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+    let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
+
+    let emailAddress: string = userProfile['email'];
+
+      this.kumulosService.requestIndividualSurveyCSV(activeCityVersion, emailAddress)
+        .subscribe(responseJSON => {
+          console.log(responseJSON.payload);
+          this.dialog.closeAll();
+          // this.showSnackBar();
+      });
+  }
+
+}
+

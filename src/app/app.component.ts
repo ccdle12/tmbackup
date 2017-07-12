@@ -19,7 +19,7 @@ import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
 
@@ -160,14 +160,32 @@ export class EditUserDetailsDialog {
 
   private getUserName(): string {
     let userProfile: JSON = this.getUserProfile();
-    console.log(this.isUserMetaData(userProfile));
-    console.log(userProfile['user_metadata']['name']);
-    return this.isUserMetaData(userProfile) ? userProfile['user_metadata']['name'] : "";
+    // console.log(this.isUserMetaData(userProfile));
+    // console.log(userProfile['user_metadata']['name']);
+
+    if (this.isUserMetaData(userProfile)) {
+        if (this.isMetaDataNameEmpty(userProfile)) {
+            return userProfile['name'];
+        } else {
+            return userProfile['user_metadata']['name'];
+        }
+    }
+
+    return "";
   }
 
   private getUserTitle(): string {
       let userProfile: JSON = this.getUserProfile();
-      return this.isUserMetaData(userProfile) ? userProfile['user_metadata']['jobTitle'] : "";
+      console.log(userProfile);
+      if (this.isUserMetaData(userProfile)) {
+        if (this.isMetaDataNameEmpty(userProfile)) {
+            return "";
+        } else {
+            return userProfile['user_metadata']['jobTitle'];
+        }
+    }
+
+    return "";
   }
 
   private getUserProfile(): JSON {
@@ -177,6 +195,10 @@ export class EditUserDetailsDialog {
 
   private isUserMetaData(userProfile: JSON): boolean {
     return userProfile['user_metadata'] ? true : false;
+  }
+
+  private isMetaDataNameEmpty(userProfile: JSON): boolean {
+      return userProfile['user_metadata']['name'] ? false : true;
   }
 
 

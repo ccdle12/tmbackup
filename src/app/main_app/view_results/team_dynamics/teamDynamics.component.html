@@ -3,18 +3,68 @@
 <nav md-tab-nav-bar>
   <a md-tab-link [ngStyle]="activeBackgroundColor()" (click)="routeToPage('myownresults')">My Own Results</a>
   <a md-tab-link [ngStyle]="activeBackgroundColor()" (click)="routeToPage('organizationresults')">Our Organization's Results</a>
-  <a md-tab-link [ngStyle]="activeBackgroundColor()" (click)="routeToPage('teamdynamics')">Team Dynamics</a>
+  <a md-tab-link [ngStyle]="inTeamDynamics()" (click)="routeToPage('teamdynamics')">Team Dynamics</a>
 </nav>
 
+  <!--<md-select placeholder="State">-->
+    <!--<md-option *ngFor="let food of foods" [value]="food.value">
+      {{food.viewValue}}
+    </md-option>-->
+  <!--</md-select>-->
+
+
+
 <div class="container">
-                <div class="row">
-                <button md-button class="col-xs-3 defaultBtn whiteText" (click)="backToDashboard()">Back To Dashboard</button>
-                <button md-button class="col-xs-3 col-xs-offset-6 defaultBtn whiteText" (click)="requestSurveyCSV()" id="sendRequest">Email Results</button>
-            </div>
+  <div class="row">
+    <button md-button class="col-xs-3" (click)="backToDashboard()">Back To Dashboard</button>
+    <button md-button class="col-xs-3 col-xs-offset-6" (click)="requestSurveyCSV()" id="sendRequest">Email Results</button>
+  </div>
 </div>
 
+<!--<md-icon *ngIf="this.authService.isAuthenticated()"  id="menuIcon" [mdMenuTriggerFor]="menu" onMouseOver="this.style.cursor='pointer'">md_more_vert</md-icon> 
 
+<md-menu #menu="mdMenu">
+        <button md-menu-item *ngIf="authService.isAuthenticated()" (click)="editUserDetails()" id="firstMenuButton">
+          <span>View/Edit Details</span>
+        </button>
+        
+        <button md-menu-item *ngIf="authService.isAuthenticated()" (click)="this.authService.logout()">
+          <span>Log out</span>
+        </button>
+      </md-menu>-->
+
+      <!--<div class="form-group">
+          <label>Area</label>
+          <select class="form-control" [(ngModel)]="selectedGraph">
+            <option *ngFor="let eachArea of areaTexts, let i = index">{{getAreaTextTitles(i)}}</option>
+          </select>
+        </div>-->
+
+<!--<div class="container">
+  <div class="row">
+    <button class="col-xs-3" *ngFor="let eachArea of areaTexts, let i = index" (click)="filterGraphs(i)">{{getAreaTextTitles(i)}}</button>
+  </div>
+</div>-->
+
+<!--<ng-container *ngIf="test">-->
 <div id="candleStickChart" class="googleComboChart container" *ngFor="let eachChart of candleChartsForDisplay, let i = index">
-  <h5><strong>{{getGraphTitles(i)}}</strong></h5>
-  <div id="candle_chart" [chartData]="candleChartsForDisplay[i]" [chartOptions] = "candle_ChartOptions" chartType="CandlestickChart" GoogleChart></div>
+  <h2><strong>{{getAreaTexts(i)}}</strong></h2>
+    <h5><strong>{{getGraphTitles(i)}}</strong></h5>
+    <div id="candle_chart" [chartData]="candleChartsForDisplay[i]" [chartOptions] = "candle_ChartOptions" chartType="CandlestickChart" GoogleChart></div>
 </div>
+
+<!--<md-select placeholder="Favorite food" [(ngModel)]="selectedValue">-->
+    <!--<md-option *ngFor="let food of foods" [value]="food.value">
+      {{food.viewValue}}
+    </md-option>-->
+  <!--</md-select>-->
+
+<!--<div id="candleStickChart" *ngFor="let eachArea of dataForCharts, let i = index">
+  <h4>{{eachArea[i][0]}}</h4>
+
+  <div *ngFor="let eachSubsection of eachArea, let j = index">
+    <h5>{{eachSubsection[j]}}</h5>
+  </div>
+</div>-->
+<!--</ng-container> -->
+<div class="marginBottom"></div>

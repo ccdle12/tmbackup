@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
 import { KumulosService } from '../../../../shared/services/kumulos.service';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { MdSliderModule, MdSidenavModule  } from '@angular/material';
@@ -8,6 +8,7 @@ import { MdSnackBar } from '@angular/material';
 
 import { ComponentCanDeactivate } from '../../../../shared/services/saveSurvey-guard.service';
 import {Observable} from 'rxjs/Observable';
+import { UserSavedService } from '../../../../shared/services/userSaved.service';
 
 
 @Component({
@@ -39,16 +40,56 @@ export class SurveyComponent implements ComponentCanDeactivate {
     private userSelectedModule: any;
     private sizeOfModules: number;
 
+    private userClickedOnSlider: boolean;
+
     constructor(public kumulosService: KumulosService, 
                 public router: Router,
                 public dialog: MdDialog,
                 public authService: AuthService,
-                public snackBar: MdSnackBar) { 
+                public snackBar: MdSnackBar,
+                private eRef: ElementRef,
+                public userSavedService: UserSavedService) { 
       
       this.initializeMemberVariables();
       this.getWebSurveyQuestions(); 
     }
-                
+
+    // @HostListener('document:keyup', ['$event'])
+    //   onKeyUp(ev:KeyboardEvent) {
+    //   // do something meaningful with it
+    //   console.log(`The user just pressed ${ev.key}!`);
+    // }
+
+  //   @HostListener('document:click', ['$event'])
+  //   clickout(event) {
+  //     if(this.eRef.nativeElement.querySelector('.surveySliders')) {
+  //       this.userClicked = true;
+  //       console.log("User Clicked: " + this.userClicked);
+  //       console.log("User clicked inside");
+  //     } else {
+  //       console.log("User clicked outside");
+  //     }
+  // }
+  //  @HostListener('mouseover') onMouseOver() {
+  //    this.eRef.nativeElement.querySelector('.surveySliders');
+  //    this.userClicked = true;
+  //       console.log("User Clicked: " + this.userClicked);
+  //       console.log("User clicked inside");
+  //  }
+
+  //  @HostListener('mouseout') onMouseOut() {
+  //   this.eRef.nativeElement.querySelector('.surveySliders');
+  //    this.userClicked = false;
+  //       console.log("User Clicked: " + this.userClicked);
+  //       console.log("User clicked otuside");
+  // }
+
+    public userMovedSlider(): void {
+      this.userClickedOnSlider = true;
+      this.userSavedService.setUserHasSaved(this.userClickedOnSlider);
+      console.log("userMoved Slider: " + this.userClickedOnSlider);
+    }
+           
     canDeactivate(): Observable<boolean> | boolean {
       return true;
     }
@@ -83,6 +124,9 @@ export class SurveyComponent implements ComponentCanDeactivate {
       this.dimensionText = parsedSurveyDashboard[this.userSelectedModule]['dimensionText'];
 
       this.activeCityVersion = localStorage.getItem('activeCityVersion');
+
+      this.userClickedOnSlider = false;
+      this.userSavedService.setUserHasSaved(this.userClickedOnSlider);
 
     }
 
@@ -139,36 +183,56 @@ export class SurveyComponent implements ComponentCanDeactivate {
     }
 
   public backToTakeSurvey(): void {
-    this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/takesurvey'));
+
+     if (!this.authService.isVerified()) {
+      this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/takesurvey'));
+      return;
+    }
+
+    if (this.userClickedOnSlider) {
+      console.log("user has not saved");
+      console.log("user is not in demo mode");
+      this.dialog.open(RemindUserToSaveDialog);
+      return;    
+    } else {
+      this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/takesurvey'));
+    }
+
   }
 
   public saveSurveyInput(): void {
     console.log('saveSurveyClicked');
-
-    // if (this.authService.inDemoMode()) {
-    //   this.dialog.open(InDemoModeDialog);
-    //   return;
-    // }
 
     if (this.authService.canSaveSurvey()) {
       this.dialog.open(InDemoModeDialog);
       return;
     }
 
-    this.userSaved = true;
+    this.userClickedOnSlider = false;
+    
+    console.log("User CLicked on Slider: " + this.userClickedOnSlider);
     this.updateSurveyData();
   }
 
   public nextModule(): void {
-    if (!this.authService.inDemoMode() && !this.userSaved) {
-      this.dialog.open(RemindUserToSaveDialog);
 
-      return;    
+    if (!this.authService.isVerified()) {
+      this.incrementSelectedModule();
+      window.location.reload();
+      return;
     }
 
-    this.incrementSelectedModule();
-    window.location.reload();
+    if (this.userClickedOnSlider) {
+      console.log("user has not saved");
+      console.log("user is not in demo mode");
+      this.dialog.open(RemindUserToSaveDialog);
+      return;    
+    } else {
+      this.incrementSelectedModule();
+      window.location.reload();
+    }
   }
+
 
   private incrementSelectedModule(): void {
     let userSelectedModule: number = parseInt(localStorage.getItem('userSelectedModule'));
@@ -178,9 +242,23 @@ export class SurveyComponent implements ComponentCanDeactivate {
   }
 
   public previousModule(): void {
-    this.decrementSelectedModule();
 
-    window.location.reload();
+    if (!this.authService.isVerified()) {
+      this.decrementSelectedModule();
+      window.location.reload();
+      return;
+    }
+
+    if (this.userClickedOnSlider) {
+      console.log("user has not saved");
+      console.log("user is not in demo mode");
+      this.dialog.open(RemindUserToSaveDialog);
+      return;    
+    } else {
+      this.decrementSelectedModule();
+      window.location.reload();
+    }
+    
     return;    
   }
 
@@ -238,6 +316,8 @@ export class SurveyComponent implements ComponentCanDeactivate {
     this.kumulosService.getCreateUpdateUserSurveyData(surveyDataString)
       .subscribe(responseJSON => {
         this.showSnackBar();
+        this.getWebSurveyQuestions();
+        this.userClickedOnSlider = false;
       });
   }
 

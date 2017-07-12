@@ -8,13 +8,13 @@ import { EvidenceComponent } from './evidence/evidence.component';
 import { MdSliderModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule, MdCardModule} from '@angular/material';
 import { FormsModule } from '@angular/forms';
 
-import { SaveSurveyGuardService } from '../../../shared/services/saveSurvey-guard.service';
+// import { SaveSurveyGuardService } from '../../../shared/services/saveSurvey-guard.service';
 
 
 @NgModule({
   imports: [CommonModule, surveyModuleRouting, FormsModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule,  MdSliderModule, MdCardModule],
   declarations: [SurveyModuleComponent, CaseStudiesComponent, BestPracticeComponent, EvidenceComponent],
-  providers: [SaveSurveyGuardService],
+  providers: [],
   
 })
 export class SurveyModule { }

@@ -1,9 +1,9 @@
-import { Component }  from '@angular/core';
+import { Component, Input }  from '@angular/core';
 import { KumulosService } from '../../shared/services/kumulos.service';
 import { MdDialog } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../shared/services/validation.service';
-
+import { DeleteUserService } from '../../shared/services/deleteUser.service';
 import {
     Router,
     // import as RouterEvent to avoid confusion with the DOM Event
@@ -25,7 +25,7 @@ import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
 export class TeamAdminComponent  { 
   userProfiles:  JSON[];
 
-  constructor(private kumulosService: KumulosService, public dialog: MdDialog) {
+  constructor(private kumulosService: KumulosService, public dialog: MdDialog, public deleteUserService: DeleteUserService) {
     this.kumulosService.getWebUsers().subscribe(response => {
           console.log("response", response.payload);
           this.userProfiles = response.payload
@@ -37,6 +37,15 @@ export class TeamAdminComponent  {
    this.dialog.open(InviteUserDialog);
   }
 
+  public deleteUser(userIndexPosition: number): void {
+
+    let deleteUser: JSON = this.userProfiles[userIndexPosition];
+    let userId: string = deleteUser['user_id']; 
+    
+    this.deleteUserService.deleteUser(userIndexPosition, userId);
+
+    this.dialog.open(DeleteUserDialog);
+  }
 
   public getUsersName(index: number): string {
     let userName: string;
@@ -87,6 +96,7 @@ export class InviteUserDialog {
 
   public inviteNewUser(): void {
     let cityName: string = this.getCityName();
+    console.log("City Name: " + cityName);
     let cityId: string = this.getCityId();
     let email: string = this.inviteUserForm.value.email;
     
@@ -103,7 +113,7 @@ export class InviteUserDialog {
 
   private getCityName(): string {
     let userProfile: JSON = this.getUserProfile();
-    let city: string = userProfile['city'];
+    let city: string = userProfile['app_metadata']['city'];
     return city;
   };
 
@@ -119,4 +129,28 @@ export class InviteUserDialog {
   }
 
   onSubmit() {}
+}
+
+@Component({
+  selector: 'deleteUserDialog',
+  templateUrl: '../../shared/dialogs/deleteUserDialog.html',
+  styleUrls: ['../../shared/dialogs/deleteUserDialog.css']
+})
+export class DeleteUserDialog {
+  httpRequestFlag: boolean;
+  
+  constructor(public deleteUserService: DeleteUserService, public kumulosService: KumulosService) {
+  }
+
+  public deleteUser() {
+    let deleteUserId: string = this.deleteUserService.getUserId();
+    
+    this.httpRequestFlag = true;
+    this.kumulosService.deleteUser(deleteUserId).subscribe(responseJSON => {
+      
+      console.log("response", responseJSON.payload);
+      window.location.reload();
+     }); 
+  }
+
 }

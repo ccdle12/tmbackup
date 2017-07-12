@@ -1,19 +1,20 @@
-body {
-  display: flex;
-  min-height: 100%;
-}
 
-/*#mainWelcome {
-  max-height: 50px;
-height: 100%;
-}*/
+body {
+  padding-bottom: 0rem;
+}
 
 /* Sponsor Banner */
 #togetherAndSponsorArea {
   padding-top: 25px;
+  padding-bottom: 30px;
   background: lightgrey;
-  flex: 1;
-  height: 250px;
+  /*flex: 1;*/
+  /*height: 240px;*/
+}
+
+#quickFill {
+  background: #88C158;
+  height: 100px;
 }
 
 .centerPosition {
@@ -21,8 +22,6 @@ height: 100%;
 	margin-right: auto;
 	display: block;
 }
-
-
 
 #welcomeComponent {
   margin-top: 70px;
@@ -57,15 +56,4 @@ height: 100%;
 #seeDemo {
   background-color: #EEB242;
   /*height: 25px;*/
-}
-
-#footer {
-    clear: both;
-    position: relative;
-    z-index: 10;
-    height: 3em;
-    /*margin-top: -3em;*/
-    background-color: #88C158;
-    /*margin-top: 100px;*/
-    /*padding-top: 100px*/
 }

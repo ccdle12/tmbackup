@@ -3,7 +3,7 @@
 md-card {
     /*height: 350px;*/
     /*width: 300px;*/
-    height: 150px;
+    height: 200px;
     width: 200px;
     margin: 0 0 25px 10px;
     padding: 2.5px;
@@ -16,8 +16,8 @@ md-card {
 }
 
 img {
-  margin-bottom: 10px;
-  text-align: center;
+  /*margin-bottom: 10px;*/
+  /*text-align: center;*/
 }
 
 md-card-content {
@@ -42,7 +42,8 @@ md-card-content {
   /*margin-bottom: 100px;*/
 }
 
-button {
+
+#addNewUser {
   /*background: #1e90ff;*/
   /*color: white;*/
   margin-top: 10px;
@@ -59,3 +60,18 @@ button {
 .cardBody {
   margin-top: 40px;
 }
+
+.marginBottomTeamAdmin {
+  margin-bottom: 350px;
+}
+
+md-card-actions {
+  position: relative;
+}
+
+#deleteButton {
+  /*position: absolute;*/
+  /*bottom: -10;*/
+  /*float: right;*/
+}
+

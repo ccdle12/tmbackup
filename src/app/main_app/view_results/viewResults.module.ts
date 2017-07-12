@@ -16,10 +16,11 @@ import { MyOwnResultsComponent } from './my_own_results/myOwnResults.component';
 import { OrganizationResultsComponent } from './our_organization_results/organizationResults.component';
 import { TeamDynamicsComponent } from './team_dynamics/teamDynamics.component';
 
+import { UserRoleGuardService } from '../../shared/services/userRole-guard.service';
 
 @NgModule({
-  imports: [viewResultsRouting, CommonModule, Ng2GoogleChartsModule, MdTabsModule, MdButtonModule, MdSnackBarModule],
+  imports: [viewResultsRouting, FormsModule, CommonModule, Ng2GoogleChartsModule, MdTabsModule, MdButtonModule, MdSnackBarModule],
   declarations: [ViewResultsComponent, GoogleChart, MyOwnResultsComponent, OrganizationResultsComponent, TeamDynamicsComponent ],
-  providers: [],
+  providers: [UserRoleGuardService],
 })
 export class ViewResultsModule { }

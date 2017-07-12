@@ -27,6 +27,7 @@ export class KumulosService {
     private updateNameAndTitleURI: string;
     private userProfileURI: string;
     private inviteUsersURI: string;
+    private deleteUserURI: string;
 
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
@@ -54,6 +55,7 @@ export class KumulosService {
         this.updateNameAndTitleURI = "webUpdateNameTitle.json/";
         this.userProfileURI = "webGetUserProfile.json/";
         this.inviteUsersURI = "webInviteUser.json/";
+        this.deleteUserURI = "webDeleteUser.json/";
     }
 
     public createAuthorizationHeader(): Headers {
@@ -412,6 +414,22 @@ export class KumulosService {
         let body: string = urlSearchParams.toString();
 
         return this.http.post(this.domain + this.inviteUsersURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public deleteUser(deletedUserId: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[userId]', deletedUserId);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.deleteUserURI, body, {headers: headers})
             .map(response => {
                 console.log(response.json());
                 return response.json();
