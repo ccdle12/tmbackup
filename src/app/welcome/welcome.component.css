@@ -59,6 +59,7 @@ body {
   /*height: 25px;*/
 }
 
-#navigationTabs {
-  /*padding-bottom: 1000px;*/
+
+a:hover  {
+  color: white;
 }

@@ -15,6 +15,10 @@ const mainAppRoutes: Routes = [
             component: MainAppComponent
         },
         {
+            path: 'landingpage',
+            loadChildren: './landing_page/landingPage.module#LandingPageModule'
+        },
+        {
             path: 'teamadmin',
             loadChildren: './team_admin/teamAdmin.module#TeamAdminModule'
         },

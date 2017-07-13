@@ -8,8 +8,6 @@ import { AuthService } from '../../../shared/services/auth.service';
 
 import { MdDialog } from '@angular/material';
 
-
-
 @Component({
   selector: 'organizationResultsComponent',
   templateUrl: './organizationResults.component.html',
@@ -124,25 +122,7 @@ export class OrganizationResultsComponent {
 
   public requestSurveyCSV(): void {
     this.dialog.open(EmailOrganizationResultsDialog);
-    // let activeCityVersion: string = localStorage.getItem('activeCityVersion');
-    // let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
-
-    // let emailAddress: string = userProfile['email'];
-
-    // console.log("Active city version: ", activeCityVersion);
-    // console.log("emailAddress: ", emailAddress);
-
-    // this.kumulosService.sendRequestSurveyCSV(activeCityVersion, emailAddress)
-    //   .subscribe(responseJSON => {
-    //     console.log(responseJSON.payload);
-    //     this.showSnackBar();
-    // });
   }
-
-  public activeBackgroundColor() {
-        return { 'background-color': '#62B3D1',
-                  'color': 'white' };
-    }
 
   public showSnackBar(): void {
     this.snackBar.openFromComponent(EmailSentSnackBarComponent, {
@@ -155,7 +135,7 @@ export class OrganizationResultsComponent {
 
         if (currentUrl ===  "/main/viewresults/organizationresults") {
             console.log("in team admin");
-            return { 'background-color': '#e28a1d',
+            return { 'background-color': '#469ac0',
                   'color': 'white' };    
         } else {
         console.log(window.location.pathname);

@@ -18,21 +18,18 @@ export class TeamDynamicsComponent {
   public candleChartsForDisplay: Array<any>;
   public graphData: Array<any>;
   public numberOfGraphs: number;
+
+
   public graphTitles: Map<number, string>;
   public areaTexts: Array<string>;
-
-  // public areaTitles: Map<number, string>;
   public areaTitles: Array<string>;
-
   public selectedGraph: any;
   private sortedDataForEachGraph: Array<any>;
 
   public areaBanners: Map<number, string>;
-
-  public selectedValue: any;
-
   public segmentedArray: Array<any>;
 
+  // Arrays for each accordion
   public customerArray: Array<any>;
   public strategyArray: Array<any>;
   public technologyArray: Array<any>;
@@ -57,7 +54,7 @@ export class TeamDynamicsComponent {
     this.graphTitles = new Map<number, string>();
 
     this.areaTexts = new Array();
-    // this.areaTitles = new Map<number, string>();
+
     this.areaTitles = new Array();
 
     this.areaBanners = new Map<number, string>();
@@ -313,7 +310,6 @@ export class TeamDynamicsComponent {
     };
 
     public requestSurveyCSV(): void {
-
       this.dialog.open(EmailTeamDynamicsDialog);
     }
 
@@ -327,7 +323,7 @@ export class TeamDynamicsComponent {
         let currentUrl: string = window.location.pathname;
 
         if (currentUrl ===  "/main/viewresults/teamdynamics") {
-            return { 'background-color': '#e28a1d',
+            return { 'background-color': '#469ac0',
                   'color': 'white' };    
         } else {
         return { 'background-color': '#62B3D1',

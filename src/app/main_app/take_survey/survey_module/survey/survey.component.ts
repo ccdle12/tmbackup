@@ -94,7 +94,13 @@ export class SurveyComponent implements ComponentCanDeactivate {
       return true;
     }
 
+    public changed: boolean;
     // @ViewChild('start') sidenav: MdSidenavModule;
+    public changing() {
+      this.changed = true;
+      console.log("stuff changing");
+       return true;
+    }
 
     private initializeMemberVariables(): void {
       this.userSelectedModule = localStorage.getItem('userSelectedModule');
@@ -219,6 +225,7 @@ export class SurveyComponent implements ComponentCanDeactivate {
     if (!this.authService.isVerified()) {
       this.incrementSelectedModule();
       window.location.reload();
+      // this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/takesurvey/surveymodule/survey'));
       return;
     }
 

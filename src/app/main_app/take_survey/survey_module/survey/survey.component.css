@@ -46,6 +46,16 @@ nav a {
     color:white;
 }
 
+#surveyModuleNav {
+    position: relative;
+    margin-top: 0px;
+    /*background-color: lightgrey;*/
+    background-color:rgb(220,220,220);
+    height: 80px;
+    margin-bottom: 25px;
+    margin-bottom: 0px;
+}
+
 .whiteText {
   color: white;
 }
@@ -54,3 +64,18 @@ md-slider {
   color: pink;
 }
 
+.moduleNavigation  {
+    height: auto;
+    width: 42px;
+    margin-top: 20px;
+    opacity: 1;
+    float: left;
+    margin-left: 35px;
+    /*margin-right: 20px;*/
+    /*padding-right: 100px;*/
+    /*padding-left: 100px;*/
+}
+
+.moduleNavigation:hover {
+  cursor: pointer;
+}

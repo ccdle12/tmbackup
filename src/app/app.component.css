@@ -1,5 +1,5 @@
-#mainNavBar {
-    /*margin-bottom: 50px;*/
+nav {
+    /*position: relative;*/
 }
 
 ul {
@@ -16,20 +16,21 @@ li {
 }
 
 #menu {
+    /*margin: 0 auto;*/
+    /*position: absolute;*/
     text-align:center;
     display: inline;
     /*margin-right: 350px;*/
-    padding-left: 50px;
+    padding-left: 30px;
 }
 
-
-/*header {*/
-    /*position: relative;*/
-/*}*/
-
 #logo {
+    /*position: absolute;*/
+    height: auto;
+    width: 150px;
     padding-left: 20px;
     margin-right: 350px;
+    margin-top: 2px;
 }
 
 .img-circle {
@@ -38,7 +39,6 @@ li {
     margin-right: 100px;
     margin-top: 5px;
     float: right;
-
 }
 
 #menuIcon {
@@ -57,4 +57,61 @@ li {
     border-radius: 0 !important;
     margin-bottom: 0;
 }
+
+/*ul {*/
+    /*list-style-type: none;*/
+    /*padding: 0;*/
+    /*overflow:hidden;*/
+    /*margin-top: 12px;*/
+    /*float: none;*/
+    /*width: 700px;*/
+/*}*/
+
+/*.nav {
+    margin:0px auto;
+    width:705px;
+    /*display: inline;*/
+/*}*/
+
+/*li {
+    color: white;
+    display:inline-block;
+    /*margin-top: 12px;*/
+    /*float: none;*/
+/*}*/
+
+/*#menu {*/
+    /*display: inline;*/
+/*}*/
+
+
+/*#logo {*/
+    /*padding-left: 50px;*/
+    /*margin-right: 350px;*/
+/*}*/
+
+/*.img-circle {*/
+    /*border-radius: 50%;*/
+    /*height: 35px;*/
+    /*margin-right: 100px;*/
+    /*margin-top: 5px;*/
+    /*float: right;*/
+/*}*/
+
+/*#menuIcon {*/
+    /*color: white;*/
+    /*padding-top: 5px;*/
+    /*margin: 0px;*/
+    /*margin-top: 7px;*/
+    /*float: right;*/
+    /*float:left;*/
+/*}*/
+
+
+/*.navbar {*/
+    /*border-radius: 0 !important;*/
+    /*margin-bottom: 0;*/
+/*}*/
+
+
 

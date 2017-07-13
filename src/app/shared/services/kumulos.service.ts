@@ -196,7 +196,13 @@ export class KumulosService {
 
         let urlSearchParams: URLSearchParams = this.createBody();
         let userJSON: JSON = JSON.parse(localStorage.getItem('user'));
-        let cityId: string = userJSON['city_id'];
+        let cityId: string;
+
+        if(!userJSON) {
+            cityId = localStorage.getItem('demoCity');
+        } else {
+            cityId = userJSON['city_id'];
+        }
 
         urlSearchParams.append('params[groupId]', cityId);
 

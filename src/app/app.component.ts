@@ -41,6 +41,10 @@ export class AppComponent {
     // see template snippet below this script
     @ViewChild('spinnerElement') spinnerElement: ElementRef;
 
+
+    width: any;
+    height: any;
+
    constructor(private router: Router,  private ngZone: NgZone,
                private renderer: Renderer, public authService: AuthService, 
                public localStorageService: LocalStorageService, public dialog: MdDialog) {
@@ -52,6 +56,16 @@ export class AppComponent {
         router.events.subscribe((event: RouterEvent) => {
             this.navigationInterceptor(event);
         });
+
+        // Change Detection on window screen
+        window.onresize = (e) =>
+            {
+            ngZone.run(() => {
+                this.width = window.innerWidth;
+                console.log(this.width);
+                this.height = window.innerHeight;
+            });
+        };
     }
 
 
@@ -116,6 +130,15 @@ export class AppComponent {
     public editUserDetails(): void {
         this.dialog.open(EditUserDetailsDialog)
     }
+
+    public minWidth() {
+        if (this.width < 600) {
+            return false;
+        }
+
+        return true;
+    }
+
 }
 
 @Component({

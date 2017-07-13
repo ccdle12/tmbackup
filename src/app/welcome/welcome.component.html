@@ -5,9 +5,9 @@
     <img id="sloganBanner" src="assets/AppForDigitalTransformers.png" alt="slogan banner"/>
 </div>
 
-<div id="navigationTabs" class="btn-group btn-group-justified navigationButtons">
-    <a routerLink="/main" id="seeDemo" class="btn"><h4>See Demo</h4></a>
-    
+<div class="btn-group btn-group-justified navigationButtons">
+    <!--<a routerLink="/main" id="seeDemo" class="btn"><h4>See Demo</h4></a>-->
+    <!--<span><md-slider min="1" max="5" step="1" value="1"></md-slider></span>-->
     <a *ngIf="!authService.isAuthenticated()" class="btn orangeBtn" routerLink="/registration"><h4>Register My Interest</h4></a>
     <!--<a *ngIf="authService.isAuthenticated()" (click)="openDialog()" class="btn defaultBtn">Register My Interest</a>-->
 

@@ -8,11 +8,15 @@
 /* You can add global styles to this file, and also import other style files */
 
 /*@import './custom-theme.scss';*/
+/*:host {
+ font-family: Arial;
+}*/
 
 html {
   height: 100%;
   box-sizing: border-box;
-  font-family: 'Libre Franklin';
+  /*font-family: 'Libre Franklin';*/
+  font-family: Arial, Helvetica, sans-serif;
   /* make sure the body does not have a margin */
     /*margin: 0;*/
     /*padding-bottom: 500px;*/
@@ -20,6 +24,7 @@ html {
 
 body {
   /*height: 100%;*/
+    /*font-family: Arial;*/
     position: relative;
     min-height: 100%;
     

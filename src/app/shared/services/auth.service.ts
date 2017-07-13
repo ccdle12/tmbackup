@@ -11,7 +11,14 @@ export class AuthService {
 
 lock: any;
 
+options: any;
+
+
 constructor(public router: Router) { 
+
+  this.options = {
+    allowSignUp: false,
+  }
 
 this.lock = new Auth0Lock('dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V','tmfdmmdev.eu.auth0.com', {
   auth: {
@@ -75,9 +82,9 @@ private userHasMetaData(userProfile: any): boolean {
 
 private handleRouting(userProfile: any): void {
   if (userProfile.user_metadata != null && userProfile.email_verified == true) {
-         this.router.navigate(['main']);
+         this.router.navigate(['main/landingpage']);
       } else if (userProfile.app_metadata != null && userProfile.app_metadata.verified == 1) {
-        this.router.navigate(['main']);
+        this.router.navigate(['main/landingpage']);
       } else {
         this.router.navigate(['registration']);
     }

@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
 }) 
 
 export class AuthCallbackComponent  {
- constructor() { }
+ constructor() {
+     console.log("Call back but where is the routing?");
+  }
 }

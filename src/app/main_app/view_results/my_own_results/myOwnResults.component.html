@@ -1,14 +1,25 @@
 <!--<div class="topMarginForSurveyModules"></div>-->
 <nav md-tab-nav-bar>
+  <div id="navigationIcon">
+  <img id="backToDashboard" src="../../../assets/Back To-100-white.png" (click)="backToDashboard()">
+  <img id="emailDocument" src="../../../assets/Email Document-100-white.png" (click)="requestSurveyCSV()" *ngIf="this.authService.isLeaderConsultant();">
+  </div>
+  <div class="container">
+    <div class="row">
+  <!--<button md-button class="col-xs-3" (click)="backToDashboard()">Back To Dashboard</button>-->
+  
   <a md-tab-link class="defaultBtn whiteText navTitle" [ngStyle]="inMyOwnResults()" (click)="routeToPage('myownresults')"><h4>My Own Results</h4></a>
-  <a md-tab-link *ngIf="showResultsTab()" class="defaultBtn whiteText navTitle" [ngStyle]="activeBackgroundColor()" (click)="routeToPage('organizationresults')"><h4>Our Organization's Results</h4></a>
-  <a md-tab-link *ngIf="showResultsTab()" class="defaultBtn whiteText navTitle" [ngStyle]="activeBackgroundColor()" (click)="routeToPage('teamdynamics')"><h4>Team Dynamics</h4></a>
+  <a md-tab-link *ngIf="showResultsTab()" class="whiteText navTitle"  (click)="routeToPage('organizationresults')"><h4>Our Organization's Results</h4></a>
+  <a md-tab-link *ngIf="showResultsTab()" class="whiteText navTitle"  (click)="routeToPage('teamdynamics')"><h4>Team Dynamics</h4></a>
+  </div>
+</div>
 </nav>
 
 <div class="container">
   <div class="row">
-    <button md-button class="col-xs-3" (click)="backToDashboard()">Back To Dashboard</button>
-    <button *ngIf="this.authService.isLeaderConsultant();" md-button class="col-xs-3 col-xs-offset-6" (click)="requestSurveyCSV()" id="sendRequest">Email Results</button>
+    <h3><strong>My Own Results</strong></h3>
+    <!--<button md-button class="col-xs-3" (click)="backToDashboard()">Back To Dashboard</button>-->
+    <!--<button *ngIf="this.authService.isLeaderConsultant();" md-button class="col-xs-3 col-xs-offset-6" (click)="requestSurveyCSV()" id="sendRequest">Email Results</button>-->
   </div>
 </div>
 

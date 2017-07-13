@@ -7,6 +7,7 @@ import { AuthService } from '../../../../shared/services/auth.service';
 import { MdSliderModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule} from '@angular/material';
 import { FormsModule } from '@angular/forms';
 
+// import { BrowserModule } from @angular/platform-browser;
 // import { SaveSurveyGuardService } from '../../../../shared/services/saveSurvey-guard.service';
 
 @NgModule({

@@ -1,14 +1,25 @@
-<div class="loading-overlay" #spinnerElement style="opacity: 10;">
+<div class="loading-overlay" #spinnerElement style="opacity: 1;">
     <md-spinner></md-spinner>
 </div>
 
 
   <header id="mainNavBar">
     <nav class="navbar navbar-inverse">
-        <div class="navbar-header">
-          <a routerLink="/welcome" class="navbar-left" id="logo"><img src="/assets/tmforum_logo_white_on_alpha.png" height="40"/></a>
+          <a *ngIf="minWidth()" routerLink="/welcome" class="navbar-left"><img id="logo" src="/assets/tmforum_logo_white_on_alpha.png" height="40"/></a>
 
-          <ul id="menu">
+          <!--<div class="form-group">-->
+          <!--<div class="nav">
+            <ul class="text-center">
+              <li *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserName()}} -</li>
+              <li class="centerMenu" *ngIf="this.authService.isAuthenticated()"> {{this.localStorageService.getUserCity()}} -</li>
+              <li *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserRole()}}</li>
+              <li *ngIf="inSeeDemo()">Demo User -</li>
+              <li *ngIf="inSeeDemo()"> Demo Organization -</li>
+              <li *ngIf="inSeeDemo()">Demo Role</li>
+          </ul>  
+        </div>-->
+
+        <ul id="menu">
             <li *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserName()}} -</li>
             <li *ngIf="this.authService.isAuthenticated()"> {{this.localStorageService.getUserCity()}} -</li>
             <li *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserRole()}}</li>
@@ -16,15 +27,16 @@
             <li *ngIf="inSeeDemo()"> Demo Organization -</li>
             <li *ngIf="inSeeDemo()">Demo Role</li>
          </ul>
-          
-        </div>      
-    
-        <img *ngIf="this.authService.isAuthenticated()" class='nav-avatar img-circle' [src]="getUserAvatar()"/>
-        <md-icon *ngIf="this.authService.isAuthenticated()"  id="menuIcon" [mdMenuTriggerFor]="menu" onMouseOver="this.style.cursor='pointer'">md_more_vert</md-icon> 
-    </nav>
 
-      <md-menu #menu="mdMenu">
-        <button md-menu-item *ngIf="authService.isAuthenticated()" (click)="editUserDetails()" id="firstMenuButton">
+        
+        <span *ngIf="minWidth()"><img *ngIf="this.authService.isAuthenticated()" class='nav-avatar img-circle' [src]="getUserAvatar()"/></span>
+        <md-icon *ngIf="this.authService.isAuthenticated()"  id="menuIcon" [mdMenuTriggerFor]="menu" onMouseOver="this.style.cursor='pointer'">md_more_vert</md-icon>
+
+    </nav>
+    
+
+      <md-menu #menu="mdMenu" yPosition="above">
+        <button md-menu-item *ngIf="authService.isAuthenticated()" (click)="editUserDetails()">
           <span>View/Edit Details</span>
         </button>
         

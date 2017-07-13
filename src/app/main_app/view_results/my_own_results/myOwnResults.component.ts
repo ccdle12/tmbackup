@@ -44,7 +44,6 @@ export class MyOwnResultsComponent {
   }
 
   private createComboCharts(): void {
-    
     let numberOfAreaModules: number = this.getSizeOfAreaModules();
     this.addToComboChartArray(numberOfAreaModules);
   }
@@ -100,10 +99,10 @@ export class MyOwnResultsComponent {
     }
   }   
 
-  public activeBackgroundColor() {
-        return { 'background-color': '#62B3D1',
-                  'color': 'white' };
-    }
+  // public activeBackgroundColor() {
+  //       return { 'background-color': '#62B3D1',
+  //                 'color': 'white' };
+  //   }
 
   public routeToPage(surveyPage: String) {
     // console.log('routetoPage activated: ' + surveyPage);
@@ -149,7 +148,7 @@ export class MyOwnResultsComponent {
 
         if (currentUrl ===  "/main/viewresults/myownresults") {
             // console.log("in team admin");
-            return { 'background-color': '#e28a1d',
+            return { 'background-color': '#469ac0',
                   'color': 'white' };    
         } else {
         console.log(window.location.pathname);

@@ -15,7 +15,7 @@ import {
 } from '@angular/router';
 
 import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
-
+import { AuthService } from '../../shared/services/auth.service';
 @Component({
   selector: 'teamAdmin',
   templateUrl: 'teamAdmin.component.html',
@@ -25,7 +25,7 @@ import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
 export class TeamAdminComponent  { 
   userProfiles:  JSON[];
 
-  constructor(private kumulosService: KumulosService, public dialog: MdDialog, public deleteUserService: DeleteUserService) {
+  constructor(public authService: AuthService, private kumulosService: KumulosService, public dialog: MdDialog, public deleteUserService: DeleteUserService) {
     this.kumulosService.getWebUsers().subscribe(response => {
           console.log("response", response.payload);
           this.userProfiles = response.payload

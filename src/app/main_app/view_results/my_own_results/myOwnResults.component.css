@@ -2,17 +2,41 @@
 nav  {
     text-align:center;
     /*margin-top: 50px;*/
+     background-color: #88C158;
+     position: relative;
 }
 
-/*nav a {
-    background-color: darkgrey;
-    color:white;
-}*/
+#navigationIcon {
+    position:absolute;
+    padding-left: 35px;
+}
 
-/*button {
-  background: #1e90ff;
-  color: white;
-}*/
+#backToDashboard {
+    height: auto;
+    width: 42px;
+    margin-top: 3px;
+    opacity: 1;
+    float: left;
+    margin-right: 20px;
+    /*padding-right: 100px;*/
+    /*padding-left: 10px;*/
+}
+
+#backToDashboard:hover {
+    cursor: pointer;
+}
+
+#emailDocument {
+    height: auto;
+    width: 42px;
+    margin-top: 3px;
+    opacity: 1;
+    float: left;
+}
+
+#emailDocument:hover {
+    cursor: pointer;
+}
 
 .whiteText {
     color:white;
@@ -33,5 +57,6 @@ button {
 
 a {
     text-decoration: none;
+    opacity: 1;
 }
 

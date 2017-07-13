@@ -41,15 +41,20 @@ export class SurveyModuleComponent  {
     public inSurvey() {
         let currentUrl: string = window.location.pathname;
 
-        console.log("current url: " + currentUrl);
+        // console.log("current url: " + currentUrl);
         if (currentUrl ===  "/main/takesurvey/surveymodule/survey") {
           console.log("in correct url");
-            return { 'background-color': '#e28a1d',
+            return { 'background-color': '#62B3D1',
                   'color': 'white' };    
-        } else {
-        // console.log(window.location.pathname);
-        return { 'background-color': '#62B3D1',
-                  'color': 'white' };
-        }
+        } 
+        // else {
+        // // console.log(window.location.pathname);
+        // return { 'background-color': '#62B3D1',
+        //           'color': 'white' };
+        // }
+    }
+
+    public backToDashboard(): void {
+      this.authService.backToDashboard();
     }
 }

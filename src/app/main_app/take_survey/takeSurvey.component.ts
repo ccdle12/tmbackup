@@ -38,12 +38,15 @@ export class TakeSurveyComponent {
         localStorage.setItem('surveydashboard', JSON.stringify(responseJSON.payload));
 
         this.takeSurveyDashboard = JSON.parse(localStorage.getItem('surveydashboard'));
+        console.log("From Local Storage - Survey Dashboard:")
         console.log(this.takeSurveyDashboard);
 
-        this.removeTotalFromDashboard();
-        this.calculateProgressValue();
-        this.addModules(this.takeSurveyDashboard.length - 1);
-        console.log(this.surveyModules);
+        if (this.takeSurveyDashboard) {
+          this.removeTotalFromDashboard();
+          this.calculateProgressValue();
+          this.addModules(this.takeSurveyDashboard.length - 1);
+          console.log(this.surveyModules);
+        }
     });
   }
 

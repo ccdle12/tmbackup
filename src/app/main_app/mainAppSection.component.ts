@@ -88,14 +88,14 @@ export class MainAppSectionComponent {
         let currentUrl: string = window.location.pathname;
 
         if (currentUrl ===  "/main/teamadmin") {
-            // console.log("in team admin");
-            return { 'background-color': '#e28a1d',
+            return { 'background-color': '#469ac0',
                   'color': 'white' };    
-        } else {
-        // console.log(window.location.pathname);
-        return { 'background-color': '#62B3D1',
-                  'color': 'white' };
-        }
+        } 
+        // else {
+        // // console.log(window.location.pathname);
+        // return { 'background-color': '#62B3D1',
+        //           'color': 'white' };
+        // }
     }
 
     public inSurvey() {
@@ -103,13 +103,14 @@ export class MainAppSectionComponent {
 
         if (currentUrl ===  "/main/takesurvey") {
             console.log("in team admin");
-            return { 'background-color': '#e28a1d',
+            return { 'background-color': '#469ac0',
                   'color': 'white' };    
-        } else {
-        // console.log(window.location.pathname);
-        return { 'background-color': '#62B3D1',
-                  'color': 'white' };
-        }
+        } 
+        // else {
+        // // console.log(window.location.pathname);
+        // return { 'background-color': '#62B3D1',
+        //           'color': 'white' };
+        // }
     }
 
     public inViewResults() {
@@ -117,13 +118,14 @@ export class MainAppSectionComponent {
 
         if (currentUrl ===  "/main/viewresults") {
             console.log("in team admin");
-            return { 'background-color': '#e28a1d',
+            return { 'background-color': '#469ac0',
                   'color': 'white' };    
-        } else {
-        // console.log(window.location.pathname);
-        return { 'background-color': '#62B3D1',
-                  'color': 'white' };
-        }
+        } 
+        // else {
+        // // console.log(window.location.pathname);
+        // return { 'background-color': '#62B3D1',
+        //           'color': 'white' };
+        // }
     }
 
 

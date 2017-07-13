@@ -10,15 +10,44 @@ a {
   border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
+#backToDashboard {
+    height: auto;
+    width: 42px;
+    margin-top: 3px;
+    opacity: 1;
+    float: left;
+    margin-right: 20px;
+}
+
+#backToDashboard:hover {
+    cursor: pointer;
+}
+
 /*Nav Bar*/
 nav  {
     text-align:center;
     /*margin-top: 50px;*/
+     background-color: #88C158;
+     position: relative;
+}
+
+#navigationIcon {
+    position:absolute;
+    padding-left: 35px;
 }
 
 nav a {
-    background-color: darkgrey;
+    /*background-color: darkgrey;*/
     color:white;
+    opacity: 1;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:focus {
+  text-decoration: none;
 }
 
 .navTitle {
