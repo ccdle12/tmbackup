@@ -35,3 +35,12 @@ button {
   background-color: #62B3D1;
   color: white;
 }
+
+.navTitle {
+    padding-top: 5px;
+}
+
+a {
+    text-decoration: none;
+}
+

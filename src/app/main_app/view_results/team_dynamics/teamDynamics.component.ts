@@ -30,13 +30,22 @@ export class TeamDynamicsComponent {
   public areaBanners: Map<number, string>;
 
   public selectedValue: any;
-  
+
+  public segmentedArray: Array<any>;
+
+  public customerArray: Array<any>;
+  public strategyArray: Array<any>;
+  public technologyArray: Array<any>;
+  public operationsArray: Array<any>;
+  public cultureArray: Array<any>;
+
   constructor(public router: Router, public kumulosService: KumulosService, 
               public snackBar: MdSnackBar, public authService: AuthService,
               public dialog: MdDialog) {
     this.initializeMemberVariables();
     this.getTeamDynamicsData();
-  }
+
+   }
 
   private initializeMemberVariables(): void {
     this.candleChartsForDisplay = new Array();
@@ -52,6 +61,8 @@ export class TeamDynamicsComponent {
     this.areaTitles = new Array();
 
     this.areaBanners = new Map<number, string>();
+
+    this.segmentedArray = new Array();
   }
 
   private getTeamDynamicsData(): void {
@@ -68,6 +79,9 @@ export class TeamDynamicsComponent {
 
           console.log(this.candleChartsForDisplay);
           // this.addAreaTexts();
+
+          this.segmentCandleChartsData();
+          console.log(this.segmentedArray);
         })
   }
 
@@ -136,6 +150,54 @@ export class TeamDynamicsComponent {
       return this.addToCandleChartArray(graphIndexPosition - 1);
     }
 
+    private segmentCandleChartsData(): void {
+      let statementId: string = this.candleChartsForDisplay[0][1][0];
+      let areaId: string = statementId.slice(0, 1);
+
+      let tempArr = new Array();
+
+      console.log("TEST: Area Id: Should be: '1': " + areaId);
+
+      for (let i = 1; i < this.candleChartsForDisplay.length; i++) {
+
+        let statementId: string = this.candleChartsForDisplay[i][1][0];
+        let currentAreaId: string = statementId.slice(0, 1);
+
+        let prevStatementId: string = this.candleChartsForDisplay[i - 1][1][0];
+        let prevAreaId: string = prevStatementId.slice(0, 1);
+
+        console.log("Prev: " + prevAreaId);
+        console.log("Current: " + currentAreaId);
+
+        if (prevAreaId == currentAreaId) {
+          console.log(this.candleChartsForDisplay[i-1]);
+          tempArr.push(this.candleChartsForDisplay[i - 1]);
+          console.log("Checking Temp Arr");
+          console.log(tempArr.length);
+        } else {
+          tempArr.push(this.candleChartsForDisplay[i - 1]);
+          this.segmentedArray.push(tempArr);
+          tempArr = [];
+        }
+
+        if (i == this.candleChartsForDisplay.length - 1) {
+          tempArr.push(this.candleChartsForDisplay[i - 1]);
+          tempArr.push(this.candleChartsForDisplay[i]);
+          this.segmentedArray.push(tempArr);
+        }
+      }
+
+      console.log("SHould just be customer array");
+      this.customerArray = this.segmentedArray[0];
+      this.strategyArray = this.segmentedArray[1];
+      this.technologyArray = this.segmentedArray[2];
+      this.operationsArray = this.segmentedArray[3];
+      this.cultureArray = this.segmentedArray[4];
+
+      console.log(this.customerArray);
+
+    }
+
     private addGraphTitles(): void {
       let graphDataIndexPos: number = 0;
       let chartsDisplayedIndexPos: number = 0;
@@ -144,6 +206,9 @@ export class TeamDynamicsComponent {
       while (graphDataIndexPos < this.graphData.length) {
 
         //  console.log("Graph Index Pos: " + graphDataIndexPos);
+        if (!this.candleChartsForDisplay[chartsDisplayedIndexPos]) {
+          break;
+        }
          let eachDisplayedGraphLength: number = this.candleChartsForDisplay[chartsDisplayedIndexPos].length;
          let dimensionTextIndexPos: number;
 
@@ -155,11 +220,6 @@ export class TeamDynamicsComponent {
         
         if (this.graphData[dimensionTextIndexPos]) {
           let dimensionTextData: string = this.graphData[dimensionTextIndexPos]['dimensionText'];
-
-          // console.log("Dimension Text: " + dimensionTextData + " | Index Pos: " + dimensionTextIndexPos);
-          // console.log("Text from graph data array: " + this.graphData[dimensionTextIndexPos]['dimensionText']);
-          // console.log("charts displayed index: " + chartsDisplayedIndexPos);
-
           this.graphTitles.set(chartsDisplayedIndexPos, dimensionTextData);  
         }
 
@@ -169,42 +229,6 @@ export class TeamDynamicsComponent {
       }
     }
 
-    // private addAreaTextsMap(): void {
-
-    //   let graphDataIndexPos: number = 0;
-    //   let chartsDisplayedIndexPos: number = 0;
-
-    //   let tempHashMap = new Map<string, string>();
-    //   console.log("Length of charts displayed: " + this.candleChartsForDisplay.length);
-
-    //   tempHashMap.set(this.graphData[0]['areaText'], this.graphData[0]['areaText']);      
-    //   this.areaBanners.set(0, this.graphData[0]['areaText']);
-
-    //   while (graphDataIndexPos <= this.graphData.length) {
-        
-    //     let eachDisplayedGraphLength: number = this.candleChartsForDisplay[chartsDisplayedIndexPos].length;
-    //     console.log("Each length: " + eachDisplayedGraphLength);
-    //     let dimensionTextIndexPos: number;
-
-    //     dimensionTextIndexPos = (graphDataIndexPos + eachDisplayedGraphLength);
-    //     console.log("New Area Text Position: " + dimensionTextIndexPos);
-
-    //     if (!tempHashMap.has(this.graphData[graphDataIndexPos]['areaText'])) {
-    //      console.log("Graph Index Pos: " + graphDataIndexPos);
-    //      console.log("Display for candle chart: " + (graphDataIndexPos - eachDisplayedGraphLength));
-    //      tempHashMap.set(this.graphData[dimensionTextIndexPos]['areaText'], this.graphData[dimensionTextIndexPos]['areaText']);
-    //      this.areaBanners.set((graphDataIndexPos - eachDisplayedGraphLength), this.graphData[dimensionTextIndexPos]['areaText']);  
-    //      console.log("Area Text: " + this.graphData[dimensionTextIndexPos]['areaText']);
-    //   }
-        
-    //     chartsDisplayedIndexPos++;
-    //     graphDataIndexPos = dimensionTextIndexPos;
-    //   }
-
-    //   console.log("Test: Should be: 'Customer': " + this.areaBanners.get(0));
-    //   console.log("Test: Should be: 'Strategy': " + this.areaBanners.get(29));
-    //   console.log("Test: Should be: 'Culture': " + this.areaBanners.get(164));
-    // }
 
     private addAreaTextsMap() {
       let tempMap = new Map<string, string>();
@@ -246,21 +270,6 @@ export class TeamDynamicsComponent {
         return this.areaBanners.get(index);
       }
     }
-
-    // private addAreaTexts(): void {
-
-    //   let areaTextTitles: Map<string, string> = new Map<string, string>();
-
-    //   for (var i = 0; i < this.graphData.length; i++) {
-    //     let eachGraph: JSON = this.graphData[i];
-    //     let areaText: string = eachGraph['areaText'];
-
-    //     if(!areaTextTitles.has(areaText)) {
-    //       areaTextTitles.set(areaText, areaText);
-    //       this.areaTexts.push(areaText);
-    //     }
-    //   }
-    // }
 
     public filterGraphs(indexPos: number) {
       this.selectedGraph = this.areaTitles[indexPos];

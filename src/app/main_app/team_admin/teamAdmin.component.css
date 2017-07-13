@@ -7,6 +7,7 @@ md-card {
     width: 200px;
     margin: 0 0 25px 10px;
     padding: 2.5px;
+    background-color: rgb(252, 253, 254);
     /*position:relative;*/
 }
 
@@ -75,3 +76,6 @@ md-card-actions {
   /*float: right;*/
 }
 
+a {
+    text-decoration: none;
+}

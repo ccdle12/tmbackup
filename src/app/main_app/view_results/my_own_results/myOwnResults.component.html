@@ -1,8 +1,8 @@
-<div class="topMarginForSurveyModules"></div>
+<!--<div class="topMarginForSurveyModules"></div>-->
 <nav md-tab-nav-bar>
-  <a md-tab-link class="defaultBtn whiteText" [ngStyle]="inMyOwnResults()" (click)="routeToPage('myownresults')">My Own Results</a>
-  <a md-tab-link *ngIf="showResultsTab()" class="defaultBtn whiteText" [ngStyle]="activeBackgroundColor()" (click)="routeToPage('organizationresults')">Our Organization's Results</a>
-  <a md-tab-link *ngIf="showResultsTab()" class="defaultBtn whiteText" [ngStyle]="activeBackgroundColor()" (click)="routeToPage('teamdynamics')">Team Dynamics</a>
+  <a md-tab-link class="defaultBtn whiteText navTitle" [ngStyle]="inMyOwnResults()" (click)="routeToPage('myownresults')"><h4>My Own Results</h4></a>
+  <a md-tab-link *ngIf="showResultsTab()" class="defaultBtn whiteText navTitle" [ngStyle]="activeBackgroundColor()" (click)="routeToPage('organizationresults')"><h4>Our Organization's Results</h4></a>
+  <a md-tab-link *ngIf="showResultsTab()" class="defaultBtn whiteText navTitle" [ngStyle]="activeBackgroundColor()" (click)="routeToPage('teamdynamics')"><h4>Team Dynamics</h4></a>
 </nav>
 
 <div class="container">

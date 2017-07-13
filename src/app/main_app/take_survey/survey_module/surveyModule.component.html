@@ -1,6 +1,6 @@
-<div class="topMarginForSurveyModules"></div>
+<!--<div class="topMarginForSurveyModules"></div>-->
 <nav md-tab-nav-bar>
-  <a md-tab-link  [ngStyle]="activeBackgroundColor()" (click)="routeToPage('survey')">Survey</a>
+  <a md-tab-link  class="navTitle" [ngStyle]="inSurvey()" (click)="routeToPage('survey')"><h4>Survey</h4></a>
   <!--<a md-tab-link [ngStyle]="activeBackgroundColor()" *ngIf="!authService.inDemoMode()" (click)="routeToPage('evidence')">Evidence</a>-->
   <!--<a md-tab-link *ngIf="authService.inDemoMode()">Evidence</a>-->
   <!--<a md-tab-link [ngStyle]="activeBackgroundColor()" *ngIf="!authService.inDemoMode()" (click)="routeToPage('bestPractice')">Best Practice</a>-->

@@ -29,6 +29,8 @@ import { UserSavedService } from './shared/services/userSaved.service';
 import { EmailTeamDynamicsDialog } from './main_app/view_results/team_dynamics/teamDynamics.component';
 import { EmailOrganizationResultsDialog } from './main_app/view_results/our_organization_results/organizationResults.component' 
 
+
+
 @NgModule({
   imports: [BrowserModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, HttpModule, appRouting, MdProgressSpinnerModule, MdDialogModule, MdMenuModule, MdIconModule, MdInputModule, MdButtonModule, MdSelectModule],
   declarations: [AppComponent, WelcomeComponent, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, NotFoundComponent, AuthCallbackComponent, 

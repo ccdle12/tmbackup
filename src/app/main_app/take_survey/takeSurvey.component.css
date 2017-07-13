@@ -3,6 +3,7 @@ md-card {
     width: 150px;
     margin: 0 0 25px 10px;
     position:relative;
+    background-color: rgb(252, 253, 254);
     /*font-style: italic;*/
     /*float: right;*/
 }
@@ -44,4 +45,9 @@ md-card:hover {
 
 .moduleHeader {
     /*float: left;*/
+}
+
+#progressBar {
+    /*margin-top: 50px;*/
+    margin-bottom: 30px;
 }

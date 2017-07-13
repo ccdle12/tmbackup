@@ -11,7 +11,7 @@
 
 html {
   height: 100%;
-  /*box-sizing: border-box;*/
+  box-sizing: border-box;
   font-family: 'Libre Franklin';
   /* make sure the body does not have a margin */
     /*margin: 0;*/
@@ -22,7 +22,11 @@ body {
   /*height: 100%;*/
     position: relative;
     min-height: 100%;
+    
+    /*Creates bottom away from footer*/
     padding-bottom: 8rem;
+
+
     /*display: flex;*/
   /*flex-direction: column;*/
   /*margin: 0 0 100px;  bottom = footer height */
@@ -116,3 +120,9 @@ h1 {
 .marginBottomMainApp {
     margin-bottom: 600px;
 }
+
+/*.navTitle {
+    padding-top: 6px;
+}*/
+
+

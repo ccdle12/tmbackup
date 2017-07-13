@@ -37,4 +37,19 @@ export class SurveyModuleComponent  {
             break;
         }
     }
+
+    public inSurvey() {
+        let currentUrl: string = window.location.pathname;
+
+        console.log("current url: " + currentUrl);
+        if (currentUrl ===  "/main/takesurvey/surveymodule/survey") {
+          console.log("in correct url");
+            return { 'background-color': '#e28a1d',
+                  'color': 'white' };    
+        } else {
+        // console.log(window.location.pathname);
+        return { 'background-color': '#62B3D1',
+                  'color': 'white' };
+        }
+    }
 }

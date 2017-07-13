@@ -17,9 +17,10 @@ import { OrganizationResultsComponent } from './our_organization_results/organiz
 import { TeamDynamicsComponent } from './team_dynamics/teamDynamics.component';
 
 import { UserRoleGuardService } from '../../shared/services/userRole-guard.service';
+import {AccordionModule} from 'primeng/primeng';
 
 @NgModule({
-  imports: [viewResultsRouting, FormsModule, CommonModule, Ng2GoogleChartsModule, MdTabsModule, MdButtonModule, MdSnackBarModule],
+  imports: [viewResultsRouting, FormsModule, CommonModule, Ng2GoogleChartsModule, MdTabsModule, MdButtonModule, MdSnackBarModule, AccordionModule],
   declarations: [ViewResultsComponent, GoogleChart, MyOwnResultsComponent, OrganizationResultsComponent, TeamDynamicsComponent ],
   providers: [UserRoleGuardService],
 })

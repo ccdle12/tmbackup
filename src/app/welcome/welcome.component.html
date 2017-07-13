@@ -5,13 +5,13 @@
     <img id="sloganBanner" src="assets/AppForDigitalTransformers.png" alt="slogan banner"/>
 </div>
 
-<div class="btn-group btn-group-justified navigationButtons">
-    <a routerLink="/main" id="seeDemo" class="btn">See Demo</a>
+<div id="navigationTabs" class="btn-group btn-group-justified navigationButtons">
+    <a routerLink="/main" id="seeDemo" class="btn"><h4>See Demo</h4></a>
     
-    <a *ngIf="!authService.isAuthenticated()" class="btn orangeBtn" routerLink="/registration">Register My Interest</a>
-    <a *ngIf="authService.isAuthenticated()" (click)="openDialog()" class="btn defaultBtn">Register My Interest</a>
+    <a *ngIf="!authService.isAuthenticated()" class="btn orangeBtn" routerLink="/registration"><h4>Register My Interest</h4></a>
+    <!--<a *ngIf="authService.isAuthenticated()" (click)="openDialog()" class="btn defaultBtn">Register My Interest</a>-->
 
-    <a *ngIf="!authService.isAuthenticated()" (click)="authService.login()" class="btn defaultBtn">Login</a>
+    <a *ngIf="!authService.isAuthenticated()" (click)="authService.login()" class="btn defaultBtn"><h4>Login</h4></a>
 </div>
 
 <div id="togetherAndSponsorArea">

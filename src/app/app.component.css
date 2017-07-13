@@ -1,3 +1,7 @@
+#mainNavBar {
+    /*margin-bottom: 50px;*/
+}
+
 ul {
     list-style-type: none;
     padding: 0;
@@ -48,3 +52,9 @@ li {
 #firstMenuButton {
     margin-top: 37px;
 }
+
+.navbar {
+    border-radius: 0 !important;
+    margin-bottom: 0;
+}
+

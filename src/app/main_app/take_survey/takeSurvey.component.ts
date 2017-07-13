@@ -61,7 +61,11 @@ export class TakeSurveyComponent {
     if (!statementCount || !surveyCount)
       this.progressValue = 0;
     else
-      this.progressValue = (surveyCount/statementCount) * 100;
+      this.progressValue = Math.round((surveyCount/statementCount) * 100);
+
+      if (this.progressValue > 100) 
+        this.progressValue = 100;
+      
       console.log("progressValue: ", this.progressValue);
       
   }

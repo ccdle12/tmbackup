@@ -15,10 +15,10 @@
 </div>-->
 
 <nav md-tab-nav-bar *ngIf="hideNavBar()">
-  <a md-tab-link [ngStyle]="inTeamAdmin()" *ngIf="!authService.inDemoMode()" routerLink="teamadmin"> Team Admin</a>
-  <a md-tab-link *ngIf="!authService.isVerified()"> Team Admin</a>
-  <a md-tab-link [ngStyle]="inSurvey()" routerLink="takesurvey"> Take Survey</a>
-  <a md-tab-link [ngStyle]="inViewResults()" routerLink="viewresults"> View Results</a>
+  <a md-tab-link class="navTitle" [ngStyle]="inTeamAdmin()" *ngIf="!authService.inDemoMode()" routerLink="teamadmin"><h4>Team Admin</h4></a>
+  <a md-tab-link class="navTitle" *ngIf="!authService.isVerified()"><h4>Team Admin</h4></a>
+  <a md-tab-link class="navTitle" [ngStyle]="inSurvey()" routerLink="takesurvey"><h4>Take Survey</h4></a>
+  <a md-tab-link class="navTitle" [ngStyle]="inViewResults()" routerLink="viewresults"><h4>View Results</h4></a>
   <!--<a md-tab-link [ngStyle]="activeBackgroundColor()" *ngIf="!authService.inDemoMode()" routerLink="publication"> Publication</a>
   <a md-tab-link *ngIf="!authService.isVerified()"> Publication</a>
   <a md-tab-link [ngStyle]="activeBackgroundColor()" *ngIf="!authService.inDemoMode()" routerLink="benchmark">Benchmark</a>
