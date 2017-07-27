@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { viewResultsRouting } from './viewResults.routing';
 import { ViewResultsComponent } from './viewResults.component';
-import { NvD3Component } from 'ng2-nvd3';
+// import { NvD3Component } from 'ng2-nvd3';
 
 import {GoogleChart} from 'angular2-google-chart/directives/angular2-google-chart.directive';
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';

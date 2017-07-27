@@ -27,6 +27,7 @@ button {
   margin-right: 10px;
 }
 
+
 #backToDashboard {
   margin-right: 380px;
 }
@@ -38,7 +39,6 @@ button {
 /*Nav Bar*/
 nav  {
     text-align:center;
-    /*margin-top: 50px;*/
 }
 
 nav a {
@@ -46,22 +46,27 @@ nav a {
     color:white;
 }
 
-#surveyModuleNav {
-    position: relative;
+.topSurveyModuleNav {
+    position: relative; 
     margin-top: 0px;
-    /*background-color: lightgrey;*/
     background-color:rgb(220,220,220);
     height: 80px;
     margin-bottom: 25px;
-    margin-bottom: 0px;
+    /* margin-bottom: 0px; */
 }
+
+.bottomSurveyModuleNav {
+    position: relative; 
+    /* margin-top: 400px; */
+    background-color:rgb(220,220,220);
+    height: 80px;
+    /* margin-bottom: 25px; */
+    /* margin-bottom: 0px; */
+}
+
 
 .whiteText {
   color: white;
-}
-
-md-slider {
-  color: pink;
 }
 
 .moduleNavigation  {
@@ -71,11 +76,45 @@ md-slider {
     opacity: 1;
     float: left;
     margin-left: 35px;
-    /*margin-right: 20px;*/
-    /*padding-right: 100px;*/
-    /*padding-left: 100px;*/
 }
 
 .moduleNavigation:hover {
   cursor: pointer;
 }
+
+
+.md-tooltip {
+    height: 35px !important;
+    background-color: red !important;
+    color: white !important;
+    border-radius: 5px;
+}
+
+#areYouResponsible {
+  float: right;
+  margin-right: 125px;
+  width: auto;
+}
+
+#userIsResponsible {
+  float: right;
+  margin-right: 125px;
+  width: auto;
+  background-color: #e28a1d;
+}
+
+.customTooltip {
+  background-color:#62B3D1; 
+  color: white;
+  z-index:1;
+  position: absolute;
+  margin-top: 35px; 
+   height: 0 auto;  
+  width: 250px;
+}
+
+md-slider {
+  z-index: 0;
+}
+
+

@@ -2,11 +2,11 @@
 
  <div id="surveyProgressBarArea" *ngIf="inChildComponents()">
      <h2><strong>Dashboard</strong></h2>
-        <!--<div class="row">-->
+        <!-- <div class="row"> -->
             <h4 id="overallProgress">Survey Completion Status -  {{progressValue}}%</h4>
             <md-progress-bar id="progressBar" *ngIf="inChildComponents()" color="accent" [mode]="determinate" [value]="progressValue">
-        </md-progress-bar>
-        <!--</div>-->
+         </md-progress-bar> 
+        <!-- </div> -->
 </div>
 
 <div *ngIf="inChildComponents()" class="container">

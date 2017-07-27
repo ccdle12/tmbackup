@@ -1,5 +1,3 @@
-<!--<div class="topMarginForSurveyModules"></div>-->
-
 <nav md-tab-nav-bar>
 
 <div id="navigationIcon">
@@ -16,54 +14,30 @@
   </div>
 </nav>
 
-<div class="container">
-  <div class="row">
-    <h3><strong>Team Dynamics</strong></h3>
-    <!--<button md-button class="col-xs-3" (click)="backToDashboard()">Back To Dashboard</button>-->
-    <!--<button *ngIf="this.authService.isLeaderConsultant();" md-button class="col-xs-3 col-xs-offset-6" (click)="requestSurveyCSV()" id="sendRequest">Email Results</button>-->
-  </div>
+ <div id="areaNavigation">
+   <div class="container">
+     <div class="row">
+       <div id="graphContainer">
+          <a class="col-xs-2 graphNav" [ngStyle]="inCustomerSection()" (click)="updateSelectedArray('Customer')"><h4 class="graphHeading">Customer</h4></a>
+          <a class="col-xs-2 graphNav" [ngStyle]="inStrategySection()" (click)="updateSelectedArray('Strategy')"><h4 class="graphHeading">Strategy</h4></a>
+          <a class="col-xs-2 graphNav" [ngStyle]="inTechnologySection()" (click)="updateSelectedArray('Technology')"><h4 class="graphHeading">Technology</h4></a>
+          <a class="col-xs-2 graphNav" [ngStyle]="inOperationsSection()" (click)="updateSelectedArray('Operations')"><h4 class="graphHeading">Operations</h4></a>
+          <a class="col-xs-2 graphNav" [ngStyle]="inCultureSection()" (click)="updateSelectedArray('Culture')"><h4 class="graphHeading">Culture</h4></a>
+        </div>
+      </div>
+   </div>
 </div>
 
 <div class="container">
   <div class="row">
-    <p-accordion>
-        <p-accordionTab header="Customer">
-          <div id="candleStickChart" class="googleComboChart container" *ngFor="let eachDimension of customerArray, let i = index">
-              <div><h5><strong>{{getGraphTitles(i)}}</strong></h5></div>
-              <div id="candle_chart" [chartData]="eachDimension" [chartOptions] = "candle_ChartOptions" chartType="CandlestickChart" GoogleChart></div>
-          </div>
-        </p-accordionTab>
-
-        <p-accordionTab header="Strategy">
-             <div id="candleStickChart" class="googleComboChart container" *ngFor="let eachDimension of strategyArray, let i = index">
-              <div><h5><strong>{{getGraphTitles(i + 4)}}</strong></h5></div>
-              <div id="candle_chart" [chartData]="eachDimension" [chartOptions] = "candle_ChartOptions" chartType="CandlestickChart" GoogleChart></div>
-          </div>
-        </p-accordionTab>
-
-        <p-accordionTab header="Technology">
-            <div id="candleStickChart" class="googleComboChart container" *ngFor="let eachDimension of technologyArray, let i = index">
-              <div><h5><strong>{{getGraphTitles(i + 11)}}</strong></h5></div>
-              <div id="candle_chart" [chartData]="eachDimension" [chartOptions] = "candle_ChartOptions" chartType="CandlestickChart" GoogleChart></div> 
-              </div> 
-        </p-accordionTab>
-
-        <p-accordionTab header="Operations">
-            <div id="candleStickChart" class="googleComboChart container" *ngFor="let eachDimension of operationsArray, let i = index">
-              <div><h5><strong>{{getGraphTitles(i + 18)}}</strong></h5></div>
-              <div id="candle_chart" [chartData]="eachDimension" [chartOptions] = "candle_ChartOptions" chartType="CandlestickChart" GoogleChart></div>
-              </div>
-        </p-accordionTab>
-
-        <p-accordionTab header="Culture">
-            <div id="candleStickChart" class="googleComboChart container" *ngFor="let eachDimension of cultureArray, let i = index">
-              <div><h5><strong>{{getGraphTitles(i + 24)}}</strong></h5></div>
-              <div id="candle_chart" [chartData]="eachDimension" [chartOptions] = "candle_ChartOptions" chartType="CandlestickChart" GoogleChart></div> 
-              </div>
-        </p-accordionTab>
-
-    </p-accordion>
+    <h3><strong>{{selectedAreaString}}</strong></h3>
   </div>
-  </div>
+</div>
 
+  <div id="candleStickChart" class="googleComboChart container" *ngFor="let eachDimension of selectedAreaArray, let i = index">
+      <div class="container">
+        <div><h5><strong>{{getGraphTitles(i + currentGraphTitleIndex)}}</strong></h5></div>
+        <div id="candle_chart" [chartData]="eachDimension" [chartOptions] = "candle_ChartOptions" chartType="CandlestickChart" GoogleChart></div>
+      </div> 
+  </div>
 <div class="marginBottom"></div>

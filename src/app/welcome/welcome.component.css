@@ -1,37 +1,32 @@
-
-body {
-  padding-bottom: 0rem;
+#welcomeComponent {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 /* Sponsor Banner */
 #togetherAndSponsorArea {
-  padding-top: 25px;
-  padding-bottom: 30px;
-  background: lightgrey;
-  /*flex: 1;*/
-  /*height: 240px;*/
+   padding-top: 25px; 
 }
 
-#quickFill {
-  background: #88C158;
-  height: 100px;
+#togetherAssetBanner {
+  margin-left: auto; 
+	margin-right: auto; 
+  display: block; 
 }
 
-.centerPosition {
+
+.dmmPartners {
   margin-left: auto;
 	margin-right: auto;
-	display: block;
+  display: block;
 }
 
-#welcomeComponent {
-  /*margin-top: 70px;*/
-  margin-top: 10px;
-}
+
 
 #smartCityPerson {
   float: left;
-  margin-right: 70px;
-  width: 250px;   
+  margin-right: 70px; 
+  width: 250px;    
   height: auto;
   /*height: 100px;*/
   /*display: inline-block;*/
@@ -49,17 +44,67 @@ body {
 }
 
 #sloganBanner {
-  width: 700px; /* you can use % */
-  height: auto;
-  margin-left: 25px;
+   width: 700px; 
+
 }
 
 #seeDemo {
   background-color: #EEB242;
-  /*height: 25px;*/
 }
 
 
 a:hover  {
   color: white;
 }
+
+.dmmPartners {
+  max-width: 100%;
+  height: auto;
+  width: auto;
+}
+
+/* @media (max-width: 1100px) {
+  .dmmPartners {
+    width: 1000px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .dmmPartners {
+    width: 800px;
+  }
+}
+
+@media (max-width: 800px) {
+  .dmmPartners {
+    width: 600px;
+  }
+
+  #tmForumBanner {
+    width: 400px
+  }
+
+  #sloganBanner {
+    width: 400px;
+  }
+}
+
+@media (max-width: 600px) {
+  .dmmPartners {
+    width: 400px;
+  }
+}
+
+@media (max-width: 450px) {
+  .dmmPartners {
+    width: 300px;
+  }
+
+  #tmForumBanner {
+    width: 300px
+  }
+
+  #sloganBanner {
+    width: 300px;
+  }
+} */

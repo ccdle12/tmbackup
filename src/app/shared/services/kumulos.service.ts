@@ -19,6 +19,9 @@ export class KumulosService {
     private getCaseStudiesURI: string;
     private getBestPracticesURI: string;
     private getWebEvidenceURI: string;
+    private createUpdateEvidenceURI: string;
+    private deleteEvidenceURI: string;
+
     private getSubmitInterestRequestURI: string;
     private getWebAggregatesByVersionandUserURI: string;
     private getWebAggregatesForOrganizationResultsURI: string;
@@ -28,6 +31,21 @@ export class KumulosService {
     private userProfileURI: string;
     private inviteUsersURI: string;
     private deleteUserURI: string;
+    private getSingleCityURI: string;
+    private updateCityPublicationLevelURI: string;
+    private publishVersionURI: string;
+    private allBenchmarkDataURI: string;
+
+    private getDimensionOwnerURI: string;
+    private updateDimensionOwnerURI: string;
+    private deleteDimensionOwnerURI: string;
+
+    private updateUserRoleURI: string;
+
+    private getAdjustmentsByVersionURI: string;
+    private createUpdateAdjustmentDataURI: string;
+
+    private deleteSingleAdjustmentWithJWTURI: string;
 
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
@@ -46,7 +64,11 @@ export class KumulosService {
         this.getWebUsersURI = "webGetUsers.json/";
         this.getCaseStudiesURI = "/getCaseStudiesByDimension.json/";
         this.getBestPracticesURI = "getBestPracticesByDimension.json/";
+
         this.getWebEvidenceURI = "webGetEvidence.json/";
+        this.deleteEvidenceURI = "deleteSingleEvidenceRecord.json/";
+
+        this.createUpdateEvidenceURI = "create_updateEvidenceData.json/";
         this.getSubmitInterestRequestURI = "webSubmitInterestRequest.json/";
         this.getWebAggregatesByVersionandUserURI = "webgetAggregatesByVersionandUser.json/";
         this.getWebAggregatesForOrganizationResultsURI =  "webgetAggregatesByVersion.json/";
@@ -56,6 +78,21 @@ export class KumulosService {
         this.userProfileURI = "webGetUserProfile.json/";
         this.inviteUsersURI = "webInviteUser.json/";
         this.deleteUserURI = "webDeleteUser.json/";
+        this.getSingleCityURI = "getSingleCity.json/";
+        this.updateCityPublicationLevelURI = "updateCityPublicationLevel.json/";
+        this.publishVersionURI = "publishVersion.json/";
+        this.allBenchmarkDataURI = "getAllBenchmarkCityDataAndBenchmark.json/";
+
+        this.getDimensionOwnerURI = "webGetDimensionOwnerRecords.json/";
+        this.updateDimensionOwnerURI = "create_updateDimensionOwnerData.json/"
+        this.deleteDimensionOwnerURI = "deleteDimensionOwnerDataRecord.json/"
+
+        this.updateUserRoleURI = "webUpdateRole.json/";
+
+        this.getAdjustmentsByVersionURI = "getAdjustmentsByVersion.json/";
+        this.createUpdateAdjustmentDataURI = "create_updateAdjustmentData.json/";
+
+        this.deleteSingleAdjustmentWithJWTURI = "deleteSingleAdjustment.json/"
     }
 
     public createAuthorizationHeader(): Headers {
@@ -267,6 +304,22 @@ export class KumulosService {
             });
     }
 
+    public createUpdateEvidence(evidenceData: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+         urlSearchParams.append('params[evidenceData]', evidenceData);
+
+         let body: String = urlSearchParams.toString();
+
+          return this.http.post(this.domain + this.createUpdateEvidenceURI, body, {headers: headers})
+            .map(response => {
+                // console.log(response.json());
+                return response.json();
+            });
+    }
+
     public getSubmitInterestRequest(name: string, organization: string, jobTitle: string, country: string,
                                     email: string, phone: string, comments: string) {
 
@@ -298,6 +351,7 @@ export class KumulosService {
 
         urlSearchParams.append('params[version]', activeVersionNumber);
         urlSearchParams.append('params[userID]', userID);
+
 
         let body: string = urlSearchParams.toString();
 
@@ -374,6 +428,24 @@ export class KumulosService {
             });
     }
 
+    public requestBenchmarkSurveyCSV(activeVersionNumber: string, emailAddress: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[version]', activeVersionNumber);
+        urlSearchParams.append('params[emailAddress]', emailAddress);
+        urlSearchParams.append('params[individualDataOnly]', '');
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.requestSurveyURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            });
+    }
+
     public updateUserNameAndJobTitle(userId: string, name: string, jobTitle: string) {
         let headers: Headers = this.createAuthorizationHeader();
 
@@ -436,6 +508,207 @@ export class KumulosService {
         let body: string = urlSearchParams.toString();
 
         return this.http.post(this.domain + this.deleteUserURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public getSingleCity(cityID: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[cityID]', cityID);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.getSingleCityURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public updateCityPublicationLevel(cityID: string, publicationLevel: string, publicationCtyOrGroup: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[cityID]', cityID);
+        urlSearchParams.append('params[publicationLevel]', publicationLevel);
+        urlSearchParams.append('params[publicationCtyorGroup]', publicationCtyOrGroup);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.updateCityPublicationLevelURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public publishVersion(versionID: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[versionID]', versionID);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.publishVersionURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public getAllBenchmarkData(cityID: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[cityID]', cityID);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.allBenchmarkDataURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public getDimensionOwner(activeVersion: string, areaID: string, dimensionID: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[version]', activeVersion);
+        urlSearchParams.append('params[areaID]', areaID);
+        urlSearchParams.append('params[dimensionID]', dimensionID);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.getDimensionOwnerURI, body, {headers: headers})
+            .map(response => 
+            {
+                console.log(response.json());
+                return response.json();
+            }
+        )
+    }
+
+    public updateDimensionOwner(ownerData: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[ownerData]', ownerData);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.updateDimensionOwnerURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public deleteDimensionOwner(ownerID: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[dimensionOwnerID]', ownerID);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.deleteDimensionOwnerURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public updateUserRole(userRole: string, userId: string, userEmail: string, userName:  string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[role]', userRole);
+        urlSearchParams.append('params[userId]', userId);
+        urlSearchParams.append('params[email]', userEmail);
+        urlSearchParams.append('params[userName]', userName);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.updateUserRoleURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public deleteEvidence(evidenceID: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[evidenceRecordID]', evidenceID);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.deleteEvidenceURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public getAdjustmentsByVersion(activeVersion: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[version]', activeVersion);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.getAdjustmentsByVersionURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
+    }
+    
+    public createUpdateAdjustmentData(adjustmentData: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[adjustmentData]', adjustmentData);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.createUpdateAdjustmentDataURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public deleteSingleAdjustmentWithJWT(adjustmentID: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[adjustmentID]', adjustmentID);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.deleteSingleAdjustmentWithJWTURI, body, {headers: headers})
             .map(response => {
                 console.log(response.json());
                 return response.json();

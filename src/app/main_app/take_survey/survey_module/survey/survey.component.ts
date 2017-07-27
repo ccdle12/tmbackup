@@ -9,6 +9,7 @@ import { MdSnackBar } from '@angular/material';
 import { ComponentCanDeactivate } from '../../../../shared/services/saveSurvey-guard.service';
 import {Observable} from 'rxjs/Observable';
 import { UserSavedService } from '../../../../shared/services/userSaved.service';
+import { CreateAndDeleteDimensionOwnerService } from '../../../../shared/services/createAndDeleteDimensionOwner.service';
 
 
 @Component({
@@ -16,142 +17,118 @@ import { UserSavedService } from '../../../../shared/services/userSaved.service'
   templateUrl: './survey.component.html',
   styleUrls: ['./survey.component.css']
 })
-export class SurveyComponent implements ComponentCanDeactivate {
+export class SurveyComponent {
 
-    private activeCityVersion: string;
-    public surveyQuestions: Array<JSON>;
+  private activeCityVersion: string;
+  public surveyQuestions: Array<JSON>;
 
-    private importanceValues: Array<any>;
-    private importanceToolTips: Array<string>;
+  private importanceValues: Array<any>;
+  private importanceToolTips: Array<string>;
 
-    private capabilityValues: Array<any>;
-    private capabilityToolTips: any[];
+  private capabilityValues: Array<any>;
+  private capabilityToolTips: any[];
 
-    private twoYearTargetValues: Array<any>;
+  private twoYearTargetValues: Array<any>;
 
-    private surveyCount: any;
+  private surveyCount: any;
 
-    private areaID: any;
-    private dimensionID: any;
-    public dimensionText: any;
+  private areaID: any;
+  private dimensionID: any;
+  public dimensionText: any;
+  private dimensionOwnerID: string;
 
-    public userSaved: boolean;
+  public userSaved: boolean;
 
-    private userSelectedModule: any;
-    private sizeOfModules: number;
+  private userSelectedModule: any;
+  private sizeOfModules: number;
 
-    private userClickedOnSlider: boolean;
+  // User moving slider event variables
+  private userClickedOnSlider: boolean;
+  public selectedSlider: any;
+  public showToolTip: boolean;
+  public importanceSliderFlag: boolean;
+  public capabilitySliderFlag: boolean;
+  public twoYearTargerSliderFlag: boolean;
 
-    constructor(public kumulosService: KumulosService, 
-                public router: Router,
-                public dialog: MdDialog,
-                public authService: AuthService,
-                public snackBar: MdSnackBar,
-                private eRef: ElementRef,
-                public userSavedService: UserSavedService) { 
-      
-      this.initializeMemberVariables();
-      this.getWebSurveyQuestions(); 
-    }
+  // "Are you responsible?" -> Flag
+  public surveyHasOwner: boolean;
 
-    // @HostListener('document:keyup', ['$event'])
-    //   onKeyUp(ev:KeyboardEvent) {
-    //   // do something meaningful with it
-    //   console.log(`The user just pressed ${ev.key}!`);
-    // }
-
-  //   @HostListener('document:click', ['$event'])
-  //   clickout(event) {
-  //     if(this.eRef.nativeElement.querySelector('.surveySliders')) {
-  //       this.userClicked = true;
-  //       console.log("User Clicked: " + this.userClicked);
-  //       console.log("User clicked inside");
-  //     } else {
-  //       console.log("User clicked outside");
-  //     }
-  // }
-  //  @HostListener('mouseover') onMouseOver() {
-  //    this.eRef.nativeElement.querySelector('.surveySliders');
-  //    this.userClicked = true;
-  //       console.log("User Clicked: " + this.userClicked);
-  //       console.log("User clicked inside");
-  //  }
-
-  //  @HostListener('mouseout') onMouseOut() {
-  //   this.eRef.nativeElement.querySelector('.surveySliders');
-  //    this.userClicked = false;
-  //       console.log("User Clicked: " + this.userClicked);
-  //       console.log("User clicked otuside");
-  // }
-
-    public userMovedSlider(): void {
-      this.userClickedOnSlider = true;
-      this.userSavedService.setUserHasSaved(this.userClickedOnSlider);
-      console.log("userMoved Slider: " + this.userClickedOnSlider);
-    }
-           
-    canDeactivate(): Observable<boolean> | boolean {
-      return true;
-    }
-
-    public changed: boolean;
-    // @ViewChild('start') sidenav: MdSidenavModule;
-    public changing() {
-      this.changed = true;
-      console.log("stuff changing");
-       return true;
-    }
-
-    private initializeMemberVariables(): void {
-      this.userSelectedModule = localStorage.getItem('userSelectedModule');
-
-      let surveyDashboard: JSON = JSON.parse(localStorage.getItem('surveydashboard'));
-      this.sizeOfModules = Object.keys(surveyDashboard).length - 1;
-
-      this.userSaved = false;
-
-      this.importanceValues = new Array();
-
-      this.importanceToolTips = new Array();
-      this.importanceToolTips[0] = "1 - Little Importance";
-      this.importanceToolTips[1] = "2 - Some Importance";
-      this.importanceToolTips[2] = "3 - Generally Important";
-      this.importanceToolTips[3] = "4 - Significant Importance";
-      this.importanceToolTips[4] = "5 - Key/pivotal priority";
-
-      this.capabilityValues = new Array();
-      this.capabilityToolTips = new Array();
-
-      this.twoYearTargetValues = new Array();
-
-      let parsedSurveyDashboard = JSON.parse(localStorage.getItem('surveydashboard'));
-      this.areaID = parsedSurveyDashboard[this.userSelectedModule]['areaID'];
-      this.dimensionID = parsedSurveyDashboard[this.userSelectedModule]['dimensionID'];
-      this.dimensionText = parsedSurveyDashboard[this.userSelectedModule]['dimensionText'];
-
-      this.activeCityVersion = localStorage.getItem('activeCityVersion');
-
-      this.userClickedOnSlider = false;
-      this.userSavedService.setUserHasSaved(this.userClickedOnSlider);
-
-    }
-
-    public getUserSaved(): boolean {
-      return this.userSaved;
-    }
-
-    private getWebSurveyQuestions() {
-      this.kumulosService.getWebSurvey(this.activeCityVersion, this.areaID, this.dimensionID )
-        .subscribe(responseJSON => {
-         this.surveyQuestions = responseJSON.payload;
-         
-         this.updateSurveyValues();
-         this.updateToolTips();
-         console.log('survey questions', responseJSON.payload); 
-      });
-  }
+  constructor(public kumulosService: KumulosService, public router: Router, public dialog: MdDialog, public authService: AuthService,
+              public snackBar: MdSnackBar, private eRef: ElementRef, public userSavedService: UserSavedService, 
+              public createAndDeleteDimensionOwner: CreateAndDeleteDimensionOwnerService) { 
     
-    private updateSurveyValues(): void {
+    this.initializeMemberVariables();
+    this.getWebSurveyQuestions(); 
+  }
+
+  private initializeMemberVariables(): void {
+    this.userSelectedModule = this.getUserSelectedModule();
+
+    let surveyDashboard: JSON = JSON.parse(localStorage.getItem('surveydashboard'));
+    this.sizeOfModules = Object.keys(surveyDashboard).length - 1;
+
+    this.userSaved = false;
+
+    this.initializeArrayValues();
+
+    this.initializeImportanceToolTips();  
+
+    this.updateCurrentModuleDetails();
+
+
+    this.activeCityVersion = localStorage.getItem('activeCityVersion');
+
+    this.userClickedOnSlider = false;
+    this.userSavedService.setUserHasSaved(this.userClickedOnSlider);
+
+    this.getDimensionOwner();
+  }
+
+  private getUserSelectedModule(): any {
+    return localStorage.getItem('userSelectedModule');
+  }
+
+  private initializeArrayValues(): void {
+    this.importanceValues = new Array();
+    this.capabilityValues = new Array();
+    this.twoYearTargetValues = new Array();
+    this.capabilityToolTips = new Array();
+  }
+
+  private initializeImportanceToolTips(): void {
+    this.importanceToolTips = new Array();
+    this.importanceToolTips[0] = "1 - Little Importance";
+    this.importanceToolTips[1] = "2 - Some Importance";
+    this.importanceToolTips[2] = "3 - Generally Important";
+    this.importanceToolTips[3] = "4 - Significant Importance";
+    this.importanceToolTips[4] = "5 - Key/pivotal priority";
+  }
+
+  private updateCurrentModuleDetails(): void {
+    let parsedSurveyDashboard = this.retrieveParsedSurveyDashboard();
+    this.areaID = parsedSurveyDashboard[this.userSelectedModule]['areaID'];
+    this.dimensionID = parsedSurveyDashboard[this.userSelectedModule]['dimensionID'];
+    this.dimensionText = parsedSurveyDashboard[this.userSelectedModule]['dimensionText'];
+  }
+
+  private retrieveParsedSurveyDashboard(): void {
+    return JSON.parse(localStorage.getItem('surveydashboard'));
+  }
+
+  private getWebSurveyQuestions() {
+    this.kumulosService.getWebSurvey(this.activeCityVersion, this.areaID, this.dimensionID )
+      .subscribe(responseJSON => 
+        {
+        this.surveyQuestions = responseJSON.payload;
+        
+        this.updateSurveyValues();
+        this.updateToolTips();
+        console.log('survey questions', responseJSON.payload); 
+       }
+    );
+  }
+
+  private updateSurveyValues(): void {
 
       for (var eachQuestion = 0; eachQuestion < this.surveyQuestions.length; eachQuestion++) {
         
@@ -188,6 +165,96 @@ export class SurveyComponent implements ComponentCanDeactivate {
       }
     }
 
+
+
+    // Are you responsible for survey section
+    private getDimensionOwner(): void {
+
+      this.kumulosService.getDimensionOwner(this.activeCityVersion, this.areaID, this.dimensionID)
+        .subscribe(responseJSON => {
+          this.dimensionOwnerCallback(responseJSON);
+        })
+    }
+
+    private dimensionOwnerCallback(response: any) {
+      if (response.responseMessage == "Unknown server error: KScript execution error: uncaught exception: No Dimension Owner Data Selected") {
+        this.surveyHasOwner = false;
+        this.dimensionOwnerID = "";
+      } else {
+        this.dimensionOwnerID = response.payload[0]['dimensionOwnerID'];
+        this.surveyHasOwner = true;
+      }
+      
+      this.updateDimensionOwnerService();
+    }
+
+    private updateDimensionOwnerService(): void {
+       this.createAndDeleteDimensionOwner.setAreaAndDimensionID(this.areaID, this.dimensionID);
+       this.createAndDeleteDimensionOwner.setDimensionOwnerID(this.dimensionOwnerID);
+       this.createAndDeleteDimensionOwner.setActiveVersion(this.activeCityVersion);
+    }
+
+
+
+    // Events for user touching the sliders
+    public userMovedSlider(indexPos: any, sliderColumn: number): void {
+      this.updateShowToolTipFlag(indexPos);
+      this.updateSliderColumnsFlag(sliderColumn);
+
+      this.timeOutToolTip();
+      this.updateUserSavedFlag();
+    }
+    
+    private updateShowToolTipFlag(indexPos: any) {
+      this.showToolTip = true;
+      this.selectedSlider = indexPos;
+    }
+
+    private updateSliderColumnsFlag(sliderColumn: number) {
+      console.log(sliderColumn);
+      switch(sliderColumn) {
+        case 0:
+          this.importanceSliderFlag = true;
+          break;
+
+        case 1:
+          this.capabilitySliderFlag = true;
+          break;
+        
+        case 2:
+          this.twoYearTargerSliderFlag = true;
+          break;
+      }
+    }
+
+
+    // Events for the custom tool tips 
+    private timeOutToolTip(): void {
+      setTimeout(function() 
+      {
+        this.revertFlagsToFalse();
+
+      }.bind(this), 4000);
+    }
+
+    private revertFlagsToFalse(): void {
+      this.showToolTip = false;
+      this.importanceSliderFlag = false;
+      this.capabilitySliderFlag = false;
+      this.twoYearTargerSliderFlag = false;
+    }
+
+    private updateUserSavedFlag(): void {
+      this.userClickedOnSlider = true;
+      this.userSavedService.setUserHasSaved(this.userClickedOnSlider);
+    }
+
+    public getUserSaved(): boolean {
+      return this.userSaved;
+    }
+
+  
+
   public backToTakeSurvey(): void {
 
      if (!this.authService.isVerified()) {
@@ -196,8 +263,6 @@ export class SurveyComponent implements ComponentCanDeactivate {
     }
 
     if (this.userClickedOnSlider) {
-      console.log("user has not saved");
-      console.log("user is not in demo mode");
       this.dialog.open(RemindUserToSaveDialog);
       return;    
     } else {
@@ -207,7 +272,6 @@ export class SurveyComponent implements ComponentCanDeactivate {
   }
 
   public saveSurveyInput(): void {
-    console.log('saveSurveyClicked');
 
     if (this.authService.canSaveSurvey()) {
       this.dialog.open(InDemoModeDialog);
@@ -216,7 +280,6 @@ export class SurveyComponent implements ComponentCanDeactivate {
 
     this.userClickedOnSlider = false;
     
-    console.log("User CLicked on Slider: " + this.userClickedOnSlider);
     this.updateSurveyData();
   }
 
@@ -224,14 +287,12 @@ export class SurveyComponent implements ComponentCanDeactivate {
 
     if (!this.authService.isVerified()) {
       this.incrementSelectedModule();
-      window.location.reload();
-      // this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/takesurvey/surveymodule/survey'));
+
+      this.getWebSurveyQuestions();
       return;
     }
 
     if (this.userClickedOnSlider) {
-      console.log("user has not saved");
-      console.log("user is not in demo mode");
       this.dialog.open(RemindUserToSaveDialog);
       return;    
     } else {
@@ -295,6 +356,8 @@ export class SurveyComponent implements ComponentCanDeactivate {
     return true;
   }
 
+
+
   public updateSurveyData(): void {
     let activeCityVersion: string = localStorage.getItem('activeCityVersion');
     let JSONArray = new Array();
@@ -321,22 +384,29 @@ export class SurveyComponent implements ComponentCanDeactivate {
     let surveyDataString = JSON.stringify(hardCodeJson);
 
     this.kumulosService.getCreateUpdateUserSurveyData(surveyDataString)
-      .subscribe(responseJSON => {
+      .subscribe(responseJSON => 
+        {
         this.showSnackBar();
         this.getWebSurveyQuestions();
         this.userClickedOnSlider = false;
-      });
+      }
+    );
   }
 
     public activeBackgroundColor() {
-        return { 'background-color': '#1e90ff',
-                  'color': 'white' };
+      return { 'background-color': '#1e90ff', 'color': 'white' };
     }
 
   public showSnackBar(): void {
-    this.snackBar.openFromComponent(SaveSnackBarComponent, {
-      duration: 1000,
-    });
+    this.snackBar.openFromComponent(SaveSnackBarComponent, { duration: 1000 });
+  }
+
+  public launchOwnSectionDialog(): void {
+    this.dialog.open(ResponsibleForSectionDialog);
+  }
+
+  public launchRemoveOwnershipDialog(): void {
+    this.dialog.open(RemoveResponsibilityForSectionDialog);
   }
 }
 
@@ -359,3 +429,49 @@ export class InDemoModeDialog { }
   styleUrls: ['saveSnackBarComponent.css'],
 })
 export class SaveSnackBarComponent {}
+
+@Component({
+  selector: 'responsibleForSectionDialog',
+  templateUrl: 'responsibleForSection.html',
+  styleUrls: ['responsibleForSection.css'],
+})
+export class ResponsibleForSectionDialog {
+
+  constructor(public dimensionOwnerService: CreateAndDeleteDimensionOwnerService, public kumulosService: KumulosService) {}
+
+  public takeResponsibility(): void {
+    this.dimensionOwnerService.retrieveA0ProfileKeys();
+    let ownerData: string = this.dimensionOwnerService.getOwnerData();
+
+    // this.kumulosService.updateDimensionOwner(ownerData)
+
+    this.kumulosService.updateDimensionOwner(ownerData)
+      .subscribe(response => {
+        console.log(response);
+        window.location.reload();
+      });
+  }
+}
+
+@Component({
+  selector: 'removeResponsibilityForSectionDialog',
+  templateUrl: 'removeResponsibilityForSection.html',
+  styleUrls: ['removeResponsibilityForSection.css'],
+})
+export class RemoveResponsibilityForSectionDialog { 
+
+  public dimensionOwnerID: string;
+
+  constructor(public dimensionOwnerService: CreateAndDeleteDimensionOwnerService, public kumulosService: KumulosService) {
+    this.dimensionOwnerID = this.dimensionOwnerService.getDimensionOwnerID();
+  }
+
+  public removeResponsibility(): void {
+    this.kumulosService.deleteDimensionOwner(this.dimensionOwnerID)
+      .subscribe(response => {
+        console.log("delete responsibility");
+        console.log(response);
+        window.location.reload();
+      })
+  }
+}

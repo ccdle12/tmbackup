@@ -4,6 +4,7 @@ import { MdDialog } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../shared/services/validation.service';
 import { DeleteUserService } from '../../shared/services/deleteUser.service';
+import { EditRoleService } from '../../shared/services/editRole.service';
 import {
     Router,
     // import as RouterEvent to avoid confusion with the DOM Event
@@ -25,7 +26,13 @@ import { AuthService } from '../../shared/services/auth.service';
 export class TeamAdminComponent  { 
   userProfiles:  JSON[];
 
-  constructor(public authService: AuthService, private kumulosService: KumulosService, public dialog: MdDialog, public deleteUserService: DeleteUserService) {
+  constructor(public authService: AuthService, private kumulosService: KumulosService, public dialog: MdDialog, 
+    public deleteUserService: DeleteUserService, public editRoleService: EditRoleService) {
+    
+    this.getAllUsers();
+  }
+
+  private getAllUsers(): void {
     this.kumulosService.getWebUsers().subscribe(response => {
           console.log("response", response.payload);
           this.userProfiles = response.payload
@@ -33,19 +40,38 @@ export class TeamAdminComponent  {
     });
   }
 
+
   public addNewUser(): void {
-   this.dialog.open(InviteUserDialog);
+   let dialogRef = this.dialog.open(InviteUserDialog);
+
+   dialogRef.afterClosed().subscribe(result => {
+        this.getAllUsers();
+      })
   }
 
-  public deleteUser(userIndexPosition: number): void {
+  public deleteUser(index: number): void {
 
-    let deleteUser: JSON = this.userProfiles[userIndexPosition];
+    let deleteUser: JSON = this.userProfiles[index];
     let userId: string = deleteUser['user_id']; 
     
-    this.deleteUserService.deleteUser(userIndexPosition, userId);
+    this.deleteUserService.deleteUser(index, userId);
 
-    this.dialog.open(DeleteUserDialog);
+    let dialogRef = this.dialog.open(DeleteUserDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+        this.getAllUsers();
+      })
   }
+  
+  public editUserRole(index: number): void {
+    let editUser: string = JSON.stringify(this.userProfiles[index]);
+
+    this.editRoleService.cacheUserJSON(editUser);
+    console.log("from edit role service: " + this.editRoleService.getUserJSON());
+    this.dialog.open(EditUserRole);
+  }
+
+
 
   public getUsersName(index: number): string {
     let userName: string;
@@ -86,7 +112,7 @@ export class InviteUserDialog {
   
   @ViewChild('spinnerElement') loadingElement: ElementRef;
 
-  constructor(private formBuilder: FormBuilder, public kumulosService: KumulosService, 
+  constructor(public dialog: MdDialog, private formBuilder: FormBuilder, public kumulosService: KumulosService, 
               public renderer: Renderer, private ngZone: NgZone) {
     
     this.inviteUserForm = this.formBuilder.group({
@@ -102,13 +128,10 @@ export class InviteUserDialog {
     
     this.httpRequestFlag = true;
     this.kumulosService.inviteUser(email, cityName, cityId).subscribe(responseJSON => {
-      console.log("response", responseJSON.payload);
-      this.reloadPage();
+      // console.log("response", responseJSON.payload);
+      // this.reloadPage();
+      this.dialog.closeAll();
     })
-  }
-
-  private reloadPage(): void {
-    window.location.reload();
   }
 
   private getCityName(): string {
@@ -139,7 +162,7 @@ export class InviteUserDialog {
 export class DeleteUserDialog {
   httpRequestFlag: boolean;
   
-  constructor(public deleteUserService: DeleteUserService, public kumulosService: KumulosService) {
+  constructor(public dialog: MdDialog, public router: Router, public deleteUserService: DeleteUserService, public kumulosService: KumulosService) {
   }
 
   public deleteUser() {
@@ -148,9 +171,50 @@ export class DeleteUserDialog {
     this.httpRequestFlag = true;
     this.kumulosService.deleteUser(deleteUserId).subscribe(responseJSON => {
       
-      console.log("response", responseJSON.payload);
-      window.location.reload();
+      // console.log("response", responseJSON.payload);
+      // window.location.reload();
+      
+      this.dialog.closeAll();
      }); 
   }
+}
 
+@Component({
+  selector: 'editUserRole',
+  templateUrl: '../../shared/dialogs/editUserRole.html',
+  styleUrls: ['../../shared/dialogs/editUserRole.css']
+})
+export class EditUserRole {
+
+  public httpRequestFlag: boolean;
+
+  public userRole: string;
+  public userName: string;
+  public userJobTitle: string;
+  public userEmail: string;
+  public userId: string;
+
+  constructor(public router: Router, public editRoleService: EditRoleService, public kumulosService: KumulosService) {
+    this.userRole = this.editRoleService.getUserRole();
+    this.userName = this.editRoleService.getUserName();
+    this.userJobTitle = this.editRoleService.getUserJobTitle();
+    this.userEmail = this.editRoleService.getUserEmail();
+    this.userId = this.editRoleService.getUserId();
+
+  }
+
+  public updateUserRole(userRole: string): void {
+    this.userRole = userRole;
+  }
+
+  public changeUserRole(): void {
+    this.httpRequestFlag = true;
+
+    this.kumulosService.updateUserRole(this.userRole, this.userId, this.userEmail, this.userName)
+    .subscribe(response => 
+      {
+        this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/teamAdmin'));
+      });
+
+  }
 }

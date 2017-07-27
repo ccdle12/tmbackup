@@ -8,16 +8,16 @@ nav  {
 
 #navigationIcon {
     position:absolute;
-    padding-left: 35px;
+    padding-left: 20px;
 }
 
 #backToDashboard {
     height: auto;
-    width: 42px;
-    margin-top: 3px;
+    width: 38px;
+    margin-top: 5px;
     opacity: 1;
     float: left;
-    margin-right: 20px;
+    margin-right: 25px;
 }
 
 #backToDashboard:hover {
@@ -26,8 +26,8 @@ nav  {
 
 #emailDocument {
     height: auto;
-    width: 42px;
-    margin-top: 3px;
+    width: 38px;
+    margin-top: 5px;
     opacity: 1;
     float: left;
 }
@@ -67,4 +67,3 @@ a {
     opacity: 1;
     color: white;
 }
-

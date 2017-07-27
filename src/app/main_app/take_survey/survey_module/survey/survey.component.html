@@ -1,5 +1,5 @@
 
- <div id="surveyModuleNav">
+ <div class="topSurveyModuleNav">
     <img *ngIf="notAtStartOfModules()" class="moduleNavigation" src="../../../../../assets/Back Arrow-100.png" (click)="previousModule()">
     <img *ngIf="notAtEndOfModules()" class="moduleNavigation" src="../../../../../assets/Forward Button-100.png" (click)="nextModule()">
     <img  class="moduleNavigation" src="../../../../../assets/Save-100.png" (click)="saveSurveyInput()">
@@ -11,7 +11,8 @@
 <div class="bodyTopMarginSurveyModules"></div>
 <div class="container">
 <div class="row">
-    <!--<button md-button class="col-xs-4 col-xs-offset-6" (click)="backToTakeSurvey()">Are you responsible for parts of this section?</button>-->
+      <button *ngIf="!surveyHasOwner" md-button id="areYouResponsible" class="col-xs-4" (click)="launchOwnSectionDialog()">Are you responsible for parts of this section?</button>     
+      <button *ngIf="surveyHasOwner" md-button id="userIsResponsible" class="col-xs-4" (click)="launchRemoveOwnershipDialog()">You are responsible for parts of this section. Touch to change</button>   
 </div>
 
 <h1> {{dimensionText}}</h1>
@@ -22,15 +23,24 @@
     <span class="col-sm-2"><strong>2 YEAR TARGET</strong></span>
 </div>
 
+
 <div class="surveyQuestions">
     <div class="row" *ngFor="let eachQuestion of surveyQuestions; let i = index">
+
         <span class="col-sm-6">{{surveyQuestions[i].statementID}} {{surveyQuestions[i].statementText}}</span>
-        <span class="col-sm-1"><md-slider (input)="changing()" (click)="userMovedSlider()" min="1" max="5" step="1" value="1" tickInterval="1" [(ngModel)]="importanceValues[i]" [mdTooltip]="this.changed ? importanceToolTips[importanceValues[i] - 1] : ''" mdTooltipPosition="above"></md-slider></span>
+        <span class="col-sm-1"><md-slider (click)="userMovedSlider(i, 0)" min="1" max="5" step="1" value="1" tickInterval="1" [(ngModel)]="importanceValues[i]" [mdTooltip]="this.importanceToolTips[importanceValues[i]-1]"></md-slider></span>
         <span class="col-sm-1">{{importanceValues[i]}}</span>
-        <span class="col-sm-1"><md-slider (click)="userMovedSlider()" min="1" max="5" step="1" value="1" tickInterval="1" [(ngModel)]="capabilityValues[i]" [mdTooltip]="capabilityToolTips[i][capabilityValues[i]]"></md-slider></span>
+        <!-- <div *ngIf="showToolTip && selectedSlider == i && importanceSliderFlag" class="customTooltip col-sm-2 col-sm-offset-5">{{this.importanceToolTips[importanceValues[i]-1]}}</div>  -->
+        <!-- <md-toolti *ngIf="showToolTip && selectedSlider == i && importanceSliderFlag" class="customTooltip col-sm-2 col-sm-offset-5">{{this.importanceToolTips[importanceValues[i]-1]}}</div>  -->
+
+        <span class="col-sm-1"><md-slider (click)="userMovedSlider(i, 1)" min="1" max="5" step="1" value="1" tickInterval="1" [(ngModel)]="capabilityValues[i]" [mdTooltip]="capabilityToolTips[i][capabilityValues[i]]"></md-slider></span>
         <span class="col-sm-1">{{capabilityValues[i]}}</span>
-        <span class="col-sm-1"><md-slider (click)="userMovedSlider()" min="1" max="5" step="1" value="1" tickInterval="1" [(ngModel)]="twoYearTargetValues[i]" [mdTooltip]="capabilityToolTips[i][twoYearTargetValues[i]]"></md-slider></span>
+        <!-- <div *ngIf="showToolTip && selectedSlider == i && capabilitySliderFlag" class="customTooltip col-sm-2 col-sm-offset-7">{{this.capabilityToolTips[i][capabilityValues[i]]}}</div>   -->
+
+
+        <span class="col-sm-1"><md-slider (click)="userMovedSlider(i, 2)" min="1" max="5" step="1" value="1" tickInterval="1" [(ngModel)]="twoYearTargetValues[i]" [mdTooltip]="capabilityToolTips[i][twoYearTargetValues[i]]"></md-slider></span>
         <span class="col-sm-1">{{twoYearTargetValues[i]}}</span>
+        <!-- <div *ngIf="showToolTip && selectedSlider == i && twoYearTargerSliderFlag" class="customTooltip col-sm-2 col-sm-offset-9">{{this.capabilityToolTips[i][twoYearTargetValues[i]]}}</div> -->
     </div>
 </div>
 
@@ -40,14 +50,14 @@
 </div>
 
 <!--<div class="topMarginForSurveyModules"></div>-->
-<div id="surveyModuleNav">
+<!-- <div class="bottomSurveyModuleNav">
     <img *ngIf="notAtStartOfModules()" class="moduleNavigation" src="../../../../../assets/Back Arrow-100.png" (click)="previousModule()">
     <img *ngIf="notAtEndOfModules()" class="moduleNavigation" src="../../../../../assets/Forward Button-100.png" (click)="nextModule()">
-    <img  class="moduleNavigation" src="../../../../../assets/Save-100.png" (click)="saveSurveyInput()">
+    <img  class="moduleNavigation" src="../../../../../assets/Save-100.png" (click)="saveSurveyInput()"> -->
     <!--<button md-button class="defaultBtn whiteText" *ngIf="notAtStartOfModules()" (click)="previousModule()"><md-icon>arrow_backward</md-icon></button>-->
     <!--<button md-button class="defaultBtn whiteText" *ngIf="notAtEndOfModules()" (click)="nextModule()"><md-icon>arrow_forward</md-icon></button>-->
     <!--<button md-button class="defaultBtn whiteText" (click)="saveSurveyInput()"><md-icon>save</md-icon></button>-->
-</div>
+<!-- </div> -->
 <!--</md-sidenav-container>-->
         
 

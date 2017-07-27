@@ -23,27 +23,15 @@ import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
 })
 export class AppComponent {
 
-    public getUserAvatar(): any {
+    public infoTooltip: string;
+    public width: any;
+    public height: any;
+    public userDetails: string;
 
-        var userAvatar;
-
-        if (this.authService.isAuthenticated() && localStorage.getItem('userPicture')) {
-            userAvatar = JSON.parse(localStorage.getItem('userPicture')); 
-        } else {
-            userAvatar = '../assets/default_avatar.png';
-        }
-
-        return userAvatar;
-    }
-   
   // Instead of holding a boolean value for whether the spinner
     // should show or not, we store a reference to the spinner element,
     // see template snippet below this script
     @ViewChild('spinnerElement') spinnerElement: ElementRef;
-
-
-    width: any;
-    height: any;
 
    constructor(private router: Router,  private ngZone: NgZone,
                private renderer: Renderer, public authService: AuthService, 
@@ -53,20 +41,39 @@ export class AppComponent {
         this.authService.revertToDemoIfTokenExpires();
         this.inSeeDemo();
 
-        router.events.subscribe((event: RouterEvent) => {
+        this.setWidthAndHeight();
+
+        this.infoTooltip = "TM Forum Digial Maturity Model and Metrics. v1.0 UAT (build. 1.0.0.0). 2017 Cotham Technologies and TM Forum. In-app iocs by Icons8 (https://icons8.com/)."
+        
+        this.routerEventListener();
+        
+        this.windowsResizeListener();
+
+        console.log("User Detail: " + this.userDetails);
+        
+    }
+
+    private setWidthAndHeight(): void {
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+    }
+
+    private routerEventListener() {
+        this.router.events.subscribe((event: RouterEvent) => {
             this.navigationInterceptor(event);
         });
+    }
 
+    private windowsResizeListener() {
         // Change Detection on window screen
         window.onresize = (e) =>
             {
-            ngZone.run(() => {
-                this.width = window.innerWidth;
-                console.log(this.width);
-                this.height = window.innerHeight;
+            this.ngZone.run(() => {
+                this.setWidthAndHeight();
             });
         };
     }
+
 
 
     // Shows and hides the loading spinner during RouterEvent changes
@@ -83,7 +90,7 @@ export class AppComponent {
                 this.renderer.setElementStyle(
                     this.spinnerElement.nativeElement,
                     'opacity',
-                    '5'
+                    '1'
                 );
             });
         }
@@ -120,6 +127,8 @@ export class AppComponent {
         });
     }
 
+
+
     public inSeeDemo(): boolean {
         let urlLocation = window.location.pathname;
         let urlRegex = '\/main\/?|\/main\/.*';
@@ -137,6 +146,24 @@ export class AppComponent {
         }
 
         return true;
+    }
+
+    public showDisclaimer(): boolean {
+        let currentUrl: string = window.location.pathname;
+
+        return currentUrl === "/welcome" ? true: false;
+    }
+
+    public getUserAvatar(): any {
+        var userAvatar;
+
+        if (this.authService.isAuthenticated() && localStorage.getItem('userPicture')) {
+            userAvatar = JSON.parse(localStorage.getItem('userPicture')); 
+        } else {
+            userAvatar = '../assets/default_avatar.png';
+        }
+
+        return userAvatar;
     }
 
 }
@@ -166,14 +193,14 @@ export class EditUserDetailsDialog {
 
   public updateUserDetails(): void {
     let userId: string = this.getUserId();
-    console.log(userId);
+
     this.httpRequestFlag = true;
     this.kumulosService.updateUserNameAndJobTitle(userId, this.userName, this.userTitle)
-        .subscribe(responseJSON => {
+        .subscribe(responseJSON => 
+        {
             console.log(responseJSON.payload);
             this.updateUserProfile();
-        }
-        );
+        });
   }
 
   private getUserId(): string {
@@ -183,8 +210,6 @@ export class EditUserDetailsDialog {
 
   private getUserName(): string {
     let userProfile: JSON = this.getUserProfile();
-    // console.log(this.isUserMetaData(userProfile));
-    // console.log(userProfile['user_metadata']['name']);
 
     if (this.isUserMetaData(userProfile)) {
         if (this.isMetaDataNameEmpty(userProfile)) {
@@ -231,14 +256,16 @@ export class EditUserDetailsDialog {
 
   private requestUpdatedUserProfile(): void {
       let userId: string = this.getUserId();
+      
       this.kumulosService.getUserProfile(userId)
-        .subscribe(responseJSON => {
+        .subscribe(responseJSON => 
+        {
             let userProfile = JSON.stringify(responseJSON.payload);
             this.cacheUserProfile(userProfile);
             this.cacheUserName(userProfile);
             this.reloadPage();
             
-    });
+        });
   }
 
   private cacheUserProfile(userProfile: string): void {

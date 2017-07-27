@@ -1,13 +1,10 @@
 <div id="welcomeComponent">
-<div id="mainWelcome">
-    <img id="smartCityPerson" src="assets/DMMPersonEdit.png" width="300"  alt="Picture of Smart City Person"/>
-    <img id="tmForumBanner" src="assets/DMMLogo.png"   alt="Banner for smart city"/>
-    <img id="sloganBanner" src="assets/AppForDigitalTransformers.png" alt="slogan banner"/>
-</div>
+    <div id="smartCityPerson"><img src="assets/DMMPersonEdit.png" width="300" alt="Picture of Smart City Person"/></div>
+    <div><img id="tmForumBanner" src="assets/DMMLogo.png"   alt="Banner for smart city"/></div>
+    <div><img id="sloganBanner" src="assets/AppForDigitalTransformers.png" alt="slogan banner"/></div>
 
 <div class="btn-group btn-group-justified navigationButtons">
-    <!--<a routerLink="/main" id="seeDemo" class="btn"><h4>See Demo</h4></a>-->
-    <!--<span><md-slider min="1" max="5" step="1" value="1"></md-slider></span>-->
+      <a routerLink="/main" id="seeDemo" class="btn"><h4>See Demo</h4></a>  
     <a *ngIf="!authService.isAuthenticated()" class="btn orangeBtn" routerLink="/registration"><h4>Register My Interest</h4></a>
     <!--<a *ngIf="authService.isAuthenticated()" (click)="openDialog()" class="btn defaultBtn">Register My Interest</a>-->
 
@@ -15,11 +12,7 @@
 </div>
 
 <div id="togetherAndSponsorArea">
-    <!--<img id="togetherAssetBanner" class="centerPosition" src="assets/together_500.png" width = "700"/>-->
-    <img class="centerPosition" src="assets/DMMPartnersColor.png" width="1100"/>
+    <img id="togetherAssetBanner" class="centerPosition" src="assets/TogetherText.png" width = "700"/>
+    <img class="dmmPartners" src="assets/DMMPartnersColor.png" />
 </div>
-
-<div id="quickFill"></div>
 </div>
-
-<!--<footer id="footer"></footer>-->

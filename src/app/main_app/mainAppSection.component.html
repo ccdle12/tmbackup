@@ -1,27 +1,11 @@
-<!--<div *ngIf="inTakeSurvey()" class="btn-group btn-group-justified navigationButtons">
-
-        <a *ngIf="!authService.isDemoOrMain()" routerLink="teamadmin" class="btn btn-primary">Team Admin</a>
-        <a *ngIf="!authService.isVerified()"  class="btn btn-primary">Team Admin</a>
-
-        <a routerLink="takesurvey"  class="btn btn-primary">Take Survey</a>
-        <a routerLink="viewresults" class="btn btn-primary">View Results</a>
-
-        <a *ngIf="!authService.isDemoOrMain()" routerLink="publication" class="btn btn-primary">Publish</a>
-        <a *ngIf="!authService.isVerified()"  class="btn btn-primary">Publish</a>
-
-        <a *ngIf="!authService.isDemoOrMain()" routerLink="benchmark" class="btn btn-primary">Benchmark</a>
-        <a *ngIf="!authService.isVerified()"  class="btn btn-primary">Benchmark</a>
-
-</div>-->
-
 <nav md-tab-nav-bar *ngIf="hideNavBar()">
   <a md-tab-link class="navTitle" [ngStyle]="inTeamAdmin()" *ngIf="!authService.inDemoMode()" routerLink="teamadmin"><h4>Team Admin</h4></a>
-  <a md-tab-link class="navTitle" *ngIf="!authService.isVerified()" routerLink="teamadmin"><h4>Team Admin</h4></a>
+  <a md-tab-link class="navTitle" *ngIf="!authService.isVerified()"><h4>Team Admin</h4></a>
   <a md-tab-link class="navTitle" [ngStyle]="inSurvey()" routerLink="takesurvey"><h4>Take Survey</h4></a>
   <a md-tab-link class="navTitle" [ngStyle]="inViewResults()" routerLink="viewresults"><h4>View Results</h4></a>
-  <!--<a md-tab-link [ngStyle]="activeBackgroundColor()" *ngIf="!authService.inDemoMode()" routerLink="publication"> Publication</a>
-  <a md-tab-link *ngIf="!authService.isVerified()"> Publication</a>
-  <a md-tab-link [ngStyle]="activeBackgroundColor()" *ngIf="!authService.inDemoMode()" routerLink="benchmark">Benchmark</a>
-  <a md-tab-link *ngIf="!authService.isVerified()">Benchmark</a>-->
+   <a md-tab-link class="navTitle" [ngStyle]="inPublication()" *ngIf="!authService.inDemoMode()" routerLink="publication"> <h4>Publication</h4></a> 
+  <a md-tab-link class="navTitle" [ngStyle]="inPublication()" *ngIf="!authService.isVerified()"><h4> Publication</h4></a>     
+  <a md-tab-link class="navTitle" [ngStyle]="inBenchmark()" *ngIf="!authService.inDemoMode()" routerLink="benchmark"><h4>Benchmark</h4></a>  
+  <a md-tab-link class="navTitle" [ngStyle]="inPublication()" *ngIf="!authService.isVerified()"><h4>Benchmark</h4></a>     
 </nav>
 <router-outlet></router-outlet>

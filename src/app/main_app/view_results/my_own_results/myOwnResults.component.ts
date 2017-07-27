@@ -39,6 +39,8 @@ export class MyOwnResultsComponent {
     this.kumulosService.getAggregatesByVersionandUser(activeCityVersion, userID)
         .subscribe(responseJSON => {
           this.graphData = responseJSON.payload;
+          console.log("Graph Data: ");
+          console.log(responseJSON.payload);
           this.createComboCharts();
     });
   }

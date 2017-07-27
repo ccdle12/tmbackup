@@ -18,18 +18,23 @@ constructor(public router: Router) {
 
   this.options = {
     allowSignUp: false,
-  }
-
-this.lock = new Auth0Lock('dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V','tmfdmmdev.eu.auth0.com', {
-  auth: {
+    languageDictionary: {
+      title: 'TMF DMM',
+    },
+    theme: {
+      logo: '../../../assets/DMMLogo.png',
+    },
+    auth: {
     redirectUrl: window.location.origin + '/callback',
     redirect: true,
     responseType: 'token id_token',
     params: {
       scope: 'openid email app_metadata'
-    },
+    },  
   }
-});
+  }
+
+this.lock = new Auth0Lock('dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V','tmfdmmdev.eu.auth0.com', this.options, {});
 }
 
 public handleAuthentication(): void {
@@ -43,7 +48,6 @@ public handleAuthentication(): void {
       }
 
       localStorage.clear();
-
       this.persistDataToLocalStorage(userProfile, authResult);
 
       this.handleRouting(userProfile);
@@ -95,7 +99,6 @@ public login(): void {
 }
 
 public logout(): void {
-  window.location.reload();
   localStorage.clear();
   this.router.navigate(['/welcome']);
 }

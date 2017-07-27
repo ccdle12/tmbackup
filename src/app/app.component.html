@@ -5,33 +5,15 @@
 
   <header id="mainNavBar">
     <nav class="navbar navbar-inverse">
+       <div class="navContainer"> 
           <a *ngIf="minWidth()" routerLink="/welcome" class="navbar-left"><img id="logo" src="/assets/tmforum_logo_white_on_alpha.png" height="40"/></a>
+          
+        <div class="userDetails" *ngIf="inSeeDemo()">Demo User - Demo Organization - Demo Role</div> 
+        <div class="userDetails" *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserName()}} - {{this.localStorageService.getUserCity()}} - {{this.localStorageService.getUserRole()}}</div> 
 
-          <!--<div class="form-group">-->
-          <!--<div class="nav">
-            <ul class="text-center">
-              <li *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserName()}} -</li>
-              <li class="centerMenu" *ngIf="this.authService.isAuthenticated()"> {{this.localStorageService.getUserCity()}} -</li>
-              <li *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserRole()}}</li>
-              <li *ngIf="inSeeDemo()">Demo User -</li>
-              <li *ngIf="inSeeDemo()"> Demo Organization -</li>
-              <li *ngIf="inSeeDemo()">Demo Role</li>
-          </ul>  
-        </div>-->
-
-        <ul id="menu">
-            <li *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserName()}} -</li>
-            <li *ngIf="this.authService.isAuthenticated()"> {{this.localStorageService.getUserCity()}} -</li>
-            <li *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserRole()}}</li>
-            <li *ngIf="inSeeDemo()">Demo User -</li>
-            <li *ngIf="inSeeDemo()"> Demo Organization -</li>
-            <li *ngIf="inSeeDemo()">Demo Role</li>
-         </ul>
-
-        
-        <span *ngIf="minWidth()"><img *ngIf="this.authService.isAuthenticated()" class='nav-avatar img-circle' [src]="getUserAvatar()"/></span>
+        <span *ngIf="minWidth()"><img *ngIf="this.authService.isAuthenticated()" class='nav-avatar img-circle' [src]="getUserAvatar()"/></span> 
         <md-icon *ngIf="this.authService.isAuthenticated()"  id="menuIcon" [mdMenuTriggerFor]="menu" onMouseOver="this.style.cursor='pointer'">md_more_vert</md-icon>
-
+       </div> 
     </nav>
     
 
@@ -52,7 +34,10 @@
   </router-outlet>
 </main>
 
-<footer id="footer" ng-cloak></footer>
+<footer id="footer" ng-cloak>
+  <img id="infoIcon" src="../assets/Info-50.png" [mdTooltip]="infoTooltip" mdTooltipPosition="after">
+  <div id="termsOfUse" *ngIf="showDisclaimer()"><strong>By clicking on Register My Interest or Login you agree to our Terms of Use and Privacy Policy at www.tmforum.org</strong></div>
+</footer>
 
 
 

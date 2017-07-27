@@ -12,12 +12,11 @@ import { AuthService } from '../../../shared/services/auth.service';
 export class SurveyModuleComponent  {
 
     constructor(public router: Router, public authService: AuthService) { 
-          this.router.navigateByUrl('/main/takesurvey/surveymodule/survey');
+        //   this.router.navigateByUrl('/main/takesurvey/surveymodule/survey');
     }  
 
     public activeBackgroundColor() {
-        return { 'background-color': '#62B3D1',
-                  'color': 'white' }; 
+        return { 'background-color': '#62B3D1', 'color': 'white' }; 
     }
 
     public routeToPage(surveyPage: String) {
@@ -40,18 +39,20 @@ export class SurveyModuleComponent  {
 
     public inSurvey() {
         let currentUrl: string = window.location.pathname;
-
-        // console.log("current url: " + currentUrl);
+        
         if (currentUrl ===  "/main/takesurvey/surveymodule/survey") {
-          console.log("in correct url");
-            return { 'background-color': '#62B3D1',
-                  'color': 'white' };    
+            return { 'background-color': '#62B3D1', 'color': 'white' };    
         } 
-        // else {
-        // // console.log(window.location.pathname);
-        // return { 'background-color': '#62B3D1',
-        //           'color': 'white' };
-        // }
+
+    }
+
+    public inEvidence() {
+        let currentUrl: string = window.location.pathname;
+        // console.log("In Evidence CALLED");
+        if (currentUrl ===  "/main/takesurvey/surveymodule/evidence") {
+            return { 'background-color': '#62B3D1', 'color': 'white' };    
+        } 
+
     }
 
     public backToDashboard(): void {

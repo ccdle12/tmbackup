@@ -1,4 +1,3 @@
-<!--<div class="topMarginForSurveyModules"></div>-->
 
 <nav md-tab-nav-bar>
 
@@ -19,10 +18,13 @@
 <div class="container">
   <div class="row">
     <h3><strong>Our Organization's Results</strong></h3>
-    <!--<button md-button class="col-xs-3" (click)="backToDashboard()">Back To Dashboard</button>-->
-    <!--<button *ngIf="this.authService.isLeaderConsultant();" md-button class="col-xs-3 col-xs-offset-6" (click)="requestSurveyCSV()" id="sendRequest">Email Results</button>-->
+    <button (click)="launchAdjustAggregatesDialog()">Adjust Aggregates</button>
+
+    <div class="googleComboChart" *ngFor="let eachChart of comboCharts, let i = index">
+      <google-chart [data]="comboCharts[i]"></google-chart>
+    </div>
   </div>
 </div>
-<div class="googleComboChart" *ngFor="let eachChart of comboCharts, let i = index"><google-chart [data]="comboCharts[i]"></google-chart></div>
+
 
 <div class="marginBottom"></div>

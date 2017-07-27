@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class DeleteUserService {
     
-    public userIndexPosition: number;
-    public userId: string;
+    private userIndexPosition: number;
+    private userId: string;
 
     public deleteUser(userIndexPosition: number, userId: string) {
         this.userIndexPosition = userIndexPosition;

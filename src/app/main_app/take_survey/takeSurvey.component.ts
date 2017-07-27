@@ -39,7 +39,7 @@ export class TakeSurveyComponent {
 
         this.takeSurveyDashboard = JSON.parse(localStorage.getItem('surveydashboard'));
         console.log("From Local Storage - Survey Dashboard:")
-        console.log(this.takeSurveyDashboard);
+        console.log(responseJSON.payload);
 
         if (this.takeSurveyDashboard) {
           this.removeTotalFromDashboard();
@@ -89,7 +89,7 @@ export class TakeSurveyComponent {
  
     this.storeSelectedModule();
 
-    this.router.navigateByUrl('/main/takesurvey/surveymodule');
+    this.router.navigateByUrl('/main/takesurvey/surveymodule/survey');
   }
 
   private calculateIndexPosition(outerIndexPosition:number, innerIndexPosition:number): number {
