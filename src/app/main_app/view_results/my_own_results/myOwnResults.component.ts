@@ -93,8 +93,9 @@ export class MyOwnResultsComponent {
                   min: 0,
                   max: 5
                 },
-                  ticks: [0, 1, 2, 3, 4, 5] 
-                }
+                  ticks: [0, 1, 2, 3, 4, 5],
+                },
+                colors: ['#348bb5', '#e28a1d', '#589e2d'], 
               }
             }
       this.comboCharts[currentModule] = comboChart;

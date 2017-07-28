@@ -148,7 +148,8 @@ export class OrganizationResultsComponent {
                   max: 5
                 },
                   ticks: [0, 1, 2, 3, 4, 5] 
-                }
+                },
+                colors: ['#348bb5', '#e28a1d', '#589e2d'],
               }
             }
       this.comboCharts[currentModule] = comboChart;
@@ -651,11 +652,7 @@ export class AdjustAggregatesDialog implements OnInit {
   }
 
   public getImportanceResetVal(index) {
-    // if (this.resetImportanceValMapToIndex.get(index) == "0") {
-      // return "";
-    // } else {
-      return this.resetImportanceValMapToIndex.get(index);
-    // }
+    return this.resetImportanceValMapToIndex.get(index);
   }
 
   public getScoreResetVal(index) {

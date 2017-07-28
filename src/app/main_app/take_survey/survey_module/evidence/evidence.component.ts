@@ -1,10 +1,11 @@
-import { Component, ViewChild, AfterViewInit} from '@angular/core';
+import { Component, ViewChild, AfterViewInit, Inject} from '@angular/core';
 import { MdSliderModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule} from '@angular/material';
 import { KumulosService } from '../../../../shared/services/kumulos.service';
 import { EvidenceService } from '../../../../shared/services/evidence.service';
 import { Router } from '@angular/router';
 import { MdDialog } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ValidationService } from '../../../../shared/services/validation.service';
 
 
 @Component({
@@ -15,11 +16,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class EvidenceComponent implements AfterViewInit { 
 
     evidence: JSON[];
+    evidenceWebLinks: Array<string>;
     currentDimension: string;
 
     constructor(public kumulos: KumulosService, public router: Router, public evidenceService: EvidenceService,
                 public dialog: MdDialog) {
-        let parsedSurveyDashboard = JSON.parse(localStorage.getItem('surveydashboard'));
+
+        this.evidenceWebLinks = new Array<string>();
+
+        this.getWebEvidence();
+
+        this.updateCurrentDimension();
+    }
+
+    private getWebEvidence() {
+      let parsedSurveyDashboard = JSON.parse(localStorage.getItem('surveydashboard'));
 
         let userSelectedModule = Number(localStorage.getItem('userSelectedModule'));
 
@@ -38,13 +49,25 @@ export class EvidenceComponent implements AfterViewInit {
             let evidenceID = "";
             
             if (responseJSON.payload) {
+              this.evidence = responseJSON.payload;
+
+              this.splitEvidenceText();
+
               evidenceID = responseJSON.payload[0]['evidenceID'];
             }
 
             this.setEvidenceService(activeCityVersion, areaID, dimensionID, evidenceID, userID);
         });
 
-        this.updateCurrentDimension();
+    }
+
+    private splitEvidenceText() {
+      for (let i = 0; i < this.evidence.length; i++) {
+        let splitString = this.evidence[i]['evidenceText'].split("[[ff-weblink]]", 2);
+
+        this.evidence[i]['evidenceText'] = splitString[0];
+        this.evidenceWebLinks[i] = splitString[1];
+      }
     }
 
     ngAfterViewInit() {
@@ -91,11 +114,47 @@ export class EvidenceComponent implements AfterViewInit {
   }
 
   public launchEvidenceDialog() {
-    this.dialog.open(EvidenceDialog);
+    let dialogRef = this.dialog.open(EvidenceDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.getWebEvidence();
+    })
   }
 
   public launchDeleteEvidenceDialog() {
-    this.dialog.open(DeleteEvidenceDialog);
+    let dialogRef = this.dialog.open(DeleteEvidenceDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.getWebEvidence();
+    })
+  }
+
+  public routeToEvidenceLink(index) {
+    let webLink = this.evidenceWebLinks[index];
+
+    let splitString = webLink.split("http://", 2);
+
+    console.log("First Split: ");
+    console.log(splitString);
+    console.log("Split String Length: ");
+    console.log(splitString.length);
+
+    if (splitString.length <= 1) {
+      console.log("Splitting for HTTPS:")
+       splitString = webLink.split("https://", 2);
+    }
+
+    console.log("Second Split: ");
+    console.log(splitString);
+
+    if (splitString.length > 1) {
+      console.log(this.evidenceWebLinks[index]);
+      window.location.href= this.evidenceWebLinks[index];
+    }
+    else {
+      console.log("http://" + this.evidenceWebLinks[index]);
+      window.location.href="http://" + this.evidenceWebLinks[index];
+    }
   }
 }
 
@@ -114,13 +173,16 @@ export class EvidenceDialog {
     this.addNewEvidence = this.formBuilder.group({
       evidenceTitle: ['', Validators.required],
       evidenceDescription: ['', Validators.required],
-      evidenceReference: ['', Validators.required],
+      evidenceReference: ['', [Validators.required, ValidationService.urlValidator]],
     });
   }
 
   public createUpdateEvidence() {
-    let evidenceData: string = this.evidenceService.getEvidenceData(this.addNewEvidence.value.evidenceTitle, this.addNewEvidence.value.evidenceDescription);
+    let evidenceData: string = this.evidenceService.getEvidenceData(this.addNewEvidence.value.evidenceTitle, this.addNewEvidence.value.evidenceDescription + "[[ff-weblink]]" + this.addNewEvidence.value.evidenceReference);
     console.log("calling update evidence");
+    console.log("Evidence Data: ");
+    console.log(evidenceData);
+
     this.httpRequestFlag = true;
     this.kumulosService.createUpdateEvidence(evidenceData)
       .subscribe(response =>

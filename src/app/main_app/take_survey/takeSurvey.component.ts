@@ -28,20 +28,31 @@ export class TakeSurveyComponent {
     this.sectionModules = new Array();
 
     let activeCityVersion: string = localStorage.getItem('activeCityVersion');
-    this.getWebDashboard(activeCityVersion);
+    this.getActiveVersionForCity();
   }
+
+  private getActiveVersionForCity(): void {
+        this.kumulosService.getActiveVersionForCity()
+        .subscribe(responseJSON => {
+            let activeCityVersion: string = responseJSON.payload;
+            localStorage.setItem('activeCityVersion', activeCityVersion);
+
+            this.getWebDashboard(activeCityVersion);
+        });
+    }
 
   private getWebDashboard(activeCityVersion: string): void {
     this.kumulosService.getWebDashboard(activeCityVersion)
       .subscribe(responseJSON => { 
-        
+        console.log(responseJSON);
         localStorage.setItem('surveydashboard', JSON.stringify(responseJSON.payload));
 
-        this.takeSurveyDashboard = JSON.parse(localStorage.getItem('surveydashboard'));
+        // this.takeSurveyDashboard = JSON.parse(localStorage.getItem('surveydashboard'));
+        this.takeSurveyDashboard = responseJSON.payload;
         console.log("From Local Storage - Survey Dashboard:")
         console.log(responseJSON.payload);
 
-        if (this.takeSurveyDashboard) {
+        if (responseJSON.payload) {
           this.removeTotalFromDashboard();
           this.calculateProgressValue();
           this.addModules(this.takeSurveyDashboard.length - 1);

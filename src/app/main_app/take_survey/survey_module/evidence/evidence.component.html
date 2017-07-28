@@ -7,9 +7,9 @@
 <button id="provideEvidence" md-mini-fab class="col-xs-3" color="primary" (click)="launchEvidenceDialog()" mdTooltip="Provide new evidence"><md-icon>add</md-icon></button>
 <div class="row" id="cardsContainer">
 <md-card class="col-sm-2" *ngFor="let evidence of evidence; let i = index">
-        <md-card-title>Evidence for {{evidence.statementID}}</md-card-title>
+        <md-card-title>{{evidence.evidenceDescription}}</md-card-title>
         <md-card-content>
-            <p>{{evidence.evidenceDescription}}</p>
+            <a (click)="routeToEvidenceLink(i)"><p>{{evidence.evidenceText}}</p></a>
             <!-- <a target="_blank" href="{{evidence.evidenceText}}"><p>{{evidence.evidenceText}}</p></a> -->
             <button md-button class="col-sm-12" (click)="launchDeleteEvidenceDialog()">Delete</button>
         </md-card-content>

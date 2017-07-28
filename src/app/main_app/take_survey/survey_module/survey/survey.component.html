@@ -11,7 +11,8 @@
 <div class="bodyTopMarginSurveyModules"></div>
 <div class="container">
 <div class="row">
-      <button *ngIf="!surveyHasOwner" md-button id="areYouResponsible" class="col-xs-4" (click)="launchOwnSectionDialog()">Are you responsible for parts of this section?</button>     
+      <button *ngIf="!surveyHasOwner && !this.authService.inDemoMode()" md-button id="areYouResponsible" class="col-xs-4" (click)="launchOwnSectionDialog()">Are you responsible for parts of this section?</button>
+      <button *ngIf="this.authService.inDemoMode()" md-button id="areYouResponsible" class="col-xs-4">Are you responsible for parts of this section?</button>      
       <button *ngIf="surveyHasOwner" md-button id="userIsResponsible" class="col-xs-4" (click)="launchRemoveOwnershipDialog()">You are responsible for parts of this section. Touch to change</button>   
 </div>
 

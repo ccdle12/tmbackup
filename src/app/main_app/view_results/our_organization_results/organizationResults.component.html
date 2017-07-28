@@ -15,10 +15,16 @@
 </div>
 </nav>
 
+ <div id="areaNavigation">
+   <div class="container">
+      <div class="graphNav" *ngIf="!this.authService.inDemoMode()"><h4 class="graphHeading" (click)="launchAdjustAggregatesDialog()">Adjust Aggregates</h4></div>
+      <div class="graphNav" *ngIf="this.authService.inDemoMode()"><h4 class="graphHeading">Adjust Aggregates</h4></div>
+   </div>
+</div>
+
 <div class="container">
   <div class="row">
     <h3><strong>Our Organization's Results</strong></h3>
-    <button (click)="launchAdjustAggregatesDialog()">Adjust Aggregates</button>
 
     <div class="googleComboChart" *ngFor="let eachChart of comboCharts, let i = index">
       <google-chart [data]="comboCharts[i]"></google-chart>

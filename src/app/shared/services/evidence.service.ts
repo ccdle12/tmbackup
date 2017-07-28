@@ -47,7 +47,7 @@ export class EvidenceService {
             "evidenceText": evidenceText,
             "version": this.activeVersion,
             "updatedBy": this.userID,
-            "evidenceID": this.evidenceID,
+            "evidenceID": "",
         }]
         }
 

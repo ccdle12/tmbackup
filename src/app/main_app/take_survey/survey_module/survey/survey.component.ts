@@ -106,8 +106,14 @@ export class SurveyComponent {
 
   private updateCurrentModuleDetails(): void {
     let parsedSurveyDashboard = this.retrieveParsedSurveyDashboard();
+
+    
+    console.log("Updating Current Module Details");
     this.areaID = parsedSurveyDashboard[this.userSelectedModule]['areaID'];
     this.dimensionID = parsedSurveyDashboard[this.userSelectedModule]['dimensionID'];
+
+    console.log("Current Dimension");
+    console.log(parsedSurveyDashboard[this.userSelectedModule]['dimensionText']);
     this.dimensionText = parsedSurveyDashboard[this.userSelectedModule]['dimensionText'];
   }
 
@@ -121,9 +127,9 @@ export class SurveyComponent {
         {
         this.surveyQuestions = responseJSON.payload;
         
+        console.log('survey questions', responseJSON.payload); 
         this.updateSurveyValues();
         this.updateToolTips();
-        console.log('survey questions', responseJSON.payload); 
        }
     );
   }
@@ -153,13 +159,15 @@ export class SurveyComponent {
     }
 
     private updateToolTips(): void {
+      // Becase we are not reloading the page, we need to clear the tool tips
+      this.capabilityToolTips = [];
+
       let toolTipsTexts = new Array();
 
       for (var eachQuestion = 0; eachQuestion < this.surveyQuestions.length; eachQuestion++) {
         for (var scoreText = 1; scoreText <= 5; scoreText++) {
           toolTipsTexts[scoreText] = scoreText + " - " + this.surveyQuestions[eachQuestion]['scoringID' + scoreText + 'Text'];  
         }
-
         this.capabilityToolTips.push(toolTipsTexts);
         toolTipsTexts = [];
       }
@@ -287,8 +295,10 @@ export class SurveyComponent {
 
     if (!this.authService.isVerified()) {
       this.incrementSelectedModule();
+      this.updateCurrentModuleDetails();
 
       this.getWebSurveyQuestions();
+
       return;
     }
 
@@ -297,7 +307,9 @@ export class SurveyComponent {
       return;    
     } else {
       this.incrementSelectedModule();
-      window.location.reload();
+      this.updateCurrentModuleDetails();
+
+      this.getWebSurveyQuestions();
     }
   }
 
@@ -307,24 +319,28 @@ export class SurveyComponent {
     let incrementUserSelectedModule = userSelectedModule += 1;
 
     localStorage.setItem('userSelectedModule', incrementUserSelectedModule.toString());
+
+    this.userSelectedModule = incrementUserSelectedModule;
   }
 
   public previousModule(): void {
 
     if (!this.authService.isVerified()) {
       this.decrementSelectedModule();
-      window.location.reload();
+      this.updateCurrentModuleDetails();
+
+      this.getWebSurveyQuestions();
       return;
     }
 
     if (this.userClickedOnSlider) {
-      console.log("user has not saved");
-      console.log("user is not in demo mode");
       this.dialog.open(RemindUserToSaveDialog);
       return;    
     } else {
       this.decrementSelectedModule();
-      window.location.reload();
+      this.updateCurrentModuleDetails();
+
+      this.getWebSurveyQuestions();
     }
     
     return;    
@@ -335,6 +351,8 @@ export class SurveyComponent {
     let decrementUserSelectedModule = userSelectedModule -= 1;
 
     localStorage.setItem('userSelectedModule', decrementUserSelectedModule.toString());
+
+     this.userSelectedModule = decrementUserSelectedModule;
   }
 
   public notAtStartOfModules(): boolean {

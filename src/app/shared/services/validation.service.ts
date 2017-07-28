@@ -8,6 +8,7 @@ export class ValidationService {
             'required': 'Required',
             'invalidPhoneNumber': 'Please only enter numbers',
             'invalidEmailAddress': 'Invalid email address',
+            'invalidUrl': 'Invalid URL',
             'minlength': `Minimum length ${validatorValue.requiredLength}`
         };
 
@@ -29,6 +30,15 @@ export class ValidationService {
             return null;
         } else {
             return { 'invalidPhoneNumber': true };
+        }
+    }
+
+    static urlValidator(control) {
+        //RFC 3987 compliant regex
+        if (control.value.match(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/)) {
+            return null;
+        } else {
+            return {'invalidUrl': true };
         }
     }
 }
