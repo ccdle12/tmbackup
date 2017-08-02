@@ -28,6 +28,8 @@ export class TakeSurveyComponent {
     this.sectionModules = new Array();
 
     let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+    console.log("Active Version From Localstorage before call?")
+    console.log(activeCityVersion);
     this.getActiveVersionForCity();
   }
 
@@ -36,6 +38,7 @@ export class TakeSurveyComponent {
         .subscribe(responseJSON => {
             let activeCityVersion: string = responseJSON.payload;
             localStorage.setItem('activeCityVersion', activeCityVersion);
+            console.log("Active version using response json: " + responseJSON.payload);
 
             this.getWebDashboard(activeCityVersion);
         });

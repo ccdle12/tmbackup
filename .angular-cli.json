@@ -22,9 +22,12 @@
         "styles.css",
         "custom-theme.scss",
         "../node_modules/primeng/resources/primeng.min.css",
-        "../node_modules/primeng/resources/themes/omega/theme.css"
+        "../node_modules/primeng/resources/themes/omega/theme.css",
+        "../node_modules/jqwidgets-framework/jqwidgets/styles/jqx.base.css"
       ],
-      "scripts": [],
+      "scripts": ["../node_modules/jqwidgets-framework/jqwidgets/jqxcore.js",
+        "../node_modules/jqwidgets-framework/jqwidgets/jqxbuttons.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

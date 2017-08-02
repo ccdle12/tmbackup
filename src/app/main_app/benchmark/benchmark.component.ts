@@ -19,6 +19,7 @@ export class BenchmarkComponent {
 
   public allCitiesData: Array<any>;
   public allCityNames: Array<any>;
+  // public mapCityNameToCityData: Map<string, object>;
 
   // 2 way data bind from view
   private previousCurrentCitySelected: any;
@@ -26,6 +27,9 @@ export class BenchmarkComponent {
 
   public cityNameMappedToData: Map<string, Array<any>>;
   public cityMapToVersionID: Map<string, string>;
+
+  //Survey Results w/ Owner 
+  // public surveyResultsWithDimensionOwners: Array<any>;
 
   constructor(public kumulosService: KumulosService, public dialog: MdDialog) {
     this.initializeMemberVariables();
@@ -36,10 +40,14 @@ export class BenchmarkComponent {
     this.comboCharts = new Array();
     this.currentCityData = new Array();
     this.allCitiesData = new Array();
+    // this.mapCityNameToCityData = new Map<string, object>();
     this.allCityNames = new Array();
 
     this.cityNameMappedToData = new Map<string, Array<any>>();
     this.cityMapToVersionID = new Map<string, string>();
+
+    // this.surveyResultsWithDimensionOwners = new Array<any>();
+    // this.surveyResultsWithDimensionOwners = JSON.parse(localStorage.getItem('unadjustedData'));
   }
 
 
@@ -50,7 +58,15 @@ export class BenchmarkComponent {
       this.kumulosService.getAllBenchmarkData(cityID)
       .subscribe(responseJSON => 
         {
+          console.log("All benchmark data");
+          console.log(responseJSON.payload);
           this.allCitiesData = responseJSON.payload;
+
+          // Mapping city name to its object data
+          for (let i = 0; i < this.allCitiesData.length; i++) {
+            // console.log(this.allCitiesData[i].cityName);
+            // this.mapCityNameToCityData.set(this.allCitiesData[i].cityName, this.allCitiesData[i]);
+          }
           
           // First inflating the Benchmark Data
           let cityDataLength = this.allCitiesData.length;
@@ -136,41 +152,79 @@ export class BenchmarkComponent {
   }
 
   private getSizeOfAreaModules(): number {
-    let surveyDashboard: JSON = JSON.parse(localStorage.getItem('surveydashboard'));
-    let sizeOfDashboard: number = Object.keys(surveyDashboard).length;
+    // let surveyDashboard: JSON = JSON.parse(localStorage.getItem('surveydashboard'));
+    // let sizeOfDashboard: number = Object.keys(surveyDashboard).length;
 
-    let numberOfAreaModules: number = surveyDashboard[sizeOfDashboard - 2]['areaID'];
+    // let numberOfAreaModules: number = surveyDashboard[sizeOfDashboard - 2]['areaID'];
+
+    let currentCityData = this.cityNameMappedToData.get(this.currentCitySelected.name);
+    let numberOfAreaModules = currentCityData.length;
 
     return numberOfAreaModules;
   }
 
   private addToComboChartArray(numberOfModules: number): void {
+    // Clear the existing Combo Chart Array
+    this.comboCharts = [];
+
+    // Survey Dashboard for retrieving Area Text and Dimension Texts
     let surveyDashboard: JSON = JSON.parse(localStorage.getItem('surveydashboard'));
 
-    for (var currentModule = 1; currentModule <= numberOfModules; currentModule++) {
+    // Benchmark Data
+    let benchMarkData = this.allCitiesData[this.allCitiesData.length - 1];
+    let lengthbenchMarkData = benchMarkData.length;
+    let numOfAreas = Number(benchMarkData[lengthbenchMarkData - 1]['areaID']);
+
+    // Object Data for the current city
+    let currentCityData = this.cityNameMappedToData.get(this.currentCitySelected.name);
+
+    console.log("Each City Data: ");
+    console.log(this.currentCityData);
+    
+    let dataTableArray: any = new Array();
+
+    for (var i = 1; i <= numOfAreas; i++) {
+
       let areaText;
 
-      let dataTableArray: any = new Array();
-      dataTableArray.push(['SurveyData', 'Importance', 'Score', '2 Year Target' ]);
+      // Adding the headers to each combo chart
+      dataTableArray.push(['SurveyData', 'Importance', 'Score', '2 Year Target']);
 
+      for (let j = 0; j < lengthbenchMarkData; j++) {
+        let dashboardAreaId: Number = Number(benchMarkData[j].areaID);
 
-      for (var i = 0; i < this.currentCityData.length; i++) {
-        let areaID = this.currentCityData[i]['areaID'];
+        if (dashboardAreaId == i) {
+          // Getting area and dimension texts from survey dashboard
+          areaText = surveyDashboard[j].areaText;
+          let dimensionText: string = surveyDashboard[j].dimensionText;
 
-        if (areaID == currentModule) {
-          // Data returned from Kumulos on the Benchmark request does not contain 'areaText'
-          // Retrieving 'areaText' from the surveyDashboard in local storage
-          areaText = surveyDashboard[i]['areaText'];
-          let dimensionText: string = surveyDashboard[i]['dimensionText']
+          let importance;
+          let score;
+          let target;
 
-          let importance: number = Number(this.currentCityData[i]['importance']);
-          let score: number = Number(this.currentCityData[i]['score']);
-          let target: number = Number(this.currentCityData[i]['target']);
+          if (currentCityData[j]) {
+            if (currentCityData[j].importance) {
+              importance = Number(currentCityData[j].importance);
+            } 
 
-          dataTableArray.push([ dimensionText, importance, score, target ]);
+            if (currentCityData[j].score) {
+              score = Number(currentCityData[j].score);
+            } 
+            
+            if (currentCityData[j].target) {
+              target = Number(currentCityData[j].target);
+            } 
+          } else {
+            importance = 0;
+            score = 0;
+            target = 0;
+          }
 
+          dataTableArray.push([dimensionText, importance, score, target]);
         }
       }
+      console.log("Area Text: " + areaText);
+      console.log("---------------- Area Finished -------------")
 
       let comboChart = {
             chartType: 'ComboChart',
@@ -184,10 +238,21 @@ export class BenchmarkComponent {
                   max: 5
                 },
                   ticks: [0, 1, 2, 3, 4, 5] 
-                }
-              }
-            }
-      this.comboCharts[currentModule] = comboChart;
+                }, 
+                colors: ['#348bb5', '#e28a1d', '#589e2d'],
+                focusTarget: 'category',
+                tooltip: {
+                  trigger: 'focus',
+                  ignoreBounds: 'false',
+                  isHtml: 'true',
+            },  
+          }
+        }
+
+      this.comboCharts[i] = comboChart;
+      console.log("Form the combo chart: ");
+      console.log(this.comboCharts[i]);
+      dataTableArray = [];
     }
   }
   

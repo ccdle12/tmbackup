@@ -43,7 +43,7 @@ export class AppComponent {
 
         this.setWidthAndHeight();
 
-        this.infoTooltip = "TM Forum Digial Maturity Model and Metrics. v1.0 UAT (build. 1.0.0.0). 2017 Cotham Technologies and TM Forum. In-app iocs by Icons8 (https://icons8.com/)."
+        this.infoTooltip = "TM Forum Digial Maturity Model and Metrics. v1.0 UAT (build. 1.0.0.2). 2017 Cotham Technologies and TM Forum. In-app iocs by Icons8 (https://icons8.com/)."
         
         this.routerEventListener();
         
@@ -137,7 +137,9 @@ export class AppComponent {
     }
 
     public editUserDetails(): void {
-        this.dialog.open(EditUserDetailsDialog)
+        let dialogRef = this.dialog.open(EditUserDetailsDialog);
+
+
     }
 
     public minWidth() {
@@ -182,7 +184,7 @@ export class EditUserDetailsDialog {
   
   @ViewChild('spinnerElement') loadingElement: ElementRef;
 
-  constructor(public kumulosService: KumulosService, public authService: AuthService) { 
+  constructor(public kumulosService: KumulosService, public authService: AuthService,  public dialog: MdDialog) { 
       this.setUserNameAndTitle();
   }
 
@@ -263,7 +265,7 @@ export class EditUserDetailsDialog {
             let userProfile = JSON.stringify(responseJSON.payload);
             this.cacheUserProfile(userProfile);
             this.cacheUserName(userProfile);
-            this.reloadPage();
+            this.dialog.closeAll();
             
         });
   }
