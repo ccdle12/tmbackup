@@ -129,6 +129,13 @@ export class EvidenceComponent implements AfterViewInit {
     })
   }
 
+  public launchEditEvidenceDialog(index) {
+    localStorage.setItem('selectedEvidence', JSON.stringify(this.evidence[index]));
+    localStorage.setItem('selectedWebLink', this.evidenceWebLinks[index]);
+
+    let dialogRef = this.dialog.open(EditEvidenceDialog);
+  }
+
   public routeToEvidenceLink(index) {
     let webLink = this.evidenceWebLinks[index];
 
@@ -228,6 +235,88 @@ export class DeleteEvidenceDialog {
 
   private closeDialog() 
   {
+    this.dialog.closeAll();
+  }
+}
+
+@Component({
+  selector: 'editEvidence',
+  templateUrl: '../../../../shared/dialogs/editEvidence.html',
+  styleUrls: ['../../../../shared/dialogs/editEvidence.css']
+})
+export class EditEvidenceDialog {
+
+  evidence: JSON[];
+  evidenceWebLinks: Array<string>;
+  addNewEvidence: FormGroup;
+  httpRequestFlag: boolean;
+
+  selectedEvidence: any;
+
+  title;
+  description;
+  weblink;
+  version;
+  areaID;
+  dimensionID;
+  userID;
+  evidenceID;
+
+  constructor(public dialog: MdDialog, public formBuilder: FormBuilder, public kumulos: KumulosService, public evidenceService: EvidenceService, public router: Router) 
+  {
+
+    // this.webGetEvidence();
+    this.selectedEvidence = JSON.parse(localStorage.getItem('selectedEvidence'));
+    this.version = localStorage.getItem('activeCityVersion');
+    this.areaID = this.selectedEvidence['areaID'];
+    this.dimensionID = this.selectedEvidence['dimensionID'];
+    this.userID = this.selectedEvidence['userID'];
+    this.evidenceID =  this.selectedEvidence['evidenceID'];
+      
+
+    console.log(this.selectedEvidence.evidenceDescription);
+
+    this.title = this.selectedEvidence.evidenceDescription;
+    this.description = this.selectedEvidence.evidenceText;
+    this.weblink = localStorage.getItem('selectedWebLink');
+
+    this.addNewEvidence = this.formBuilder.group({
+      evidenceTitle: [this.title, Validators.required],
+      evidenceDescription: [this.description, Validators.required],
+      evidenceReference: [this.weblink, [Validators.required, ValidationService.urlValidator]],
+    });
+  }
+
+  public createUpdateEvidence() {
+    console.log(this.selectedEvidence);
+    console.log(this.selectedEvidence['areaID']);
+
+    let evidenceData: string = this.evidenceService.getUpdateEvidenceData(
+      this.areaID,
+      this.dimensionID,
+      this.addNewEvidence.value.evidenceTitle,
+      this.addNewEvidence.value.evidenceDescription + "[[ff-weblink]]" + this.addNewEvidence.value.evidenceReference,
+      this.version,
+      this.userID,
+      this.evidenceID)
+
+      console.log("Evidence ID: " + this.evidenceID);
+      console.log("Evidence Data: ");
+      console.log(evidenceData);
+
+    this.httpRequestFlag = true;
+    this.kumulos.createUpdateEvidence(evidenceData)
+      .subscribe(response =>
+        {
+          console.log("response from update evidence");
+          console.log(response);
+          this.closeDialog();
+          this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/takesurvey/surveymodule/evidence'));
+        })
+    console.log(this.addNewEvidence.value.evidenceReference);
+  }
+
+  private closeDialog() {
     this.dialog.closeAll();
   }
 }

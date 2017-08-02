@@ -18,6 +18,8 @@ md-card:hover {
     position: absolute;
     bottom: 0;
     right: 0;
+    padding-top: 3px;
+    padding-right: 5px;
 }
 
 #cardsContainer {

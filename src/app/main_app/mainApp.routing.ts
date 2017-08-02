@@ -30,14 +30,14 @@ const mainAppRoutes: Routes = [
             path: 'viewresults',
             loadChildren: './view_results/viewResults.module#ViewResultsModule'
         },
-        {
-            path: 'publication',
-            loadChildren: './publication/publication.module#PublicationModule'
-        },
-        {
-            path: 'benchmark',
-            loadChildren: './benchmark/benchmark.module#BenchmarkModule'
-        }
+        // {
+        //     path: 'publication',
+        //     loadChildren: './publication/publication.module#PublicationModule'
+        // },
+        // {
+        //     path: 'benchmark',
+        //     loadChildren: './benchmark/benchmark.module#BenchmarkModule'
+        // }
     ],
     }
 ]

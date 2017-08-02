@@ -110,10 +110,10 @@ export class KumulosService {
         let userJWT: string;
 
         if (!this.authService.isVerified() || !this.authService.isAuthenticated()) {
-            // console.log('using demo JWT');
+            console.log('using demo JWT');
             userJWT = localStorage.getItem('demoJWT');
         } else {
-            // console.log('using id_token JWT');
+            console.log('using id_token JWT');
             userJWT = localStorage.getItem('id_token');
         }
 

@@ -11,7 +11,7 @@ import { KumulosService } from '../shared/services/kumulos.service';
 export class MainAppSectionComponent {
 
     constructor(public authService: AuthService, private router: Router, public kumulosService: KumulosService) {
-        this.inDemoOrInMainApp();
+        // this.inDemoOrInMainApp();
      }
 
     private inDemoOrInMainApp(): void {

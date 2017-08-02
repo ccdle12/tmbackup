@@ -11,10 +11,14 @@ import {Observable} from 'rxjs/Observable';
 import { UserSavedService } from '../../../../shared/services/userSaved.service';
 import { CreateAndDeleteDimensionOwnerService } from '../../../../shared/services/createAndDeleteDimensionOwner.service';
 
+import { jqxSliderComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxslider';
 
 @Component({
   selector: 'survey',
   templateUrl: './survey.component.html',
+  // host: {
+  //       '(document:click)': 'handleClick($event)',
+  //   },
   styleUrls: ['./survey.component.css']
 })
 export class SurveyComponent {
@@ -53,21 +57,66 @@ export class SurveyComponent {
   // "Are you responsible?" -> Flag
   public surveyHasOwner: boolean;
 
+  // ToolTips
+  save: string;
+  previousDimensionTooltip: string;
+  nextDimensionTooltip: string;
+
+  sliderMoved: boolean;
+  // Test
+  // thumbLabel: boolean;
+  // public elementRef;
+  
+
   constructor(public kumulosService: KumulosService, public router: Router, public dialog: MdDialog, public authService: AuthService,
               public snackBar: MdSnackBar, private eRef: ElementRef, public userSavedService: UserSavedService, 
               public createAndDeleteDimensionOwner: CreateAndDeleteDimensionOwnerService) { 
     
     this.initializeMemberVariables();
     this.getWebSurveyQuestions(); 
+
+    // this.elementRef = myElement;
   }
 
+  // @HostListener('document:click', ['$event'])
+  // clickout(event) {
+  //   if(this.eRef.nativeElement.contains(event.target)) {
+  //     // this.text = "clicked inside";
+  //     console.log('inside');
+  //   } else {
+  //     // this.text = "clicked outside";
+  //     console.log('outside');
+  //   }
+  // }
+
+  // handleClick(event){
+  //   var clickedComponent = event.target;
+  //   var inside = false;
+  //   do {
+  //       if (clickedComponent === this.elementRef.nativeElement) {
+  //           inside = true;
+  //       }
+  //       clickedComponent = clickedComponent.parentNode;
+  //   } while (clickedComponent);
+  //   if(inside){
+  //       console.log('inside');
+  //   }else{
+  //       console.log('outside');
+  //   }
+  //  }
+
   private initializeMemberVariables(): void {
+
+    // this.thumbLabel = true;
+
     this.userSelectedModule = this.getUserSelectedModule();
 
     let surveyDashboard: JSON = JSON.parse(localStorage.getItem('surveydashboard'));
     this.sizeOfModules = Object.keys(surveyDashboard).length - 1;
 
     this.userSaved = false;
+
+    this.initializeNonDataTooltips();
 
     this.initializeArrayValues();
 
@@ -104,6 +153,12 @@ export class SurveyComponent {
     this.importanceToolTips[4] = "5 - Key/pivotal priority";
   }
 
+  private initializeNonDataTooltips(): void {
+    this.save = "Save";
+    this.previousDimensionTooltip = "Previous Sub-Dimension";
+    this.nextDimensionTooltip = "Next Sub-Dimension";
+  }
+
   private updateCurrentModuleDetails(): void {
     let parsedSurveyDashboard = this.retrieveParsedSurveyDashboard();
 
@@ -136,22 +191,29 @@ export class SurveyComponent {
 
   private updateSurveyValues(): void {
 
+    // Reset values for slider values
+    this.importanceValues = [];
+    this.capabilityValues = [];
+    this.twoYearTargetValues = [];
+
       for (var eachQuestion = 0; eachQuestion < this.surveyQuestions.length; eachQuestion++) {
         
         if (this.surveyQuestions[eachQuestion]['importance'] == " " || this.surveyQuestions[eachQuestion]['importance'] == "0") {
-          this.importanceValues[eachQuestion] = " ";
+          this.importanceValues[eachQuestion] = 0;
+          console.log("importance value is empty");
+          console.log(this.importanceValues[eachQuestion]);
         } else {
           this.importanceValues[eachQuestion] = this.surveyQuestions[eachQuestion]['importance'];
         }
 
          if (this.surveyQuestions[eachQuestion]['score'] == " " || this.surveyQuestions[eachQuestion]['score'] == "0") {
-          this.capabilityValues[eachQuestion] = " ";
+          this.capabilityValues[eachQuestion] = 0;
         } else {
           this.capabilityValues[eachQuestion] = this.surveyQuestions[eachQuestion]['score'];
         }
 
         if (this.surveyQuestions[eachQuestion]['target'] == " " || this.surveyQuestions[eachQuestion]['target'] == "0") {
-          this.capabilityValues[eachQuestion] = " ";
+          this.capabilityValues[eachQuestion] = 0;
         } else {
           this.twoYearTargetValues[eachQuestion] = this.surveyQuestions[eachQuestion]['target'];
         }
@@ -202,15 +264,17 @@ export class SurveyComponent {
        this.createAndDeleteDimensionOwner.setActiveVersion(this.activeCityVersion);
     }
 
-
-
     // Events for user touching the sliders
     public userMovedSlider(indexPos: any, sliderColumn: number): void {
-      this.updateShowToolTipFlag(indexPos);
-      this.updateSliderColumnsFlag(sliderColumn);
+        this.revertFlagsToFalse();
+        console.log("User moving slider");
 
-      this.timeOutToolTip();
-      this.updateUserSavedFlag();
+        this.updateShowToolTipFlag(indexPos);
+        this.updateSliderColumnsFlag(sliderColumn);
+
+        this.updateUserSavedFlag();
+        // this.sliderMoved = true;
+        // this.timeOutToolTip();
     }
     
     private updateShowToolTipFlag(indexPos: any) {
@@ -235,14 +299,13 @@ export class SurveyComponent {
       }
     }
 
-
     // Events for the custom tool tips 
     private timeOutToolTip(): void {
       setTimeout(function() 
       {
         this.revertFlagsToFalse();
 
-      }.bind(this), 4000);
+      }.bind(this), 6000);
     }
 
     private revertFlagsToFalse(): void {
@@ -420,11 +483,28 @@ export class SurveyComponent {
   }
 
   public launchOwnSectionDialog(): void {
-    this.dialog.open(ResponsibleForSectionDialog);
+    let dialogRef = this.dialog.open(ResponsibleForSectionDialog);
+    dialogRef.afterClosed()
+      .subscribe(response => {
+        this.getDimensionOwner();
+    })
   }
 
   public launchRemoveOwnershipDialog(): void {
-    this.dialog.open(RemoveResponsibilityForSectionDialog);
+    let dialogRef = this.dialog.open(RemoveResponsibilityForSectionDialog);
+    dialogRef.afterClosed()
+      .subscribe(resposne => {
+        this.getDimensionOwner();
+      });
+  }
+
+  public sliderThumbMoved(index): void {
+    this.userMovedSlider(index, 0);
+  }
+
+  public clickedAwayFromSlider(): void {
+      this.revertFlagsToFalse();  
+      console.log("Clicked away from slider");
   }
 }
 
@@ -455,7 +535,7 @@ export class SaveSnackBarComponent {}
 })
 export class ResponsibleForSectionDialog {
 
-  constructor(public dimensionOwnerService: CreateAndDeleteDimensionOwnerService, public kumulosService: KumulosService) {}
+  constructor(public dimensionOwnerService: CreateAndDeleteDimensionOwnerService, public kumulosService: KumulosService, public dialog: MdDialog) {}
 
   public takeResponsibility(): void {
     this.dimensionOwnerService.retrieveA0ProfileKeys();
@@ -466,7 +546,8 @@ export class ResponsibleForSectionDialog {
     this.kumulosService.updateDimensionOwner(ownerData)
       .subscribe(response => {
         console.log(response);
-        window.location.reload();
+        // window.location.reload();
+        this.dialog.closeAll();
       });
   }
 }
@@ -480,7 +561,7 @@ export class RemoveResponsibilityForSectionDialog {
 
   public dimensionOwnerID: string;
 
-  constructor(public dimensionOwnerService: CreateAndDeleteDimensionOwnerService, public kumulosService: KumulosService) {
+  constructor(public dimensionOwnerService: CreateAndDeleteDimensionOwnerService, public kumulosService: KumulosService, public dialog: MdDialog) {
     this.dimensionOwnerID = this.dimensionOwnerService.getDimensionOwnerID();
   }
 
@@ -489,7 +570,8 @@ export class RemoveResponsibilityForSectionDialog {
       .subscribe(response => {
         console.log("delete responsibility");
         console.log(response);
-        window.location.reload();
+        // window.location.reload();
+        this.dialog.closeAll();
       })
   }
 }

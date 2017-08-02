@@ -68,7 +68,12 @@ export class TeamAdminComponent  {
 
     this.editRoleService.cacheUserJSON(editUser);
     console.log("from edit role service: " + this.editRoleService.getUserJSON());
-    this.dialog.open(EditUserRole);
+    let dialogRef = this.dialog.open(EditUserRole);
+
+    dialogRef.afterClosed()
+      .subscribe(resposne => {
+        this.getAllUsers();
+      });
   }
 
 
@@ -78,8 +83,10 @@ export class TeamAdminComponent  {
 
     if (this.hasUserMetaData(index))
       userName = this.userProfiles[index]['user_metadata']['name'];
-    else 
+    else if (this.userProfiles[index]['name'])
       userName = this.userProfiles[index]['name'];
+    else 
+      userName = "Name not set by user"
     
     return userName;
   }
@@ -89,8 +96,10 @@ export class TeamAdminComponent  {
 
     if (this.hasUserMetaData(index))
       userTitle = this.userProfiles[index]['user_metadata']['jobTitle'];
-    else 
+    else  if (this.userProfiles[index]['headline'])
       userTitle = this.userProfiles[index]['headline'];
+    else 
+      userTitle = "Job title not set by user";
     
     return userTitle;
   }  
@@ -194,7 +203,7 @@ export class EditUserRole {
   public userEmail: string;
   public userId: string;
 
-  constructor(public router: Router, public editRoleService: EditRoleService, public kumulosService: KumulosService) {
+  constructor(public router: Router, public editRoleService: EditRoleService, public kumulosService: KumulosService, public dialog: MdDialog) {
     this.userRole = this.editRoleService.getUserRole();
     this.userName = this.editRoleService.getUserName();
     this.userJobTitle = this.editRoleService.getUserJobTitle();
@@ -213,7 +222,7 @@ export class EditUserRole {
     this.kumulosService.updateUserRole(this.userRole, this.userId, this.userEmail, this.userName)
     .subscribe(response => 
       {
-        this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/teamAdmin'));
+        this.dialog.closeAll()
       });
 
   }

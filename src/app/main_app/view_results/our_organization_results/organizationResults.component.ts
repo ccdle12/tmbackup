@@ -117,21 +117,45 @@ export class OrganizationResultsComponent {
     for (var currentModule = 1; currentModule <= numberOfModules; currentModule++) {
       let areaText;
 
+      let unadjustDataShowingOwners = JSON.parse(localStorage.getItem('unadjustedData'));
+
       let dataTableArray: any = new Array();
-      dataTableArray.push(['SurveyData', 'Importance', 'Score', '2 Year Target' ]);
+
+      // Uncommented tooltip
+      dataTableArray.push(['SurveyData', 'Importance', 'Score', '2 Year Target']);
 
 
       for (var i = 0; i < this.adjustedGraphData.length; i++) {
         let areaID = this.adjustedGraphData[i]['areaID'];
 
+        let owner: string;
+
         if (areaID == currentModule) {
+
+          // if (unadjustDataShowingOwners[i])
+          if (unadjustDataShowingOwners[i]['owners']) {
+            let ownerObject = unadjustDataShowingOwners[i]['owners'][0];
+
+            let ownerDimensionID = ownerObject.dimensionID;
+            let adjustedGraphDimensionID = this.adjustedGraphData[i]['dimensionID'];
+
+            if (ownerDimensionID == adjustedGraphDimensionID) {
+              let ownerData = JSON.parse(ownerObject['ownerData']);
+              owner = "Owner: " + ownerData['name'];
+            }
+          } else {
+            owner = "No Owner";
+          }
+          
+
           areaText = this.adjustedGraphData[i]['areaText'];
           let dimensionText: string = this.adjustedGraphData[i]['dimensionText']
           let importance: number = Number(this.adjustedGraphData[i]['importance']);
           let score: number = Number(this.adjustedGraphData[i]['score']);
           let target: number = Number(this.adjustedGraphData[i]['target']);
 
-          dataTableArray.push([ dimensionText, importance, score, target ]);
+          // Uncommented Owner
+          dataTableArray.push([ dimensionText, importance, score, target]);
 
         }
       }
@@ -150,6 +174,11 @@ export class OrganizationResultsComponent {
                   ticks: [0, 1, 2, 3, 4, 5] 
                 },
                 colors: ['#348bb5', '#e28a1d', '#589e2d'],
+                tooltip: {
+                  trigger: 'focus',
+                  ignoreBounds: 'false',
+                  isHtml: 'true',
+                }, 
               }
             }
       this.comboCharts[currentModule] = comboChart;

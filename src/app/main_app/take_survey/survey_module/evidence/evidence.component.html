@@ -11,6 +11,7 @@
         <md-card-content>
             <a (click)="routeToEvidenceLink(i)"><p>{{evidence.evidenceText}}</p></a>
             <!-- <a target="_blank" href="{{evidence.evidenceText}}"><p>{{evidence.evidenceText}}</p></a> -->
+            <button md-button class="col-sm-12" (click)="launchEditEvidenceDialog(i)">Edit</button>
             <button md-button class="col-sm-12" (click)="launchDeleteEvidenceDialog()">Delete</button>
         </md-card-content>
 </md-card>

@@ -54,5 +54,22 @@ export class EvidenceService {
         return JSON.stringify(evidenceData);
     }
 
+    public getUpdateEvidenceData(areaID, dimensionID, evidenceDescription: string, evidenceText: string, version, userID, evidenceID ) {
+        let evidenceData: any = {
+            "evidenceData": [{
+            "areaID": areaID,
+            "dimensionID": dimensionID,
+            "statementID": "1.1.1",
+            "evidenceDescription": evidenceDescription,
+            "evidenceText": evidenceText,
+            "version": version,
+            "updatedBy": userID,
+            "evidenceID": evidenceID,
+        }]
+        }
+
+        return JSON.stringify(evidenceData);
+    }
+
     
 }
