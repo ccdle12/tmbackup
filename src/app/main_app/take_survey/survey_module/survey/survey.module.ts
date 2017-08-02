@@ -14,7 +14,7 @@ import { jqxSliderComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqx
 // import { BrowserModule } from @angular/platform-browser;
 // import { SaveSurveyGuardService } from '../../../../shared/services/saveSurvey-guard.service';
 
-import { jqxButtonComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxbuttons';
+// import { jqxButtonComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxbuttons';
 // import { AppClickOutsideDirective } from './app-click-outside.directive'
 import { ClickOutsideDirective } from './clickOutSide.directive';
 

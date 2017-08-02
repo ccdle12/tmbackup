@@ -31,7 +31,7 @@
           <span class="col-sm-6">{{surveyQuestions[i].statementID}} {{surveyQuestions[i].statementText}}</span>  
         <!-- <span class="col-sm-1"><md-slider (click)="userMovedSlider(i, 0)" min="1" max="5" step="1" value="1" tickInterval="1" [(ngModel)]="importanceValues[i]" [mdTooltip]="this.importanceToolTips[importanceValues[i]-1]" (input)="sliderThumbMoved(i)"></md-slider></span> -->
         <span class="col-sm-2 jqxSlider"><span class="col-sm-1 col-sm-offset-5" *ngIf="importanceValues[i] != 0">{{importanceValues[i]}}</span><span class="col-sm-1 col-sm-offset-5" *ngIf="importanceValues[i] == 0" class="clearScore">{{importanceValues[i]}}</span><jqxSlider [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180  [value]=importanceValues[i] [(ngModel)]="importanceValues[i]"  (onChange)="userMovedSlider(i,0)" [showButtons]="false" [template]="'info'" (click)="userMovedSlider(i,0)"></jqxSlider></span>
-        <div *ngIf="showToolTip && selectedSlider == i && importanceSliderFlag && importanceValues[i] != 0" class="customTooltip col-sm-2 col-sm-offset-5">{{this.importanceToolTips[importanceValues[i]-1]}}</div> 
+        <div *ngIf="showToolTip && selectedSlider == i && importanceSliderFlag && importanceValues[i] != 0" class="importanceCustomTooltip col-sm-2 col-sm-offset-5">{{this.importanceToolTips[importanceValues[i]-1]}}</div> 
   
         <!-- <span class="col-sm-1"><md-slider (click)="userMovedSlider(i, 1)" min="1" max="5" step="1" value="1" tickInterval="1" [(ngModel)]="capabilityValues[i]" [mdTooltip]="capabilityToolTips[i][capabilityValues[i]]"></md-slider></span>
         <span class="col-sm-1">{{capabilityValues[i]}}</span>
@@ -39,14 +39,14 @@
         
         <!-- <span class="col-sm-2 jqxSlider"><span class="col-sm-1 col-sm-offset-5">{{capabilityValues[i]}}</span><jqxSlider [height]="height" [min]="1" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [(ngModel)]="capabilityValues[i]" (onChange)="userMovedSlider(i, 1)"></jqxSlider></span> -->
         <span class="col-sm-2 jqxSlider"><span class="col-sm-1 col-sm-offset-5" *ngIf="capabilityValues[i] != 0">{{capabilityValues[i]}}</span><span class="col-sm-1 col-sm-offset-5" *ngIf="capabilityValues[i]== 0" class="clearScore">{{capabilityValues[i]}}</span><jqxSlider [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=capabilityValues[i] [(ngModel)]="capabilityValues[i]" (onChange)="userMovedSlider(i, 1)" [showButtons]="false" [template]="'info'" (click)="userMovedSlider(i,1)"></jqxSlider></span>
-        <div *ngIf="showToolTip && selectedSlider == i && capabilitySliderFlag && capabilityValues[i] != 0" class="customTooltip col-sm-2 col-sm-offset-7">{{this.capabilityToolTips[i][capabilityValues[i]]}}</div>
+        <div *ngIf="showToolTip && selectedSlider == i && capabilitySliderFlag && capabilityValues[i] != 0" class="capabilityCustomTooltip col-sm-2 col-sm-offset-7">{{this.capabilityToolTips[i][capabilityValues[i]]}}</div>
         <!-- <div class="col-sm-1">{{capabilityValues[i]}}</div> -->
 
         
         <!-- <span class="col-sm-1"><md-slider (click)="userMovedSlider(i, 2)" min="1" max="5" step="1" value="1" tickInterval="1" [(ngModel)]="twoYearTargetValues[i]" [mdTooltip]="capabilityToolTips[i][twoYearTargetValues[i]]"></md-slider></span> -->
         <!-- <span class="col-sm-2 jqxSlider"><span class="col-sm-1 col-sm-offset-5">{{twoYearTargetValues[i]}}</span><jqxSlider [height]="height" [min]="1" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [(ngModel)]="twoYearTargetValues[i]" (onChange)="userMovedSlider(i, 2)"></jqxSlider></span> -->
         <span class="col-sm-2 jqxSlider"><span class="col-sm-1 col-sm-offset-5" *ngIf="twoYearTargetValues[i] != 0">{{twoYearTargetValues[i]}}</span><span class="col-sm-1 col-sm-offset-5" *ngIf="twoYearTargetValues[i] == 0" class="clearScore">{{twoYearTargetValues[i]}}</span><jqxSlider [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=twoYearTargetValues[i] [(ngModel)]="twoYearTargetValues[i]" (onChange)="userMovedSlider(i, 2)" [showButtons]="false" [template]="'info'" (click)="userMovedSlider(i,2)"></jqxSlider></span>
-         <div *ngIf="showToolTip && selectedSlider == i && twoYearTargerSliderFlag && twoYearTargetValues[i] != 0" class="customTooltip col-sm-2 col-sm-offset-9">{{this.capabilityToolTips[i][twoYearTargetValues[i]]}}</div> 
+         <div *ngIf="showToolTip && selectedSlider == i && twoYearTargerSliderFlag && twoYearTargetValues[i] != 0" class="targetCustomTooltip col-sm-2 col-sm-offset-9">{{this.capabilityToolTips[i][twoYearTargetValues[i]]}}</div> 
     </div>
 </div>
 
