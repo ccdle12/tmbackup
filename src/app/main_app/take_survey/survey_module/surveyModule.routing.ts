@@ -18,18 +18,18 @@ const surveyModuleRoutes: Routes = [
             loadChildren: './survey/survey.module#SurveyModule',
             // canDeactivate: [UserSaveGuardService]
         },
-        // {
-        //     path: 'casestudies',
-        //     component: CaseStudiesComponent,
-        // },
-        // {
-        //     path: 'bestpractice',
-        //     component: BestPracticeComponent,
-        // },
-        // {
-        //     path: 'evidence',
-        //     component: EvidenceComponent,
-        // }
+        {
+            path: 'casestudies',
+            component: CaseStudiesComponent,
+        },
+        {
+            path: 'bestpractice',
+            component: BestPracticeComponent,
+        },
+        {
+            path: 'evidence',
+            component: EvidenceComponent,
+        }
         ]
     },                                                                   
 ]   

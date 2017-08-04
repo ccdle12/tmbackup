@@ -55,7 +55,11 @@ export class PublicationComponent {
    
    public setPublicationLevel(selectedLevel: string) {
     this.persistSelectedPublicationLevel(selectedLevel);
-    this.dialog.open(UpdatePublicationLevelDialog);
+    let dialogRef = this.dialog.open(UpdatePublicationLevelDialog);
+
+    dialogRef.afterClosed().subscribe(response => {
+      this.getPublicationLevel();
+    })
    }
 
    private persistSelectedPublicationLevel(selectedLevel: string) {
@@ -90,10 +94,12 @@ export class UpdatePublicationLevelDialog {
   public publicationLevel: number;
   public selectedPubLevel: string;
   public httpRequestFlag: boolean;
+  public pubLevelDescription: string;
 
   constructor(public kumulosService: KumulosService, public dialog: MdDialog) {
     this.setPublicationLevel();
     this.setSelectedPubLevel();
+    this.setPubLevelDescription();
   }
 
   public setPublicationLevel(): void {
@@ -113,6 +119,21 @@ export class UpdatePublicationLevelDialog {
 
   private hasSelectedPublicationLevel(): boolean {
     return localStorage.getItem('selectedPublicationLevel') ? true : false;
+  }
+
+  private setPubLevelDescription() {
+    switch(this.selectedPubLevel) {
+      case 'Open': 
+        this.pubLevelDescription = "This sets the publication level to open. The organization results will contribute to the global benchmark and be viewable " +
+        "by other organizations (team dynamics will not be shown), and you will be able to see results from other organizations. Please confirm you wish to proceed."
+        break;
+
+      case 'Open within Group':
+        this.pubLevelDescription = "This sets the publication level to open within a predefined group. The organization results will contribute " +
+        "to the global benchmark and will only be viewable by other organizations in your predefined group (team dynamics will not be shown). You will " +
+        "be able to see the global benchmark, but only be able to see results from other organizations in your group. Please confirm you wish to proceed.";
+        break;
+      }
   }
 
 
@@ -144,11 +165,12 @@ export class UpdatePublicationLevelDialog {
       let publicationCtyOrGroup: string = user['city'];
 
       this.httpRequestFlag = true;
+      console.log("This will send the new publication level: " + publicationLevel);
       this.kumulosService.updateCityPublicationLevel(cityID, publicationLevel, publicationCtyOrGroup)
         .subscribe(responseJSON => 
         {
           console.log(responseJSON.payload);
-          window.location.reload();
+          this.dialog.closeAll();
         });
     }
   }

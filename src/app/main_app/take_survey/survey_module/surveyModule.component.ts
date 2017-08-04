@@ -56,6 +56,6 @@ export class SurveyModuleComponent  {
     }
 
     public backToDashboard(): void {
-      this.authService.backToDashboard();
+      this.router.navigateByUrl('/main/takesurvey');
     }
 }
