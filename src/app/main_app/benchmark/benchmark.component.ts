@@ -19,7 +19,6 @@ export class BenchmarkComponent {
 
   public allCitiesData: Array<any>;
   public allCityNames: Array<any>;
-  // public mapCityNameToCityData: Map<string, object>;
 
   // 2 way data bind from view
   private previousCurrentCitySelected: any;
@@ -27,9 +26,6 @@ export class BenchmarkComponent {
 
   public cityNameMappedToData: Map<string, Array<any>>;
   public cityMapToVersionID: Map<string, string>;
-
-  //Survey Results w/ Owner 
-  // public surveyResultsWithDimensionOwners: Array<any>;
 
   constructor(public kumulosService: KumulosService, public dialog: MdDialog) {
     this.initializeMemberVariables();
@@ -40,14 +36,10 @@ export class BenchmarkComponent {
     this.comboCharts = new Array();
     this.currentCityData = new Array();
     this.allCitiesData = new Array();
-    // this.mapCityNameToCityData = new Map<string, object>();
     this.allCityNames = new Array();
 
     this.cityNameMappedToData = new Map<string, Array<any>>();
     this.cityMapToVersionID = new Map<string, string>();
-
-    // this.surveyResultsWithDimensionOwners = new Array<any>();
-    // this.surveyResultsWithDimensionOwners = JSON.parse(localStorage.getItem('unadjustedData'));
   }
 
 
@@ -61,14 +53,7 @@ export class BenchmarkComponent {
           console.log("All benchmark data");
           console.log(responseJSON.payload);
           this.allCitiesData = responseJSON.payload;
-
-          // Mapping city name to its object data
-          for (let i = 0; i < this.allCitiesData.length; i++) {
-            // console.log(this.allCitiesData[i].cityName);
-            // this.mapCityNameToCityData.set(this.allCitiesData[i].cityName, this.allCitiesData[i]);
-          }
           
-          // First inflating the Benchmark Data
           let cityDataLength = this.allCitiesData.length;
           this.currentCityData = this.allCitiesData[cityDataLength - 1];
 
@@ -77,7 +62,9 @@ export class BenchmarkComponent {
           this.mapCityToVersionId();
 
           this.currentCitySelected = this.allCityNames[0].value;
-          localStorage.setItem('benchmarkId', localStorage.getItem('activeCityVersion'));
+          console.log("Response JSON: ");
+          console.log(responseJSON.payload[0].versionID);
+          localStorage.setItem('benchmarkId', responseJSON.payload[0].versionID);
 
           this.createComboCharts();
         })
@@ -95,27 +82,25 @@ export class BenchmarkComponent {
     return cityId;
   }
 
+
+  // Adds all the cities to a cached array starting from the last city
   private updateAllCityNames(): void {
     for (var i = 0; i < this.allCitiesData.length; i++) {
 
-      if (i == this.allCitiesData.length - 1) {
+      if (this.allCitiesData[i]['cityName'])
+        this.allCityNames.unshift({label: this.allCitiesData[i]['cityName'], value: {id:i, name: this.allCitiesData[i]['cityName']}});
+      else
         this.allCityNames.unshift({label: "Benchmark", value: {id:i, name:"Benchmark"}});
-      } else {
-      this.allCityNames.unshift({label: this.allCitiesData[i]['cityName'], value: {id:i, name: this.allCitiesData[i]['cityName']}});
-      }
     }
   }
 
   private mapCityNameToData(): void {
 
     for (var i = 0; i < this.allCitiesData.length; i++) {
-
-      if (i == this.allCitiesData.length - 1) {
-        this.cityNameMappedToData.set("Benchmark", this.allCitiesData[i]);
-      } else {
-        this.cityNameMappedToData.set(this.allCitiesData[i]['cityName'], this.allCitiesData[i]['aggregateSurveys']);
-      }
-
+        if (this.allCitiesData[i]['cityName'])
+          this.cityNameMappedToData.set(this.allCitiesData[i]['cityName'], this.allCitiesData[i]['aggregateSurveys']);
+        else
+          this.cityNameMappedToData.set("Benchmark", this.allCitiesData[i]);
     }
   }
 
@@ -147,39 +132,30 @@ export class BenchmarkComponent {
 
   // Combo Charts
   private createComboCharts(): void {
-    let numberOfAreaModules: number = this.getSizeOfAreaModules();
-    this.addToComboChartArray(numberOfAreaModules);
+
+    this.addToComboChartArray();
   }
 
-  private getSizeOfAreaModules(): number {
-    // let surveyDashboard: JSON = JSON.parse(localStorage.getItem('surveydashboard'));
-    // let sizeOfDashboard: number = Object.keys(surveyDashboard).length;
-
-    // let numberOfAreaModules: number = surveyDashboard[sizeOfDashboard - 2]['areaID'];
-
-    let currentCityData = this.cityNameMappedToData.get(this.currentCitySelected.name);
-    let numberOfAreaModules = currentCityData.length;
-
-    return numberOfAreaModules;
-  }
-
-  private addToComboChartArray(numberOfModules: number): void {
+  private addToComboChartArray(): void {
     // Clear the existing Combo Chart Array
     this.comboCharts = [];
 
     // Survey Dashboard for retrieving Area Text and Dimension Texts
     let surveyDashboard: JSON = JSON.parse(localStorage.getItem('surveydashboard'));
 
-    // Benchmark Data
-    let benchMarkData = this.allCitiesData[this.allCitiesData.length - 1];
-    let lengthbenchMarkData = benchMarkData.length;
-    let numOfAreas = Number(benchMarkData[lengthbenchMarkData - 1]['areaID']);
+    // Last City Data (could be benchmark)
+    let lastCityData = this.allCitiesData[this.allCitiesData.length - 1];
+
+    if (lastCityData['aggregateSurveys'])
+      lastCityData = lastCityData['aggregateSurveys'];
+    
+    let lengthLastCityData = lastCityData.length - 1;
+
+    let numOfAreas;
+    numOfAreas = Number(lastCityData[lengthLastCityData]['areaID']);
 
     // Object Data for the current city
     let currentCityData = this.cityNameMappedToData.get(this.currentCitySelected.name);
-
-    console.log("Each City Data: ");
-    console.log(this.currentCityData);
     
     let dataTableArray: any = new Array();
 
@@ -190,8 +166,8 @@ export class BenchmarkComponent {
       // Adding the headers to each combo chart
       dataTableArray.push(['SurveyData', 'Importance', 'Score', '2 Year Target']);
 
-      for (let j = 0; j < lengthbenchMarkData; j++) {
-        let dashboardAreaId: Number = Number(benchMarkData[j].areaID);
+      for (let j = 0; j <= lengthLastCityData; j++) {
+        let dashboardAreaId: Number = Number(lastCityData[j].areaID);
 
         if (dashboardAreaId == i) {
           // Getting area and dimension texts from survey dashboard
@@ -201,6 +177,9 @@ export class BenchmarkComponent {
           let importance;
           let score;
           let target;
+
+          console.log("Current City Data")
+          console.log(currentCityData);
 
           if (currentCityData[j]) {
             if (currentCityData[j].importance) {

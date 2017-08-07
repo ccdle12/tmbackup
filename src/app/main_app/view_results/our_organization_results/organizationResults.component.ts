@@ -122,7 +122,7 @@ export class OrganizationResultsComponent {
       let dataTableArray: any = new Array();
 
       // Uncommented tooltip
-      dataTableArray.push(['SurveyData', 'Importance', 'Score', '2 Year Target']);
+      dataTableArray.push(['SurveyData', 'Importance', 'As Is Capabiity', 'To-Be Capability']);
 
 
       for (var i = 0; i < this.adjustedGraphData.length; i++) {
@@ -186,7 +186,7 @@ export class OrganizationResultsComponent {
   }
 
   public backToDashboard(): void {
-      this.authService.backToDashboard();
+      this.router.navigateByUrl('/main/takesurvey');
     }
 
   public requestSurveyCSV(): void {

@@ -1,7 +1,60 @@
-.welcomePage {
+ /* .welcomePage { */
       /*margin-left: auto;
 	margin-right: auto;
 	display: block;*/
-    margin-top: 150px;
-    text-align: center;
+    /* margin-top: 120px;  */
+    /* text-align: center; */
+/* }  */
+
+.welcomeContainer {
+    /* margin-left: 50px;    */
+    /* position: fixed; */
+    /* center the element */
+    /* right: 0; */
+    /* left: 0; */
+    /* margin-right: auto; */
+    /* margin-left: auto; */
+    /* give it dimensions */
+    /* min-height: 10em; */
+    /* width: 90%; */
+}
+.header {
+    margin-bottom: 50px;
+}
+
+.subHeader {
+    margin-bottom: 50px;
+}
+
+.headerDiv {
+     /* margin-top: 50px;   */
+    background-color: lightgrey;
+    /* width: 500px;    */
+    min-height: 400px;  
+     padding-top: 120px; 
+    /* max-height: 100%;   */
+    max-width: 50%;
+    height: auto;
+    width: auto;
+}
+
+.contentDiv {
+    /* margin-top: 50px;  */
+    background-color: lightgrey;
+    /* width: 600px;   */
+     min-height: 400px; 
+    max-width: 50%;
+    height: auto;
+    width: auto;
+}
+
+.imageBanner {
+    margin: 0px; 
+    max-width: 100%;
+    height: auto;
+    width: auto;
+    margin-right: 10px;
+    padding: 0px;
+    /* min-width: 1100px;  */
+    /* margin-left: 50px;   */
 }

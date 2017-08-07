@@ -11,17 +11,17 @@
 <div class="bodyTopMarginSurveyModules"></div>
 <div class="container">
 <div class="row">
-      <button *ngIf="!surveyHasOwner && !this.authService.inDemoMode()" md-button id="areYouResponsible" class="col-xs-4" (click)="launchOwnSectionDialog()">Are you responsible for parts of this section?</button> 
-      <button *ngIf="this.authService.inDemoMode()" md-button id="areYouResponsible" class="col-xs-4">Are you responsible for parts of this section?</button>      
-      <button *ngIf="surveyHasOwner" md-button id="userIsResponsible" class="col-xs-4" (click)="launchRemoveOwnershipDialog()">You are responsible for parts of this section. Touch to change</button>     
- </div> 
+       <button *ngIf="!surveyHasOwner && !this.authService.inDemoMode()" md-button id="areYouResponsible" class="col-xs-4" (click)="launchOwnSectionDialog()">Are you responsible for parts of this section?</button> 
+       <button *ngIf="this.authService.inDemoMode()" md-button id="areYouResponsible" class="col-xs-4">Are you responsible for parts of this section?</button>       
+       <button *ngIf="surveyHasOwner" md-button id="userIsResponsible" class="col-xs-4" (click)="launchRemoveOwnershipDialog()">You are responsible for parts of this section. Touch to change</button>    
+</div>
 
 <h1> {{dimensionText}}</h1>
 
 <div class="row">
     <span class="col-sm-2 col-sm-offset-6 sliderTitles"><strong>IMPORTANCE</strong></span>
     <span class="col-sm-2"><strong>AS-IS CAPABILITY</strong></span>
-    <span class="col-sm-2"><strong>2 YEAR TARGET</strong></span>
+    <span class="col-sm-2"><strong>TO-BE CAPABILITY</strong></span>
 </div>
 
 

@@ -6,6 +6,7 @@ import { PublicationComponent } from './publication.component';
 import { MdButtonModule} from '@angular/material';
 import { KumulosService } from '../../shared/services/kumulos.service';
 
+
 @NgModule({
   imports: [publicationRouting, CommonModule, MdButtonModule],
   declarations: [PublicationComponent],

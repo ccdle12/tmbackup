@@ -36,13 +36,15 @@ import { UserSavedService } from './shared/services/userSaved.service';
 import { EmailTeamDynamicsDialog } from './main_app/view_results/team_dynamics/teamDynamics.component';
 import { EmailOrganizationResultsDialog } from './main_app/view_results/our_organization_results/organizationResults.component'; 
 import { AdjustAggregatesDialog } from './main_app/view_results/our_organization_results/organizationResults.component'; 
-import { UpdatePublicationLevelDialog } from './main_app/publication/publication.component';
+import { UpdatePublicationLevelDialog, PublishSurveyDialog, SelectCityOrgDialog } from './main_app/publication/publication.component';
+import { DropdownModule } from 'primeng/primeng';
+// import { jqxSliderComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxslider';
 
 @NgModule({
-  imports: [BrowserAnimationsModule, BrowserModule, FormsModule, ReactiveFormsModule, HttpModule, appRouting, MaterialModule],
+  imports: [BrowserAnimationsModule, BrowserModule, FormsModule, ReactiveFormsModule, HttpModule, appRouting, MaterialModule, DropdownModule],
   declarations: [AppComponent, WelcomeComponent, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, ResponsibleForSectionDialog, RemoveResponsibilityForSectionDialog , NotFoundComponent, AuthCallbackComponent, 
-                  SaveSnackBarComponent, EmailSentSnackBarComponent, UpdatePublicationLevelDialog, EditUserDetailsDialog, InviteUserDialog, DeleteUserDialog,EditUserRole, ControlMessagesComponent, EmailMyOwnResultsDialog, EmailTeamDynamicsDialog, EmailOrganizationResultsDialog, EvidenceDialog, DeleteEvidenceDialog,EditEvidenceDialog, EmailBenchmarkResults, AdjustAggregatesDialog],
-  entryComponents: [UpdatePublicationLevelDialog, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, ResponsibleForSectionDialog, RemoveResponsibilityForSectionDialog, SaveSnackBarComponent, EmailSentSnackBarComponent, EditUserDetailsDialog, InviteUserDialog, DeleteUserDialog, EditUserRole, EmailMyOwnResultsDialog, EmailTeamDynamicsDialog, EmailOrganizationResultsDialog, EvidenceDialog, DeleteEvidenceDialog,EditEvidenceDialog, EmailBenchmarkResults, AdjustAggregatesDialog],
+                  SaveSnackBarComponent, EmailSentSnackBarComponent, UpdatePublicationLevelDialog, EditUserDetailsDialog, InviteUserDialog, DeleteUserDialog,EditUserRole, ControlMessagesComponent, EmailMyOwnResultsDialog, EmailTeamDynamicsDialog, EmailOrganizationResultsDialog, EvidenceDialog, DeleteEvidenceDialog,EditEvidenceDialog, EmailBenchmarkResults, AdjustAggregatesDialog, PublishSurveyDialog, SelectCityOrgDialog],
+  entryComponents: [UpdatePublicationLevelDialog, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, ResponsibleForSectionDialog, RemoveResponsibilityForSectionDialog, SaveSnackBarComponent, EmailSentSnackBarComponent, EditUserDetailsDialog, InviteUserDialog, DeleteUserDialog, EditUserRole, EmailMyOwnResultsDialog, EmailTeamDynamicsDialog, EmailOrganizationResultsDialog, EvidenceDialog, DeleteEvidenceDialog,EditEvidenceDialog, EmailBenchmarkResults, AdjustAggregatesDialog, PublishSurveyDialog, SelectCityOrgDialog],
   providers: [AuthService, WelcomeGuardService, UserSaveGuardService, LocalStorageService, KumulosService, DeleteUserService, UserSavedService, EditRoleService, CreateAndDeleteDimensionOwnerService, EvidenceService ],
   bootstrap: [AppComponent]
 })

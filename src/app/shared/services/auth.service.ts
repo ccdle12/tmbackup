@@ -127,6 +127,22 @@ public isLeaderConsultant(): boolean {
   return false;
 }
 
+public isEvidencer(): boolean {
+  if (localStorage.getItem('user') !== null) {
+    var user = JSON.parse(localStorage.getItem('user'));
+    return user.user_role == 'Evidencer';
+  }
+  return false;
+}
+
+public isTeam(): boolean {
+  if (localStorage.getItem('user') !== null) {
+    var user = JSON.parse(localStorage.getItem('user'));
+    return user.user_role == 'Team';
+  }
+  return false;
+}
+
 public isVerified(): boolean {
   if (localStorage.getItem('verified') !== null) {
     let verified = JSON.parse(localStorage.getItem('verified'));

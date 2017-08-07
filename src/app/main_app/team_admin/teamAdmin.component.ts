@@ -101,6 +101,9 @@ export class TeamAdminComponent  {
     else 
       userTitle = "Job title not set by user";
     
+    if (userTitle.length > 100)
+      userTitle = userTitle.slice(0, 60);
+
     return userTitle;
   }  
 
@@ -137,7 +140,7 @@ export class InviteUserDialog {
     
     this.httpRequestFlag = true;
     this.kumulosService.inviteUser(email, cityName, cityId).subscribe(responseJSON => {
-      // console.log("response", responseJSON.payload);
+      console.log("response", responseJSON.payload);
       // this.reloadPage();
       this.dialog.closeAll();
     })

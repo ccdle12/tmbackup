@@ -64,7 +64,7 @@ export class MyOwnResultsComponent {
       let areaText;
 
       let dataTableArray: any = new Array();
-      dataTableArray.push(['SurveyData', 'Importance', 'Score', '2 Year Target' ]);
+      dataTableArray.push(['SurveyData', 'Importance', 'As Is Capabiity', 'To-Be Capability' ]);
 
 
       for (var i = 0; i < this.graphData.length; i++) {
@@ -123,7 +123,7 @@ export class MyOwnResultsComponent {
     }
 
     public backToDashboard(): void {
-      this.authService.backToDashboard();
+      this.router.navigateByUrl('/main/takesurvey');
     }
 
     public requestSurveyCSV(): void {

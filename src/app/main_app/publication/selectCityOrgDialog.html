@@ -1,0 +1,14 @@
+<div class="loading-overlay" #spinnerElement style="opacity: 1;">
+    <md-spinner  *ngIf="httpRequestFlag"></md-spinner>
+</div>
+
+<h4>Please select the organization or group you are associated with:</h4>
+
+<div class="container"> 
+   <div class="row"> 
+    <p-dropdown id="dropDownMenu" [options]="orgGroupNames" [(ngModel)]="currentOrgSelected" (onChange)="orgHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
+   </div> 
+ </div>   
+
+<button md-button md-dialog-close>Cancel</button>
+<button md-button (click)="updateCityPubLevelWithGroup()">Submit</button>

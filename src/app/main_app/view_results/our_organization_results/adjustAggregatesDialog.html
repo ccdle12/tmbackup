@@ -16,8 +16,9 @@
     <div class="row sliders" *ngFor="let result of unAdjustedData; let i = index">
         <span class="col-sm-4">{{result['dimensionID']}} {{result['dimensionText']}}</span>  
 
-         <span *ngIf="resetImportanceValHasIndex(i)" class="resetVal" (click)="setImportanceValToDefault(i)">Reset to {{getImportanceResetVal(i)}}</span> 
-        <span class="col-sm-2"><md-slider  min="1" max="5" step="1" value="1" tickInterval="1" [(ngModel)]="importanceValues[i]" (change)="importanceSliderChanged(i)"></md-slider> {{importanceValues[i]}}</span>  
+        <span *ngIf="resetImportanceValHasIndex(i)" class="resetVal" (click)="setImportanceValToDefault(i)">Reset to {{getImportanceResetVal(i)}}</span> 
+         <span class="col-sm-2"><md-slider  min="1" max="5" step="1" value="1" tickInterval="1" [(ngModel)]="importanceValues[i]" (change)="importanceSliderChanged(i)"></md-slider> {{importanceValues[i]}}</span>   
+        <!-- <span class="col-sm-2"><span class="col-sm-1 col-sm-offset-5" *ngIf="importanceValues[i] != 0">{{importanceValues[i]}}</span><span class="col-sm-1 col-sm-offset-5" *ngIf="importanceValues[i] == 0" class="clearScore">{{importanceValues[i]}}</span><jqxSlider [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180  [value]=importanceValues[i] [(ngModel)]="importanceValues[i]"  (onChange)="importanceSliderChanged(i)" [showButtons]="false" [template]="'info'"></jqxSlider></span> -->
 
          <span *ngIf="resetScoreValHasIndex(i)" class="resetVal" (click)="setScoreValToDefault(i)">Reset to {{getScoreResetVal(i)}}</span>
         <span class="col-sm-2"><md-slider min="1" max="5" step="1" value="1" tickInterval="1" [(ngModel)]="capabilityValues[i]" (change)="scoreSliderChanged(i)"></md-slider> {{capabilityValues[i]}}</span>   

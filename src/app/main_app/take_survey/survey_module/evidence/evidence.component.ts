@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MdDialog } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../../../shared/services/validation.service';
+import { AuthService } from '../../../../shared/services/auth.service';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class EvidenceComponent implements AfterViewInit {
     currentDimension: string;
 
     constructor(public kumulos: KumulosService, public router: Router, public evidenceService: EvidenceService,
-                public dialog: MdDialog) {
+                public dialog: MdDialog, public auth: AuthService) {
 
         this.evidenceWebLinks = new Array<string>();
 
@@ -37,8 +38,12 @@ export class EvidenceComponent implements AfterViewInit {
         let areaID = parsedSurveyDashboard[userSelectedModule]['areaID'];
         let dimensionID = parsedSurveyDashboard[userSelectedModule]['dimensionID'];
 
-        let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
-        let userID = userProfile['user_id'];
+        let userID;
+
+        if (!this.auth.inDemoMode()) {
+          let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
+          userID = userProfile['user_id'];
+        }
 
         let activeCityVersion = localStorage.getItem('activeCityVersion');
 
@@ -55,8 +60,9 @@ export class EvidenceComponent implements AfterViewInit {
 
               evidenceID = responseJSON.payload[0]['evidenceID'];
             }
-
-            this.setEvidenceService(activeCityVersion, areaID, dimensionID, evidenceID, userID);
+          
+            if (!this.auth.inDemoMode())
+              this.setEvidenceService(activeCityVersion, areaID, dimensionID, evidenceID, userID);
         });
 
     }

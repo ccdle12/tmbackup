@@ -185,7 +185,7 @@ export class TeamDynamicsComponent {
 
   // Listener methods from the view
   public backToDashboard(): void {
-    this.authService.backToDashboard();
+    this.router.navigateByUrl('/main/takesurvey');
   }
 
   public activeBackgroundColor() {

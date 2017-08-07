@@ -3,8 +3,8 @@
 </div>
 
 <h4>Publication Level: {{selectedPubLevel}}</h4>
-<p>{{pubLevelDescription}}</p>
-<!-- <p id="publicationLevel" [textContent]="injectText()"></p> -->
+ <p id="publicationLevel">{{publicationLevelText}}</p>
+ <p>Please confirm you wish to proceed</p>
 
 <button md-button md-dialog-close>Cancel</button>
 <button md-button (click)="updateCityPublicationLevel()">Set {{selectedPubLevel}}</button>

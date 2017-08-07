@@ -53,9 +53,12 @@ export class MainAppSectionComponent {
     }
 
     private getWebDashboard(activeCityVersion: string): void {
+        console.log("Getting web dashboard");
         this.kumulosService.getWebDashboard(activeCityVersion)
         .subscribe(responseJSON => { 
             localStorage.setItem('surveydashboard', JSON.stringify(responseJSON.payload));
+            console.log("Retreived dashboard: ");
+            console.log(responseJSON.payload);
         });
     }
 

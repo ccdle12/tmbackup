@@ -1,0 +1,13 @@
+<div class="loading-overlay" #spinnerElement style="opacity: 1;">
+    <md-spinner  *ngIf="httpRequestFlag"></md-spinner>
+</div>
+
+<h4>Publish Current Version</h4>
+<p>This will publish the current survey at the existing publication level.</p>
+
+<p>Note once published the survey results for this version cannot be edited</p>
+
+<p>Please confirm you wish to proceed</p>
+
+<button md-button md-dialog-close>Cancel</button>
+<button md-button (click)="publishVersion()">Continue</button>

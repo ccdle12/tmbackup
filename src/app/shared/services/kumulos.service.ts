@@ -47,6 +47,8 @@ export class KumulosService {
 
     private deleteSingleAdjustmentWithJWTURI: string;
 
+    private getGroupsandCountriesURI: string;
+
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
@@ -92,7 +94,9 @@ export class KumulosService {
         this.getAdjustmentsByVersionURI = "getAdjustmentsByVersion.json/";
         this.createUpdateAdjustmentDataURI = "create_updateAdjustmentData.json/";
 
-        this.deleteSingleAdjustmentWithJWTURI = "deleteSingleAdjustment.json/"
+        this.deleteSingleAdjustmentWithJWTURI = "deleteSingleAdjustment.json/";
+
+        this.getGroupsandCountriesURI = "getGroupsandCountries.json/";
     }
 
     public createAuthorizationHeader(): Headers {
@@ -709,6 +713,22 @@ export class KumulosService {
         let body: string = urlSearchParams.toString();
 
         return this.http.post(this.domain + this.deleteSingleAdjustmentWithJWTURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public getGroupsandCountries(cityID: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[cityID]', cityID);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.getGroupsandCountriesURI, body, {headers: headers})
             .map(response => {
                 console.log(response.json());
                 return response.json();
