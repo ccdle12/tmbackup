@@ -14,8 +14,8 @@
             <!-- <a target="_blank" href="{{evidence.evidenceText}}"><p>{{evidence.evidenceText}}</p></a> -->
             <button md-button class="col-sm-12" (click)="launchEditEvidenceDialog(i)" *ngIf="this.auth.isEvidencer() || !this.auth.inDemoMode()">Edit</button>
             <button md-button class="col-sm-12" (click)="launchDeleteEvidenceDialog()" *ngIf="this.auth.isEvidencer() || !this.auth.inDemoMode()">Delete</button>
-             <button md-button class="col-sm-12" *ngIf="!this.auth.isTeam() && !this.isLeaderConsultant && !this.auth.isEvidencer() && this.auth.inDemoMode()">Edit</button> 
-             <button md-button class="col-sm-12"  *ngIf="!this.auth.isTeam() &&  !this.isLeaderConsultant && !this.auth.isEvidencer() && this.auth.inDemoMode()">Delete</button> 
+             <button md-button class="col-sm-12" *ngIf="!this.auth.isTeam() && !this.auth.isLeaderConsultant && !this.auth.isEvidencer() && this.auth.inDemoMode()">Edit</button> 
+             <button md-button class="col-sm-12"  *ngIf="!this.auth.isTeam() &&  !this.auth.isLeaderConsultant && !this.auth.isEvidencer() && this.auth.inDemoMode()">Delete</button> 
         </md-card-content>
 </md-card>
 </div>
