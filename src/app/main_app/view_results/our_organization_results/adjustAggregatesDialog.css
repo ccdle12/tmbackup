@@ -24,3 +24,32 @@
 .clearScore {
   color: white;
 }
+
+
+
+.importanceTitle {
+    padding-left: 40px;
+}
+
+.scoreTitle {
+    padding-left: 35px;
+}
+
+.targetTitle {
+    padding-left: 40px;
+}
+
+
+
+.dimensionLabel {
+    margin-top: 30px;
+}
+
+.sliders {
+    margin-top: 5px;
+}
+
+
+.adjustAggregatesBtn {
+    margin-top: 25px;
+}

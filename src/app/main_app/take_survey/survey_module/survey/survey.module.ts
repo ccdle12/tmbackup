@@ -7,20 +7,15 @@ import { AuthService } from '../../../../shared/services/auth.service';
 import { MdSliderModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule} from '@angular/material';
 import { FormsModule } from '@angular/forms';
 
-import {TooltipModule} from 'primeng/primeng';
+import { TooltipModule } from 'primeng/primeng';
 import { jqxSliderComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxslider';
-// import { jqxButtonComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxbuttons';
+import { SharedModule } from '../../../../shared/modules/sharedModule';
 
-// import { BrowserModule } from @angular/platform-browser;
-// import { SaveSurveyGuardService } from '../../../../shared/services/saveSurvey-guard.service';
-
-// import { jqxButtonComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxbuttons';
-// import { AppClickOutsideDirective } from './app-click-outside.directive'
 import { ClickOutsideDirective } from './clickOutSide.directive';
 
 @NgModule({
-  imports: [CommonModule, surveyRouting, TooltipModule, MdSliderModule, FormsModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule],
-  declarations: [SurveyComponent, jqxSliderComponent, ClickOutsideDirective],
+  imports: [CommonModule, surveyRouting, TooltipModule, SharedModule, MdSliderModule, FormsModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule],
+  declarations: [SurveyComponent, ClickOutsideDirective],
   providers: [KumulosService, AuthService],
   
 })

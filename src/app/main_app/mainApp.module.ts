@@ -6,6 +6,7 @@ import { MainAppSectionComponent } from './mainAppSection.component';
 import { AuthGuardService } from '../shared/services/auth-guard.service';
 import { KumulosService } from '../shared/services/kumulos.service';
 import { MdTabsModule } from '@angular/material';
+// import { jqxSliderComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxslider';
 
 @NgModule({
     imports: [mainAppRouting, CommonModule, MdTabsModule],

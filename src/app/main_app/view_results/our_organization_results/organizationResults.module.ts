@@ -4,6 +4,7 @@ import { OrganizationResultsComponent } from './organizationResults.component';
 import { KumulosService } from '../../../shared/services/kumulos.service';
 
 import { FormsModule } from '@angular/forms';
+// import { jqxSliderComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxslider';
 
 @NgModule({
   imports: [CommonModule, FormsModule],

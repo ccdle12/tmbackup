@@ -11,7 +11,7 @@ import {Observable} from 'rxjs/Observable';
 import { UserSavedService } from '../../../../shared/services/userSaved.service';
 import { CreateAndDeleteDimensionOwnerService } from '../../../../shared/services/createAndDeleteDimensionOwner.service';
 
-import { jqxSliderComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxslider';
+// import { jqxSliderComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxslider';
 
 @Component({
   selector: 'survey',

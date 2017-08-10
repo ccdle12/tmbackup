@@ -266,7 +266,7 @@ export class AdjustAggregatesDialog implements OnInit {
 
   unAdjustedData: Array<any>;
 
-  resetImportanceValMapToIndex: Map<string, string>;
+  resetImportanceValMapToIndex: Map<String, string>;
   resetScoreValMapToIndex: Map<string, string>;
   resetTargetValMapToIndex: Map<string, string>;
 
@@ -334,6 +334,10 @@ export class AdjustAggregatesDialog implements OnInit {
           if (adjustmentVal['importance'] != "9") {
             this.importanceValues[i] = adjustmentVal['importance'];
             this.mapImportanceUnadjustedValToIndexPos(i, this.unAdjustedData[i]['importance']);
+            
+            let index: String = String(i);
+            console.log("Mapped val: " + this.resetImportanceValMapToIndex.get(index));
+            
           } else {
             if (this.unAdjustedData[i]['importance'] == " " || this.unAdjustedData[i]['importance'] == "0") {
               this.importanceValues[i] = " ";
@@ -412,10 +416,11 @@ export class AdjustAggregatesDialog implements OnInit {
 
 
 
-  public importanceSliderChanged(index) {
-    console.log("unAdjusted importance: ");
-    console.log(this.unAdjustedData[index]['importance']);
+  public importanceSliderChanged(index, event) {
+    this.importanceValues[index] = event.args.value;
+  }
 
+  public importanceSliderClicked(index) {
     if (this.unAdjustedData[index]['importance'] == null) {
       this.mapImportanceUnadjustedValToIndexPos(index, "0");  
     } else {
@@ -425,9 +430,12 @@ export class AdjustAggregatesDialog implements OnInit {
     this.sliderChanged(index);
   }
 
-  public scoreSliderChanged(index) {
+  public scoreSliderChanged(index, event) {
+    this.capabilityValues[index] = event.args.value;
+  }
 
-    if (this.unAdjustedData[index]['score'] == null) {
+  public scoreSliderClicked(index, event) {
+     if (this.unAdjustedData[index]['score'] == null) {
       this.mapScoreUnadjustedValToIndexPos(index, "0");
     } else {
       this.mapScoreUnadjustedValToIndexPos(index, this.unAdjustedData[index]['score']);
@@ -435,8 +443,11 @@ export class AdjustAggregatesDialog implements OnInit {
     this.sliderChanged(index);
   }
 
-  public targetSliderChanged(index) {
+  public targetSliderChanged(index, event) {
+    this.twoYearTargetValues[index] = event.args.value;
+  }
 
+  public targetSliderClicked(index) {
     if (this.unAdjustedData[index]['target'] == null) {
       this.mapTargetUnadjustedValToIndexPos(index, "0");
     } else {
@@ -447,13 +458,7 @@ export class AdjustAggregatesDialog implements OnInit {
   }
 
   public sliderChanged(index: any) {
-    console.log("Slider Changed index position: " + index);
-
     let dimensionID = this.unAdjustedData[index]['dimensionID'];
-    console.log("DimensionID of slider changed: " + dimensionID);
-
-    console.log("UnAdjustedData Object: ");
-    console.log(this.unAdjustedData[index]);
 
     if (!this.isDimensionIDInAdjustmentDataArray(dimensionID)) {
       this.buildAggregateAdjustmentKV(index);

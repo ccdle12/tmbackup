@@ -5,7 +5,7 @@
 <h3>{{currentDimension}}</h3>
 
 <button id="provideEvidence" md-mini-fab class="col-xs-3" color="primary" (click)="launchEvidenceDialog()" mdTooltip="Provide new evidence" *ngIf="this.auth.isEvidencer() || !this.auth.inDemoMode()"><md-icon>add</md-icon></button>
- <button id="provideEvidence" md-mini-fab class="col-xs-3" color="primary"  mdTooltip="Provide new evidence" *ngIf="!this.auth.isTeam() && !this.isLeaderConsultant && !this.auth.isEvidencer() && this.auth.inDemoMode()"><md-icon>add</md-icon></button> 
+ <button id="provideEvidence" md-mini-fab class="col-xs-3" color="primary"  mdTooltip="Provide new evidence" *ngIf="!this.auth.isTeam() && !this.auth.isLeaderConsultant && !this.auth.isEvidencer() && this.auth.inDemoMode()"><md-icon>add</md-icon></button> 
 <div class="row" id="cardsContainer">
 <md-card class="col-sm-2" *ngFor="let evidence of evidence; let i = index">
         <md-card-title>{{evidence.evidenceDescription}}</md-card-title>
