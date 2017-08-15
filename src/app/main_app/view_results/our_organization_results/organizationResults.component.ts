@@ -421,13 +421,15 @@ export class AdjustAggregatesDialog implements OnInit {
   }
 
   public importanceSliderClicked(index) {
-    if (this.unAdjustedData[index]['importance'] == null) {
-      this.mapImportanceUnadjustedValToIndexPos(index, "0");  
-    } else {
-      this.mapImportanceUnadjustedValToIndexPos(index, this.unAdjustedData[index]['importance']);
-    }
-    
-    this.sliderChanged(index);
+
+      if (this.unAdjustedData[index]['importance'] == null) {
+        this.mapImportanceUnadjustedValToIndexPos(index, "0");  
+      } else {
+        this.mapImportanceUnadjustedValToIndexPos(index, this.unAdjustedData[index]['importance']);
+      }
+      
+      this.sliderChanged(index);
+
   }
 
   public scoreSliderChanged(index, event) {
@@ -458,22 +460,21 @@ export class AdjustAggregatesDialog implements OnInit {
   }
 
   public sliderChanged(index: any) {
-    let dimensionID = this.unAdjustedData[index]['dimensionID'];
+    let dimensionID = this.unAdjustedData[index]['dimensionID'];      
 
-    if (!this.isDimensionIDInAdjustmentDataArray(dimensionID)) {
-      this.buildAggregateAdjustmentKV(index);
-    } else {
-      this.updateExistingAdjustKV(dimensionID, index);
-    } 
+      // if (this.importanceValues[index] == 0 || this.importanceValues[index] == null && this.capabilityValues[index] == 0 || this.capabilityValues[index] == null && this.twoYearTargetValues[index] == 0 || this.twoYearTargetValues[index] == null) {
+        // console.log("cant send");
+      // } else {
+        if (!this.isDimensionIDInAdjustmentDataArray(dimensionID)) {
+          this.buildAggregateAdjustmentKV(index);
+        } else {
+          this.updateExistingAdjustKV(dimensionID, index);
+        }
+      // }
   }
 
   private isDimensionIDInAdjustmentDataArray(dimensionID): boolean {
-    console.log("Why is for loop never called?");
-    console.log("Adjustment Data Array");
-    console.log(this.adjustmentDataArray);
     for (let i = 0; i < this.adjustmentDataArray.length; i++) {
-      console.log("Iterating over adjustmentDataArray: ");
-      console.log(this.adjustmentDataArray[i]);
       if (this.adjustmentDataArray[i]['dimensionID'] == dimensionID) {
         return true;
       }
@@ -516,8 +517,6 @@ export class AdjustAggregatesDialog implements OnInit {
     let aggregateAdjustmentID: String = this.getAggregateAdjustmentID(dimensionID);
 
     let adjustmentKV = this.createAdjustmentDataKV(areaID, dimensionID, importance, score, target, version, updatedBy, aggregateAdjustmentID);
-    console.log("Build KV: ");
-    console.log(adjustmentKV);
     this.adjustmentDataArray.push(adjustmentKV);
   }
 
@@ -546,15 +545,9 @@ export class AdjustAggregatesDialog implements OnInit {
       target = this.twoYearTargetValues[index];
     }
 
-    console.log("Existing Adjustment Data Before Update: ");
-    console.log(this.adjustmentDataArray[indexPosInAdjustmentDataArray]);
-
     this.adjustmentDataArray[indexPosInAdjustmentDataArray]['importance'] = importance;
     this.adjustmentDataArray[indexPosInAdjustmentDataArray]['score'] = score;
     this.adjustmentDataArray[indexPosInAdjustmentDataArray]['target'] = target;
-
-     console.log("Existing Adjustment Data After Update: ");
-    console.log(this.adjustmentDataArray[indexPosInAdjustmentDataArray]);
   }
 
   private getAggregateAdjustmentID(dimensionID): any {

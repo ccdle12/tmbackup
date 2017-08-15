@@ -164,7 +164,7 @@ export class BenchmarkComponent {
       let areaText;
 
       // Adding the headers to each combo chart
-      dataTableArray.push(['SurveyData', 'Importance', 'Score', '2 Year Target']);
+      dataTableArray.push(['SurveyData', 'Importance', 'As Is Capability', 'To-Be Capability']);
 
       for (let j = 0; j <= lengthLastCityData; j++) {
         let dashboardAreaId: Number = Number(lastCityData[j].areaID);

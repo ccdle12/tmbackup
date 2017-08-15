@@ -130,6 +130,7 @@ export class SurveyComponent {
     this.userClickedOnSlider = false;
     this.userSavedService.setUserHasSaved(this.userClickedOnSlider);
 
+    this.surveyHasOwner = false;
     this.getDimensionOwner();
   }
 
@@ -372,6 +373,7 @@ export class SurveyComponent {
       this.incrementSelectedModule();
       this.updateCurrentModuleDetails();
 
+      this.getDimensionOwner();
       this.getWebSurveyQuestions();
     }
   }
@@ -403,6 +405,7 @@ export class SurveyComponent {
       this.decrementSelectedModule();
       this.updateCurrentModuleDetails();
 
+      this.getDimensionOwner();
       this.getWebSurveyQuestions();
     }
     

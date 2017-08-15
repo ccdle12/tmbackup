@@ -2,18 +2,60 @@
      margin-left: 300px; 
 }
 
-.resetVal {
-    background-color: #e28a1d;
+.dialogPage {
+position: relative;
+}
+
+.relativeParent {
+  position: relative;
+}
+
+.resetImportanceVal {
+    background-color: #e28a1d;  
     color: white;
-    position: absolute;
+    position: absolute;  
     z-index: 1;
     height: 0 auto;
     width: 100px;
-    text-align: center;
-    margin-left: 35px;
-
+    text-align: center;  
+    margin-left: 30px;
 }
-.resetVal:hover {
+
+.resetScoreVal {
+    background-color: #e28a1d;  
+    color: white;
+    position: absolute;  
+    z-index: 1;
+    height: 0 auto;
+    width: 100px;
+    text-align: center;  
+    margin-left: 40px;
+}
+
+.resetImportanceVal:hover {
+    cursor: pointer;
+}
+
+.resetScoreVal:hover {
+    cursor: pointer;
+}
+
+.resetTargetVal {
+    background-color: #e28a1d;  
+    color: white;
+    position: absolute;  
+    z-index: 1;
+    height: 0 auto;
+    width: 100px;
+    text-align: center;  
+    margin-left: 40px;
+}
+
+.resetTargetVal:hover {
+    cursor: pointer;
+}
+
+.resetTargetVal:hover {
     cursor: pointer;
 }
 
