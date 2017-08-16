@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../shared/services/kumulos.service';
 import { MdSnackBar, MdProgressBar } from '@angular/material';
+import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class TakeSurveyComponent {
 
   public innerLoopIndex: number;
 
-  constructor(public router: Router, public kumulosService: KumulosService) {
+  constructor(public router: Router, public loadingSnackBar: LoadingSnackBar, public kumulosService: KumulosService) {
     
     this.surveyModules = new Array();
     this.sectionModules = new Array();
@@ -30,6 +31,7 @@ export class TakeSurveyComponent {
     let activeCityVersion: string = localStorage.getItem('activeCityVersion');
     console.log("Active Version From Localstorage before call?")
     console.log(activeCityVersion);
+    this.loadingSnackBar.showLoadingSnackBar();
     this.getActiveVersionForCity();
   }
 
@@ -59,6 +61,7 @@ export class TakeSurveyComponent {
           this.removeTotalFromDashboard();
           this.calculateProgressValue();
           this.addModules(this.takeSurveyDashboard.length - 1);
+          this.loadingSnackBar.dismissLoadingSnackBar();
           console.log(this.surveyModules);
         }
     });

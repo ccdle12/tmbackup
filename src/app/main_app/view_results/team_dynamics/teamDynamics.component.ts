@@ -7,6 +7,8 @@ import { EmailSentSnackBarComponent } from '../my_own_results/myOwnResults.compo
 
 import { MdDialog } from '@angular/material';
 
+import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
+
 
 @Component({
   selector: 'teamDynamicsComponent',
@@ -39,9 +41,11 @@ export class TeamDynamicsComponent {
   public selectedAreaString: string;
 
   public currentGraphTitleIndex: number;
+  backToDashboardTooltip: String;
+  emailResults: String;
 
   constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar, public authService: AuthService,
-              public dialog: MdDialog) {
+              public loadingSnackBar: LoadingSnackBar, public dialog: MdDialog) {
     this.initializeMemberVariables();
     this.getTeamDynamicsData();
    }
@@ -54,9 +58,13 @@ export class TeamDynamicsComponent {
 
     this.graphTitles = new Map<number, string>();
     this.segmentedArray = new Array();
+
+    this.backToDashboardTooltip = "Back To Dashboard";
+    this.emailResults = "Email Results";
   }
 
   private getTeamDynamicsData(): void {
+    this.loadingSnackBar.showLoadingSnackBar();
     let activeCityVersion: string = localStorage.getItem('activeCityVersion');
 
     this.kumulosService.getWhiskerBoxDataByVersion(activeCityVersion)
@@ -67,6 +75,7 @@ export class TeamDynamicsComponent {
           
           this.addGraphTitles();
           this.segmentCandleChartsData();
+          this.loadingSnackBar.dismissLoadingSnackBar();
           }
       );
     }
@@ -195,7 +204,7 @@ export class TeamDynamicsComponent {
   public routeToPage(surveyPage: String) {
     switch(surveyPage) {
       case('myownresults'):
-        this.router.navigateByUrl('main/viewresults/myownresults');
+        this.router.navigateByUrl('main/viewresults/myownresults')
         break;
       case ('organizationresults'):
         this.router.navigateByUrl('main/viewresults/organizationresults');
@@ -239,6 +248,8 @@ export class TeamDynamicsComponent {
         this.currentGraphTitleIndex = 24;
         break;
     }
+
+    
   }
 
   public inCustomerSection() {

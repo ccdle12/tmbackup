@@ -8,6 +8,8 @@ import { AuthService } from '../../../shared/services/auth.service';
 
 import { MdDialog, MD_DIALOG_DATA } from '@angular/material';
 
+import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
+
 @Component({
   selector: 'organizationResultsComponent',
   templateUrl: './organizationResults.component.html',
@@ -18,8 +20,11 @@ export class OrganizationResultsComponent {
   public comboCharts: Array<any>;
   public adjustedGraphData: Array<any>;
 
+  backToDashboardTooltip: String;
+  emailResults: String;
+
   constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar,
-             public authService: AuthService, public dialog: MdDialog) {
+             public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MdDialog) {
     this.initializeMemberVariables();
     this.getOwnResultsData();
   }
@@ -27,9 +32,12 @@ export class OrganizationResultsComponent {
    private initializeMemberVariables(): void {
     this.adjustedGraphData = new Array();
     this.comboCharts = new Array();
+    this.backToDashboardTooltip = "Back To Dashboard";
+    this.emailResults = "Email Results";
   }
 
   private getOwnResultsData(): any { 
+    this.loadingSnackBar.showLoadingSnackBar();
     let activeCityVersion: string = localStorage.getItem('activeCityVersion');
     let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
     
@@ -102,6 +110,7 @@ export class OrganizationResultsComponent {
     
     let numberOfAreaModules = this.getSizeOfAreaModules();
     this.addToComboChartArray(numberOfAreaModules);
+     this.loadingSnackBar.dismissLoadingSnackBar();
   }
 
   private getSizeOfAreaModules(): number {

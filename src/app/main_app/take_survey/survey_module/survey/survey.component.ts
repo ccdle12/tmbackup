@@ -5,6 +5,7 @@ import { MdSliderModule, MdSidenavModule  } from '@angular/material';
 import { Router } from '@angular/router';
 import { MdDialog } from '@angular/material';
 import { MdSnackBar } from '@angular/material';
+import { LoadingSnackBar } from '../../../../shared/components/loadingSnackBar';
 
 import { ComponentCanDeactivate } from '../../../../shared/services/saveSurvey-guard.service';
 import {Observable} from 'rxjs/Observable';
@@ -16,9 +17,6 @@ import { CreateAndDeleteDimensionOwnerService } from '../../../../shared/service
 @Component({
   selector: 'survey',
   templateUrl: './survey.component.html',
-  // host: {
-  //       '(document:click)': 'handleClick($event)',
-  //   },
   styleUrls: ['./survey.component.css']
 })
 export class SurveyComponent {
@@ -63,52 +61,15 @@ export class SurveyComponent {
   nextDimensionTooltip: string;
 
   sliderMoved: boolean;
-  // Test
-  // thumbLabel: boolean;
-  // public elementRef;
   
-
-  constructor(public kumulosService: KumulosService, public router: Router, public dialog: MdDialog, public authService: AuthService,
-              public snackBar: MdSnackBar, private eRef: ElementRef, public userSavedService: UserSavedService, 
+  constructor(public kumulosService: KumulosService, public router: Router, public dialog: MdDialog, public authService: AuthService,public snackBar: MdSnackBar, private eRef: ElementRef, public userSavedService: UserSavedService, public loadingSnackBar: LoadingSnackBar,
               public createAndDeleteDimensionOwner: CreateAndDeleteDimensionOwnerService) { 
     
     this.initializeMemberVariables();
     this.getWebSurveyQuestions(); 
-
-    // this.elementRef = myElement;
   }
 
-  // @HostListener('document:click', ['$event'])
-  // clickout(event) {
-  //   if(this.eRef.nativeElement.contains(event.target)) {
-  //     // this.text = "clicked inside";
-  //     console.log('inside');
-  //   } else {
-  //     // this.text = "clicked outside";
-  //     console.log('outside');
-  //   }
-  // }
-
-  // handleClick(event){
-  //   var clickedComponent = event.target;
-  //   var inside = false;
-  //   do {
-  //       if (clickedComponent === this.elementRef.nativeElement) {
-  //           inside = true;
-  //       }
-  //       clickedComponent = clickedComponent.parentNode;
-  //   } while (clickedComponent);
-  //   if(inside){
-  //       console.log('inside');
-  //   }else{
-  //       console.log('outside');
-  //   }
-  //  }
-
   private initializeMemberVariables(): void {
-
-    // this.thumbLabel = true;
-
     this.userSelectedModule = this.getUserSelectedModule();
 
     let surveyDashboard: JSON = JSON.parse(localStorage.getItem('surveydashboard'));
@@ -164,12 +125,8 @@ export class SurveyComponent {
     let parsedSurveyDashboard = this.retrieveParsedSurveyDashboard();
 
     
-    console.log("Updating Current Module Details");
     this.areaID = parsedSurveyDashboard[this.userSelectedModule]['areaID'];
     this.dimensionID = parsedSurveyDashboard[this.userSelectedModule]['dimensionID'];
-
-    console.log("Current Dimension");
-    console.log(parsedSurveyDashboard[this.userSelectedModule]['dimensionText']);
     this.dimensionText = parsedSurveyDashboard[this.userSelectedModule]['dimensionText'];
   }
 
@@ -177,18 +134,34 @@ export class SurveyComponent {
     return JSON.parse(localStorage.getItem('surveydashboard'));
   }
 
-  private getWebSurveyQuestions() {
+  private getWebSurveyQuestions() 
+  {
+    this.showLoadingSnackBar();
     this.kumulosService.getWebSurvey(this.activeCityVersion, this.areaID, this.dimensionID )
       .subscribe(responseJSON => 
         {
         this.surveyQuestions = responseJSON.payload;
         
-        console.log('survey questions', responseJSON.payload); 
         this.updateSurveyValues();
         this.updateToolTips();
+        this.loadingSnackBar.dismissLoadingSnackBar();
        }
     );
   }
+
+  private showLoadingSnackBar(): void
+  {
+     if (this.isInLastPage())
+       {
+          this.loadingSnackBar.showLoadingSnackBar();
+       }
+  }
+
+  public isInLastPage(): boolean
+  {
+    return Number(localStorage.getItem('userSelectedModule')) != this.sizeOfModules;
+  }
+ 
 
   private updateSurveyValues(): void {
 
@@ -392,6 +365,7 @@ export class SurveyComponent {
 
     if (!this.authService.isVerified()) {
       this.decrementSelectedModule();
+      this.showLoadingSnackBar();
       this.updateCurrentModuleDetails();
 
       this.getWebSurveyQuestions();
@@ -403,6 +377,7 @@ export class SurveyComponent {
       return;    
     } else {
       this.decrementSelectedModule();
+      this.showLoadingSnackBar();
       this.updateCurrentModuleDetails();
 
       this.getDimensionOwner();

@@ -20,7 +20,7 @@ import { UserRoleGuardService } from '../../shared/services/userRole-guard.servi
 import {AccordionModule} from 'primeng/primeng';
 
 @NgModule({
-  imports: [viewResultsRouting, FormsModule, CommonModule, Ng2GoogleChartsModule, MdTabsModule, MdButtonModule, MdSnackBarModule, AccordionModule],
+  imports: [viewResultsRouting, FormsModule, CommonModule, Ng2GoogleChartsModule, MdTooltipModule, MdTabsModule, MdButtonModule, MdSnackBarModule, AccordionModule],
   declarations: [ViewResultsComponent, GoogleChart, MyOwnResultsComponent, OrganizationResultsComponent, TeamDynamicsComponent ],
   providers: [UserRoleGuardService],
 })

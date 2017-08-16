@@ -3,6 +3,7 @@ import { KumulosService } from '../../shared/services/kumulos.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { MdDialog } from '@angular/material';
 
+import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
 
 @Component({
   selector: 'app-benchmark',
@@ -27,7 +28,9 @@ export class BenchmarkComponent {
   public cityNameMappedToData: Map<string, Array<any>>;
   public cityMapToVersionID: Map<string, string>;
 
-  constructor(public kumulosService: KumulosService, public dialog: MdDialog) {
+  emailResults: String;
+
+  constructor(public kumulosService: KumulosService, public dialog: MdDialog, public loadingSnackBar: LoadingSnackBar) {
     this.initializeMemberVariables();
     this.getBenchmarkData();
   }
@@ -40,10 +43,15 @@ export class BenchmarkComponent {
 
     this.cityNameMappedToData = new Map<string, Array<any>>();
     this.cityMapToVersionID = new Map<string, string>();
+
+    this.emailResults = "Email Results";
   }
 
 
   private getBenchmarkData(): void {
+
+    this.loadingSnackBar.showLoadingSnackBar();
+
     if (this.hasUser()) {
       let cityID = this.getCityId();
       
@@ -67,6 +75,7 @@ export class BenchmarkComponent {
           localStorage.setItem('benchmarkId', responseJSON.payload[0].versionID);
 
           this.createComboCharts();
+          this.loadingSnackBar.dismissLoadingSnackBar();
         })
     }
   }

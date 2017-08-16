@@ -3,6 +3,8 @@ import { KumulosService } from '../../shared/services/kumulos.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { MdDialog } from '@angular/material';
 
+import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
+
 
 @Component({
   selector: 'app-publication',
@@ -13,11 +15,12 @@ export class PublicationComponent {
 
   public publicationLevel: number;
 
-  constructor(public kumulosService: KumulosService, public dialog: MdDialog, public authService: AuthService) {
+  constructor(public kumulosService: KumulosService, public loadingSnackBar: LoadingSnackBar, public dialog: MdDialog, public authService: AuthService) {
     this.getPublicationLevel();
    };
 
    private getPublicationLevel(): void {
+    this.loadingSnackBar.showLoadingSnackBar();
     let user: JSON = JSON.parse(localStorage.getItem('user'));
     let cityID: string = user['city_id'];
 
@@ -26,6 +29,7 @@ export class PublicationComponent {
       {
         this.publicationLevel = responseJSON.payload[0]['publicationLevel'];
         this.persistPublicationLevel();
+        this.loadingSnackBar.dismissLoadingSnackBar();
       })
    }
 

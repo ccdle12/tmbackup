@@ -17,6 +17,9 @@ import {
 
 import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
+
+import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
+
 @Component({
   selector: 'teamAdmin',
   templateUrl: 'teamAdmin.component.html',
@@ -27,16 +30,19 @@ export class TeamAdminComponent  {
   userProfiles:  JSON[];
 
   constructor(public authService: AuthService, private kumulosService: KumulosService, public dialog: MdDialog, 
-    public deleteUserService: DeleteUserService, public editRoleService: EditRoleService) {
+    public loadingSnackBar: LoadingSnackBar, public deleteUserService: DeleteUserService, public editRoleService: EditRoleService) {
     
+
     this.getAllUsers();
   }
 
   private getAllUsers(): void {
+    this.loadingSnackBar.showLoadingSnackBar();
     this.kumulosService.getWebUsers().subscribe(response => {
           console.log("response", response.payload);
           this.userProfiles = response.payload
           console.log(this.userProfiles);
+          this.loadingSnackBar.dismissLoadingSnackBar();
     });
   }
 

@@ -4,8 +4,9 @@ import { KumulosService } from '../../../shared/services/kumulos.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { MdSnackBar } from '@angular/material';
 
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdTooltip } from '@angular/material';
 
+import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 
 @Component({
   selector: 'myOwnResultsComponent',
@@ -18,8 +19,11 @@ export class MyOwnResultsComponent {
   public graphData: Array<any>;
   public graphTitles: Map<number, string>;
 
+  backToDashboardTooltip: String;
+  emailResults: String;
+
   constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar, 
-              public authService: AuthService, public dialog: MdDialog) {
+              public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MdDialog) {
     this.initializeMemberVariables();
     this.getOwnResultsData();
   }
@@ -27,9 +31,13 @@ export class MyOwnResultsComponent {
   private initializeMemberVariables(): void {
     this.comboCharts = new Array();
     this.graphData = new Array();
+
+    this.backToDashboardTooltip = "Back To Dashboard";
+    this.emailResults = "Email Results";
   }
 
   private getOwnResultsData(): any { 
+    this.loadingSnackBar.showLoadingSnackBar();
     let activeCityVersion: string = localStorage.getItem('activeCityVersion');
     let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
     let userID: string 
@@ -42,6 +50,7 @@ export class MyOwnResultsComponent {
           console.log("Graph Data: ");
           console.log(responseJSON.payload);
           this.createComboCharts();
+          this.loadingSnackBar.dismissLoadingSnackBar();
     });
   }
 

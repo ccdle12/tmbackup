@@ -11,8 +11,11 @@ import { AuthService } from '../../../shared/services/auth.service';
 })
 export class SurveyModuleComponent  {
 
+    backToDashboardTooltip: String;
+
     constructor(public router: Router, public authService: AuthService) { 
         //   this.router.navigateByUrl('/main/takesurvey/surveymodule/survey');
+        this.backToDashboardTooltip = "Back To Dashboard";
     }  
 
     public activeBackgroundColor() {
