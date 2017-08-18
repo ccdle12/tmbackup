@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core'
 
 import { ViewResultsComponent } from './viewResults.component';
+import { AdjustAggregatesComponent } from './adjust_aggregates/adjustAggregates.component';
 import { MyOwnResultsComponent } from './my_own_results/myOwnResults.component';
 import { OrganizationResultsComponent } from './our_organization_results/organizationResults.component';
 import { TeamDynamicsComponent } from './team_dynamics/teamDynamics.component';
@@ -25,7 +26,12 @@ const viewResultsRoutes: Routes = [
         path: 'teamdynamics',
         component: TeamDynamicsComponent,
         canActivate: [UserRoleGuardService]
-    }                                                                           
+    },
+    {
+        path: 'adjustaggregates',
+        component: AdjustAggregatesComponent,
+    
+    }
 ]   
 
 export const viewResultsRouting: ModuleWithProviders = RouterModule.forChild(viewResultsRoutes); 

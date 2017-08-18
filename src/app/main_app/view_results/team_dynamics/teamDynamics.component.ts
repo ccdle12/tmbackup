@@ -201,16 +201,20 @@ export class TeamDynamicsComponent {
     return { 'background-color': '#62B3D1', 'color': 'white' };
   }
 
-  public routeToPage(surveyPage: String) {
+  public routeToPage(surveyPage: String) 
+  {
     switch(surveyPage) {
       case('myownresults'):
-        this.router.navigateByUrl('main/viewresults/myownresults')
+        this.router.navigateByUrl('main/viewresults/myownresults');
         break;
       case ('organizationresults'):
         this.router.navigateByUrl('main/viewresults/organizationresults');
         break;
       case ('teamdynamics'):
         this.router.navigateByUrl('main/viewresults/teamdynamics');
+        break;
+      case ('adjustaggregates'):
+        this.router.navigateByUrl('main/viewresults/adjustaggregates');
         break;
       }
     }

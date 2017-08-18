@@ -438,7 +438,6 @@ export class SurveyComponent {
       }
     }
 
-    console.log("JSON ARRAY: ", JSONArray);
     let hardCodeJson = {"surveyData": JSONArray };
     let surveyDataString = JSON.stringify(hardCodeJson);
 

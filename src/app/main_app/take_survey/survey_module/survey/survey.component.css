@@ -185,3 +185,6 @@ md-slider {
 } */
 
 
+.totalsLink:hover {
+  cursor: pointer;
+}

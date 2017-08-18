@@ -1,94 +1,91 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
-import { MdSnackBar } from '@angular/material';
-import { EmailSentSnackBarComponent } from '../my_own_results/myOwnResults.component';
-
 import { AuthService } from '../../../shared/services/auth.service';
+import { MdSnackBar } from '@angular/material';
 
-import { MdDialog, MD_DIALOG_DATA } from '@angular/material';
+import { MdDialog, MdTooltip } from '@angular/material';
 
 import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 
 @Component({
-  selector: 'organizationResultsComponent',
-  templateUrl: './organizationResults.component.html',
-  styleUrls: ['./organizationResults.component.css']
+  selector: 'adjustAggregatesComponent',
+  templateUrl: './adjustAggregates.component.html',
+  styleUrls: ['./adjustAggregates.component.css']
 })
-export class OrganizationResultsComponent { 
-
+export class AdjustAggregatesComponent implements OnInit
+{ 
   public comboCharts: Array<any>;
-  public adjustedGraphData: Array<any>;
+  public graphData: Array<any>;
+  public graphTitles: Map<number, string>;
 
   backToDashboardTooltip: String;
-  emailResults: String;
 
-  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar,
-             public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MdDialog) {
-    this.initializeMemberVariables();
-    this.getOwnResultsData();
+  importanceValues: Array<any>;
+  capabilityValues: Array<any>;
+  twoYearTargetValues: Array<any>;
+
+  nullAggregateAdjustmentID: string;
+  adjustmentDataArray: Array<any>;
+  aggregateAdjustmentArray: Array<any>;
+
+  httpRequestFlag: boolean;
+
+  unAdjustedData: Array<any>;
+
+  resetImportanceValMapToIndex: Map<String, string>;
+  resetScoreValMapToIndex: Map<string, string>;
+  resetTargetValMapToIndex: Map<string, string>;
+
+
+  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar, 
+              public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MdDialog) { 
+    this.initializeVariables();
   }
 
-   private initializeMemberVariables(): void {
-    this.adjustedGraphData = new Array();
+  public initializeVariables(): void {
     this.comboCharts = new Array();
+    this.graphData = new Array();
     this.backToDashboardTooltip = "Back To Dashboard";
-    this.emailResults = "Email Results";
+
+    this.importanceValues = new Array();
+    this.capabilityValues = new Array();
+    this.twoYearTargetValues = new Array();
+    this.adjustmentDataArray = new Array();
+    this.aggregateAdjustmentArray = new Array();
+    this.resetImportanceValMapToIndex = new Map<string, string>();
+    this.resetScoreValMapToIndex = new Map<string, string>();
+    this.resetTargetValMapToIndex = new  Map<string, string>();
   }
 
-  private getOwnResultsData(): any { 
-    this.loadingSnackBar.showLoadingSnackBar();
-    let activeCityVersion: string = localStorage.getItem('activeCityVersion');
-    let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
-    
-    this.kumulosService.getAggregatesForOrganizationResults(activeCityVersion)
-        .subscribe(responseJSON => {
-          this.cacheUnadjustedGraphData(responseJSON.payload);
-          this.adjustedGraphData = responseJSON.payload;
+  public ngOnInit() {
 
-          this.getAggregateAdjustments();
-    });
+    // this.getUnadjustedData();
+
+    // this.getAdjustmentVersion();
   }
 
-  private cacheUnadjustedGraphData(response) {
-    localStorage.setItem('unadjustedData', JSON.stringify(response));
-  }
+   private getUnadjustedData(): void 
+   {
+    this.unAdjustedData = JSON.parse(localStorage.getItem('unadjustedData'));
+    }
 
-  private getAggregateAdjustments() {
-    let activeCityVersion = localStorage.getItem('activeCityVersion');
-    this.kumulosService.getAdjustmentsByVersion(activeCityVersion)
-      .subscribe(responseJSON => {
-        
-        if (responseJSON.payload) {
-          let mapForAdjustments = new Map<string, object>();
+  private getAdjustmentVersion(): void 
+  {
+    let activeVersion = localStorage.getItem('activeCityVersion');
 
-          for (let i = 0; i < responseJSON.payload.length; i ++) {
-            mapForAdjustments.set(responseJSON.payload[i].dimensionID, responseJSON.payload[i]);
-          }
+    this.kumulosService.getAdjustmentsByVersion(activeVersion)
+      .subscribe(response => {
 
-          for (let i = 0; i < this.adjustedGraphData.length; i ++) {
-            if (mapForAdjustments.has(this.adjustedGraphData[i]['dimensionID'])) {
-
-              let adjustmentData = mapForAdjustments.get(this.adjustedGraphData[i]['dimensionID']);
-
-              if (adjustmentData['importance'] != "9") {
-                 this.adjustedGraphData[i]['importance'] = adjustmentData['importance'];
-              }
-             
-              if (adjustmentData['score'] != "9") {
-                 this.adjustedGraphData[i]['score'] = adjustmentData['score'];
-              }
-
-              if (adjustmentData['target'] != "9") {
-                this.adjustedGraphData[i]['target'] = adjustmentData['target'];  
-              }
-              
-            }
-          }
+        if (!response.payload) {
+          this.nullAggregateAdjustmentID = "";
+        } else {
+          this.aggregateAdjustmentArray = response.payload;
+          this.adjustmentDataArray = this.aggregateAdjustmentArray;
         }
 
-        this.createComboCharts();
-      })
+        this.updateSurveyValues();
+      });
   }
 
   public routeToPage(surveyPage: String) 
@@ -109,224 +106,38 @@ export class OrganizationResultsComponent {
       }
     }
 
-  
-  private createComboCharts(): void {
-    
-    let numberOfAreaModules = this.getSizeOfAreaModules();
-    this.addToComboChartArray(numberOfAreaModules);
-     this.loadingSnackBar.dismissLoadingSnackBar();
-  }
-
-  private getSizeOfAreaModules(): number {
-    let surveyDashboard: JSON = JSON.parse(localStorage.getItem('surveydashboard'));
-    let sizeOfDashboard: number = Object.keys(surveyDashboard).length;
-
-    let numberOfAreaModules: number = surveyDashboard[sizeOfDashboard - 2]['areaID'];
-
-    return numberOfAreaModules;
-  }
-
-  private addToComboChartArray(numberOfModules: number): void {
-    for (var currentModule = 1; currentModule <= numberOfModules; currentModule++) {
-      let areaText;
-
-      let unadjustDataShowingOwners = JSON.parse(localStorage.getItem('unadjustedData'));
-
-      let dataTableArray: any = new Array();
-
-      // Uncommented tooltip
-      dataTableArray.push(['SurveyData', 'Importance', 'As Is Capabiity', 'To-Be Capability']);
-
-
-      for (var i = 0; i < this.adjustedGraphData.length; i++) {
-        let areaID = this.adjustedGraphData[i]['areaID'];
-
-        let owner: string;
-
-        if (areaID == currentModule) {
-
-          // if (unadjustDataShowingOwners[i])
-          if (unadjustDataShowingOwners[i]['owners']) {
-            let ownerObject = unadjustDataShowingOwners[i]['owners'][0];
-
-            let ownerDimensionID = ownerObject.dimensionID;
-            let adjustedGraphDimensionID = this.adjustedGraphData[i]['dimensionID'];
-
-            if (ownerDimensionID == adjustedGraphDimensionID) {
-              let ownerData = JSON.parse(ownerObject['ownerData']);
-              owner = "Owner: " + ownerData['name'];
-            }
-          } else {
-            owner = "No Owner";
-          }
-          
-
-          areaText = this.adjustedGraphData[i]['areaText'];
-          let dimensionText: string = this.adjustedGraphData[i]['dimensionText']
-          let importance: number = Number(this.adjustedGraphData[i]['importance']);
-          let score: number = Number(this.adjustedGraphData[i]['score']);
-          let target: number = Number(this.adjustedGraphData[i]['target']);
-
-          // Uncommented Owner
-          dataTableArray.push([ dimensionText, importance, score, target]);
-
-        }
-      }
-
-      let comboChart = {
-            chartType: 'ComboChart',
-            dataTable: dataTableArray,
-            options: {
-              title : areaText,
-              seriesType: 'bars',
-              vAxis: {
-                viewWindow: {
-                  min: 0,
-                  max: 5
-                },
-                  ticks: [0, 1, 2, 3, 4, 5] 
-                },
-                colors: ['#348bb5', '#e28a1d', '#589e2d'],
-                tooltip: {
-                  trigger: 'focus',
-                  ignoreBounds: 'false',
-                  isHtml: 'true',
-                }, 
-              }
-            }
-      this.comboCharts[currentModule] = comboChart;
-    }
-  }
-
-  public backToDashboard(): void {
+    public backToDashboard(): void 
+    {
       this.router.navigateByUrl('/main/takesurvey');
     }
 
-  public requestSurveyCSV(): void {
-    this.dialog.open(EmailOrganizationResultsDialog);
-  }
-
-  public showSnackBar(): void {
-    this.snackBar.openFromComponent(EmailSentSnackBarComponent, {
-      duration: 1000,
-    });
-  }
-
-    public inOrganizationResults() {
+   public inAdjustAggregates() {
         let currentUrl: string = window.location.pathname;
 
-        if (currentUrl ===  "/main/viewresults/organizationresults") {
+        if (currentUrl ===  "/main/viewresults/adjustaggregates") {
             return { 'background-color': '#469ac0',
                   'color': 'white' };    
         } else {
-            return { 'background-color': '#62B3D1',
+        return { 'background-color': '#62B3D1',
                   'color': 'white' };
         }
     }
-      
-    public launchAdjustAggregatesDialog(): void {
-      let dialogRef = this.dialog.open(AdjustAggregatesDialog, {
-        height: '500px',
-        width: 'auto',
-      });
 
-      dialogRef.afterClosed().subscribe(result => {
-        this.getOwnResultsData();
-      })
+  public showResultsTab() 
+  {
+    let loggedIn: boolean = this.authService.isAuthenticated();
+    let isLeaderOrConsultant: boolean = this.authService.isLeaderConsultant();
+
+    if (!loggedIn) {
+      return true;
+    } else {
+      if (isLeaderOrConsultant) {
+        return true;
+      }
     }
-}
 
-@Component({
-  selector: 'emailOrganizationResultsDialog',
-  templateUrl: './emailOrganizationResultsDialog.html',
-  styleUrls: ['./emailOrganizationResultsDialog.css'],
-})
-export class EmailOrganizationResultsDialog {
-  constructor(public router: Router,  public authService: AuthService, public kumulosService: KumulosService,
-              public dialog: MdDialog) {
-  }
-
-  public sendSurveyRequest(): void {
-    let activeCityVersion: string = localStorage.getItem('activeCityVersion');
-    let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
-
-    let emailAddress: string = userProfile['email'];
-
-    this.kumulosService.sendRequestSurveyCSV(activeCityVersion, emailAddress)
-      .subscribe(responseJSON => {
-        this.dialog.closeAll();
-    });
-  }
-
-}
-
-@Component({
-  selector: 'adjustAggregatesDialog',
-  templateUrl: './adjustAggregatesDialog.html',
-  styleUrls: ['./adjustAggregatesDialog.css'],
-})
-export class AdjustAggregatesDialog implements OnInit {
-
-  importanceValues: Array<any>;
-  capabilityValues: Array<any>;
-  twoYearTargetValues: Array<any>;
-
-  nullAggregateAdjustmentID: string;
-  adjustmentDataArray: Array<any>;
-  aggregateAdjustmentArray: Array<any>;
-
-  httpRequestFlag: boolean;
-
-  unAdjustedData: Array<any>;
-
-  resetImportanceValMapToIndex: Map<String, string>;
-  resetScoreValMapToIndex: Map<string, string>;
-  resetTargetValMapToIndex: Map<string, string>;
-
-  constructor(public router: Router,  public authService: AuthService, public kumulosService: KumulosService,
-              public dialog: MdDialog) {
-    
-    this.initializeVariables();
-  }
-
-   public initializeVariables(): void {
-    this.importanceValues = new Array();
-    this.capabilityValues = new Array();
-    this.twoYearTargetValues = new Array();
-    this.adjustmentDataArray = new Array();
-    this.aggregateAdjustmentArray = new Array();
-    this.resetImportanceValMapToIndex = new Map<string, string>();
-    this.resetScoreValMapToIndex = new Map<string, string>();
-    this.resetTargetValMapToIndex = new  Map<string, string>();
-  }
-
-  public ngOnInit() {
-
-    this.getUnadjustedData();
-
-    this.getAdjustmentVersion();
-  }
-
-  private getUnadjustedData(): void {
-    this.unAdjustedData = JSON.parse(localStorage.getItem('unadjustedData'));
-  }
-
-  private getAdjustmentVersion(): void {
-    let activeVersion = localStorage.getItem('activeCityVersion');
-
-    this.kumulosService.getAdjustmentsByVersion(activeVersion)
-      .subscribe(response => {
-
-        if (!response.payload) {
-          this.nullAggregateAdjustmentID = "";
-        } else {
-          this.aggregateAdjustmentArray = response.payload;
-          this.adjustmentDataArray = this.aggregateAdjustmentArray;
-        }
-
-        this.updateSurveyValues();
-      });
-  }
+    return false;
+  }   
 
   private updateSurveyValues(): void {
 
@@ -475,15 +286,11 @@ export class AdjustAggregatesDialog implements OnInit {
   public sliderChanged(index: any) {
     let dimensionID = this.unAdjustedData[index]['dimensionID'];      
 
-      // if (this.importanceValues[index] == 0 || this.importanceValues[index] == null && this.capabilityValues[index] == 0 || this.capabilityValues[index] == null && this.twoYearTargetValues[index] == 0 || this.twoYearTargetValues[index] == null) {
-        // console.log("cant send");
-      // } else {
         if (!this.isDimensionIDInAdjustmentDataArray(dimensionID)) {
           this.buildAggregateAdjustmentKV(index);
         } else {
           this.updateExistingAdjustKV(dimensionID, index);
         }
-      // }
   }
 
   private isDimensionIDInAdjustmentDataArray(dimensionID): boolean {
@@ -624,20 +431,6 @@ export class AdjustAggregatesDialog implements OnInit {
 
 
    public sendSurveyRequest(): void {
-
-    // Receiving Success in callback
-    // Not Deleting from the serve side
-
-    // if (this.adjustmentDataHasAllReset()) {
-    //   console.log("Adjustment data array has all reset");
-    //   this.removeAdjustmentData();
-
-    //   for (let i = 0; i < this.adjustmentDataArray.length; i++) {
-    //     console.log(this.adjustmentDataArray[i]);
-    //   }
-
-    // } else {
-
       let adjustmentData: string = this.getAdjustmentData();
 
       this.httpRequestFlag = true;
@@ -647,7 +440,6 @@ export class AdjustAggregatesDialog implements OnInit {
 
           this.dialog.closeAll();
         });
-    // }
   }
 
   private adjustmentDataHasAllReset(): boolean {
@@ -674,8 +466,6 @@ export class AdjustAggregatesDialog implements OnInit {
       let target = this.adjustmentDataArray[i]['target'];
 
       if(importance == "9" && score == "9" && target == "9") {
-        console.log("Adjustment to Delete");
-        console.log(this.adjustmentDataArray[i]['aggregateAdjustmentID']);
         this.kumulosService.deleteSingleAdjustmentWithJWT(this.adjustmentDataArray[i]['aggregateAdjustmentID'])
           .subscribe(response => {
             this.adjustmentDataArray.splice(i, 1);
