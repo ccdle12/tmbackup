@@ -46,10 +46,7 @@ export class AppComponent {
         this.infoTooltip = "TM Forum Digial Maturity Model and Metrics. v1.0 UAT (build. 1.0.0.2). 2017 Cotham Technologies and TM Forum. In-app iocs by Icons8 (https://icons8.com/)."
         
         this.routerEventListener();
-        
-        this.windowsResizeListener();
-
-        console.log("User Detail: " + this.userDetails);
+    
         
     }
 
@@ -63,17 +60,6 @@ export class AppComponent {
             this.navigationInterceptor(event);
         });
     }
-
-    private windowsResizeListener() {
-        // Change Detection on window screen
-        window.onresize = (e) =>
-            {
-            this.ngZone.run(() => {
-                this.setWidthAndHeight();
-            });
-        };
-    }
-
 
 
     // Shows and hides the loading spinner during RouterEvent changes

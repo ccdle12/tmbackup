@@ -12,17 +12,16 @@
       <a md-tab-link class="whiteText navTitle" [ngStyle]="inOrganizationResults()" (click)="routeToPage('organizationresults')"><h4>Our Organization's Results</h4></a>
       <a md-tab-link class="whiteText navTitle"  (click)="routeToPage('teamdynamics')"><h4>Team Dynamics</h4></a>
       <a md-tab-link class="whiteText navTitle"  (click)="routeToPage('adjustaggregates')"><h4>Adjust Aggregates</h4></a>
-
     </div>
   </div>
 </nav>
 
- <div id="areaNavigation">
+ <!-- <div id="areaNavigation">
    <div class="container">
       <div class="graphNav" *ngIf="!this.authService.inDemoMode()"><h4 class="graphHeading" (click)="launchAdjustAggregatesDialog()">Adjust Aggregates</h4></div>
       <div class="graphNav" *ngIf="this.authService.inDemoMode()"><h4 class="graphHeading">Adjust Aggregates</h4></div>
    </div>
-</div>
+</div> -->
 
 <div class="container">
   <div class="row">

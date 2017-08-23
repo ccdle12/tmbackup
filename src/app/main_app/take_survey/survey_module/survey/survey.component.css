@@ -188,3 +188,7 @@ md-slider {
 .totalsLink:hover {
   cursor: pointer;
 }
+
+.subHeader {
+  text-align: center;
+}

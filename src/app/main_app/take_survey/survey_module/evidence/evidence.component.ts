@@ -120,7 +120,9 @@ export class EvidenceComponent implements AfterViewInit {
   }
 
   public launchEvidenceDialog() {
-    let dialogRef = this.dialog.open(EvidenceDialog);
+    let dialogRef = this.dialog.open(EvidenceDialog, {
+      disableClose: true
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       this.getWebEvidence();

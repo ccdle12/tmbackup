@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -8,16 +8,15 @@ import { MdDialog, MdTooltip } from '@angular/material';
 
 import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 
+import { SavingSnackBar } from '../../../shared/components/savingSnackBar';
+
 @Component({
   selector: 'adjustAggregatesComponent',
   templateUrl: './adjustAggregates.component.html',
   styleUrls: ['./adjustAggregates.component.css']
 })
-export class AdjustAggregatesComponent implements OnInit
+export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterViewChecked
 { 
-  public comboCharts: Array<any>;
-  public graphData: Array<any>;
-  public graphTitles: Map<number, string>;
 
   backToDashboardTooltip: String;
 
@@ -37,38 +36,87 @@ export class AdjustAggregatesComponent implements OnInit
   resetScoreValMapToIndex: Map<string, string>;
   resetTargetValMapToIndex: Map<string, string>;
 
+  pageLoaded: boolean;
 
   constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar, 
-              public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MdDialog) { 
-    this.initializeVariables();
+              public savingSnackBar: SavingSnackBar, public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MdDialog) 
+  { 
+    this.loadingSnackBar.showLoadingSnackBar(); 
   }
 
-  public initializeVariables(): void {
-    this.comboCharts = new Array();
-    this.graphData = new Array();
+  public initializeVariables(): void 
+  {
     this.backToDashboardTooltip = "Back To Dashboard";
 
     this.importanceValues = new Array();
     this.capabilityValues = new Array();
     this.twoYearTargetValues = new Array();
+
     this.adjustmentDataArray = new Array();
+
     this.aggregateAdjustmentArray = new Array();
+
     this.resetImportanceValMapToIndex = new Map<string, string>();
     this.resetScoreValMapToIndex = new Map<string, string>();
     this.resetTargetValMapToIndex = new  Map<string, string>();
+
+    this.pageLoaded = false;
   }
 
-  public ngOnInit() {
-
-    // this.getUnadjustedData();
-
-    // this.getAdjustmentVersion();
+  public ngOnInit() 
+  {
+    this.initializeVariables();
   }
 
-   private getUnadjustedData(): void 
-   {
-    this.unAdjustedData = JSON.parse(localStorage.getItem('unadjustedData'));
+  public ngAfterViewInit()
+  {
+    if (this.isUnadjustedData()) {
+      this.getUnadjustedData();
+      this.getAdjustmentVersion();
+    } else {
+      this.getUnadjustedFromKumulos();
     }
+  }
+
+  public ngAfterViewChecked()
+  {
+     this.pageLoaded = true;
+  }
+
+  public isPageLoaded()
+  {
+    return this.pageLoaded;
+  }
+
+  private isUnadjustedData(): boolean
+  {
+    return localStorage.getItem('unadjustedData') ? true : false;
+  }
+
+  private getUnadjustedData(): void 
+  {
+    this.unAdjustedData = JSON.parse(localStorage.getItem('unadjustedData'));
+  }
+
+  private getUnadjustedFromKumulos(): any 
+  { 
+    let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+    let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
+    
+    this.kumulosService.getAggregatesForOrganizationResults(activeCityVersion)
+        .subscribe(responseJSON => 
+        {
+          this.cacheUnadjustedGraphData(responseJSON.payload);
+          this.unAdjustedData = responseJSON.payload;
+          this.getAdjustmentVersion();
+
+        });
+  }
+
+  private cacheUnadjustedGraphData(response) 
+  {
+    localStorage.setItem('unadjustedData', JSON.stringify(response));
+  }
 
   private getAdjustmentVersion(): void 
   {
@@ -81,66 +129,37 @@ export class AdjustAggregatesComponent implements OnInit
           this.nullAggregateAdjustmentID = "";
         } else {
           this.aggregateAdjustmentArray = response.payload;
+          localStorage.setItem('adjusteddata', response.payload);
           this.adjustmentDataArray = this.aggregateAdjustmentArray;
         }
-
         this.updateSurveyValues();
       });
   }
 
-  public routeToPage(surveyPage: String) 
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  private updateSurveyValues(): void 
   {
-    switch(surveyPage) {
-      case('myownresults'):
-        this.router.navigateByUrl('main/viewresults/myownresults');
-        break;
-      case ('organizationresults'):
-        this.router.navigateByUrl('main/viewresults/organizationresults');
-        break;
-      case ('teamdynamics'):
-        this.router.navigateByUrl('main/viewresults/teamdynamics');
-        break;
-      case ('adjustaggregates'):
-        this.router.navigateByUrl('main/viewresults/adjustaggregates');
-        break;
-      }
-    }
-
-    public backToDashboard(): void 
-    {
-      this.router.navigateByUrl('/main/takesurvey');
-    }
-
-   public inAdjustAggregates() {
-        let currentUrl: string = window.location.pathname;
-
-        if (currentUrl ===  "/main/viewresults/adjustaggregates") {
-            return { 'background-color': '#469ac0',
-                  'color': 'white' };    
-        } else {
-        return { 'background-color': '#62B3D1',
-                  'color': 'white' };
-        }
-    }
-
-  public showResultsTab() 
-  {
-    let loggedIn: boolean = this.authService.isAuthenticated();
-    let isLeaderOrConsultant: boolean = this.authService.isLeaderConsultant();
-
-    if (!loggedIn) {
-      return true;
-    } else {
-      if (isLeaderOrConsultant) {
-        return true;
-      }
-    }
-
-    return false;
-  }   
-
-  private updateSurveyValues(): void {
-
       let mapDimenIdOfAdjustmentVal = this.getMapOfDimenIDToAdjustmentValues();
       
       let unAdjustedDataLength = this.unAdjustedData.length;
@@ -151,68 +170,64 @@ export class AdjustAggregatesComponent implements OnInit
 
         if (mapDimenIdOfAdjustmentVal.has(currentDimension)) {
           let adjustmentVal = mapDimenIdOfAdjustmentVal.get(currentDimension);
-          
-          console.log("Receiving adjustment Val: ");
-          console.log(adjustmentVal);
 
           if (adjustmentVal['importance'] != "9") {
-            this.importanceValues[i] = adjustmentVal['importance'];
+            this.importanceValues[i] = Number(adjustmentVal['importance']);
             this.mapImportanceUnadjustedValToIndexPos(i, this.unAdjustedData[i]['importance']);
             
             let index: String = String(i);
-            console.log("Mapped val: " + this.resetImportanceValMapToIndex.get(index));
             
           } else {
             if (this.unAdjustedData[i]['importance'] == " " || this.unAdjustedData[i]['importance'] == "0") {
-              this.importanceValues[i] = " ";
+              // this.importanceValues[i] = " ";
             } else {
-              this.importanceValues[i] = this.unAdjustedData[i]['importance'];
+              this.importanceValues[i] = Number(this.unAdjustedData[i]['importance']);
             }
           }
 
           if (adjustmentVal['score'] != "9") {
-            this.capabilityValues[i] = adjustmentVal['score'];
-            console.log("Needle in a haystack: " + this.unAdjustedData[i]['score']);
+            this.capabilityValues[i] = Number(adjustmentVal['score']);
             this.mapScoreUnadjustedValToIndexPos(i, this.unAdjustedData[i]['score']);
           } else {
             if (this.unAdjustedData[i]['score'] == " " || this.unAdjustedData[i]['score'] == "0") {
-              this.capabilityValues[i] = " ";
+              // this.capabilityValues[i] = " ";
             } else {
-              this.capabilityValues[i] = this.unAdjustedData[i]['score'];
+              this.capabilityValues[i] = Number(this.unAdjustedData[i]['score']);
             }
           }
 
           if (adjustmentVal['target'] != "9") {
-            this.twoYearTargetValues[i] = adjustmentVal['target'];
+            this.twoYearTargetValues[i] = Number(adjustmentVal['target']);
             this.mapTargetUnadjustedValToIndexPos(i, this.unAdjustedData[i]['target']);
           } else {
             if (this.unAdjustedData[i]['target'] == " " || this.unAdjustedData[i]['target'] == "0") {
-              this.capabilityValues[i] = " ";
+              // this.capabilityValues[i] = " ";
             } else {
-              this.twoYearTargetValues[i] = this.unAdjustedData[i]['target'];
+              this.twoYearTargetValues[i] = Number(this.unAdjustedData[i]['target']);
             }
           }
 
         } else {
           if (this.unAdjustedData[i]['importance'] == " " || this.unAdjustedData[i]['importance'] == "0") {
-            this.importanceValues[i] = " ";
+            // this.importanceValues[i] = " ";
           } else {
-            this.importanceValues[i] = this.unAdjustedData[i]['importance'];
+            this.importanceValues[i] = Number(this.unAdjustedData[i]['importance']);
           }
 
           if (this.unAdjustedData[i]['score'] == " " || this.unAdjustedData[i]['score'] == "0") {
-            this.capabilityValues[i] = " ";
+            // this.capabilityValues[i] = " ";
           } else {
-            this.capabilityValues[i] = this.unAdjustedData[i]['score'];
+            this.capabilityValues[i] = Number(this.unAdjustedData[i]['score']);
           }
 
           if (this.unAdjustedData[i]['target'] == " " || this.unAdjustedData[i]['target'] == "0") {
-            this.capabilityValues[i] = " ";
+            // this.capabilityValues[i] = " ";
           } else {
-            this.twoYearTargetValues[i] = this.unAdjustedData[i]['target'];
+            this.twoYearTargetValues[i] = Number(this.unAdjustedData[i]['target']);
           }
         }
       }
+      this.loadingSnackBar.dismissLoadingSnackBar();
     }
 
     private getMapOfDimenIDToAdjustmentValues() {
@@ -225,15 +240,18 @@ export class AdjustAggregatesComponent implements OnInit
       return map;
     }
 
-    private mapImportanceUnadjustedValToIndexPos(index, unadjustedVal) {
+    private mapImportanceUnadjustedValToIndexPos(index, unadjustedVal) 
+    {
       this.resetImportanceValMapToIndex.set(index, unadjustedVal);
     }
 
-    private mapScoreUnadjustedValToIndexPos(index, unadjustedVal) {
+    private mapScoreUnadjustedValToIndexPos(index, unadjustedVal) 
+    {
       this.resetScoreValMapToIndex.set(index, unadjustedVal);
     }
 
-    private mapTargetUnadjustedValToIndexPos(index, unadjustedVal) {
+    private mapTargetUnadjustedValToIndexPos(index, unadjustedVal) 
+    {
       this.resetTargetValMapToIndex.set(index, unadjustedVal);
     }
 
@@ -253,7 +271,6 @@ export class AdjustAggregatesComponent implements OnInit
       }
       
       this.sliderChanged(index);
-
   }
 
   public scoreSliderChanged(index, event) {
@@ -432,13 +449,15 @@ export class AdjustAggregatesComponent implements OnInit
 
    public sendSurveyRequest(): void {
       let adjustmentData: string = this.getAdjustmentData();
-
+      this.savingSnackBar.showSavingSnackBar();
       this.httpRequestFlag = true;
       this.kumulosService.createUpdateAdjustmentData(adjustmentData)
         .subscribe(responseJSON => {
           console.log(responseJSON.payload);
 
-          this.dialog.closeAll();
+          this.savingSnackBar.showSavedSnackBar();
+          // this.savingSnackBar.dismissSavingSnackBar();
+          // this.dialog.closeAll();
         });
   }
 
@@ -539,4 +558,76 @@ export class AdjustAggregatesComponent implements OnInit
   }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  public showResultsTab() 
+  {
+    let loggedIn: boolean = this.authService.isAuthenticated();
+    let isLeaderOrConsultant: boolean = this.authService.isLeaderConsultant();
+
+    if (!loggedIn) {
+      return true;
+    } else {
+      if (isLeaderOrConsultant) {
+        return true;
+      }
+    }
+
+    return false;
+  }   
+
+  public routeToPage(surveyPage: String) 
+  {
+    switch(surveyPage) 
+    {
+      case('myownresults'):
+        this.router.navigateByUrl('main/viewresults/myownresults');
+        break;
+      case ('organizationresults'):
+        this.router.navigateByUrl('main/viewresults/organizationresults');
+        break;
+      case ('teamdynamics'):
+        this.router.navigateByUrl('main/viewresults/teamdynamics');
+        break;
+      case ('adjustaggregates'):
+        this.router.navigateByUrl('main/viewresults/adjustaggregates');
+        break;
+      }
+    }
+
+    public backToDashboard(): void 
+    {
+      this.router.navigateByUrl('/main/takesurvey');
+    }
+
+   public inAdjustAggregates() 
+   {
+        let currentUrl: string = window.location.pathname;
+
+        if (currentUrl ===  "/main/viewresults/adjustaggregates") {
+            return { 'background-color': '#469ac0',
+                  'color': 'white' };    
+        } else {
+        return { 'background-color': '#62B3D1',
+                  'color': 'white' };
+        }
+    }
 }

@@ -24,6 +24,8 @@ export class MyOwnResultsComponent {
 
   constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar, 
               public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MdDialog) {
+    
+    this.loadingSnackBar.showLoadingSnackBar();
     this.initializeMemberVariables();
     this.getOwnResultsData();
   }
@@ -37,7 +39,6 @@ export class MyOwnResultsComponent {
   }
 
   private getOwnResultsData(): any { 
-    this.loadingSnackBar.showLoadingSnackBar();
     let activeCityVersion: string = localStorage.getItem('activeCityVersion');
     let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
     let userID: string 
@@ -111,11 +112,6 @@ export class MyOwnResultsComponent {
     }
   }   
 
-  // public activeBackgroundColor() {
-  //       return { 'background-color': '#62B3D1',
-  //                 'color': 'white' };
-  //   }
-
   public routeToPage(surveyPage: String) 
   {
     switch(surveyPage) 
@@ -133,6 +129,7 @@ export class MyOwnResultsComponent {
         break;
         
       case ('adjustaggregates'):
+        this.loadingSnackBar.showLoadingSnackBar();
         this.router.navigateByUrl('main/viewresults/adjustaggregates');
         break;
       }
@@ -144,16 +141,6 @@ export class MyOwnResultsComponent {
 
     public requestSurveyCSV(): void {
       this.dialog.open(EmailMyOwnResultsDialog);
-      // let activeCityVersion: string = localStorage.getItem('activeCityVersion');
-      // let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
-
-      // let emailAddress: string = userProfile['email'];
-
-      // this.kumulosService.requestIndividualSurveyCSV(activeCityVersion, emailAddress)
-      //   .subscribe(responseJSON => {
-      //     console.log(responseJSON.payload)
-      //     this.showSnackBar();
-      // });
   }
 
   public showSnackBar(): void {
@@ -166,7 +153,6 @@ export class MyOwnResultsComponent {
         let currentUrl: string = window.location.pathname;
 
         if (currentUrl ===  "/main/viewresults/myownresults") {
-            // console.log("in team admin");
             return { 'background-color': '#469ac0',
                   'color': 'white' };    
         } else {
