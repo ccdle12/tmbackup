@@ -3,7 +3,7 @@
 
 <h1>Evidence</h1>
 <h3>{{currentDimension}}</h3>
-<h4>Please add any evidence to support ratings</h4>
+<h5>This section, if populated, may provide you with specific organizational evidence to support your rating choice</h5>
 
 <button id="provideEvidence" md-mini-fab class="col-xs-3" color="primary" (click)="launchEvidenceDialog()" mdTooltip="Provide new evidence" *ngIf="this.auth.isEvidencer() || !this.auth.inDemoMode()"><md-icon>add</md-icon></button>
  <button id="provideEvidence" md-mini-fab class="col-xs-3" color="primary"  mdTooltip="Provide new evidence" *ngIf="!this.auth.isTeam() && !this.auth.isLeaderConsultant && !this.auth.isEvidencer() && this.auth.inDemoMode()"><md-icon>add</md-icon></button> 

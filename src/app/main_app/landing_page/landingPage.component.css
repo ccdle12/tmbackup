@@ -20,6 +20,7 @@
 }
 .header {
     margin-bottom: 50px;
+    text-align: center;
 }
 
 .subHeader {
@@ -30,7 +31,7 @@
      /* margin-top: 50px;   */
     background-color: lightgrey;
     /* width: 500px;    */
-    min-height: 400px;  
+    min-height: 683px;  
      padding-top: 120px; 
     /* max-height: 100%;   */
     max-width: 50%;
@@ -57,4 +58,12 @@
     padding: 0px;
     /* min-width: 1100px;  */
     /* margin-left: 50px;   */
+}
+
+.estTime {
+    padding-left: 10px;
+}
+
+.endEstTime {
+    margin-top: 25px;
 }

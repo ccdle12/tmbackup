@@ -23,6 +23,7 @@ export class SurveyComponent {
 
   private activeCityVersion: string;
   public surveyQuestions: Array<JSON>;
+  public dimensionLongText: String;
 
   private importanceValues: Array<any>;
   private importanceToolTips: Array<string>;
@@ -142,6 +143,9 @@ export class SurveyComponent {
         {
         this.surveyQuestions = responseJSON.payload;
         
+        let lastObject: JSON = responseJSON.payload[responseJSON.payload.length - 1];
+        this.dimensionLongText = lastObject['dimensionLongText'];
+
         this.updateSurveyValues();
         this.updateToolTips();
         this.loadingSnackBar.dismissLoadingSnackBar();

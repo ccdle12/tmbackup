@@ -1,5 +1,5 @@
 #toggleUserRole {
-    margin-top: 20px;
+    margin-top: 40px;
     margin-bottom: 20px;
 }
 
@@ -11,4 +11,8 @@ button {
 md-button-toggle {
     width: 150px;
     text-align: center;
+}
+
+.roleDescrip {
+    margin-top: 20px;
 }

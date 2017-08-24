@@ -192,3 +192,12 @@ md-slider {
 .subHeader {
   text-align: center;
 }
+
+.header {
+  /* text-align: center; */
+}
+
+.imgIcon {
+  width: 7%;
+    height: auto;
+}

@@ -17,7 +17,10 @@
         <button *ngIf="surveyHasOwner" md-button id="userIsResponsible" class="col-xs-4" (click)="launchRemoveOwnershipDialog()">You are responsible for parts of this section. Touch to change</button>    
     </div>
 
-    <h1> {{dimensionText}}</h1>
+    <div class="row">
+        <img class="col-sm-2 imgIcon" src="../../../../../assets/Info-50.png" [mdTooltip]="dimensionLongText">
+        <h1 class="col-sm-8 header"> {{dimensionText}}</h1>
+    </div>
 
     <div class="row">
         <span class="col-sm-2 col-sm-offset-6 sliderTitles"><strong>IMPORTANCE</strong></span>
