@@ -249,7 +249,7 @@ export class TeamDynamicsComponent {
       case 'Culture':
         this.selectedAreaString = area;
         this.selectedAreaArray = this.cultureArray;
-        this.currentGraphTitleIndex = 24;
+        this.currentGraphTitleIndex = 23;
         break;
     }
 
