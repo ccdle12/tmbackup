@@ -100,7 +100,12 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
 
   private getUnadjustedFromKumulos(): any 
   { 
-    let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+    //CURRENT ACTIVE CITY
+    // let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+
+    //BENCHMARK CITY DATA
+    let activeCityVersion: string = localStorage.getItem('benchmarkId');
+
     let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
     
     this.kumulosService.getAggregatesForOrganizationResults(activeCityVersion)
@@ -393,15 +398,15 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
 
 
     //NEED TO ASK JAMES - IF USER RESETS TO 0 THEY ARE UNABLE TO
-    // if (this.importanceValues[index] != "0" && this.capabilityValues[index] != "0" && this.twoYearTargetValues[index] != "0")
-    // {
-      // console.log("Updating existing data");
+    if (this.importanceValues[index] != "0" && this.capabilityValues[index] != "0" && this.twoYearTargetValues[index] != "0")
+    {
+      console.log("Updating existing data");
       this.adjustmentDataArray[indexPosInAdjustmentDataArray]['importance'] = this.importanceValues[index];
       this.adjustmentDataArray[indexPosInAdjustmentDataArray]['score'] = this.capabilityValues[index];
       this.adjustmentDataArray[indexPosInAdjustmentDataArray]['target'] = this.twoYearTargetValues[index];
-    // } else {
-      // console.log("NOT Updating existing data");
-    // }
+    } else {
+      console.log("NOT Updating existing data");
+    }
   }
 
   private getAggregateAdjustmentID(dimensionID): any {

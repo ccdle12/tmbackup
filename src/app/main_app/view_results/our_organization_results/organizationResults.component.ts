@@ -26,7 +26,7 @@ export class OrganizationResultsComponent {
   constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar,
              public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MdDialog) {
     this.initializeMemberVariables();
-    this.getOwnResultsData();
+    this.getOrgResults();
   }
 
    private initializeMemberVariables(): void {
@@ -36,21 +36,32 @@ export class OrganizationResultsComponent {
     this.emailResults = "Email Results";
   }
 
-  private getOwnResultsData(): any { 
+  private getOrgResults(): any { 
+    console.log('launching org results');
     this.loadingSnackBar.showLoadingSnackBar();
+
+    //Current city version
     let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+
+
+    //Benchmark version
+    // let activeCityVersion: string = localStorage.getItem('benchmarkId');
+
     let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
     
     this.kumulosService.getAggregatesForOrganizationResults(activeCityVersion)
         .subscribe(responseJSON => {
+          console.log("Retreived org results");
           this.cacheUnadjustedGraphData(responseJSON.payload);
           this.adjustedGraphData = responseJSON.payload;
+          console.log("adjsuted graph: " + this.adjustedGraphData[0]['importance']);
 
           this.getAggregateAdjustments();
     });
   }
 
   private cacheUnadjustedGraphData(response) {
+    // localStorage.removeItem('unadjustedData');
     localStorage.setItem('unadjustedData', JSON.stringify(response));
   }
 
@@ -231,7 +242,7 @@ export class OrganizationResultsComponent {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        this.getOwnResultsData();
+        this.getOrgResults();
       })
     }
 }

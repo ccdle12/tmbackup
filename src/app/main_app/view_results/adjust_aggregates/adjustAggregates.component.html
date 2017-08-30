@@ -39,7 +39,8 @@
         <span class="col-sm-2 sliders">
             <span class="col-sm-1 col-sm-offset-9" *ngIf="importanceValues[i] != 0">{{importanceValues[i]}}</span>
             <span class="col-sm-1 col-sm-offset-9" *ngIf="importanceValues[i] == null || importanceValues[i] == 0" class="clearScore">0</span> 
-            <jqxSlider [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=importanceValues[i] (onChange)="importanceSliderChanged(i, $event)" (click)="importanceSliderClicked(i)" [showButtons]="false" [template]="'info'"></jqxSlider>  
+            <jqxSlider *ngIf="importanceValues[i] != 0" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=importanceValues[i] (onChange)="importanceSliderChanged(i, $event)" (click)="importanceSliderClicked(i)" [showButtons]="false" [template]="'info'"></jqxSlider>  
+            <jqxSlider *ngIf="importanceValues[i] == 0" [disabled]="true" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=importanceValues[i] [showButtons]="false" [template]="'info'"></jqxSlider>  
         </span>       
         
          <div class="relativeParent">
@@ -49,7 +50,8 @@
         <span class="col-sm-2 sliders">
             <span class="col-sm-1 col-sm-offset-9" *ngIf="capabilityValues [i] != 0">{{capabilityValues[i]}}</span>
             <span class="col-sm-1 col-sm-offset-9" *ngIf="capabilityValues[i] == null || capabilityValues[i] == 0" class="clearScore">0</span> 
-            <jqxSlider [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=capabilityValues[i] (onChange)="scoreSliderChanged(i, $event)" (click)="scoreSliderClicked(i)" [showButtons]="false" [template]="'info'"></jqxSlider>  
+            <jqxSlider *ngIf="capabilityValues[i] != 0" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=capabilityValues[i] (onChange)="scoreSliderChanged(i, $event)" (click)="scoreSliderClicked(i)" [showButtons]="false" [template]="'info'"></jqxSlider>  
+            <jqxSlider *ngIf="capabilityValues[i] == 0" [disabled]="true" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=capabilityValues[i]  [showButtons]="false" [template]="'info'"></jqxSlider>  
         </span>       
 
         <div class="relativeParent">
@@ -59,7 +61,8 @@
         <span class="col-sm-2 sliders"> 
             <span class="col-sm-1 col-sm-offset-9" *ngIf="twoYearTargetValues[i] != 0">{{twoYearTargetValues[i]}}</span>
             <span class="col-sm-1 col-sm-offset-9" *ngIf="twoYearTargetValues[i] == null || twoYearTargetValues[i] == 0" class="clearScore">0</span> 
-            <jqxSlider [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=twoYearTargetValues[i] (onChange)="targetSliderChanged(i, $event)" (click)="targetSliderClicked(i)" [showButtons]="false" [template]="'info'"></jqxSlider>  
+            <jqxSlider *ngIf="twoYearTargetValues[i] != 0" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=twoYearTargetValues[i] (onChange)="targetSliderChanged(i, $event)" (click)="targetSliderClicked(i)" [showButtons]="false" [template]="'info'"></jqxSlider>
+             <jqxSlider *ngIf="twoYearTargetValues[i] == 0" [disabled]="true" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=twoYearTargetValues[i] [showButtons]="false" [template]="'info'"></jqxSlider>   
          </span>           
 
      </div>  
