@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core'
 
 import { MainAppComponent } from './mainApp.component';
+import { BulkInviteComponent } from './bulk_invite/bulkInvite.component';
 import { MainAppSectionComponent } from './mainAppSection.component';
 import { AuthGuardService } from '../shared/services/auth-guard.service';
 
@@ -37,6 +38,10 @@ const mainAppRoutes: Routes = [
         {
             path: 'benchmark',
             loadChildren: './benchmark/benchmark.module#BenchmarkModule'
+        },
+        {
+            path: 'bulkinvite',
+            component: BulkInviteComponent
         }
     ],
     }
