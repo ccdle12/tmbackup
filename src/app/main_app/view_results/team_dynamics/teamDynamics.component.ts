@@ -183,6 +183,10 @@ export class TeamDynamicsComponent {
       this.operationsArray = this.segmentedArray[3];
       this.cultureArray = this.segmentedArray[4];
 
+      //Remove duplicate in culture array
+      let removed = this.cultureArray.splice(3, 1);
+      removed = null;
+
       this.candleChartsForDisplay = [];
       this.segmentedArray = [];
     
@@ -249,7 +253,7 @@ export class TeamDynamicsComponent {
       case 'Culture':
         this.selectedAreaString = area;
         this.selectedAreaArray = this.cultureArray;
-        this.currentGraphTitleIndex = 23;
+        this.currentGraphTitleIndex = 24;
         break;
     }
 

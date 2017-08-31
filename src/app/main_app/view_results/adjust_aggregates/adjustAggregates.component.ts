@@ -100,7 +100,12 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
 
   private getUnadjustedFromKumulos(): any 
   { 
-    let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+    //CURRENT ACTIVE CITY
+    // let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+
+    //BENCHMARK CITY DATA
+    let activeCityVersion: string = localStorage.getItem('benchmarkId');
+
     let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
     
     this.kumulosService.getAggregatesForOrganizationResults(activeCityVersion)
@@ -233,9 +238,8 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
     private getMapOfDimenIDToAdjustmentValues() {
       let map = new Map<string, object>();
 
-      for (let i  = 0; i < this.aggregateAdjustmentArray.length; i++) {
+      for (let i  = 0; i < this.aggregateAdjustmentArray.length; i++)
         map.set(this.aggregateAdjustmentArray[i]['dimensionID'], this.aggregateAdjustmentArray[i]);
-      }
 
       return map;
     }
@@ -353,17 +357,27 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
 
     let aggregateAdjustmentID: String = this.getAggregateAdjustmentID(dimensionID);
 
-    let adjustmentKV = this.createAdjustmentDataKV(areaID, dimensionID, importance, score, target, version, updatedBy, aggregateAdjustmentID);
-    this.adjustmentDataArray.push(adjustmentKV);
+    if (this.importanceValues[index] != 0 && this.capabilityValues[index] != 0 && this.twoYearTargetValues[index] != 0)
+    {
+      console.log("CREATING ADJUSTMENT");
+      let adjustmentKV = this.createAdjustmentDataKV(areaID, dimensionID, importance, score, target, version, updatedBy, aggregateAdjustmentID);
+      this.adjustmentDataArray.push(adjustmentKV);
+    } else {
+      console.log("NOT CREATING ADJUSTMENT");
+    }
   }
 
   private updateExistingAdjustKV(dimensionID, index) {
+
+    console.log("slider adjusted on existing data");
     let indexPosInAdjustmentDataArray = this.getIndexPositionInAdjustmentData(dimensionID);
 
     let importance;
     let score;
     let target;
 
+
+    //CURRENTLY ALLOWS RESET TO 0
     if (this.importanceValues[index] == "0" || this.importanceValues[index] == this.unAdjustedData[index]['importance']) {
       importance = "9";
     } else {
@@ -382,9 +396,17 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
       target = this.twoYearTargetValues[index];
     }
 
-    this.adjustmentDataArray[indexPosInAdjustmentDataArray]['importance'] = importance;
-    this.adjustmentDataArray[indexPosInAdjustmentDataArray]['score'] = score;
-    this.adjustmentDataArray[indexPosInAdjustmentDataArray]['target'] = target;
+
+    //NEED TO ASK JAMES - IF USER RESETS TO 0 THEY ARE UNABLE TO
+    if (this.importanceValues[index] != "0" && this.capabilityValues[index] != "0" && this.twoYearTargetValues[index] != "0")
+    {
+      console.log("Updating existing data");
+      this.adjustmentDataArray[indexPosInAdjustmentDataArray]['importance'] = this.importanceValues[index];
+      this.adjustmentDataArray[indexPosInAdjustmentDataArray]['score'] = this.capabilityValues[index];
+      this.adjustmentDataArray[indexPosInAdjustmentDataArray]['target'] = this.twoYearTargetValues[index];
+    } else {
+      console.log("NOT Updating existing data");
+    }
   }
 
   private getAggregateAdjustmentID(dimensionID): any {

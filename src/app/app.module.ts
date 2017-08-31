@@ -15,6 +15,7 @@ import { AppComponent } from './app.component';
 import { WelcomeComponent, RegisterCityDialog } from './welcome/welcome.component';
 import { EvidenceDialog, DeleteEvidenceDialog, EditEvidenceDialog  } from './main_app/take_survey/survey_module/evidence/evidence.component';
 import { SurveyComponent, RemindUserToSaveDialog, InDemoModeDialog, SaveSnackBarComponent, ResponsibleForSectionDialog, RemoveResponsibilityForSectionDialog  } from './main_app/take_survey/survey_module/survey/survey.component';
+// import { BulkInviteComponent } from './main_app/bulk_invite/bulkInvite.component';
 import { NotFoundComponent } from './not_found/notFound.component';
 import { AuthCallbackComponent } from './authCallback/authCallback.component';
 
@@ -38,7 +39,7 @@ import { EmailOrganizationResultsDialog } from './main_app/view_results/our_orga
 import { AdjustAggregatesDialog } from './main_app/view_results/our_organization_results/organizationResults.component'; 
 import { UpdatePublicationLevelDialog, PublishSurveyDialog, SelectCityOrgDialog } from './main_app/publication/publication.component';
 import { DropdownModule } from 'primeng/primeng';
-// import { jqxSliderComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxslider';
+import { jqxSliderComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxslider';
 import { SharedModule } from './shared/modules/sharedModule';
 import { LoadingSnackBar } from './shared/components/loadingSnackBar';
 import { SavingSnackBar } from './shared/components/savingSnackBar';
