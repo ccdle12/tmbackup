@@ -5,6 +5,8 @@ import { MainAppComponent } from './mainApp.component';
 import { MainAppSectionComponent } from './mainAppSection.component';
 import { AuthGuardService } from '../shared/services/auth-guard.service';
 
+import { BulkInviteComponent } from './bulk_invite/bulkInvite.component';
+
 const mainAppRoutes: Routes = [
     {
         path: '',
@@ -37,7 +39,11 @@ const mainAppRoutes: Routes = [
         {
             path: 'benchmark',
             loadChildren: './benchmark/benchmark.module#BenchmarkModule'
-        }
+        },
+        // {
+        //     path: 'bulkinvite',
+        //     component: BulkInviteComponent
+        // }
     ],
     }
 ]
