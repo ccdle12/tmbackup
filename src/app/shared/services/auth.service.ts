@@ -34,7 +34,7 @@ constructor(public router: Router) {
   }
   }
 
-this.lock = new Auth0Lock('4PQhmzeQzyDp3F6vM39cPriygAHbx4bX','tmfdmm.eu.auth0.com', this.options, {});
+this.lock = new Auth0Lock('dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V', 'tmfdmmdev.eu.auth0.com', this.options, {});
 }
 
 public handleAuthentication(): void {
@@ -64,6 +64,9 @@ private persistDataToLocalStorage(userProfile: any, authResult: any): void {
       localStorage.setItem('userEmail', JSON.stringify(userProfile.email));
       localStorage.setItem('access_token', authResult.accessToken);
       localStorage.setItem('id_token', authResult.idToken);
+
+      // const expiresAt = JSON.stringify((authResult.expiresAt * 1000) + new Date().getTime());
+      // localStorage.setItem('expires_at', expiresAt);
 
       if (this.userHasMetaData(userProfile)) {
         if (this.userHasNameInMetaData(userProfile)) 
@@ -103,10 +106,16 @@ public logout(): void {
   this.router.navigate(['/welcome']);
 }
 
-public isAuthenticated(): boolean {
+public isAuthenticated(): boolean 
+{  
   var isTokenNotExpired: boolean = tokenNotExpired('id_token');
-
+   
   return isTokenNotExpired;
+}
+
+public hasUser(): boolean
+{
+  return localStorage.getItem('user') ? true : false;
 }
 
 public revertToDemoIfTokenExpires(): void {
@@ -180,8 +189,14 @@ public canSaveSurvey(): boolean {
   }
 }
 
-public backToDashboard(): void {
+public backToDashboard(): void 
+{
   this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main'));
+}
+
+public throwBackToWelcome(): void 
+{
+  this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/welcome'));
 }
 
 }

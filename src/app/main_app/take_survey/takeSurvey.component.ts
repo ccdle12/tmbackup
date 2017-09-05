@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { KumulosService } from '../../shared/services/kumulos.service';
 import { MdSnackBar, MdProgressBar } from '@angular/material';
 import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
-
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-takesurvey',
@@ -23,7 +23,7 @@ export class TakeSurveyComponent {
 
   public innerLoopIndex: number;
 
-  constructor(public router: Router, public loadingSnackBar: LoadingSnackBar, public kumulosService: KumulosService) {
+  constructor(public router: Router, public authService: AuthService, public loadingSnackBar: LoadingSnackBar, public kumulosService: KumulosService) {
     
     this.surveyModules = new Array();
     this.sectionModules = new Array();
@@ -31,9 +31,42 @@ export class TakeSurveyComponent {
     let activeCityVersion: string = localStorage.getItem('activeCityVersion');
     console.log("Active Version From Localstorage before call?")
     console.log(activeCityVersion);
+
+     this.inDemoOrInMainApp();
+
     this.loadingSnackBar.showLoadingSnackBar();
     this.getActiveVersionForCity();
   }
+
+  //Fix for user going straight to take survey
+  private inDemoOrInMainApp(): void {
+        if (this.isUserUnverifiedOrTokenExpired())
+            this.getDemoCity();
+        else {
+            this.getActiveVersionForCity(); 
+        }
+    }
+
+     private isUserUnverifiedOrTokenExpired() {
+        return !this.authService.isVerified() || !this.authService.isAuthenticated() ? true : false;
+    }
+
+    private getDemoCity(): void {
+        this.kumulosService.getDemoCity()
+            .subscribe(response => { 
+                localStorage.setItem('demoCity', response.payload);
+                this.getDemoUserJWT();
+            });
+    }
+
+     private getDemoUserJWT(): void {
+        this.kumulosService.getDemoUserJWT()
+            .subscribe(response => { 
+                localStorage.setItem('demoJWT', response.payload);
+                this.getActiveVersionForCity(); 
+        });
+    }
+    //Fix for user going straight to take survey
 
   private getActiveVersionForCity(): void {
         this.kumulosService.getActiveVersionForCity()
@@ -61,8 +94,12 @@ export class TakeSurveyComponent {
           this.removeTotalFromDashboard();
           this.calculateProgressValue();
           this.addModules(this.takeSurveyDashboard.length - 1);
+          console.log("API callback: " + (this.takeSurveyDashboard.length - 1));
           this.loadingSnackBar.dismissLoadingSnackBar();
-          console.log(this.surveyModules);
+
+          //SHORT TERM SOLUTION - SURVEY MODULES AS DUPLICATE DOUBLE ENTRIES
+          //SO ONLY RETURNING THE MODULES NEEDED
+          this.surveyModules = this.surveyModules.slice(0, 5);
         }
     });
   }
@@ -110,21 +147,65 @@ export class TakeSurveyComponent {
   }
 
   private calculateIndexPosition(outerIndexPosition:number, innerIndexPosition:number): number {
+    console.log("Outer index position: " + outerIndexPosition);
+    console.log("Inner index position: " + innerIndexPosition);
+
     let lastObjectPosition: number = 0;
     let lengthOfCurrentModule = this.surveyModules[outerIndexPosition].length - 1;
 
-    for (let i = 0; i <= outerIndexPosition; i++) {
+    // console.log("LENGTH OF MODULE: " + lengthOfCurrentModule);
+
+    for (let i = 0; i <= outerIndexPosition; i++)
       lastObjectPosition += this.surveyModules[i].length;
-    }
+    
+    console.log("LAST OB POS: " + lastObjectPosition);
 
-    lastObjectPosition -= 1;
-    console.log("last object pos: " + lastObjectPosition);
-    console.log("innerIndexPos: " + innerIndexPosition);
+    // return lastObjectPosition;
+      lastObjectPosition -= 1;
+      console.log("last object pos: " + lastObjectPosition);
+      console.log("innerIndexPos: " + innerIndexPosition);
 
-    let difference: number = lengthOfCurrentModule - innerIndexPosition;
-    let correctIndexPosition: number = lastObjectPosition - difference;
+      console.log("CURRENT MODULE LEN: " + lengthOfCurrentModule);
+      let difference: number = lengthOfCurrentModule - innerIndexPosition;
+
+      console.log("difference: " + difference);
+      let correctIndexPosition: number = lastObjectPosition - difference;
 
     return correctIndexPosition;
+
+
+
+
+
+
+
+      // let lengthOfModules: number[] = [];
+
+      // for (let i = 1; i < this.surveyModules.length; i++)
+      //   lengthOfModules[i] = this.surveyModules[i].length;
+
+      // console.log("Len of modules: " + lengthOfModules[2]);
+
+      // let totalArraySizeSoFar = 0;
+      // console.log("Outer index pos: " + outerIndexPosition);
+
+      // if (outerIndexPosition == 0)
+      //   totalArraySizeSoFar = lengthOfModules[0];
+      // else {
+      //   for (let j = 0; j < outerIndexPosition; j++)
+      //   {
+      //     console.log("Len of mod: " + lengthOfModules[j]);
+      //     totalArraySizeSoFar += lengthOfModules[j];
+      //   }
+      // }
+
+      // console.log("Total arr size: " + totalArraySizeSoFar);
+      
+      // // let result = Number(totalArraySizeSoFar - (lengthOfModules[outerIndexPosition] - innerIndexPosition + 1));
+
+      // let result = totalArraySizeSoFar;
+      // console.log("USER SELECTED RESULT: " + result);
+      // return result;
   }
 
   private storeSelectedModule(): void {
@@ -152,7 +233,9 @@ export class TakeSurveyComponent {
     if (size < 0)
       return;
 
+
     let currentAreaId: number = this.takeSurveyDashboard[size]['areaID'];
+    console.log("AREA ID: " + currentAreaId);
     let nextAreaId: number;
 
     if (size != 0)

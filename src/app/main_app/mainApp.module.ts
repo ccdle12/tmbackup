@@ -7,23 +7,13 @@ import { AuthGuardService } from '../shared/services/auth-guard.service';
 import { KumulosService } from '../shared/services/kumulos.service';
 import { MdTabsModule } from '@angular/material';
 import { BulkInviteComponent } from './bulk_invite/bulkInvite.component';
-<<<<<<< HEAD
 import {MdInputModule} from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { jqxSliderComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxslider';
 
 @NgModule({
-    imports: [mainAppRouting, CommonModule, MdTabsModule, MdInputModule, FormsModule, ReactiveFormsModule],
-    declarations: [MainAppComponent, MainAppSectionComponent, BulkInviteComponent],
-=======
-import { CustomGridModule } from '../shared/modules/customGridComponent'
-
-// import { jqxSliderComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxslider';
-
-@NgModule({
-    imports: [mainAppRouting, CommonModule, MdTabsModule, CustomGridModule],
+    imports: [mainAppRouting, CommonModule, MdTabsModule],
     declarations: [MainAppComponent, BulkInviteComponent, MainAppSectionComponent],
->>>>>>> basic
     providers: [AuthGuardService, KumulosService],
 })
 

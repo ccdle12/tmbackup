@@ -123,15 +123,18 @@ export class SurveyComponent {
   }
 
   private updateCurrentModuleDetails(): void {
-    let parsedSurveyDashboard = this.retrieveParsedSurveyDashboard();
+    let parsedSurveyDashboard: JSON = this.retrieveParsedSurveyDashboard();
 
-    
+    console.log("User selected module: " + this.userSelectedModule);
+    console.log("length of parsed survey: " + Object.keys(parsedSurveyDashboard).length);
+    console.log("Last object apparently: " + parsedSurveyDashboard[27]['dimensionText']);
+    console.log("User selected module: " + parsedSurveyDashboard[0]);
     this.areaID = parsedSurveyDashboard[this.userSelectedModule]['areaID'];
     this.dimensionID = parsedSurveyDashboard[this.userSelectedModule]['dimensionID'];
     this.dimensionText = parsedSurveyDashboard[this.userSelectedModule]['dimensionText'];
   }
 
-  private retrieveParsedSurveyDashboard(): void {
+  private retrieveParsedSurveyDashboard(): JSON {
     return JSON.parse(localStorage.getItem('surveydashboard'));
   }
 

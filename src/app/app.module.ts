@@ -44,12 +44,14 @@ import { SharedModule } from './shared/modules/sharedModule';
 import { LoadingSnackBar } from './shared/components/loadingSnackBar';
 import { SavingSnackBar } from './shared/components/savingSnackBar';
 
+import { UserRoleGuardService } from './shared/services/userRole-guard.service';
+
 @NgModule({
   imports: [BrowserAnimationsModule, SharedModule, BrowserModule, FormsModule, ReactiveFormsModule, HttpModule, appRouting, MaterialModule, DropdownModule],
   declarations: [AppComponent, WelcomeComponent, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, ResponsibleForSectionDialog, RemoveResponsibilityForSectionDialog , NotFoundComponent, AuthCallbackComponent, 
                   SaveSnackBarComponent, EmailSentSnackBarComponent, UpdatePublicationLevelDialog, EditUserDetailsDialog, InviteUserDialog, DeleteUserDialog,EditUserRole, ControlMessagesComponent, EmailMyOwnResultsDialog, EmailTeamDynamicsDialog, EmailOrganizationResultsDialog, EvidenceDialog, DeleteEvidenceDialog,EditEvidenceDialog, EmailBenchmarkResults, AdjustAggregatesDialog, PublishSurveyDialog, SelectCityOrgDialog],
   entryComponents: [UpdatePublicationLevelDialog, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, ResponsibleForSectionDialog, RemoveResponsibilityForSectionDialog, SaveSnackBarComponent, EmailSentSnackBarComponent, EditUserDetailsDialog, InviteUserDialog, DeleteUserDialog, EditUserRole, EmailMyOwnResultsDialog, EmailTeamDynamicsDialog, EmailOrganizationResultsDialog, EvidenceDialog, DeleteEvidenceDialog,EditEvidenceDialog, EmailBenchmarkResults, AdjustAggregatesDialog, PublishSurveyDialog, SelectCityOrgDialog],
-  providers: [AuthService, LoadingSnackBar, SavingSnackBar, WelcomeGuardService, UserSaveGuardService, LocalStorageService, KumulosService, DeleteUserService, UserSavedService, EditRoleService, CreateAndDeleteDimensionOwnerService, EvidenceService ],
+  providers: [AuthService, UserRoleGuardService, LoadingSnackBar, SavingSnackBar, WelcomeGuardService, UserSaveGuardService, LocalStorageService, KumulosService, DeleteUserService, UserSavedService, EditRoleService, CreateAndDeleteDimensionOwnerService, EvidenceService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

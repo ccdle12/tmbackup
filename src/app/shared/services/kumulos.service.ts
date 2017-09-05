@@ -54,8 +54,11 @@ export class KumulosService {
     }
 
     public initializeAllInstanceVariables(): void {
-        // this.domain = "https://api.kumulos.com/b2.2/ee263e29-20c7-471f-92eb-5fe34a19e80f/";
-        this.domain = "https://api.kumulos.com/b2.2/9c9f10ef-65ac-48a2-bf24-54097d590429/";
+        //Dev Env
+        this.domain = "https://api.kumulos.com/b2.2/ee263e29-20c7-471f-92eb-5fe34a19e80f/";
+        
+        //Live Env
+        // this.domain = "https://api.kumulos.com/b2.2/9c9f10ef-65ac-48a2-bf24-54097d590429/";
 
         this.getAllCitiesURI = "getAllCities.json/";
         this.getActiveVersionForCityURI = "getActiveVersionForCity.json/";
@@ -103,10 +106,13 @@ export class KumulosService {
     public createAuthorizationHeader(): Headers {
         let headers = new Headers();
 
-        // headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        // headers.append('Authorization', 'Basic ZWUyNjNlMjktMjBjNy00NzFmLTkyZWItNWZlMzRhMTllODBmOmx2WElGZUlpQlNkOXErNnVIbXFEUlJrUVA4TzNNVXlKdmV3MA=='); 
+        //Dev Env
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        headers.append('Authorization', 'Basic OWM5ZjEwZWYtNjVhYy00OGEyLWJmMjQtNTQwOTdkNTkwNDI5OjN3Z2U0eVAycXJXbTAwcGlORndVbUVDdjB1SUt2d1ZzUWdDaA=='); 
+        headers.append('Authorization', 'Basic ZWUyNjNlMjktMjBjNy00NzFmLTkyZWItNWZlMzRhMTllODBmOmx2WElGZUlpQlNkOXErNnVIbXFEUlJrUVA4TzNNVXlKdmV3MA=='); 
+        
+        //Live Env
+        // headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        // headers.append('Authorization', 'Basic OWM5ZjEwZWYtNjVhYy00OGEyLWJmMjQtNTQwOTdkNTkwNDI5OjN3Z2U0eVAycXJXbTAwcGlORndVbUVDdjB1SUt2d1ZzUWdDaA=='); 
         
 
         return headers;
@@ -340,13 +346,13 @@ export class KumulosService {
         urlSearchParams.append('params[email]', email);
         urlSearchParams.append('params[phone]', phone);
         urlSearchParams.append('params[comments]', comments);
-        urlSearchParams.append('params[userProfile]', localStorage.getItem('userProfile'));
+        // urlSearchParams.append('params[userProfile]', localStorage.getItem('userProfile'));
 
         let body: string = urlSearchParams.toString();
 
         return this.http.post(this.domain + this.getSubmitInterestRequestURI, body, {headers: headers})
             .map(response => {
-                // console.log(response.json());
+                console.log(response.json());
                 return response.json();
             });
     }

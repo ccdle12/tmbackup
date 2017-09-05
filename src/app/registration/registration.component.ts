@@ -16,7 +16,18 @@ export class RegistrationComponent implements OnInit  {
     registrationForm: FormGroup;
 
     constructor(private formBuilder: FormBuilder, private kumulosService: KumulosService,
-                private router: Router) { };
+                private router: Router) 
+    { 
+        this.getDemoUserJWT();
+    }
+
+    private getDemoUserJWT(): void {
+        this.kumulosService.getDemoUserJWT()
+            .subscribe(response => { 
+                localStorage.setItem('demoJWT', response.payload);
+        });
+
+    };
 
     ngOnInit() {
         this.registrationForm = this.formBuilder.group({

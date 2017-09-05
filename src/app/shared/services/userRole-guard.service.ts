@@ -5,7 +5,7 @@ import { CanActivate } from '@angular/router';
 import { AuthService } from './auth.service';
 
 @Injectable()
-export class UserRoleGuardService {
+export class UserRoleGuardService implements CanActivate {
 
   constructor(private auth: AuthService, private router: Router) { }
 
@@ -13,15 +13,29 @@ export class UserRoleGuardService {
   canActivate() {
     let user: JSON = JSON.parse(localStorage.getItem('user'));
     
-    if (user) {
-    let userRole: string = user['user_role'];
-    // console.log(userRole);
-
-
-      if (userRole !== "Leader" && userRole !== "Consultant") {
+    if (user) 
+    {
+      let userRole: string = user['user_role'];
+      console.log("User Role: " + userRole);
+      
+      //If in demo mode
+      if (!this.auth.isAuthenticated && !this.auth.isVerified)
+      {
         this.router.navigate(['main']);
         return false;
-      } 
+      }
+
+      //if logged in and user is not leader and consultant
+      if (userRole !== "Leader" && userRole !== "Consultant") 
+      {
+        this.router.navigate(['main']);
+        return false;
+      }
+
+  } else {
+    console.log("user has no user raw json");
+    this.router.navigate(['main']);
+    return false;
   }
 
   return true;

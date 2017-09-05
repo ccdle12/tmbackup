@@ -88,11 +88,14 @@ export class TeamAdminComponent  {
     let userName: string;
 
     if (this.hasUserMetaData(index))
+    {
       userName = this.userProfiles[index]['user_metadata']['name'];
-    else if (this.userProfiles[index]['name'])
-      userName = this.userProfiles[index]['name'];
+      
+      if (userName.length < 1)
+        userName = "Name not set by user";
+    }
     else 
-      userName = "Name not set by user"
+      userName = "Name not set by user";
     
     return userName;
   }

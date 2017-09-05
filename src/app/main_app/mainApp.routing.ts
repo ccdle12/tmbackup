@@ -5,8 +5,7 @@ import { MainAppComponent } from './mainApp.component';
 import { BulkInviteComponent } from './bulk_invite/bulkInvite.component';
 import { MainAppSectionComponent } from './mainAppSection.component';
 import { AuthGuardService } from '../shared/services/auth-guard.service';
-
-import { BulkInviteComponent } from './bulk_invite/bulkInvite.component';
+import { UserRoleGuardService } from '../shared/services/userRole-guard.service';
 
 const mainAppRoutes: Routes = [
     {
@@ -19,39 +18,42 @@ const mainAppRoutes: Routes = [
         },
         {
             path: 'landingpage',
-            loadChildren: './landing_page/landingPage.module#LandingPageModule'
+            loadChildren: './landing_page/landingPage.module#LandingPageModule',
+            canActivate: [AuthGuardService],
         },
         {
             path: 'teamadmin',
-            loadChildren: './team_admin/teamAdmin.module#TeamAdminModule'
+            loadChildren: './team_admin/teamAdmin.module#TeamAdminModule',
+            canActivate: [UserRoleGuardService, AuthGuardService],
         },
         {
             path: 'takesurvey',
-            loadChildren: './take_survey/takeSurvey.module#TakeSurveyModule'
+            loadChildren: './take_survey/takeSurvey.module#TakeSurveyModule',
+            canActivate: [AuthGuardService],
         },
         {
             path: 'viewresults',
-            loadChildren: './view_results/viewResults.module#ViewResultsModule'
+            loadChildren: './view_results/viewResults.module#ViewResultsModule',
+            canActivate: [AuthGuardService],
         },
         {
             path: 'publication',
-            loadChildren: './publication/publication.module#PublicationModule'
+            loadChildren: './publication/publication.module#PublicationModule',
+            canActivate: [UserRoleGuardService, AuthGuardService],
         },
         {
             path: 'benchmark',
-            loadChildren: './benchmark/benchmark.module#BenchmarkModule'
+            loadChildren: './benchmark/benchmark.module#BenchmarkModule',
+            canActivate: [UserRoleGuardService, AuthGuardService],
         },
-<<<<<<< HEAD
         // {
         //     path: 'bulkinvite',
         //     component: BulkInviteComponent
         // }
-=======
-        {
-            path: 'bulkinvite',
-            component: BulkInviteComponent
-        }
->>>>>>> basic
+        // {
+        //     path: 'bulkinvite',
+        //     component: BulkInviteComponent
+        // }
     ],
     }
 ]
