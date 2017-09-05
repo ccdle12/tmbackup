@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { KumulosService } from '../../shared/services/kumulos.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { LicenseService } from '../../shared/services/license.service';
 import { MdDialog } from '@angular/material';
 
 import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
@@ -29,10 +30,20 @@ export class BenchmarkComponent {
   public cityMapToVersionID: Map<string, string>;
 
   emailResults: String;
+  isLicenseValid: boolean;
 
-  constructor(public kumulosService: KumulosService, public dialog: MdDialog, public loadingSnackBar: LoadingSnackBar) {
+  constructor(public kumulosService: KumulosService, public dialog: MdDialog, public loadingSnackBar: LoadingSnackBar,
+              public licenseService: LicenseService) 
+  {
+    this.setIsLicenseValid();
     this.initializeMemberVariables();
     this.getBenchmarkData();
+  }
+
+  private setIsLicenseValid()
+  {
+    this.isLicenseValid = this.licenseService.isLicenseValid();
+    console.log("is license valid: " + this.isLicenseValid);
   }
 
   private initializeMemberVariables(): void {
@@ -99,7 +110,12 @@ export class BenchmarkComponent {
       if (this.allCitiesData[i]['cityName'])
         this.allCityNames.unshift({label: this.allCitiesData[i]['cityName'], value: {id:i, name: this.allCitiesData[i]['cityName']}});
       else
-        this.allCityNames.unshift({label: "Benchmark", value: {id:i, name:"Benchmark"}});
+      {
+        if (!this.isLicenseValid)
+          this.allCityNames.unshift({label: "DEMO Benchmark", value: {id:i, name:"DEMO Benchmark"}});
+        else
+          this.allCityNames.unshift({label: "Benchmark", value: {id:i, name:"Benchmark"}});
+      }
     }
   }
 

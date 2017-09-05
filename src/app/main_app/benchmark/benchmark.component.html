@@ -1,5 +1,6 @@
  <div class="topSurveyModuleNav">
-    <img  class="emailIcon" (click)="emailBenchmarkData()" src="../../../assets/Email Document-100-black.png" [mdTooltip]="emailResults">
+    <img *ngIf="this.isLicenseValid" class="emailIcon" (click)="emailBenchmarkData()" src="../../../assets/Email Document-100-black.png" [mdTooltip]="emailResults">
+    <img *ngIf="!this.isLicenseValid" class="emailIcon" src="../../../assets/Email Document-100-black.png">
 </div>
 
 <div class="container">

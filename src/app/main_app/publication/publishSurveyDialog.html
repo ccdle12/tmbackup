@@ -10,4 +10,5 @@
 <p>Please confirm you wish to proceed</p>
 
 <button md-button md-dialog-close>Cancel</button>
-<button md-button (click)="publishVersion()">Continue</button>
+<button *ngIf="!this.isLicenseValid" disabled md-button (click)="publishVersion()">Continue</button>
+<button *ngIf="this.isLicenseValid" md-button (click)="publishVersion()">Continue</button>

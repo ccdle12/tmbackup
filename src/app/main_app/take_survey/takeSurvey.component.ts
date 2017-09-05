@@ -97,7 +97,7 @@ export class TakeSurveyComponent {
           console.log("API callback: " + (this.takeSurveyDashboard.length - 1));
           this.loadingSnackBar.dismissLoadingSnackBar();
 
-          //SHORT TERM SOLUTION - SURVEY MODULES AS DUPLICATE DOUBLE ENTRIES
+          //SHORT TERM SOLUTION - SURVEY MODULES ARE DUPLICATED, DOUBLE ENTRIES
           //SO ONLY RETURNING THE MODULES NEEDED
           this.surveyModules = this.surveyModules.slice(0, 5);
         }

@@ -4,7 +4,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { MdDialog } from '@angular/material';
 
 import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
-
+import { LicenseService } from '../../shared/services/license.service';
 
 @Component({
   selector: 'app-publication',
@@ -15,8 +15,10 @@ export class PublicationComponent {
 
   public publicationLevel: number;
 
-  constructor(public kumulosService: KumulosService, public loadingSnackBar: LoadingSnackBar, public dialog: MdDialog, public authService: AuthService) {
+  constructor(public kumulosService: KumulosService, public loadingSnackBar: LoadingSnackBar, 
+              public dialog: MdDialog, public authService: AuthService, public licenseService: LicenseService) {
     this.getPublicationLevel();
+    this.licenseService.getLicenseType();
    };
 
    private getPublicationLevel(): void {
@@ -94,11 +96,18 @@ export class UpdatePublicationLevelDialog {
   public selectedPubLevel: string;
   public httpRequestFlag: boolean;
   public publicationLevelText: string;
+  public isLicenseValid: boolean;
 
-  constructor(public kumulosService: KumulosService, public dialog: MdDialog) {
+  constructor(public kumulosService: KumulosService, public dialog: MdDialog, public licenseService: LicenseService) {
+    this.setLicenseValid();
     this.setPublicationLevel();
     this.setSelectedPubLevel();
     this.injectText();
+  }
+
+  public setLicenseValid()
+  {
+    this.isLicenseValid = this.licenseService.isLicenseValid();
   }
 
   public setPublicationLevel(): void {
@@ -203,10 +212,17 @@ export class UpdatePublicationLevelDialog {
 })
 export class PublishSurveyDialog {
   httpRequestFlag: boolean;
-  constructor(public kumulosService: KumulosService, public dialog: MdDialog) {
-    
+  isLicenseValid: boolean;
+  
+  constructor(public kumulosService: KumulosService, public dialog: MdDialog, public licenseService: LicenseService) 
+  {
+    this.setIsLicenseValid();
   }
 
+  public setIsLicenseValid()
+  {
+     this.isLicenseValid = this.licenseService.isLicenseValid();
+  }
   public publishVersion() {
     if (this.hasActiveCityVersion()) {
      let activeCityVersion: string = localStorage.getItem('activeCityVersion');
