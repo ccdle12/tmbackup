@@ -72,8 +72,12 @@ export class BenchmarkComponent {
           console.log("All benchmark data");
           console.log(responseJSON.payload);
           this.allCitiesData = responseJSON.payload;
+
+          console.log("ALL DATA: ");
+          console.log(responseJSON.payload);
           
           let cityDataLength = this.allCitiesData.length;
+          console.log("All cities data: " + JSON.stringify(this.allCitiesData[1]));
           this.currentCityData = this.allCitiesData[cityDataLength - 1];
 
           this.updateAllCityNames();
@@ -125,7 +129,11 @@ export class BenchmarkComponent {
         if (this.allCitiesData[i]['cityName'])
           this.cityNameMappedToData.set(this.allCitiesData[i]['cityName'], this.allCitiesData[i]['aggregateSurveys']);
         else
-          this.cityNameMappedToData.set("Benchmark", this.allCitiesData[i]);
+          if (!this.isLicenseValid)
+            this.cityNameMappedToData.set("DEMO Benchmark", this.allCitiesData[i]);
+          else
+            this.cityNameMappedToData.set("Benchmark", this.allCitiesData[i]);
+            
     }
   }
 
@@ -133,7 +141,10 @@ export class BenchmarkComponent {
     for (var i = 0; i < this.allCitiesData.length; i++) {
 
       if (i == this.allCitiesData.length - 1) {
-        this.cityMapToVersionID.set("Benchmark", localStorage.getItem('activeCityVersion'));
+        if (!this.isLicenseValid)
+          this.cityMapToVersionID.set("DEMO Benchmark", localStorage.getItem('activeCityVersion'));
+        else
+          this.cityMapToVersionID.set("Benchmark", localStorage.getItem('activeCityVersion'));
       } else {
         this.cityMapToVersionID.set(this.allCitiesData[i]['cityName'], this.allCitiesData[i]['versionID']);
       }
@@ -169,11 +180,14 @@ export class BenchmarkComponent {
     let surveyDashboard: JSON = JSON.parse(localStorage.getItem('surveydashboard'));
 
     // Last City Data (could be benchmark)
+    console.log("Last city: ") 
+    console.log(this.allCitiesData[this.allCitiesData.length -1]);
     let lastCityData = this.allCitiesData[this.allCitiesData.length - 1];
 
     if (lastCityData['aggregateSurveys'])
       lastCityData = lastCityData['aggregateSurveys'];
     
+    //Number of area modules
     let lengthLastCityData = lastCityData.length - 1;
 
     let numOfAreas;
@@ -181,6 +195,8 @@ export class BenchmarkComponent {
 
     // Object Data for the current city
     let currentCityData = this.cityNameMappedToData.get(this.currentCitySelected.name);
+    console.log("FETCHED CURRENT CIT DATA:")
+    console.log(currentCityData);
     
     let dataTableArray: any = new Array();
 
@@ -190,9 +206,10 @@ export class BenchmarkComponent {
 
       // Adding the headers to each combo chart
       dataTableArray.push(['SurveyData', 'Importance', 'As Is Capability', 'To-Be Capability']);
-
+        
       for (let j = 0; j <= lengthLastCityData; j++) {
         let dashboardAreaId: Number = Number(lastCityData[j].areaID);
+        console.log("DASHBOARD AREAID: " + dashboardAreaId);
 
         if (dashboardAreaId == i) {
           // Getting area and dimension texts from survey dashboard
