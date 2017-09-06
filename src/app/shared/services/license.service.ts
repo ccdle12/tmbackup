@@ -43,4 +43,19 @@ export class LicenseService
          else
             return false;
     }
+
+    public getMaxUsers()
+    {
+        let userMetaData = this.getUserMetaData();
+
+        let maxUsers = JSON.stringify(userMetaData['license']['maxUsers']);
+        maxUsers = maxUsers.split('"').join("");
+        let maxUsersNum: number = Number(maxUsers);
+
+        if (userMetaData)
+            return userMetaData['license']['maxUsers'];
+        else
+            return null;
+    }
+
 }

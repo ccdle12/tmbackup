@@ -1,6 +1,6 @@
 import { Component, Input }  from '@angular/core';
 import { KumulosService } from '../../shared/services/kumulos.service';
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../shared/services/validation.service';
 import { DeleteUserService } from '../../shared/services/deleteUser.service';
@@ -17,6 +17,7 @@ import {
 
 import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
+import { LicenseService } from '../../shared/services/license.service';
 
 import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
 
@@ -28,11 +29,12 @@ import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
 
 export class TeamAdminComponent  { 
   userProfiles:  JSON[];
+  userProfilesSize;
 
   constructor(public authService: AuthService, private kumulosService: KumulosService, public dialog: MdDialog, 
-    public loadingSnackBar: LoadingSnackBar, public deleteUserService: DeleteUserService, public editRoleService: EditRoleService) {
-    
-
+    public loadingSnackBar: LoadingSnackBar, public deleteUserService: DeleteUserService, public editRoleService: EditRoleService,
+    public licenseService: LicenseService, public snackbar: MdSnackBar) {
+  
     this.getAllUsers();
   }
 
@@ -41,22 +43,29 @@ export class TeamAdminComponent  {
     this.kumulosService.getWebUsers().subscribe(response => {
           console.log("response", response.payload);
           this.userProfiles = response.payload
+          console.log("Size of User Profiles: " + Object.keys(this.userProfiles).length);
+          this.userProfilesSize = Object.keys(this.userProfiles).length;
           console.log(this.userProfiles);
           this.loadingSnackBar.dismissLoadingSnackBar();
     });
   }
 
 
-  public addNewUser(): void {
-   let dialogRef = this.dialog.open(InviteUserDialog);
+  public addNewUser(): void 
+  {  
+    if (this.userProfilesSize + 1 > this.licenseService.getMaxUsers())
+      this.snackbar.open("Maximum Users Reached", "Dismiss");
+    else
+    {
+      let dialogRef = this.dialog.open(InviteUserDialog);
 
-   dialogRef.afterClosed().subscribe(result => {
-        this.getAllUsers();
-      })
+      dialogRef.afterClosed().subscribe(result => {
+          this.getAllUsers();
+        });
+    }
   }
 
   public deleteUser(index: number): void {
-
     let deleteUser: JSON = this.userProfiles[index];
     let userId: string = deleteUser['user_id']; 
     
@@ -239,3 +248,4 @@ export class EditUserRole {
 
   }
 }
+
