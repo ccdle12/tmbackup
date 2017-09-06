@@ -1,0 +1,16 @@
+.box
+{
+    position: relative;
+}
+
+#licenseInValid 
+{
+    text-align: center;
+}
+
+#dismissBtn
+{
+    position: absolute;
+    bottom: -150px;
+    right: 0;
+}

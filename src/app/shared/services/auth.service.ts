@@ -1,5 +1,7 @@
+import { Component, Input }  from '@angular/core';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { MdSnackBar, MdDialog } from '@angular/material';
 import { tokenNotExpired } from 'angular2-jwt';
 import auth0 from 'auth0-js';
 import 'rxjs/add/operator/filter';
@@ -14,7 +16,7 @@ lock: any;
 options: any;
 
 
-constructor(public router: Router) { 
+constructor(public router: Router, public snackbar: MdSnackBar, public dialog: MdDialog) { 
 
   this.options = {
     allowSignUp: false,
@@ -38,8 +40,20 @@ this.lock = new Auth0Lock('dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V', 'tmfdmmdev.eu.auth
 }
 
 public handleAuthentication(): void {
+  this.lock.on('authorization_error', (authResult) => {
+    console.log("AUTH ERROR!");
+
+    let dialogRef = this.dialog.open(LicenseInvalidDialog, {
+      disableClose: true,
+      height: '300px',
+      width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe(response => this.router.navigate(['welcome']));
+  })
+
   this.lock.on("authenticated", (authResult) => {
-    console.log("handle auth called");
+    console.log("HANDLE AUTH CALLED");
     this.lock.getUserInfo(authResult.accessToken, (error, userProfile) => {
 
       if (error) {
@@ -199,4 +213,14 @@ public throwBackToWelcome(): void
   this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/welcome'));
 }
 
+}
+
+@Component({
+  selector: '',
+  templateUrl: '../dialogs/licenseInvalidDialog.html',
+  styleUrls: ['../dialogs/licenseInvalidDialog.css']
+})
+export class LicenseInvalidDialog 
+{
+  constructor() {}
 }
