@@ -49,6 +49,8 @@ export class KumulosService {
 
     private getGroupsandCountriesURI: string;
 
+    private webBulkInviteUserURI: string;
+
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
@@ -101,6 +103,8 @@ export class KumulosService {
         this.deleteSingleAdjustmentWithJWTURI = "deleteSingleAdjustment.json/";
 
         this.getGroupsandCountriesURI = "getGroupsandCountries.json/";
+
+        this.webBulkInviteUserURI = "webBulkInviteUser.json/";
     }
 
     public createAuthorizationHeader(): Headers {
@@ -728,7 +732,8 @@ export class KumulosService {
             })
     }
 
-    public getGroupsandCountries(cityID: string) {
+    public getGroupsandCountries(cityID: string) 
+    {
         let headers: Headers = this.createAuthorizationHeader();
 
         let urlSearchParams: URLSearchParams = this.createBody();
@@ -738,6 +743,25 @@ export class KumulosService {
         let body: string = urlSearchParams.toString();
 
         return this.http.post(this.domain + this.getGroupsandCountriesURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public webBulkInviteUser(emailAddresses: string, city: string, city_id: string)
+    {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[emailAddresses]', emailAddresses);
+        urlSearchParams.append('params[city]', city);
+        urlSearchParams.append('params[city_id]', city_id);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.webBulkInviteUserURI, body, {headers: headers})
             .map(response => {
                 console.log(response.json());
                 return response.json();

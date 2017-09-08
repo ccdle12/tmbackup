@@ -46,10 +46,10 @@ const mainAppRoutes: Routes = [
             loadChildren: './benchmark/benchmark.module#BenchmarkModule',
             canActivate: [UserRoleGuardService, AuthGuardService],
         },
-        // {
-        //     path: 'bulkinvite',
-        //     component: BulkInviteComponent
-        // }
+        {
+            path: 'bulkinvite',
+            loadChildren: './bulk_invite/bulkInvite.module#BulkInviteModule',
+        }
         // {
         //     path: 'bulkinvite',
         //     component: BulkInviteComponent

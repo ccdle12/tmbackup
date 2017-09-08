@@ -1,8 +1,13 @@
-<!-- <form [formGroup]="bulkInvite">
+ <!-- <p>hello world</p>  -->
+ <!-- <form [formGroup]="bulkInvite">  -->
+     <!-- <md-input-container> 
+      <!-- <div class="form-group" class="col-sm-12"> -->
+            <!-- <input id="userDetail" type="text" class="form-control" placeholder="Invite New Users:" formControlName="bulkEmails"> -->
+     <!-- </md-input-container>           -->
+    <!-- </div>  -->
 
-    <div class="form">
-        <md-input-container>
-            <input mdInput placeholder="Invite New Users:" formControlName="bulkEmails">
-        </md-input-container>        
-    </div>
-</form> -->
+    <textarea rows="4" cols="50" [(ngModel)]="bulkEmails"></textarea>
+    <button (click)="sendBulkEmails()">Click me</button>
+
+
+<!-- </form>   -->
