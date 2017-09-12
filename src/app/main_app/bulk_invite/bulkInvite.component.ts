@@ -14,20 +14,13 @@ import { LocalStorageService } from '../../shared/services/localStorage.service'
 })
 export class BulkInviteComponent 
 {
-    // bulkInvite: FormGroup;
-
     bulkEmails: String;
-    splitBulkEmails;
-    userProfiles;
+    splitBulkEmails: Array<any>;
+    userProfiles: Array<any>;
 
     constructor(public formBuilder: FormBuilder, public kumulosService: KumulosService, public licenseService: LicenseService,
                 public localStorageService: LocalStorageService) 
     {
-        // this.bulkEmails = "";
-        // this.bulkInvite = this.formBuilder.group({
-        //     bulkEmails: ['', Validators.required],
-        // });
-
         this.initMemberVariables();
         this.getAllUsers();
     }
@@ -39,6 +32,8 @@ export class BulkInviteComponent
     }
 
 
+
+
     //API call for size of users
     private getAllUsers(): void 
     {
@@ -47,7 +42,13 @@ export class BulkInviteComponent
 
 
     
+
     //Method call from View
+    public bulkEmailsEntered(): boolean
+    {
+        return (this.bulkEmails == null || this.bulkEmails.length == 0);
+    }
+
     public sendBulkEmails()
     {
         console.log("Bulk email: " + this.bulkEmails);
@@ -81,6 +82,7 @@ export class BulkInviteComponent
         {
             if (this.splitBulkEmails[i].length > 0)
             {
+                this.splitBulkEmails[i] = this.splitBulkEmails[i].trim();
                 let emailKV = "{" + '"email"' + ":" + " " + '"' + this.splitBulkEmails[i] + '"' + "}";
                 formattedEmailsArray.push(emailKV);
             }

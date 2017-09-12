@@ -2,3 +2,15 @@
     height: 150px;
     /*width: 1px;*/
 }
+
+label {
+    display: block;
+}
+
+textarea {
+    display: block;
+}
+
+button {
+    display: block;
+}
