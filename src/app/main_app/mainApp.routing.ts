@@ -49,11 +49,8 @@ const mainAppRoutes: Routes = [
         {
             path: 'bulkinvite',
             loadChildren: './bulk_invite/bulkInvite.module#BulkInviteModule',
+            canActivate: [UserRoleGuardService, AuthGuardService],
         }
-        // {
-        //     path: 'bulkinvite',
-        //     component: BulkInviteComponent
-        // }
     ],
     }
 ]

@@ -14,53 +14,53 @@ export class MainAppSectionComponent {
         // this.inDemoOrInMainApp();
      }
 
-    private inDemoOrInMainApp(): void {
-        if (this.isUserUnverifiedOrTokenExpired())
-            this.getDemoCity();
-        else {
-            this.getActiveVersionForCity(); 
-        }
-    }
+    // private inDemoOrInMainApp(): void {
+    //     if (this.isUserUnverifiedOrTokenExpired())
+    //         this.getDemoCity();
+    //     else {
+    //         this.getActiveVersionForCity(); 
+    //     }
+    // }
 
-    private isUserUnverifiedOrTokenExpired() {
-        return !this.authService.isVerified() || !this.authService.isAuthenticated() ? true : false;
-    }
+    // private isUserUnverifiedOrTokenExpired() {
+    //     return !this.authService.isVerified() || !this.authService.isAuthenticated() ? true : false;
+    // }
 
-    private getDemoCity(): void {
-        this.kumulosService.getDemoCity()
-            .subscribe(response => { 
-                localStorage.setItem('demoCity', response.payload);
-                this.getDemoUserJWT();
-            });
-    }
+    // private getDemoCity(): void {
+    //     this.kumulosService.getDemoCity()
+    //         .subscribe(response => { 
+    //             localStorage.setItem('demoCity', response.payload);
+    //             this.getDemoUserJWT();
+    //         });
+    // }
 
-    private getDemoUserJWT(): void {
-        this.kumulosService.getDemoUserJWT()
-            .subscribe(response => { 
-                localStorage.setItem('demoJWT', response.payload);
-                this.getActiveVersionForCity(); 
-        });
-    }
+    // private getDemoUserJWT(): void {
+    //     this.kumulosService.getDemoUserJWT()
+    //         .subscribe(response => { 
+    //             localStorage.setItem('demoJWT', response.payload);
+    //             this.getActiveVersionForCity(); 
+    //     });
+    // }
 
-    private getActiveVersionForCity(): void {
-        this.kumulosService.getActiveVersionForCity()
-        .subscribe(responseJSON => {
-            let activeCityVersion: string = responseJSON.payload;
-            localStorage.setItem('activeCityVersion', activeCityVersion);
+    // private getActiveVersionForCity(): void {
+    //     this.kumulosService.getActiveVersionForCity()
+    //     .subscribe(responseJSON => {
+    //         let activeCityVersion: string = responseJSON.payload;
+    //         localStorage.setItem('activeCityVersion', activeCityVersion);
 
-            this.getWebDashboard(activeCityVersion);
-        });
-    }
+    //         this.getWebDashboard(activeCityVersion);
+    //     });
+    // }
 
-    private getWebDashboard(activeCityVersion: string): void {
-        console.log("Getting web dashboard");
-        this.kumulosService.getWebDashboard(activeCityVersion)
-        .subscribe(responseJSON => { 
-            localStorage.setItem('surveydashboard', JSON.stringify(responseJSON.payload));
-            console.log("Retreived dashboard: ");
-            console.log(responseJSON.payload);
-        });
-    }
+    // private getWebDashboard(activeCityVersion: string): void {
+    //     console.log("Getting web dashboard");
+    //     this.kumulosService.getWebDashboard(activeCityVersion)
+    //     .subscribe(responseJSON => { 
+    //         localStorage.setItem('surveydashboard', JSON.stringify(responseJSON.payload));
+    //         console.log("Retreived dashboard: ");
+    //         console.log(responseJSON.payload);
+    //     });
+    // }
 
     public hideNavBar(): boolean {
         let currentUrl: string = this.router.url;
@@ -92,6 +92,13 @@ export class MainAppSectionComponent {
             return { 'background-color': '#469ac0',
                   'color': 'white' };    
         } 
+    }
+
+    public currentUrlInTeamAdmin()
+    {
+        let currentUrl: string = window.location.pathname;
+
+        return (currentUrl === "/main/teamadmin")
     }
 
     public inSurvey() {

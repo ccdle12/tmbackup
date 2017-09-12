@@ -33,7 +33,7 @@ export class TeamAdminComponent  {
 
   constructor(public authService: AuthService, private kumulosService: KumulosService, public dialog: MdDialog, 
     public loadingSnackBar: LoadingSnackBar, public deleteUserService: DeleteUserService, public editRoleService: EditRoleService,
-    public licenseService: LicenseService, public snackbar: MdSnackBar) {
+    public licenseService: LicenseService, public snackbar: MdSnackBar, public router: Router) {
   
     this.getAllUsers();
   }
@@ -50,6 +50,10 @@ export class TeamAdminComponent  {
     });
   }
 
+  public routeToBulkInvite()
+  {
+    this.router.navigateByUrl('/main/bulkinvite');
+  }
 
   public addNewUser(): void 
   {  
