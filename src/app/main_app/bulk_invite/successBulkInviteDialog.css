@@ -1,4 +1,12 @@
 .closeBtn {
-    margin-top: 220px;
+    margin-top: 50px;
     margin-left: 650px;
+}
+
+.subHeaders {
+    margin-top: 25px;
+}
+
+.redirectUserNote {
+    margin-top: 50px;
 }

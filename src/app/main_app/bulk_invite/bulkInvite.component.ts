@@ -63,7 +63,7 @@ export class BulkInviteComponent
     {
         this.splitBulkEmails = this.bulkEmails.split(",");
 
-        if ((this.userProfiles.length + this.splitBulkEmails.length) < this.licenseService.getMaxUsers())
+        if ((this.userProfiles.length + this.splitBulkEmails.length) <= this.licenseService.getMaxUsers())
         {
             this.checkEmailsValid();
 
@@ -79,7 +79,27 @@ export class BulkInviteComponent
         }
         else
         {
-             this.snackbar.open("Maximum Users Reached", "Dismiss");
+             this.snackbar.open("Maximum Users Reached: " + this.licenseService.getMaxUsers(), "Dismiss");
+        }
+    }
+
+    private checkEmailsValid(): void
+    {
+        for (let i = 0; i < this.splitBulkEmails.length; i++)
+        {
+            this.splitBulkEmails[i] = this.splitBulkEmails[i].trim();
+
+            if (this.splitBulkEmails[i] == "")
+                continue;
+            
+            console.log("Split Emails: " + this.splitBulkEmails[i]);
+
+            if (!this.splitBulkEmails[i].match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/))
+            {   
+                console.log("Regex failed"); 
+                this.regexEmailFailedCache.push(this.splitBulkEmails[i]);
+                this.invalidEmailsFlag = false;
+            }
         }
     }
 
@@ -93,40 +113,7 @@ export class BulkInviteComponent
 
         this.kumulosService.webBulkInviteUser(formattedEmails, userCity, userCityID).subscribe(response => {
             this.loadingSnackBar.dismissLoadingSnackBar();
-            this.launchBulkInviteSuccessDialog();
-        });
-    }
-
-    private clearBulkEmails(): void
-    {
-        this.splitBulkEmails = [];
-    }
-
-    private launchInvalidEmailsDialog()
-    {
-        let dialogRef = this.dialog.open(EmailInvalidDialog, {
-            height: '400px',
-            width: '800px',         
-            data: { failedEmails : this.regexEmailFailedCache},
-            disableClose: true,
-        });
-
-        dialogRef.afterClosed().subscribe(response => { 
-            this.regexEmailFailedCache = [];
-            this.invalidEmailsFlag = true;
-        });
-    }
-
-    private launchBulkInviteSuccessDialog()
-    {
-        let dialogRef = this.dialog.open(SuccessBulkInviteDialog, {
-            height: '400px',
-            width: '800px',
-            disableClose: true,    
-        });
-
-        dialogRef.afterClosed().subscribe(response => { 
-             this.router.navigateByUrl('/main/teamadmin');
+            this.launchBulkInviteSuccessDialog(response.payload.emailAddresses);
         });
     }
 
@@ -148,24 +135,43 @@ export class BulkInviteComponent
         return result; 
     }
 
-    private checkEmailsValid(): void
+    private clearBulkEmails(): void
     {
-        for (let i = 0; i < this.splitBulkEmails.length; i++)
-        {
-            this.splitBulkEmails[i] = this.splitBulkEmails[i].trim();
+        this.splitBulkEmails = [];
+    }
 
-            if (this.splitBulkEmails[i] == "")
-                continue;
-            
-            console.log("Split Emails: " + this.splitBulkEmails[i]);
 
-            if (!this.splitBulkEmails[i].match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/))
-            {   
-                console.log("Regex failed"); 
-                this.regexEmailFailedCache.push(this.splitBulkEmails[i]);
-                this.invalidEmailsFlag = false;
-            }
-        }
+
+
+    
+    //Dialog Launchers
+    private launchInvalidEmailsDialog()
+    {
+        let dialogRef = this.dialog.open(EmailInvalidDialog, {
+            height: '400px',
+            width: '800px',         
+            data: { failedEmails : this.regexEmailFailedCache},
+            disableClose: true,
+        });
+
+        dialogRef.afterClosed().subscribe(response => { 
+            this.regexEmailFailedCache = [];
+            this.invalidEmailsFlag = true;
+        });
+    }
+
+    private launchBulkInviteSuccessDialog(emailAddressesResponse)
+    {
+        let dialogRef = this.dialog.open(SuccessBulkInviteDialog, {
+            height: '400px',
+            width: '800px',
+            disableClose: true,
+            data: { responseArr : emailAddressesResponse },    
+        });
+
+        dialogRef.afterClosed().subscribe(response => { 
+             this.router.navigateByUrl('/main/teamadmin');
+        });
     }
 }
 
@@ -189,8 +195,33 @@ export class EmailInvalidDialog
 })
 export class SuccessBulkInviteDialog
 {
-    constructor()
+    successEmailsArr;
+    failedEmailsArr;
+
+    constructor(@Inject(MD_DIALOG_DATA) public data: any)
     {
-        
+        this.initMemberVariables();
+        this.filterSuccessAndFailedEmails(data);
+       
+    }
+
+    private initMemberVariables(): void
+    {
+        this.successEmailsArr = [];
+        this.failedEmailsArr = [];
+    }
+    
+    private filterSuccessAndFailedEmails(data)
+    {
+        for (let i = 0; i < data.responseArr.length; i++)
+        {
+            if (data.responseArr[i]['userCreationError'])
+                this.failedEmailsArr[i] = "User already exists."
+            else
+            {
+                console.log("email: " + data.responseArr[i]['email']); 
+                this.successEmailsArr[i] = data.responseArr[i]['email'];
+            }
+        }
     }
 }

@@ -58,7 +58,7 @@ export class TeamAdminComponent  {
   public addNewUser(): void 
   {  
     if (this.userProfilesSize + 1 > this.licenseService.getMaxUsers())
-      this.snackbar.open("Maximum Users Reached", "Dismiss");
+      this.snackbar.open("Maximum Users Reached: " + this.licenseService.getMaxUsers(), "Dismiss");
     else
     {
       let dialogRef = this.dialog.open(InviteUserDialog);

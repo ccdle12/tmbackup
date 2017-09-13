@@ -1,6 +1,16 @@
 <h2>Users Invited Successfully</h2>
+    
+    <h3 class="subHeaders"> Success </h3>
+        <div *ngFor="let eachEmail of successEmailsArr; let i = index">
+             <p>{{eachEmail}}</p> 
+        </div>
 
-<div>
+    <h3 class="subHeaders">Failed</h3>
+        <div *ngFor="let eachEmail of failedEmailsArr; let i = index">
+            <p>{{this.data.responseArr[i]['email']}} - {{eachEmail}}</p>
+        </div>
+
+<div class="redirectUserNote">
     <p>Clicking OK will redirect back to Team Admin</p>
 <div>
 
