@@ -8,9 +8,14 @@
     text-align: center;
 }
 
+#contactAdmin 
+{
+    text-align: center;
+}
+
 #dismissBtn
 {
     position: absolute;
-    bottom: -150px;
+    bottom: -200px;
     right: 0;
 }

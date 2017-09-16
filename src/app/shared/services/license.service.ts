@@ -15,33 +15,24 @@ export class LicenseService
             return null;
     }
 
-    public getLicenseType()
-    {
-        let userMetaData = this.getUserMetaData();
-
-        if (userMetaData){
-            console.log("From licnesE: " + JSON.stringify(userMetaData['license']['licenseType']));
-           return JSON.stringify(userMetaData['license']['licenseType']);
-        }
-        else
-            return null;
-    }
-
     public isLicenseValid()
     {
          let licenseType: String = this.getLicenseType();
          licenseType = licenseType.split('"').join("");
 
-         if (licenseType === "DEMO")
-            console.log("license type does EQUAL: " + licenseType);
-         
-         if (licenseType)
-            if (licenseType === "DEMO" || licenseType === "WORKSHOP")
-                return false;
-            else
-                return true;
-         else
-            return false;
+        return !(licenseType === "DEMO" || licenseType === "WORKSHOP");
+    }
+
+     public getLicenseType()
+    {
+        let userMetaData = this.getUserMetaData();
+
+        if (userMetaData){
+           console.log("From licnesE: " + JSON.stringify(userMetaData['license']['licenseType']));
+           return JSON.stringify(userMetaData['license']['licenseType']);
+        }
+        else
+            return null;
     }
 
     public getMaxUsers()

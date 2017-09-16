@@ -35,7 +35,8 @@ export class PublicationComponent {
       })
    }
 
-   private persistPublicationLevel(): void {
+   private persistPublicationLevel(): void 
+   {
     localStorage.setItem('publicationLevel', String(this.publicationLevel));
    }
 

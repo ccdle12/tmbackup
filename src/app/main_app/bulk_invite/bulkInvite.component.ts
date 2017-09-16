@@ -61,7 +61,7 @@ export class BulkInviteComponent
 
     public sendBulkEmails()
     {
-        this.splitBulkEmails = this.bulkEmails.split(",");
+        this.splitBulkEmails = this.bulkEmails.split(";");
 
         if ((this.userProfiles.length + this.splitBulkEmails.length) <= this.licenseService.getMaxUsers())
         {
@@ -216,7 +216,18 @@ export class SuccessBulkInviteDialog
         for (let i = 0; i < data.responseArr.length; i++)
         {
             if (data.responseArr[i]['userCreationError'])
-                this.failedEmailsArr[i] = "User already exists."
+            {
+                let formattedStringToBeUsedAsJSON: string = data.responseArr[i]['userCreationError'].slice(3);
+                let jsonError: JSON = JSON.parse(formattedStringToBeUsedAsJSON);
+                let errorCode: string = jsonError['errorCode'];
+
+                if (errorCode == "invalid_body")
+                    this.failedEmailsArr[i] = "Invalid email address.";
+                else if(errorCode == "auth0_idp_error")
+                    this.failedEmailsArr[i] = "User already exists.";
+                else
+                    this.failedEmailsArr[i] = "";
+            }
             else
             {
                 console.log("email: " + data.responseArr[i]['email']); 

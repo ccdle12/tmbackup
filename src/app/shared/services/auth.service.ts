@@ -45,7 +45,7 @@ public handleAuthentication(): void {
 
     let dialogRef = this.dialog.open(LicenseInvalidDialog, {
       disableClose: true,
-      height: '300px',
+      height: '400px',
       width: '600px',
     });
 
