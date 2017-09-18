@@ -32,6 +32,8 @@ export class BenchmarkComponent {
   emailResults: String;
   isLicenseValid: boolean;
 
+  public surveyDashboard;
+
   constructor(public kumulosService: KumulosService, public dialog: MdDialog, public loadingSnackBar: LoadingSnackBar,
               public licenseService: LicenseService) 
   {
@@ -43,7 +45,7 @@ export class BenchmarkComponent {
   private setIsLicenseValid()
   {
     this.isLicenseValid = this.licenseService.isLicenseValid();
-    console.log("is license valid: " + this.isLicenseValid);
+    // console.log("is license valid: " + this.isLicenseValid);
   }
 
   private initializeMemberVariables(): void {
@@ -56,6 +58,9 @@ export class BenchmarkComponent {
     this.cityMapToVersionID = new Map<string, string>();
 
     this.emailResults = "Email Results";
+
+    // Survey Dashboard holding Area Text and Dimension Texts
+    this.surveyDashboard = JSON.parse(localStorage.getItem('surveydashboard'));
   }
 
 
@@ -69,15 +74,17 @@ export class BenchmarkComponent {
       this.kumulosService.getAllBenchmarkData(cityID)
       .subscribe(responseJSON => 
         {
-          console.log("All benchmark data");
-          console.log(responseJSON.payload);
-          this.allCitiesData = responseJSON.payload;
-
-          console.log("ALL DATA: ");
+          // console.log("All benchmark data");
+          console.log("RETRIEVED ALL DATA BELOW:");
           console.log(responseJSON.payload);
           
+          this.allCitiesData = responseJSON.payload;
+
+          // console.log("ALL DATA: ");
+          // console.log(responseJSON.payload);
+          
           let cityDataLength = this.allCitiesData.length;
-          console.log("All cities data: " + JSON.stringify(this.allCitiesData[1]));
+          // console.log("All cities data: " + JSON.stringify(this.allCitiesData[1]));
           this.currentCityData = this.allCitiesData[cityDataLength - 1];
 
           this.updateAllCityNames();
@@ -85,8 +92,8 @@ export class BenchmarkComponent {
           this.mapCityToVersionId();
 
           this.currentCitySelected = this.allCityNames[0].value;
-          console.log("Response JSON: ");
-          console.log(responseJSON.payload[0].versionID);
+          // console.log("Response JSON: ");
+          // console.log(responseJSON.payload[0].versionID);
           localStorage.setItem('benchmarkId', responseJSON.payload[0].versionID);
 
           this.createComboCharts();
@@ -153,12 +160,12 @@ export class BenchmarkComponent {
   }
 
   public cityHasChanged() {
-    console.log("City has changed: " + this.currentCitySelected.name);
+    // console.log("City has changed: " + this.currentCitySelected.name);
 
       this.currentCityData = (this.cityNameMappedToData.get(this.currentCitySelected.name));
 
-      console.log("Setting a version ID in local storage");
-      console.log(this.cityMapToVersionID.get(this.currentCitySelected.name));
+      // console.log("Setting a version ID in local storage");
+      // console.log(this.cityMapToVersionID.get(this.currentCitySelected.name));
       localStorage.setItem("benchmarkId", this.cityMapToVersionID.get(this.currentCitySelected.name));
 
       this.createComboCharts();
@@ -176,14 +183,16 @@ export class BenchmarkComponent {
     // Clear the existing Combo Chart Array
     this.comboCharts = [];
 
-    // Survey Dashboard for retrieving Area Text and Dimension Texts
-    let surveyDashboard: JSON = JSON.parse(localStorage.getItem('surveydashboard'));
+    let dimensionToIndexPos = new Map<Number, Number>();
 
-    // Last City Data (could be benchmark)
-    console.log("Last city: ") 
-    console.log(this.allCitiesData[this.allCitiesData.length -1]);
+    
+
+    // Last City Data in the payload from getAllBenchMarkData (most likely will be benchmark data)
+    // console.log("Last city: ") 
+    // console.log(this.allCitiesData[this.allCitiesData.length -1]);
     let lastCityData = this.allCitiesData[this.allCitiesData.length - 1];
 
+    //Check if last city data has aggregate surveys, if they do then this is not the benchmark data
     if (lastCityData['aggregateSurveys'])
       lastCityData = lastCityData['aggregateSurveys'];
     
@@ -195,10 +204,19 @@ export class BenchmarkComponent {
 
     // Object Data for the current city
     let currentCityData = this.cityNameMappedToData.get(this.currentCitySelected.name);
-    console.log("FETCHED CURRENT CIT DATA:")
+    console.log("FETCHED CURRENT CITY DATA:")
     console.log(currentCityData);
     
     let dataTableArray: any = new Array();
+
+
+    //testing caching object until a matching dimensionId occurs
+    let cachedObject = currentCityData[0];
+
+    for (let i = 0; i <= lengthLastCityData; i++)
+    {
+      dimensionToIndexPos.set(i, Number(this.surveyDashboard[i].dimensionID));
+    }
 
     for (var i = 1; i <= numOfAreas; i++) {
 
@@ -209,37 +227,38 @@ export class BenchmarkComponent {
         
       for (let j = 0; j <= lengthLastCityData; j++) {
         let dashboardAreaId: Number = Number(lastCityData[j].areaID);
-        console.log("DASHBOARD AREAID: " + dashboardAreaId);
+        let dimensionId = lastCityData[j].dimensionID;
 
         if (dashboardAreaId == i) {
           // Getting area and dimension texts from survey dashboard
-          areaText = surveyDashboard[j].areaText;
-          let dimensionText: string = surveyDashboard[j].dimensionText;
+          let dimensionText: string = this.surveyDashboard[j].dimensionText;
+          let dimensionId: string = this.surveyDashboard[j].dimensionID;
+
+          areaText = this.surveyDashboard[j].areaText;
 
           let importance;
           let score;
           let target;
 
-          console.log("Current City Data")
-          console.log(currentCityData);
+          if (cachedObject && Number(cachedObject.dimensionID) == dimensionToIndexPos.get(j)) 
+          {
+            if (cachedObject.importance)
+              importance = Number(cachedObject.importance);
 
-          if (currentCityData[j]) {
-            if (currentCityData[j].importance) {
-              importance = Number(currentCityData[j].importance);
-            } 
-
-            if (currentCityData[j].score) {
-              score = Number(currentCityData[j].score);
-            } 
+            if (cachedObject.score)
+              score = Number(cachedObject.score);      
             
-            if (currentCityData[j].target) {
-              target = Number(currentCityData[j].target);
-            } 
-          } else {
-            importance = 0;
-            score = 0;
-            target = 0;
+            if (cachedObject.target)
+              target = Number(cachedObject.target);
+
+            cachedObject = currentCityData[j + 1];
           }
+          else 
+          {
+              importance = 0;
+              score = 0;
+              target = 0;
+          } 
 
           dataTableArray.push([dimensionText, importance, score, target]);
         }
@@ -271,8 +290,6 @@ export class BenchmarkComponent {
         }
 
       this.comboCharts[i] = comboChart;
-      console.log("Form the combo chart: ");
-      console.log(this.comboCharts[i]);
       dataTableArray = [];
     }
   }
@@ -292,14 +309,14 @@ export class EmailBenchmarkResults {
 
   public sendSurveyRequest(): void {
     let benchmarkID: string = localStorage.getItem('benchmarkId');
-    console.log("benchmark Id: " + benchmarkID);
+    // console.log("benchmark Id: " + benchmarkID);
     let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
 
     let emailAddress: string = userProfile['email'];
 
       this.kumulosService.requestBenchmarkSurveyCSV(benchmarkID, emailAddress)
         .subscribe(responseJSON => {
-          console.log(responseJSON.payload);
+          // console.log(responseJSON.payload);
           this.dialog.closeAll();
       });
   }
