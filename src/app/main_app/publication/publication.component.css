@@ -30,3 +30,9 @@
     padding-bottom: 10px;
     background-color: pink;
 }
+
+#disabledPublishBtn {
+    margin-top: 50px;
+    padding-bottom: 10px;
+    background-color: darkgrey;
+}

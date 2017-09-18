@@ -35,6 +35,11 @@ export class PublicationComponent {
       })
    }
 
+   public hasPublicationLevel()
+   {
+     return localStorage.getItem('publicationLevel') ? true : false;
+   }
+
    private persistPublicationLevel(): void 
    {
     localStorage.setItem('publicationLevel', String(this.publicationLevel));
@@ -116,10 +121,10 @@ export class UpdatePublicationLevelDialog {
       this.publicationLevel = Number(localStorage.getItem('publicationLevel'));
   }
 
-  private hasPublicationLevel(): boolean {
+  private hasPublicationLevel(): boolean 
+  {
     return localStorage.getItem('publicationLevel') ? true : false;
   }
-
 
   public setSelectedPubLevel(): void {
      if (this.hasSelectedPublicationLevel())
