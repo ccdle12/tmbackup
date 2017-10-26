@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../shared/services/auth.service';
 import { KumulosService } from '../shared/services/kumulos.service';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 @Component({
     selector: 'welcome-page',
@@ -10,7 +10,7 @@ import { MdDialog } from '@angular/material';
 }) 
 export class WelcomeComponent   {
 
- constructor(public authService: AuthService, public dialog: MdDialog) { }
+ constructor(public authService: AuthService, public dialog: MatDialog) { }
 
   openDialog(): void {
     this.dialog.open(RegisterCityDialog);

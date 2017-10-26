@@ -26,8 +26,8 @@ import { EditUserDetailsDialog } from './app.component';
 import { InviteUserDialog, DeleteUserDialog, EditUserRole } from './main_app/team_admin/teamAdmin.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { MaterialModule } from '@angular/material';
-
+// import { MaterialModule } from '@angular/material';
+import {AppMaterialModules} from './material.module';
 import { ControlMessagesComponent } from './shared/dialogs/controlMessages.component';
 
 import { DeleteUserService } from './shared/services/deleteUser.service';
@@ -48,7 +48,7 @@ import { UserRoleGuardService } from './shared/services/userRole-guard.service';
 import { LicenseService } from './shared/services/license.service';
 
 @NgModule({
-  imports: [BrowserAnimationsModule, SharedModule, BrowserModule, FormsModule, ReactiveFormsModule, HttpModule, appRouting, MaterialModule, DropdownModule],
+  imports: [AppMaterialModules,BrowserAnimationsModule, SharedModule, BrowserModule, FormsModule, ReactiveFormsModule, HttpModule, appRouting, DropdownModule],
   declarations: [AppComponent, WelcomeComponent, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, ResponsibleForSectionDialog, RemoveResponsibilityForSectionDialog , NotFoundComponent, AuthCallbackComponent, 
                  EmailInvalidDialog, SuccessBulkInviteDialog, SaveSnackBarComponent, EmailSentSnackBarComponent, UpdatePublicationLevelDialog, EditUserDetailsDialog, InviteUserDialog, DeleteUserDialog,EditUserRole, ControlMessagesComponent, EmailMyOwnResultsDialog, EmailTeamDynamicsDialog, EmailOrganizationResultsDialog, LicenseInvalidDialog, EvidenceDialog, DeleteEvidenceDialog,EditEvidenceDialog, EmailBenchmarkResults, AdjustAggregatesDialog, PublishSurveyDialog, SelectCityOrgDialog],
   entryComponents: [UpdatePublicationLevelDialog, EmailInvalidDialog, SuccessBulkInviteDialog, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, ResponsibleForSectionDialog, RemoveResponsibilityForSectionDialog, SaveSnackBarComponent, EmailSentSnackBarComponent, EditUserDetailsDialog, InviteUserDialog, DeleteUserDialog, EditUserRole, EmailMyOwnResultsDialog, EmailTeamDynamicsDialog, EmailOrganizationResultsDialog, LicenseInvalidDialog, EvidenceDialog, DeleteEvidenceDialog,EditEvidenceDialog, EmailBenchmarkResults, AdjustAggregatesDialog, PublishSurveyDialog, SelectCityOrgDialog],

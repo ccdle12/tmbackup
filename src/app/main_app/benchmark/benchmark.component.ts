@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { KumulosService } from '../../shared/services/kumulos.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { LicenseService } from '../../shared/services/license.service';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
 
@@ -34,7 +34,7 @@ export class BenchmarkComponent {
 
   public surveyDashboard;
 
-  constructor(public kumulosService: KumulosService, public dialog: MdDialog, public loadingSnackBar: LoadingSnackBar,
+  constructor(public kumulosService: KumulosService, public dialog: MatDialog, public loadingSnackBar: LoadingSnackBar,
               public licenseService: LicenseService) 
   {
     this.setIsLicenseValid();
@@ -305,7 +305,7 @@ export class BenchmarkComponent {
   styleUrls: ['./emailBenchmarkResults.css'],
 })
 export class EmailBenchmarkResults {
-  constructor(public kumulosService: KumulosService, public dialog: MdDialog, public authService: AuthService) { }
+  constructor(public kumulosService: KumulosService, public dialog: MatDialog, public authService: AuthService) { }
 
   public sendSurveyRequest(): void {
     let benchmarkID: string = localStorage.getItem('benchmarkId');

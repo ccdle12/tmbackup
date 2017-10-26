@@ -1,12 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { EmailSentSnackBarComponent } from '../my_own_results/myOwnResults.component';
 
 import { AuthService } from '../../../shared/services/auth.service';
 
-import { MdDialog, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 
 import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 
@@ -23,8 +23,8 @@ export class OrganizationResultsComponent {
   backToDashboardTooltip: String;
   emailResults: String;
 
-  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar,
-             public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MdDialog) {
+  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MatSnackBar,
+             public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MatDialog) {
     this.initializeMemberVariables();
     this.getOrgResults();
   }
@@ -254,7 +254,7 @@ export class OrganizationResultsComponent {
 })
 export class EmailOrganizationResultsDialog {
   constructor(public router: Router,  public authService: AuthService, public kumulosService: KumulosService,
-              public dialog: MdDialog) {
+              public dialog: MatDialog) {
   }
 
   public sendSurveyRequest(): void {
@@ -295,7 +295,7 @@ export class AdjustAggregatesDialog implements OnInit {
   resetTargetValMapToIndex: Map<string, string>;
 
   constructor(public router: Router,  public authService: AuthService, public kumulosService: KumulosService,
-              public dialog: MdDialog) {
+              public dialog: MatDialog) {
     
     this.initializeVariables();
   }

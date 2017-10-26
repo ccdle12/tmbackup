@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { KumulosService } from '../../shared/services/kumulos.service';
 import { AuthService } from '../../shared/services/auth.service';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
 import { LicenseService } from '../../shared/services/license.service';
@@ -16,7 +16,7 @@ export class PublicationComponent {
   public publicationLevel: number;
 
   constructor(public kumulosService: KumulosService, public loadingSnackBar: LoadingSnackBar, 
-              public dialog: MdDialog, public authService: AuthService, public licenseService: LicenseService) {
+              public dialog: MatDialog, public authService: AuthService, public licenseService: LicenseService) {
     this.getPublicationLevel();
     this.licenseService.getLicenseType();
    };
@@ -104,7 +104,7 @@ export class UpdatePublicationLevelDialog {
   public publicationLevelText: string;
   public isLicenseValid: boolean;
 
-  constructor(public kumulosService: KumulosService, public dialog: MdDialog, public licenseService: LicenseService) {
+  constructor(public kumulosService: KumulosService, public dialog: MatDialog, public licenseService: LicenseService) {
     this.setLicenseValid();
     this.setPublicationLevel();
     this.setSelectedPubLevel();
@@ -220,7 +220,7 @@ export class PublishSurveyDialog {
   httpRequestFlag: boolean;
   isLicenseValid: boolean;
   
-  constructor(public kumulosService: KumulosService, public dialog: MdDialog, public licenseService: LicenseService) 
+  constructor(public kumulosService: KumulosService, public dialog: MatDialog, public licenseService: LicenseService) 
   {
     this.setIsLicenseValid();
   }
@@ -260,7 +260,7 @@ export class SelectCityOrgDialog {
   orgNameMappedToData: Map<string, any>;
   httpRequestFlag: boolean;
 
-  constructor(public kumulosService: KumulosService, public dialog: MdDialog) 
+  constructor(public kumulosService: KumulosService, public dialog: MatDialog) 
   {
     this.initializeMemberVariables();
     this.getGroupsandCountries();

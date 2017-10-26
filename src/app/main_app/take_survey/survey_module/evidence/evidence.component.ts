@@ -1,9 +1,9 @@
 import { Component, ViewChild, AfterViewInit, Inject} from '@angular/core';
-import { MdSliderModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule} from '@angular/material';
+import { MatSliderModule, MatTooltipModule, MatSidenavModule, MatButtonToggleModule, MatTabsModule, MatButtonModule, MatIconModule} from '@angular/material';
 import { KumulosService } from '../../../../shared/services/kumulos.service';
 import { EvidenceService } from '../../../../shared/services/evidence.service';
 import { Router } from '@angular/router';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../../../shared/services/validation.service';
 import { AuthService } from '../../../../shared/services/auth.service';
@@ -21,7 +21,7 @@ export class EvidenceComponent implements AfterViewInit {
     currentDimension: string;
 
     constructor(public kumulos: KumulosService, public router: Router, public evidenceService: EvidenceService,
-                public dialog: MdDialog, public auth: AuthService) {
+                public dialog: MatDialog, public auth: AuthService) {
 
         this.evidenceWebLinks = new Array<string>();
 
@@ -183,7 +183,7 @@ export class EvidenceDialog {
   addNewEvidence: FormGroup;
   httpRequestFlag: boolean;
 
-  constructor(public dialog: MdDialog, public formBuilder: FormBuilder, public kumulosService: KumulosService, public evidenceService: EvidenceService, public router: Router) 
+  constructor(public dialog: MatDialog, public formBuilder: FormBuilder, public kumulosService: KumulosService, public evidenceService: EvidenceService, public router: Router) 
   {
     this.addNewEvidence = this.formBuilder.group({
       evidenceTitle: ['', Validators.required],
@@ -224,7 +224,7 @@ export class DeleteEvidenceDialog {
   addNewEvidence: FormGroup;
   httpRequestFlag: boolean;
 
-  constructor(public dialog: MdDialog, public formBuilder: FormBuilder, public kumulosService: KumulosService, public evidenceService: EvidenceService, public router: Router) 
+  constructor(public dialog: MatDialog, public formBuilder: FormBuilder, public kumulosService: KumulosService, public evidenceService: EvidenceService, public router: Router) 
   {
  
   }
@@ -270,7 +270,7 @@ export class EditEvidenceDialog {
   userID;
   evidenceID;
 
-  constructor(public dialog: MdDialog, public formBuilder: FormBuilder, public kumulos: KumulosService, public evidenceService: EvidenceService, public router: Router) 
+  constructor(public dialog: MatDialog, public formBuilder: FormBuilder, public kumulos: KumulosService, public evidenceService: EvidenceService, public router: Router) 
   {
 
     // this.webGetEvidence();

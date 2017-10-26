@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { MdSliderModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule} from '@angular/material';
+import { MatSliderModule, MatTooltipModule, MatSidenavModule, MatButtonToggleModule, MatTabsModule, MatButtonModule, MatIconModule} from '@angular/material';
 import { KumulosService } from '../../../../shared/services/kumulos.service';
 import { Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ export class BestPracticeComponent {
 
     bestPractices: JSON[];
 
-    @ViewChild('start') sidenav: MdSidenavModule;
+    @ViewChild('start') sidenav: MatSidenavModule;
 
     constructor(public kumulos: KumulosService, public router: Router) {
         let parsedSurveyDashboard = JSON.parse(localStorage.getItem('surveydashboard'));

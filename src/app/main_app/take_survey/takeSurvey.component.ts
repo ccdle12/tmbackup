@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../shared/services/kumulos.service';
-import { MdSnackBar, MdProgressBar } from '@angular/material';
+import { MatSnackBar, MatProgressBar } from '@angular/material';
 import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
 import { AuthService } from '../../shared/services/auth.service';
 

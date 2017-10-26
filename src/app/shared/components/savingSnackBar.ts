@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class SavingSnackBar 
 {
-  constructor(public snackbar: MdSnackBar){}
+  constructor(public snackbar: MatSnackBar){}
 
   public showSavingSnackBar()
   {

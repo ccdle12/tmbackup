@@ -57,10 +57,10 @@ export class KumulosService {
 
     public initializeAllInstanceVariables(): void {
         //Dev Env
-        // this.domain = "https://api.kumulos.com/b2.2/ee263e29-20c7-471f-92eb-5fe34a19e80f/";
+        this.domain = "https://api.kumulos.com/b2.2/ee263e29-20c7-471f-92eb-5fe34a19e80f/";
         
         //Live Env
-        this.domain = "https://api.kumulos.com/b2.2/9c9f10ef-65ac-48a2-bf24-54097d590429/";
+        // this.domain = "https://api.kumulos.com/b2.2/9c9f10ef-65ac-48a2-bf24-54097d590429/";
 
         this.getAllCitiesURI = "getAllCities.json/";
         this.getActiveVersionForCityURI = "getActiveVersionForCity.json/";
@@ -111,12 +111,12 @@ export class KumulosService {
         let headers = new Headers();
 
         //Dev Env
-        // headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        // headers.append('Authorization', 'Basic ZWUyNjNlMjktMjBjNy00NzFmLTkyZWItNWZlMzRhMTllODBmOmx2WElGZUlpQlNkOXErNnVIbXFEUlJrUVA4TzNNVXlKdmV3MA=='); 
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        headers.append('Authorization', 'Basic ZWUyNjNlMjktMjBjNy00NzFmLTkyZWItNWZlMzRhMTllODBmOmx2WElGZUlpQlNkOXErNnVIbXFEUlJrUVA4TzNNVXlKdmV3MA=='); 
         
         //Live Env
-        headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        headers.append('Authorization', 'Basic OWM5ZjEwZWYtNjVhYy00OGEyLWJmMjQtNTQwOTdkNTkwNDI5OjN3Z2U0eVAycXJXbTAwcGlORndVbUVDdjB1SUt2d1ZzUWdDaA=='); 
+        // headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        // headers.append('Authorization', 'Basic OWM5ZjEwZWYtNjVhYy00OGEyLWJmMjQtNTQwOTdkNTkwNDI5OjN3Z2U0eVAycXJXbTAwcGlORndVbUVDdjB1SUt2d1ZzUWdDaA=='); 
         
 
         return headers;

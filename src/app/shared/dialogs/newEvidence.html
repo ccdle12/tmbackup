@@ -1,5 +1,5 @@
 <div class="loading-overlay" #loadingElement style="opacity: 100;">
-    <md-spinner *ngIf="httpRequestFlag"></md-spinner>
+    <mat-spinner *ngIf="httpRequestFlag"></mat-spinner>
 </div>
 
 <div class="evidence">
@@ -7,27 +7,27 @@
 
 <form [formGroup]="addNewEvidence">
     <div class="form">
-    <md-input-container class="eachInput">
-        <input mdInput placeholder="Evidence Title:" formControlName="evidenceTitle">
-    </md-input-container>
+    <mat-form-field class="eachInput">
+        <input matInput placeholder="Evidence Title:" formControlName="evidenceTitle">
+    </mat-form-field>
     </div>
 
 
     <div class="form">
-    <md-input-container class="eachInput">
-        <textarea mdInput placeholder="Evidence Description:" formControlName="evidenceDescription"></textarea>  
-    </md-input-container>
+    <mat-form-field class="eachInput">
+        <textarea matInput placeholder="Evidence Description:" formControlName="evidenceDescription"></textarea>  
+    </mat-form-field>
     </div>
 
     <div class="form">
-    <md-input-container class="eachInput">
-        <textarea mdInput placeholder="Evidence Reference: (Provide the url in http:/ or www. format)" formControlName="evidenceReference"></textarea>
+    <mat-form-field class="eachInput">
+        <textarea matInput placeholder="Evidence Reference: (Provide the url in http:/ or www. format)" formControlName="evidenceReference"></textarea>
         <control-messages [control]="addNewEvidence.controls.evidenceReference"></control-messages> 
-    </md-input-container>
+    </mat-form-field>
     </div>
     
-    <button md-button md-dialog-close>Cancel</button>
-    <button md-button [disabled]="!addNewEvidence.valid" (click)="createUpdateEvidence()">Add new evidence</button>
+    <button mat-button matDialogClose>Cancel</button>
+    <button mat-button [disabled]="!addNewEvidence.valid" (click)="createUpdateEvidence()">Add new evidence</button>
 </form>
 
 </div>

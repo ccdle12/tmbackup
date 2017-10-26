@@ -1,8 +1,8 @@
 <div class="loading-overlay" #loadingElement style="opacity: 100;">
-    <md-spinner *ngIf="httpRequestFlag"></md-spinner>
+    <mat-spinner *ngIf="httpRequestFlag"></mat-spinner>
 </div>
 
 <p> Are you sure you want to delete?</p>
 
-<button md-button md-dialog-close>Cancel</button>
-<button md-button (click)="deleteUser()">Delete</button>
+<button mat-button matDialogClose>Cancel</button>
+<button mat-button (click)="deleteUser()">Delete</button>

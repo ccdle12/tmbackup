@@ -1,11 +1,11 @@
 <div class="loading-overlay" #spinnerElement style="opacity: 1;">
-    <md-spinner  *ngIf="httpRequestFlag"></md-spinner>
+    <mat-spinner  *ngIf="httpRequestFlag"></mat-spinner>
 </div>
 
 <h4>Publication Level: {{selectedPubLevel}}</h4>
  <p id="publicationLevel">{{publicationLevelText}}</p>
  <p>Please confirm you wish to proceed</p>
 
-<button md-button md-dialog-close>Cancel</button>
-<button *ngIf="!this.isLicenseValid" disabled md-button (click)="updateCityPublicationLevel()">Set {{selectedPubLevel}}</button>
-<button *ngIf="this.isLicenseValid" md-button (click)="updateCityPublicationLevel()">Set {{selectedPubLevel}}</button>
+<button mat-button matDialogClose>Cancel</button>
+<button *ngIf="!this.isLicenseValid" disabled mat-button (click)="updateCityPublicationLevel()">Set {{selectedPubLevel}}</button>
+<button *ngIf="this.isLicenseValid" mat-button (click)="updateCityPublicationLevel()">Set {{selectedPubLevel}}</button>

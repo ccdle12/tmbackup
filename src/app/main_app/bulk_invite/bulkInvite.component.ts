@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { KumulosService } from '../../shared/services/kumulos.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../shared/services/validation.service';
-import { MdInputContainer, MdDialog, MdSnackBar, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { LicenseService } from '../../shared/services/license.service';
 import { LocalStorageService } from '../../shared/services/localStorage.service';
@@ -24,7 +24,7 @@ export class BulkInviteComponent
     invalidEmailsFlag: boolean;
 
     constructor(public formBuilder: FormBuilder, public kumulosService: KumulosService, public licenseService: LicenseService,
-                public localStorageService: LocalStorageService, public snackbar: MdSnackBar, public dialog: MdDialog,
+                public localStorageService: LocalStorageService, public snackbar: MatSnackBar, public dialog: MatDialog,
                 public router: Router,  public loadingSnackBar: LoadingSnackBar) 
     {
         this.initMemberVariables();
@@ -182,7 +182,7 @@ export class BulkInviteComponent
 })
 export class EmailInvalidDialog
 {
-    constructor(@Inject(MD_DIALOG_DATA) public data: any) 
+    constructor(@Inject(MAT_DIALOG_DATA) public data: any) 
     {
         console.log(data.failedEmails);
     };
@@ -198,7 +198,7 @@ export class SuccessBulkInviteDialog
     successEmailsArr;
     failedEmailsArr;
 
-    constructor(@Inject(MD_DIALOG_DATA) public data: any)
+    constructor(@Inject(MAT_DIALOG_DATA) public data: any)
     {
         this.initMemberVariables();
         this.filterSuccessAndFailedEmails(data);

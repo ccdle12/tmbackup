@@ -1,7 +1,7 @@
 import { Component, Input }  from '@angular/core';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { MdSnackBar, MdDialog } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { tokenNotExpired } from 'angular2-jwt';
 import auth0 from 'auth0-js';
 import 'rxjs/add/operator/filter';
@@ -15,8 +15,7 @@ lock: any;
 
 options: any;
 
-
-constructor(public router: Router, public snackbar: MdSnackBar, public dialog: MdDialog) { 
+constructor(public router: Router, public snackbar: MatSnackBar, public dialog: MatDialog) { 
 
   this.options = {
     allowSignUp: false,
@@ -36,7 +35,13 @@ constructor(public router: Router, public snackbar: MdSnackBar, public dialog: M
   }
   }
 
-this.lock = new Auth0Lock('4PQhmzeQzyDp3F6vM39cPriygAHbx4bX','tmfdmm.eu.auth0.com', this.options, {});
+//Dev Env
+//'dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V', 'tmfdmmdev.eu.auth0.com'
+
+//Live Env
+//'4PQhmzeQzyDp3F6vM39cPriygAHbx4bX','tmfdmm.eu.auth0.com'
+
+this.lock = new Auth0Lock('dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V', 'tmfdmmdev.eu.auth0.com', this.options, {});
 }
 
 public handleAuthentication(): void {

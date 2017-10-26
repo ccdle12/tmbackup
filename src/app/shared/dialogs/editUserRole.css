@@ -8,7 +8,7 @@ button {
     /* width: 200px; */
 }
 
-md-button-toggle {
+mat-button-toggle {
     width: 150px;
     text-align: center;
 }

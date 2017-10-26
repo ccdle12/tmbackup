@@ -11,7 +11,7 @@ import { SharedModule } from '../../shared/modules/sharedModule';
 import {GoogleChart} from 'angular2-google-chart/directives/angular2-google-chart.directive';
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 
-import { MdSliderModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule, MdCardModule, MdSnackBarModule} from '@angular/material';
+import { MatSliderModule, MatTooltipModule, MatSidenavModule, MatButtonToggleModule, MatTabsModule, MatButtonModule, MatIconModule, MatCardModule, MatSnackBarModule} from '@angular/material';
 
 import { AdjustAggregatesComponent } from './adjust_aggregates/adjustAggregates.component';
 import { MyOwnResultsComponent } from './my_own_results/myOwnResults.component';
@@ -22,7 +22,7 @@ import { UserRoleGuardService } from '../../shared/services/userRole-guard.servi
 import {AccordionModule} from 'primeng/primeng';
 
 @NgModule({
-  imports: [viewResultsRouting, FormsModule, SharedModule, CommonModule, Ng2GoogleChartsModule, MdTooltipModule, MdTabsModule, MdButtonModule, MdSnackBarModule, AccordionModule],
+  imports: [viewResultsRouting, FormsModule, SharedModule, CommonModule, Ng2GoogleChartsModule, MatTooltipModule, MatTabsModule, MatButtonModule, MatSnackBarModule, AccordionModule],
   declarations: [ViewResultsComponent, AdjustAggregatesComponent, GoogleChart, MyOwnResultsComponent, OrganizationResultsComponent, TeamDynamicsComponent ],
   providers: [UserRoleGuardService],
 })

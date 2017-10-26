@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BulkInviteRouting } from './bulkInvite.routing';
 import { BulkInviteComponent } from './bulkInvite.component';
-import {MdInputModule} from '@angular/material';
+import {MatInputModule} from '@angular/material';
 
 // import { ControlMessagesComponent } from '../shared/dialogs/controlMessages.component';
 import { ValidationService } from '../../shared/services/validation.service';
 
 @NgModule({
-    imports: [BulkInviteRouting, CommonModule, FormsModule, ReactiveFormsModule, MdInputModule],
+    imports: [BulkInviteRouting, CommonModule, FormsModule, ReactiveFormsModule, MatInputModule],
     declarations: [BulkInviteComponent], 
     providers: [ValidationService],
 })

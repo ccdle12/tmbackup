@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { CanActivate } from '@angular/router';
 import { AuthService } from './auth.service';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
 
-  constructor(private auth: AuthService, private router: Router, private dialog: MdDialog) { }
+  constructor(private auth: AuthService, private router: Router, private dialog: MatDialog) { }
   
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (!this.auth.isAuthenticated() && this.auth.hasUser()) {

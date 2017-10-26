@@ -2,7 +2,7 @@
     <!-- <div class="row"> -->
 
 <div class="loading-overlay" #loadingElement style="opacity: 100;">
-    <md-spinner *ngIf="httpRequestFlag"></md-spinner>
+    <mat-spinner *ngIf="httpRequestFlag"></mat-spinner>
 </div>
 
         <h3>{{userName}}</h3>
@@ -11,20 +11,20 @@
 
         <div> Role: (to change select a new role and touch 'Change Role')</div>
 
-        <md-button-toggle-group id="toggleUserRole" #group="mdButtonToggleGroup" value="{{userRole}}">
-            <md-button-toggle value="Leader" (click)="updateUserRole('Leader')">
+        <mat-button-toggle-group id="toggleUserRole" #group="matButtonToggleGroup" value="{{userRole}}">
+            <mat-button-toggle value="Leader" (click)="updateUserRole('Leader')">
                 <div>Leader</div>
-            </md-button-toggle>
-            <md-button-toggle value="Consultant" (click)="updateUserRole('Consultant')">
+            </mat-button-toggle>
+            <mat-button-toggle value="Consultant" (click)="updateUserRole('Consultant')">
                 <div>Consultant</div>
-            </md-button-toggle>
-            <md-button-toggle value="Evidencer" (click)="updateUserRole('Evidencer')">
+            </mat-button-toggle>
+            <mat-button-toggle value="Evidencer" (click)="updateUserRole('Evidencer')">
                 <div>Evidencer</div>
-            </md-button-toggle>
-            <md-button-toggle value="Team" (click)="updateUserRole('Team')">
+            </mat-button-toggle>
+            <mat-button-toggle value="Team" (click)="updateUserRole('Team')">
                 <div>Team</div>
-            </md-button-toggle>
-        </md-button-toggle-group>
+            </mat-button-toggle>
+        </mat-button-toggle-group>
 
         <div class="roleDescrip"><strong>Leader</strong> - The 'Leader' manages the whole process from 'Gather The Team' through to 'Publish Results'. This person has the ability to also change the overall results through the Adjust Aggregates screen.</div>
 
@@ -35,7 +35,7 @@
         <div class="roleDescrip"><strong>Team</strong> - The 'Team' are the people who take the survey. They can see their own results but not other team members results. They may be invited to attend a wider organizational stakeholder workshop to discuss the entire organization's survey results..</div>
    
         
-        <button md-button md-dialog-close>Cancel</button>
-        <button md-button (click)="changeUserRole()">Change Role</button>
+        <button mat-button matDialogClose>Cancel</button>
+        <button mat-button (click)="changeUserRole()">Change Role</button>
     <!-- </div> -->
 <!-- </div> -->
