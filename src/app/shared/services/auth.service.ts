@@ -36,7 +36,12 @@ constructor(public router: Router, public snackbar: MdSnackBar, public dialog: M
   }
   }
 
-this.lock = new Auth0Lock('4PQhmzeQzyDp3F6vM39cPriygAHbx4bX','tmfdmm.eu.auth0.com', this.options, {});
+  //Dev Env
+  //'dvSdZ0n8HSYuGEkBQSdQQNG1FiW78i9V', 'tmfdmmdev.eu.auth0.com'
+
+  //Live Env
+  //'4PQhmzeQzyDp3F6vM39cPriygAHbx4bX','tmfdmm.eu.auth0.com'
+this.lock = new Auth0Lock('dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V', 'tmfdmmdev.eu.auth0.com', this.options, {});
 }
 
 public handleAuthentication(): void {
