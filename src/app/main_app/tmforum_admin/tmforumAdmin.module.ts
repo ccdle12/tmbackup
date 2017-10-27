@@ -9,11 +9,11 @@ import { UserRoleGuardService } from '../../shared/services/userRole-guard.servi
 import { tmforumAdminRouting } from './tmforumAdmin.routing'
 import { TMForumAdminComponent } from './tmforumAdmin.component'
 import { OrganizationAdminComponent } from './organization_admin/organizationAdmin.component'
-import { MatSliderModule, MatTooltipModule, MatSidenavModule, MatButtonToggleModule, MatTabsModule, MatButtonModule, MatIconModule} from '@angular/material';
+import { MatSliderModule, MatCardModule, MatTooltipModule, MatSidenavModule, MatButtonToggleModule, MatTabsModule, MatButtonModule, MatIconModule,  MatGridListModule} from '@angular/material';
 
 
 @NgModule({
-  imports: [tmforumAdminRouting, SharedModule, CommonModule, MatTooltipModule, MatSliderModule, MatSidenavModule, MatButtonToggleModule, MatTabsModule, MatButtonModule, MatIconModule],
+  imports: [tmforumAdminRouting, MatCardModule, SharedModule, CommonModule, MatTooltipModule, MatSliderModule, MatSidenavModule, MatButtonToggleModule, MatTabsModule, MatButtonModule, MatIconModule, MatGridListModule],
   declarations: [TMForumAdminComponent, OrganizationAdminComponent],
   providers: [UserRoleGuardService],
 })

@@ -148,15 +148,15 @@ public revertToDemoIfTokenExpires(): void {
 
 public isAdmin(): boolean {
   if (localStorage.getItem('user') !== null) {
-    var userAdmin = JSON.parse(localStorage.getItem('user'));
-    return userAdmin == 'Admin';
+    var user = JSON.parse(localStorage.getItem('user'));
+    return user.user_role == 'Admin';
   }
 }
 
 public isLeaderConsultant(): boolean {
   if (localStorage.getItem('user') !== null) {
     var userLeaderConsultant = JSON.parse(localStorage.getItem('user'));
-    return userLeaderConsultant.user_role == 'Leader' || userLeaderConsultant.user_role == 'Consultant', userLeaderConsultant.user_role == 'Admin';
+    return userLeaderConsultant.user_role == 'Leader' || userLeaderConsultant.user_role == 'Consultant' ||   userLeaderConsultant.user_role == 'Admin';
   }
   return false;
 }
@@ -191,18 +191,18 @@ public isVerified(): boolean {
 
 public inDemoMode(): boolean {
   if (!this.isVerified()) {
-    // console.log("not verified");
+    console.log("not verified");
     return true;
   }
 
   if (this.isVerified() && this.isLeaderConsultant()) {
     
-    // console.log("verified and leader or consultant");
+    console.log("verified and leader or consultant");
     return false;
   }
     
   if (this.isVerified() && !this.isLeaderConsultant()) { 
-    // console.log("verified but not leader or consultant");   
+    console.log("verified but not leader or consultant");   
     return true;
   } 
 }

@@ -20,7 +20,29 @@
     <h5>Required to allow surveys to be grouped and published within the organization</h5>
     <button id="addOrganization" mat-mini-fab class="col-xs-3" color="primary"><mat-icon>add</mat-icon></button>
   </div>
-</div>
+
+
+
+<div class="row"  id="cardsContainer">
+    <mat-card class="col-sm-1" *ngFor="let organization of organizationsJSON; let i = index">
+       <div class="cardBody">
+         <h5>{{organization.organizationName}}</h5>
+         <h6>Contact</h6>
+
+         <mat-card-content>
+           <p>{{organization.contactName}}</p>
+           <h6>{{organization.contactEmail}}</h6>
+         </mat-card-content>
+
+         <mat-card-actions>
+           <button mat-button class="editButton">Edit</button>
+         </mat-card-actions>
+       </div> 
+    </mat-card>
+   </div>
+  </div>
+
+  
 
 
   

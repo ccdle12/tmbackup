@@ -1,7 +1,6 @@
-/*Nav Bar*/
+/* Nav Bar */
 nav {
     text-align:center;
-    /*margin-top: 50px;*/
      background-color: #88C158;
       position: relative; 
 }
@@ -18,8 +17,6 @@ nav {
     opacity: 1;
     float: left;
     margin-right: 25px;
-    /*padding-right: 100px;*/
-    /*padding-left: 10px;*/
 }
 
 #backToDashboard:hover {
@@ -46,10 +43,10 @@ nav {
     float: right;
 }
 
-button {
+/* button {
   background-color: #62B3D1;
   color: white;
-}
+} */
 
 .navTitle {
     padding-top: 5px;
@@ -65,11 +62,38 @@ a {
 }
 
 #addOrganization {
-    /*background: #1e90ff;*/
-    /*color: white;*/
     margin-top: 10px;
     margin-right: 80px;
     margin-bottom: 15px;
     float: right;
   }
   
+
+
+
+/* Cards Styles */
+#cardsContainer {
+    text-align: center;
+    padding-left: 50px;
+}
+
+mat-card-content {
+    margin-bottom: 10px;
+}
+  
+.roundImage {
+    border-radius: 50%;    
+}
+
+mat-card {
+    height: 200px;
+    width: 250px;
+    margin: 0 0 25px 10px;
+    position:relative;
+    background-color: rgb(230, 230, 230);
+    text-align: left;
+}
+
+.editButton {
+    align-items: center;
+}

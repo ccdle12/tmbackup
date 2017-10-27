@@ -15,9 +15,19 @@ import { MatDialog, MatTooltip } from '@angular/material';
 export class OrganizationAdminComponent {
 
     public backToDashboardTooltip;
+    public organizationsJSON;
 
-    constructor(public router: Router) {
-      this.initializeMemberVariables();
+    constructor(public router: Router, public kumulosService: KumulosService) {
+      this.webGetOrganizations();
+      this.initializeMemberVariables();    
+    }
+
+    private webGetOrganizations() {
+      this.kumulosService.webGetOrganizations().subscribe(response => {
+        this.organizationsJSON = response.payload;
+        console.log(response.payload[0]);
+        console.log(this.organizationsJSON[0]);
+      });
     }
 
     private initializeMemberVariables(): void {
@@ -25,11 +35,10 @@ export class OrganizationAdminComponent {
     }
 
 
+
     //Highlighting the nav tab
     public inOrganizationAdmin() {
       let currentUrl: string = window.location.pathname;
-      console.log("Current url: " + currentUrl);
-      console.log("In organization admin method being called");
 
       if (currentUrl ===  "/main/tmforumadmin/organizationadmin") {
           console.log("returning blue background?");
@@ -41,6 +50,8 @@ export class OrganizationAdminComponent {
                 'color': 'white' };
       }
   }
+
+
 
   //Nav Bar Routing
   public routeToPage(surveyPage: String) 

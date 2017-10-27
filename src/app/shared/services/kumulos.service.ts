@@ -51,6 +51,8 @@ export class KumulosService {
 
     private webBulkInviteUserURI: string;
 
+    private webGetOrganizationsURI: string;
+
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
@@ -105,6 +107,8 @@ export class KumulosService {
         this.getGroupsandCountriesURI = "getGroupsandCountries.json/";
 
         this.webBulkInviteUserURI = "webBulkInviteUser.json/";
+
+        this.webGetOrganizationsURI = "webGetOrganizations.json/"
     }
 
     public createAuthorizationHeader(): Headers {
@@ -762,6 +766,21 @@ export class KumulosService {
         let body: string = urlSearchParams.toString();
 
         return this.http.post(this.domain + this.webBulkInviteUserURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public webGetOrganizations()
+    {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.webGetOrganizationsURI, body, {headers: headers})
             .map(response => {
                 console.log(response.json());
                 return response.json();
