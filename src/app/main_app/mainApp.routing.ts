@@ -50,7 +50,12 @@ const mainAppRoutes: Routes = [
             path: 'bulkinvite',
             loadChildren: './bulk_invite/bulkInvite.module#BulkInviteModule',
             canActivate: [UserRoleGuardService, AuthGuardService],
-        }
+        },
+        {
+            path: 'tmforumadmin',
+            loadChildren: './tmforum_admin/tmforumAdmin.module#TMForumAdminModule',
+            canActivate: [UserRoleGuardService, AuthGuardService],
+        },
     ],
     }
 ]

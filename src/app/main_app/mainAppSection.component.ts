@@ -67,8 +67,9 @@ export class MainAppSectionComponent {
 
         let urlRegexTakeSurvey: string = '(\/takesurvey\/.*)';
         let urlRegexViewResults: string = '(\/viewresults\/*)';
+        let urlRegexTMForumAdmin: string = '(\/tmforumadmin\/*)';
 
-        if (currentUrl.match(urlRegexTakeSurvey) || currentUrl.match(urlRegexViewResults)) {
+        if (currentUrl.match(urlRegexTakeSurvey) || currentUrl.match(urlRegexViewResults) || currentUrl.match(urlRegexTMForumAdmin)) {
             return false;
         }
 

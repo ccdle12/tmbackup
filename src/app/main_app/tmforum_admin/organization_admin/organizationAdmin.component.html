@@ -1,0 +1,29 @@
+
+<nav mat-tab-nav-bar>
+    <div id="navigationIcon">
+      <img id="backToDashboard" src="../../../assets/Back To-100-white.png" (click)="backToDashboard()" [matTooltip]="backToDashboardTooltip">
+    </div>
+    
+    <div class="container">
+      <div class="row">
+        <a mat-tab-link class="defaultBtn whiteText navTitle" [ngStyle]="inOrganizationAdmin()"><h4>Organization Admin</h4></a>
+        <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('surveyadmin')"><h4>Survey Admin</h4></a>
+        <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('useradmin')"><h4>User Admin</h4></a>
+        <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('benchmarkdata')"><h4>Benchmark Data</h4></a>
+      </div>
+    </div> 
+</nav>
+
+<div class="container">
+  <div class="row">
+    <h1>Maintain Organizations</h1>
+    <h5>Required to allow surveys to be grouped and published within the organization</h5>
+    <button id="addOrganization" mat-mini-fab class="col-xs-3" color="primary"><mat-icon>add</mat-icon></button>
+  </div>
+</div>
+
+
+  
+  
+  
+  <div class="marginBottom"></div>

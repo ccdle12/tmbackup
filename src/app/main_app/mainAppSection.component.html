@@ -1,7 +1,9 @@
 <nav mat-tab-nav-bar *ngIf="hideNavBar()">
 
+  
+  <a mat-tab-link class="navTitle" *ngIf="!authService.inDemoMode() && authService.isAdmin()" routerLink="tmforumadmin"><h4>TMForum Admin</h4></a> 
   <a mat-tab-link class="navTitle" *ngIf="this.currentUrlInTeamAdmin()" routerLink="bulkinvite"><h4>Bulk Invite</h4></a>
-
+  
   <a mat-tab-link class="navTitle" [ngStyle]="inTeamAdmin()" *ngIf="!authService.inDemoMode()" routerLink="teamadmin"><h4>Team Admin</h4></a> 
   <a mat-tab-link class="navTitle" *ngIf="!authService.isVerified()"><h4>Team Admin</h4></a> 
 
