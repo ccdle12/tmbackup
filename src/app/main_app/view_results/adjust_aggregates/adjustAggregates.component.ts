@@ -2,9 +2,9 @@ import { Component, Inject, OnInit, AfterViewInit, AfterViewChecked } from '@ang
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
-import { MdDialog, MdTooltip } from '@angular/material';
+import { MatDialog, MatTooltip } from '@angular/material';
 
 import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 
@@ -38,8 +38,8 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
 
   pageLoaded: boolean;
 
-  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar, 
-              public savingSnackBar: SavingSnackBar, public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MdDialog) 
+  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MatSnackBar, 
+              public savingSnackBar: SavingSnackBar, public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MatDialog) 
   { 
     this.loadingSnackBar.showLoadingSnackBar(); 
   }

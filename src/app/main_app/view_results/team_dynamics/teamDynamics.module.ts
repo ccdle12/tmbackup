@@ -4,10 +4,10 @@ import { TeamDynamicsComponent } from './teamDynamics.component';
 import { KumulosService } from '../../../shared/services/kumulos.service';
 
 import { FormsModule } from '@angular/forms';
-import { MdProgressSpinnerModule, MdDialogModule, MdMenuModule, MdIconModule, MdInputModule, MdButtonModule, MdTabsModule} from '@angular/material';
+import { MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatIconModule, MatInputModule, MatButtonModule, MatTabsModule} from '@angular/material';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, MdIconModule, MdMenuModule, MdTabsModule],
+  imports: [CommonModule, FormsModule, MatIconModule, MatMenuModule, MatTabsModule],
   declarations: [],
   providers: [KumulosService],
 })

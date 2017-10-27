@@ -26,7 +26,7 @@ export class UserRoleGuardService implements CanActivate {
       }
 
       //if logged in and user is not leader and consultant
-      if (userRole !== "Leader" && userRole !== "Consultant") 
+      if (userRole !== "Leader" && userRole !== "Consultant" && userRole !== "Admin") 
       {
         this.router.navigate(['main']);
         return false;

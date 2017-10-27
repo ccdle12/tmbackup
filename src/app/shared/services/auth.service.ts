@@ -1,7 +1,7 @@
 import { Component, Input }  from '@angular/core';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { MdSnackBar, MdDialog } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { tokenNotExpired } from 'angular2-jwt';
 import auth0 from 'auth0-js';
 import 'rxjs/add/operator/filter';
@@ -16,7 +16,7 @@ lock: any;
 options: any;
 
 
-constructor(public router: Router, public snackbar: MdSnackBar, public dialog: MdDialog) { 
+constructor(public router: Router, public snackbar: MatSnackBar, public dialog: MatDialog) { 
 
   this.options = {
     allowSignUp: false,
@@ -146,11 +146,17 @@ public revertToDemoIfTokenExpires(): void {
    }
 }
 
+public isAdmin(): boolean {
+  if (localStorage.getItem('user') !== null) {
+    var userAdmin = JSON.parse(localStorage.getItem('user'));
+    return userAdmin == 'Admin';
+  }
+}
 
 public isLeaderConsultant(): boolean {
   if (localStorage.getItem('user') !== null) {
     var userLeaderConsultant = JSON.parse(localStorage.getItem('user'));
-    return userLeaderConsultant.user_role == 'Leader' || userLeaderConsultant.user_role == 'Consultant' ;
+    return userLeaderConsultant.user_role == 'Leader' || userLeaderConsultant.user_role == 'Consultant', userLeaderConsultant.user_role == 'Admin';
   }
   return false;
 }

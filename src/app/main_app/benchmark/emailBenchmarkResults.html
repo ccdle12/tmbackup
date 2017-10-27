@@ -3,8 +3,8 @@
 <p *ngIf="this.authService.isAuthenticated()">Do you wish to Proceed? </p>
 
 <div class="row" *ngIf="this.authService.isAuthenticated()">
-    <button md-button md-dialog-close class="col-xs-6">Cancel</button>
-    <button md-button class="col-xs-6" (click)="sendSurveyRequest()">Yes</button>
+    <button mat-button matDialogClose class="col-xs-6">Cancel</button>
+    <button mat-button class="col-xs-6" (click)="sendSurveyRequest()">Yes</button>
 </div>
 
 <div *ngIf="!this.authService.isAuthenticated()"><strong>Demo Version - please register for full access</strong></div>

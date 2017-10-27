@@ -1,5 +1,5 @@
 <div class="loading-overlay" #spinnerElement style="opacity: 0;">
-    <md-spinner></md-spinner>
+    <mat-spinner></mat-spinner>
 </div>
 
 
@@ -12,20 +12,20 @@
         <div class="userDetails" *ngIf="this.authService.isAuthenticated()">{{this.localStorageService.getUserName()}} - {{this.localStorageService.getUserCity()}} - {{this.localStorageService.getUserRole()}}</div> 
 
         <span *ngIf="minWidth()"><img *ngIf="this.authService.isAuthenticated()" class='nav-avatar img-circle' [src]="getUserAvatar()"/></span> 
-        <md-icon *ngIf="this.authService.isAuthenticated()"  id="menuIcon" [mdMenuTriggerFor]="menu" onMouseOver="this.style.cursor='pointer'">md_more_vert</md-icon>
+        <mat-icon *ngIf="this.authService.isAuthenticated()"  id="menuIcon" [matMenuTriggerFor]="menu" onMouseOver="this.style.cursor='pointer'">md_more_vert</mat-icon>
        </div> 
     </nav>
     
 
-      <md-menu #menu="mdMenu" yPosition="above">
-        <button md-menu-item *ngIf="authService.isAuthenticated()" (click)="editUserDetails()">
+      <mat-menu #menu="matMenu" yPosition="above">
+        <button mat-menu-item *ngIf="authService.isAuthenticated()" (click)="editUserDetails()">
           <span>View/Edit Details</span>
         </button>
         
-        <button md-menu-item *ngIf="authService.isAuthenticated()" (click)="this.authService.logout()">
+        <button mat-menu-item *ngIf="authService.isAuthenticated()" (click)="this.authService.logout()">
           <span>Log out</span>
         </button>
-      </md-menu>
+      </mat-menu>
 
   </header>
 
@@ -35,7 +35,7 @@
 </main>
 
 <footer id="footer" ng-cloak>
-  <img id="infoIcon" src="../assets/Info-50.png" [mdTooltip]="infoTooltip" mdTooltipPosition="after">
+  <img id="infoIcon" src="../assets/Info-50.png" [matTooltip]="infoTooltip" matTooltipPosition="after">
   <div id="termsOfUse" *ngIf="showDisclaimer()"><strong>By clicking on Register My Interest or Login you agree to our Terms of Use and Privacy Policy at www.tmforum.org</strong></div>
 </footer>
 

@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { EmailSentSnackBarComponent } from '../my_own_results/myOwnResults.component';
 
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 
@@ -44,8 +44,8 @@ export class TeamDynamicsComponent {
   backToDashboardTooltip: String;
   emailResults: String;
 
-  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar, public authService: AuthService,
-              public loadingSnackBar: LoadingSnackBar, public dialog: MdDialog) {
+  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MatSnackBar, public authService: AuthService,
+              public loadingSnackBar: LoadingSnackBar, public dialog: MatDialog) {
     this.initializeMemberVariables();
     this.getTeamDynamicsData();
    }
@@ -347,7 +347,7 @@ export class TeamDynamicsComponent {
 })
 export class EmailTeamDynamicsDialog {
   constructor(public router: Router,  public authService: AuthService, public kumulosService: KumulosService,
-              public dialog: MdDialog) {
+              public dialog: MatDialog) {
   }
 
   public sendSurveyRequest(): void {

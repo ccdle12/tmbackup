@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
-import { MdDialog, MdTooltip } from '@angular/material';
+import { MatDialog, MatTooltip } from '@angular/material';
 
 import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 
@@ -22,8 +22,8 @@ export class MyOwnResultsComponent {
   backToDashboardTooltip: String;
   emailResults: String;
 
-  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar, 
-              public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MdDialog) {
+  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MatSnackBar, 
+              public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MatDialog) {
     
     this.loadingSnackBar.showLoadingSnackBar();
     this.initializeMemberVariables();
@@ -197,7 +197,7 @@ export class EmailSentSnackBarComponent {}
 })
 export class EmailMyOwnResultsDialog {
   constructor(public router: Router,  public authService: AuthService, public kumulosService: KumulosService,
-              public dialog: MdDialog) {
+              public dialog: MatDialog) {
     console.log(this.router.url);
   }
 

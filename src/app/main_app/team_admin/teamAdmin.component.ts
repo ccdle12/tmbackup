@@ -1,6 +1,6 @@
 import { Component, Input }  from '@angular/core';
 import { KumulosService } from '../../shared/services/kumulos.service';
-import { MdDialog, MdSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../shared/services/validation.service';
 import { DeleteUserService } from '../../shared/services/deleteUser.service';
@@ -31,9 +31,9 @@ export class TeamAdminComponent  {
   userProfiles:  JSON[];
   userProfilesSize;
 
-  constructor(public authService: AuthService, private kumulosService: KumulosService, public dialog: MdDialog, 
+  constructor(public authService: AuthService, private kumulosService: KumulosService, public dialog: MatDialog, 
     public loadingSnackBar: LoadingSnackBar, public deleteUserService: DeleteUserService, public editRoleService: EditRoleService,
-    public licenseService: LicenseService, public snackbar: MdSnackBar, public router: Router) {
+    public licenseService: LicenseService, public snackbar: MatSnackBar, public router: Router) {
   
     this.getAllUsers();
   }
@@ -146,7 +146,7 @@ export class InviteUserDialog {
   
   @ViewChild('spinnerElement') loadingElement: ElementRef;
 
-  constructor(public dialog: MdDialog, private formBuilder: FormBuilder, public kumulosService: KumulosService, 
+  constructor(public dialog: MatDialog, private formBuilder: FormBuilder, public kumulosService: KumulosService, 
               public renderer: Renderer, private ngZone: NgZone) {
     
     this.inviteUserForm = this.formBuilder.group({
@@ -196,7 +196,7 @@ export class InviteUserDialog {
 export class DeleteUserDialog {
   httpRequestFlag: boolean;
   
-  constructor(public dialog: MdDialog, public router: Router, public deleteUserService: DeleteUserService, public kumulosService: KumulosService) {
+  constructor(public dialog: MatDialog, public router: Router, public deleteUserService: DeleteUserService, public kumulosService: KumulosService) {
   }
 
   public deleteUser() {
@@ -228,7 +228,7 @@ export class EditUserRole {
   public userEmail: string;
   public userId: string;
 
-  constructor(public router: Router, public editRoleService: EditRoleService, public kumulosService: KumulosService, public dialog: MdDialog) {
+  constructor(public router: Router, public editRoleService: EditRoleService, public kumulosService: KumulosService, public dialog: MatDialog) {
     this.userRole = this.editRoleService.getUserRole();
     this.userName = this.editRoleService.getUserName();
     this.userJobTitle = this.editRoleService.getUserJobTitle();

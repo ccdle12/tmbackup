@@ -4,7 +4,7 @@ import { AdjustAggregatesComponent } from './adjustAggregates.component';
 import { KumulosService } from '../../../shared/services/kumulos.service';
 
 import { FormsModule } from '@angular/forms';
-import { MdSliderModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule} from '@angular/material';
+import { MatSliderModule, MatTooltipModule, MatSidenavModule, MatButtonToggleModule, MatTabsModule, MatButtonModule, MatIconModule} from '@angular/material';
 
 @NgModule({
   imports: [CommonModule, FormsModule],

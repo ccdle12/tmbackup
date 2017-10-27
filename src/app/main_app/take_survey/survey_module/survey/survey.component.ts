@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
 import { KumulosService } from '../../../../shared/services/kumulos.service';
 import { AuthService } from '../../../../shared/services/auth.service';
-import { MdSliderModule, MdSidenavModule  } from '@angular/material';
+import { MatSliderModule, MatSidenavModule  } from '@angular/material';
 import { Router } from '@angular/router';
-import { MdDialog } from '@angular/material';
-import { MdSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { LoadingSnackBar } from '../../../../shared/components/loadingSnackBar';
 
 import { ComponentCanDeactivate } from '../../../../shared/services/saveSurvey-guard.service';
@@ -63,7 +63,7 @@ export class SurveyComponent {
 
   sliderMoved: boolean;
   
-  constructor(public kumulosService: KumulosService, public router: Router, public dialog: MdDialog, public authService: AuthService,public snackBar: MdSnackBar, private eRef: ElementRef, public userSavedService: UserSavedService, public loadingSnackBar: LoadingSnackBar,
+  constructor(public kumulosService: KumulosService, public router: Router, public dialog: MatDialog, public authService: AuthService,public snackBar: MatSnackBar, private eRef: ElementRef, public userSavedService: UserSavedService, public loadingSnackBar: LoadingSnackBar,
               public createAndDeleteDimensionOwner: CreateAndDeleteDimensionOwnerService) { 
     
     this.initializeMemberVariables();
@@ -519,7 +519,7 @@ export class SaveSnackBarComponent {}
 })
 export class ResponsibleForSectionDialog {
 
-  constructor(public dimensionOwnerService: CreateAndDeleteDimensionOwnerService, public kumulosService: KumulosService, public dialog: MdDialog) {}
+  constructor(public dimensionOwnerService: CreateAndDeleteDimensionOwnerService, public kumulosService: KumulosService, public dialog: MatDialog) {}
 
   public takeResponsibility(): void {
     this.dimensionOwnerService.retrieveA0ProfileKeys();
@@ -545,7 +545,7 @@ export class RemoveResponsibilityForSectionDialog {
 
   public dimensionOwnerID: string;
 
-  constructor(public dimensionOwnerService: CreateAndDeleteDimensionOwnerService, public kumulosService: KumulosService, public dialog: MdDialog) {
+  constructor(public dimensionOwnerService: CreateAndDeleteDimensionOwnerService, public kumulosService: KumulosService, public dialog: MatDialog) {
     this.dimensionOwnerID = this.dimensionOwnerService.getDimensionOwnerID();
   }
 

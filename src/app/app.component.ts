@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService }       from './shared/services/auth.service';
 import { LocalStorageService } from './shared/services/localStorage.service';
 import { KumulosService } from './shared/services/kumulos.service';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import {
     Router,
@@ -35,7 +35,7 @@ export class AppComponent {
 
    constructor(private router: Router,  private ngZone: NgZone,
                private renderer: Renderer, public authService: AuthService, 
-               public localStorageService: LocalStorageService, public dialog: MdDialog) {
+               public localStorageService: LocalStorageService, public dialog: MatDialog) {
 
         this.authService.handleAuthentication();
         this.authService.revertToDemoIfTokenExpires();
@@ -170,7 +170,7 @@ export class EditUserDetailsDialog {
   
   @ViewChild('spinnerElement') loadingElement: ElementRef;
 
-  constructor(public kumulosService: KumulosService, public authService: AuthService,  public dialog: MdDialog) { 
+  constructor(public kumulosService: KumulosService, public authService: AuthService,  public dialog: MatDialog) { 
       this.setUserNameAndTitle();
   }
 

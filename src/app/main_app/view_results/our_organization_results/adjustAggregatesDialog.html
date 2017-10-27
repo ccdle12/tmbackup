@@ -1,5 +1,5 @@
 <div class="loading-overlay" #loadingElement style="opacity: 100;">
-    <md-spinner *ngIf="httpRequestFlag"></md-spinner>
+    <mat-spinner *ngIf="httpRequestFlag"></mat-spinner>
 </div>
 
 <div class="container">
@@ -40,7 +40,7 @@
             <span *ngIf="resetTargetValHasIndex(i)" class="resetTargetVal" (click)="setTargetValToDefault(i)">Reset to {{getTargetResetVal(i)}}</span>
         </div>
 
-        <!-- <span class="col-sm-2"><md-slider min="1" max="5" step="1" value="1" tickInterval="1" [(ngModel)]="twoYearTargetValues[i]" (change)="targetSliderChanged(i)"></md-slider> {{twoYearTargetValues[i]}}</span>   -->
+        <!-- <span class="col-sm-2"><mat-slider min="1" max="5" step="1" value="1" tickInterval="1" [(ngModel)]="twoYearTargetValues[i]" (change)="targetSliderChanged(i)"></mat-slider> {{twoYearTargetValues[i]}}</span>   -->
         <span class="col-sm-2 sliders">
             <span class="col-sm-1 col-sm-offset-9" *ngIf="twoYearTargetValues[i] != 0">{{twoYearTargetValues[i]}}</span>
             <span class="col-sm-1 col-sm-offset-9" *ngIf="twoYearTargetValues[i] == null || twoYearTargetValues[i] == 0" class="clearScore">0</span> 
@@ -49,6 +49,6 @@
 
     </div>
 
-    <button class="adjustAggregatesBtn" md-button md-dialog-close>Cancel</button>
-    <button class="adjustAggregatesBtn" md-button (click)="sendSurveyRequest()">Save</button>
+    <button class="adjustAggregatesBtn" mat-button matDialogClose>Cancel</button>
+    <button class="adjustAggregatesBtn" mat-button (click)="sendSurveyRequest()">Save</button>
 </div> 

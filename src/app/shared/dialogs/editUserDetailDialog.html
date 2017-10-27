@@ -1,18 +1,18 @@
 <div class="loading-overlay" #loadingElement style="opacity: 100;">
-    <md-spinner *ngIf="httpRequestFlag"></md-spinner>
+    <mat-spinner *ngIf="httpRequestFlag"></mat-spinner>
 </div>
 
 <div class="form">
-    <md-input-container>
-        <input mdInput placeholder="Name" [(ngModel)]="userName" value={{userName}}>
-    </md-input-container>
+    <mat-form-field>
+        <input matInput placeholder="Name" [(ngModel)]="userName" value={{userName}}>
+    </mat-form-field>
 </div>
 
 <div class="form">
-    <md-input-container>
-        <input mdInput placeholder="Job Title" [(ngModel)]="userTitle" value="{{userTitle}}">
-    </md-input-container>
+    <mat-form-field>
+        <input matInput placeholder="Job Title" [(ngModel)]="userTitle" value="{{userTitle}}">
+    </mat-form-field>
 </div>
 
-<button md-button md-dialog-close>Cancel</button>
-<button md-button (click)="updateUserDetails()">Save</button>
+<button mat-button matDialogClose>Cancel</button>
+<button mat-button (click)="updateUserDetails()">Save</button>

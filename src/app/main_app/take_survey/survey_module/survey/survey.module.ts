@@ -4,7 +4,7 @@ import { SurveyComponent } from './survey.component';
 import { surveyRouting } from './survey.routing';
 import { KumulosService } from '../../../../shared/services/kumulos.service';
 import { AuthService } from '../../../../shared/services/auth.service';
-import { MdSliderModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule} from '@angular/material';
+import { MatSliderModule, MatTooltipModule, MatSidenavModule, MatButtonToggleModule, MatTabsModule, MatButtonModule, MatIconModule} from '@angular/material';
 import { FormsModule } from '@angular/forms';
 
 import { TooltipModule } from 'primeng/primeng';
@@ -14,7 +14,7 @@ import { SharedModule } from '../../../../shared/modules/sharedModule';
 import { ClickOutsideDirective } from './clickOutSide.directive';
 
 @NgModule({
-  imports: [CommonModule, surveyRouting, TooltipModule, SharedModule, MdSliderModule, FormsModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule],
+  imports: [CommonModule, surveyRouting, TooltipModule, SharedModule, MatSliderModule, FormsModule, MatTooltipModule, MatSidenavModule, MatButtonToggleModule, MatTabsModule, MatButtonModule, MatIconModule],
   declarations: [SurveyComponent, ClickOutsideDirective],
   providers: [KumulosService, AuthService],
   
