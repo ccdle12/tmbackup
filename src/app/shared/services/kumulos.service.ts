@@ -53,6 +53,8 @@ export class KumulosService {
 
     private webGetOrganizationsURI: string;
 
+    private webCreateUpdateOrganizationsURI: string;
+
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
@@ -108,7 +110,8 @@ export class KumulosService {
 
         this.webBulkInviteUserURI = "webBulkInviteUser.json/";
 
-        this.webGetOrganizationsURI = "webGetOrganizations.json/"
+        this.webGetOrganizationsURI = "webGetOrganizations.json/";
+        this.webCreateUpdateOrganizationsURI = "webCreate_UpdateOrganizations.json/";
     }
 
     public createAuthorizationHeader(): Headers {
@@ -783,6 +786,44 @@ export class KumulosService {
         return this.http.post(this.domain + this.webGetOrganizationsURI, body, {headers: headers})
             .map(response => {
                 console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public webCreateUpdateOrganizations(orgName: string, contactName: string, contactEmail: string, archivedFlag: boolean, orgID: number)
+    {
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+        let organizationData: string
+
+        //Create a new organization
+        if (archivedFlag == false && orgID == null)
+            organizationData = '{"organizationData":[{"organizationName":' + '"' + orgName + '"' + ',"contactName":' + '"' + contactName + '"'  + ',"contactEmail":' + '"' + contactEmail + '"' + ',"archivedFlag":"", "organizationID":""}]}';
+        else
+        {
+        //Update an existing organization
+            let orgIDAsString = String(orgID); 
+
+            if (archivedFlag == true)
+            {
+                let archivedFlagAsString = "X";
+                organizationData = '{"organizationData":[{"organizationName":' + '"' + orgName + '"' + ',"contactName":' + '"' + contactName + '"'  + ',"contactEmail":' + '"' + contactEmail + '"' + ',"archivedFlag":' + '"' + archivedFlagAsString + '"' + ', "organizationID":' + '"' + orgIDAsString + '"' + '}]}';
+            }
+            else
+            {
+                organizationData = '{"organizationData":[{"organizationName":' + '"' + orgName + '"' + ',"contactName":' + '"' + contactName + '"'  + ',"contactEmail":' + '"' + contactEmail + '"' + ',"archivedFlag":"", "organizationID":' + '"' + orgIDAsString + '"' + '}]}';
+            }
+            
+        }
+
+        console.log("Organization Data: " + organizationData);
+        urlSearchParams.append('params[organizationData]', organizationData);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.webCreateUpdateOrganizationsURI, body, {headers: headers})
+            .map(response => {
+                console.log("Web Create response: " + response.json());
                 return response.json();
             })
     }
