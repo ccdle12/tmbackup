@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { MatDialog, MatTooltip, MatSnackBar } from '@angular/material';
+import { MatDialog, MatTooltip, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
@@ -97,7 +97,23 @@ export class OrganizationAdminComponent {
 
   public editOrganization(index: number): void
   {
-    console.log(this.organizationsJSON[index].organizationID);
+    let contactEmail = this.organizationsJSON[index].contactEmail;
+    let contactName = this.organizationsJSON[index].contactName;
+    let orgID = this.organizationsJSON[index].organizationID;
+    let organizationName = this.organizationsJSON[index].organizationName;
+
+    let dialogRef = this.dialog.open(EditOrgDialog, {
+      data: {
+              contactName: contactName,
+              contactEmail: contactEmail,
+              orgID: orgID,
+              organizationName: organizationName
+            }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.webGetOrganizations();
+    });
   }
 
 }
@@ -138,42 +154,87 @@ export class AddNewOrgDialog {
   onSubmit() {}
 }
 
-// @Component({
-//   selector: 'editUserRole',
-//   templateUrl: '../../shared/dialogs/editUserRole.html',
-//   styleUrls: ['../../shared/dialogs/editUserRole.css']
-// })
-// export class EditUserRole {
+@Component({
+  selector: 'editOrgDialog',
+  templateUrl: './edit_org_dialog/editOrgDialog.html',
+  styleUrls: ['./edit_org_dialog/editOrgDialog.css']
+})
+export class EditOrgDialog {
 
-//   public httpRequestFlag: boolean;
+  public httpRequestFlag: boolean;
 
-//   public userRole: string;
-//   public userName: string;
-//   public userJobTitle: string;
-//   public userEmail: string;
-//   public userId: string;
+  public contactEmail;
+  public contactName;
+  public organizationName;
+  private orgID;
 
-//   constructor(public router: Router, public editRoleService: EditRoleService, public kumulosService: KumulosService, public dialog: MatDialog) {
-//     this.userRole = this.editRoleService.getUserRole();
-//     this.userName = this.editRoleService.getUserName();
-//     this.userJobTitle = this.editRoleService.getUserJobTitle();
-//     this.userEmail = this.editRoleService.getUserEmail();
-//     this.userId = this.editRoleService.getUserId();
+  public userMadeChangesFlag;
+  public editOrganizationForm: FormGroup;
 
-//   }
+  @ViewChild('spinnerElement') loadingElement: ElementRef;
 
-//   public updateUserRole(userRole: string): void {
-//     this.userRole = userRole;
-//   }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, 
+              private formBuilder: FormBuilder,
+              public kumulosService: KumulosService, 
+              public dialog: MatDialog) 
+  {
+    this.initMemberVariables();
+    this.unpackInjectedData(data);
+    this.initEditOrganizationForm();
+    this.setOrganizationFormListener();
+  }
 
-//   public changeUserRole(): void {
-//     this.httpRequestFlag = true;
+  private initMemberVariables(): void
+  {
+    this.userMadeChangesFlag = false; 
+  }
 
-//     this.kumulosService.updateUserRole(this.userRole, this.userId, this.userEmail, this.userName)
-//     .subscribe(response => 
-//       {
-//         this.dialog.closeAll()
-//       });
+  private unpackInjectedData(data: any): void
+  {
+    this.contactEmail = data.contactEmail;
+    this.contactName = data.contactName;
+    this.organizationName = data.organizationName;
+    this.orgID = data.orgID;
+  }
 
-//   }
-// }
+  private initEditOrganizationForm(): void 
+  {
+    this.editOrganizationForm = this.formBuilder.group({
+      organizationName: [this.organizationName],
+      contactName: [this.contactName],
+      email: [this.contactEmail, [Validators.required, ValidationService.emailValidator]],
+     });
+  }
+
+  private setOrganizationFormListener()
+  {
+    this.editOrganizationForm.valueChanges.subscribe(data => {
+      this.userMadeChangesFlag = true;
+      console.log("Values changed listener has picked this up");
+      console.log("user made changes: " + this.userMadeChangesFlag);
+   });
+  }
+
+  public editOrganization(): void {
+    let organizationName: string = this.editOrganizationForm.value.organizationName;
+    let contactName: string = this.editOrganizationForm.value.contactName;
+    let email: string = this.editOrganizationForm.value.email;
+    
+    this.httpRequestFlag = true;
+    this.kumulosService.webCreateUpdateOrganizations(organizationName, contactName, email, false, this.orgID).subscribe(responseJSON => {
+      this.dialog.closeAll();
+    })
+  }
+
+  public enableSubmitButton(): boolean 
+  {
+    let submitButtonState: boolean = true;
+
+    if (this.userMadeChangesFlag && this.editOrganizationForm.valid)
+      submitButtonState = false;
+
+    return submitButtonState;
+  }
+
+  onSubmit() {}
+}

@@ -47,7 +47,7 @@ import { SavingSnackBar } from './shared/components/savingSnackBar';
 import { UserRoleGuardService } from './shared/services/userRole-guard.service';
 import { LicenseService } from './shared/services/license.service';
 
-import { AddNewOrgDialog } from './main_app/tmforum_admin/organization_admin/organizationAdmin.component';
+import { AddNewOrgDialog, EditOrgDialog } from './main_app/tmforum_admin/organization_admin/organizationAdmin.component';
 
 @NgModule({
   imports: 
@@ -94,7 +94,8 @@ import { AddNewOrgDialog } from './main_app/tmforum_admin/organization_admin/org
     AdjustAggregatesDialog, 
     PublishSurveyDialog, 
     SelectCityOrgDialog,
-    AddNewOrgDialog
+    AddNewOrgDialog,
+    EditOrgDialog
   ],
   entryComponents: 
   [
@@ -123,7 +124,8 @@ import { AddNewOrgDialog } from './main_app/tmforum_admin/organization_admin/org
     AdjustAggregatesDialog, 
     PublishSurveyDialog, 
     SelectCityOrgDialog, 
-    AddNewOrgDialog
+    AddNewOrgDialog,
+    EditOrgDialog
   ],
   providers: 
   [
