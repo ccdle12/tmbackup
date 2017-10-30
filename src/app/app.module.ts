@@ -26,7 +26,6 @@ import { EditUserDetailsDialog } from './app.component';
 import { InviteUserDialog, DeleteUserDialog, EditUserRole } from './main_app/team_admin/teamAdmin.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
-// import { MaterialModule } from '@angular/material';
 import {AppMaterialModules} from './material.module';
 
 import { ControlMessagesComponent } from './shared/dialogs/controlMessages.component';
@@ -48,12 +47,101 @@ import { SavingSnackBar } from './shared/components/savingSnackBar';
 import { UserRoleGuardService } from './shared/services/userRole-guard.service';
 import { LicenseService } from './shared/services/license.service';
 
+import { AddNewOrgDialog } from './main_app/tmforum_admin/organization_admin/organizationAdmin.component';
+
 @NgModule({
-  imports: [AppMaterialModules, BrowserAnimationsModule, SharedModule, BrowserModule, FormsModule, ReactiveFormsModule, HttpModule, appRouting, DropdownModule],
-  declarations: [AppComponent, WelcomeComponent, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, ResponsibleForSectionDialog, RemoveResponsibilityForSectionDialog , NotFoundComponent, AuthCallbackComponent, 
-                 EmailInvalidDialog, SuccessBulkInviteDialog, SaveSnackBarComponent, EmailSentSnackBarComponent, UpdatePublicationLevelDialog, EditUserDetailsDialog, InviteUserDialog, DeleteUserDialog,EditUserRole, ControlMessagesComponent, EmailMyOwnResultsDialog, EmailTeamDynamicsDialog, EmailOrganizationResultsDialog, LicenseInvalidDialog, EvidenceDialog, DeleteEvidenceDialog,EditEvidenceDialog, EmailBenchmarkResults, AdjustAggregatesDialog, PublishSurveyDialog, SelectCityOrgDialog],
-  entryComponents: [UpdatePublicationLevelDialog, EmailInvalidDialog, SuccessBulkInviteDialog, RegisterCityDialog, RemindUserToSaveDialog, InDemoModeDialog, ResponsibleForSectionDialog, RemoveResponsibilityForSectionDialog, SaveSnackBarComponent, EmailSentSnackBarComponent, EditUserDetailsDialog, InviteUserDialog, DeleteUserDialog, EditUserRole, EmailMyOwnResultsDialog, EmailTeamDynamicsDialog, EmailOrganizationResultsDialog, LicenseInvalidDialog, EvidenceDialog, DeleteEvidenceDialog,EditEvidenceDialog, EmailBenchmarkResults, AdjustAggregatesDialog, PublishSurveyDialog, SelectCityOrgDialog],
-  providers: [AuthService, LicenseService, UserRoleGuardService, LoadingSnackBar, SavingSnackBar, WelcomeGuardService, UserSaveGuardService, LocalStorageService, KumulosService, DeleteUserService, UserSavedService, EditRoleService, CreateAndDeleteDimensionOwnerService, EvidenceService ],
+  imports: 
+  [
+    AppMaterialModules, 
+    BrowserAnimationsModule, 
+    SharedModule, 
+    BrowserModule, 
+    FormsModule, 
+    ReactiveFormsModule, 
+    HttpModule, 
+    appRouting, 
+    DropdownModule
+  ],
+  declarations: 
+  [
+    AppComponent, 
+    WelcomeComponent, 
+    RegisterCityDialog, 
+    RemindUserToSaveDialog, 
+    InDemoModeDialog, 
+    ResponsibleForSectionDialog, 
+    RemoveResponsibilityForSectionDialog , 
+    NotFoundComponent, 
+    AuthCallbackComponent, 
+    EmailInvalidDialog, 
+    SuccessBulkInviteDialog, 
+    SaveSnackBarComponent, 
+    EmailSentSnackBarComponent, 
+    UpdatePublicationLevelDialog, 
+    EditUserDetailsDialog, 
+    InviteUserDialog, 
+    DeleteUserDialog,
+    EditUserRole, 
+    ControlMessagesComponent, 
+    EmailMyOwnResultsDialog, 
+    EmailTeamDynamicsDialog, 
+    EmailOrganizationResultsDialog, 
+    LicenseInvalidDialog, 
+    EvidenceDialog, 
+    DeleteEvidenceDialog,
+    EditEvidenceDialog, 
+    EmailBenchmarkResults, 
+    AdjustAggregatesDialog, 
+    PublishSurveyDialog, 
+    SelectCityOrgDialog,
+    AddNewOrgDialog
+  ],
+  entryComponents: 
+  [
+    UpdatePublicationLevelDialog, 
+    EmailInvalidDialog, 
+    SuccessBulkInviteDialog, 
+    RegisterCityDialog, 
+    RemindUserToSaveDialog, 
+    InDemoModeDialog, 
+    ResponsibleForSectionDialog, 
+    RemoveResponsibilityForSectionDialog,
+    SaveSnackBarComponent, 
+    EmailSentSnackBarComponent, 
+    EditUserDetailsDialog, 
+    InviteUserDialog, 
+    DeleteUserDialog, 
+    EditUserRole, 
+    EmailMyOwnResultsDialog, 
+    EmailTeamDynamicsDialog, 
+    EmailOrganizationResultsDialog, 
+    LicenseInvalidDialog, 
+    EvidenceDialog, 
+    DeleteEvidenceDialog,
+    EditEvidenceDialog, 
+    EmailBenchmarkResults, 
+    AdjustAggregatesDialog, 
+    PublishSurveyDialog, 
+    SelectCityOrgDialog, 
+    AddNewOrgDialog
+  ],
+  providers: 
+  [
+    AuthService, 
+    LicenseService, 
+    UserRoleGuardService, 
+    LoadingSnackBar, 
+    SavingSnackBar, 
+    WelcomeGuardService, 
+    UserSaveGuardService, 
+    LocalStorageService, 
+    KumulosService, 
+    DeleteUserService, 
+    UserSavedService, 
+    EditRoleService, 
+    CreateAndDeleteDimensionOwnerService, 
+    EvidenceService 
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

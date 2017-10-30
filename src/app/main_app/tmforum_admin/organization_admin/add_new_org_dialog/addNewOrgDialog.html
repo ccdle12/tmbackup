@@ -1,0 +1,31 @@
+<div class="loading-overlay" #loadingElement style="opacity: 100;">
+    <mat-spinner *ngIf="httpRequestFlag"></mat-spinner>
+</div>
+
+<h4>Add a new Organization</h4>
+<form [formGroup]="inviteOrganizationForm" (ngSubmit)="onSubmit()">
+    <div>
+        
+        <div class="form">
+            <mat-form-field>
+                <input matInput placeholder="Organization Name" type="text" formControlName="organizationName">
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field>
+                <input matInput placeholder="Contact Name" type="text" formControlName="contactName">
+            </mat-form-field>
+        </div>
+    
+        <div class="form">
+            <mat-form-field>
+                <input matInput placeholder="Email"  type="text" formControlName="email">
+                <control-messages [control]="inviteOrganizationForm.controls.email"></control-messages>
+            </mat-form-field>
+        </div>
+
+    </div>
+    <button mat-button matDialogClose>Cancel</button>
+    <button mat-button (click)="addNewOrganization()" [disabled]="!inviteOrganizationForm.valid">Add Organization</button>
+</form>

@@ -18,7 +18,7 @@
   <div class="row">
     <h1>Maintain Organizations</h1>
     <h5>Required to allow surveys to be grouped and published within the organization</h5>
-    <button id="addOrganization" mat-mini-fab class="col-xs-3" color="primary"><mat-icon>add</mat-icon></button>
+    <button id="addOrganization" mat-mini-fab class="col-xs-3" color="primary" (click)="addNewOrganization()"><mat-icon>add</mat-icon></button>
   </div>
 
 
@@ -35,7 +35,7 @@
          </mat-card-content>
 
          <mat-card-actions>
-           <button mat-button class="editButton">Edit</button>
+           <button mat-button class="editButton" (click)="editOrganization(i)">Edit</button>
          </mat-card-actions>
        </div> 
     </mat-card>

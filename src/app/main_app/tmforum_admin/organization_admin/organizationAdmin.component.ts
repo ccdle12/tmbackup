@@ -4,6 +4,9 @@ import { KumulosService } from '../../../shared/services/kumulos.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { MatDialog, MatTooltip, MatSnackBar } from '@angular/material';
 import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
+import { ValidationService } from '../../../shared/services/validation.service';
 
 @Component({
   selector: 'organizationAdminComponent',
@@ -19,11 +22,7 @@ export class OrganizationAdminComponent {
                 public loadingSnackBar: LoadingSnackBar) {
       this.webGetOrganizations();
       this.initializeMemberVariables();    
-      
-      // this.kumulosService.webCreateUpdateOrganizations("testOrg", "ben", "chris@chris.com", true, null)
-      //   .subscribe(response => {
-      //     console.log(response.payload);
-      //   });
+    
     }
 
     /* kumulos call */
@@ -76,7 +75,6 @@ export class OrganizationAdminComponent {
         break;
         
       case ('benchmarkdata'):
-        // this.loadingSnackBar.showLoadingSnackBar();
         this.router.navigateByUrl('main/tmforumadmin/benchmarkdata');
         break;
       }
@@ -90,11 +88,16 @@ export class OrganizationAdminComponent {
   /* methods called from view */
   public addNewOrganization(): void 
   {
-    // let dialogRef = this.dialog.open(InviteUserDialog);
+    let dialogRef = this.dialog.open(AddNewOrgDialog);
 
-    // dialogRef.afterClosed().subscribe(result => {
-        // this.webGetOrganizations();
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+        this.webGetOrganizations();
+    });
+  }
+
+  public editOrganization(index: number): void
+  {
+    console.log(this.organizationsJSON[index].organizationID);
   }
 
 }
@@ -106,49 +109,71 @@ export class OrganizationAdminComponent {
 })
 export class AddNewOrgDialog {
 
-  // httpRequestFlag: boolean;
-  // inviteUserForm: FormGroup;
+  httpRequestFlag: boolean;
+  inviteOrganizationForm: FormGroup;
   
-  // @ViewChild('spinnerElement') loadingElement: ElementRef;
+  @ViewChild('spinnerElement') loadingElement: ElementRef;
 
-  // constructor(public dialog: MatDialog, private formBuilder: FormBuilder, public kumulosService: KumulosService, 
-  //             public renderer: Renderer, private ngZone: NgZone) {
+  constructor(public dialog: MatDialog, private formBuilder: FormBuilder, public kumulosService: KumulosService, 
+              public renderer: Renderer, private ngZone: NgZone) {
     
-  //   this.inviteUserForm = this.formBuilder.group({
-  //    email: ['', [Validators.required, ValidationService.emailValidator]],
-  //   });
-  // }
+    this.inviteOrganizationForm = this.formBuilder.group({
+     organizationName: [''],
+     contactName: [''],
+     email: ['', [Validators.required, ValidationService.emailValidator]],
+    });
+  }
 
-  // public inviteNewUser(): void {
-  //   let cityName: string = this.getCityName();
-  //   console.log("City Name: " + cityName);
-  //   let cityId: string = this.getCityId();
-  //   let email: string = this.inviteUserForm.value.email;
-    
-  //   this.httpRequestFlag = true;
-  //   this.kumulosService.inviteUser(email, cityName, cityId).subscribe(responseJSON => {
-  //     console.log("response", responseJSON.payload);
-  //     // this.reloadPage();
-  //     this.dialog.closeAll();
-  //   })
-  // }
+  public addNewOrganization(): void {
+    let organizationName: string = this.inviteOrganizationForm.value.organizationName;
+    let contactName: string = this.inviteOrganizationForm.value.contactName;
+    let email: string = this.inviteOrganizationForm.value.email;
 
-  // private getCityName(): string {
-  //   let userProfile: JSON = this.getUserProfile();
-  //   let city: string = userProfile['app_metadata']['city'];
-  //   return city;
-  // };
+    this.httpRequestFlag = true;
+    this.kumulosService.webCreateUpdateOrganizations(organizationName, contactName, email, false, null).subscribe(responseJSON => {
+      this.dialog.closeAll();
+    })
+  }
 
-  // private getCityId(): string {
-  //   let userProfile: JSON = this.getUserProfile();
-  //   let cityId: string = userProfile['app_metadata']['city_id'];
-
-  //   return cityId;
-  // }
-
-  // private getUserProfile(): JSON {
-  //   return JSON.parse(localStorage.getItem('userProfile'));
-  // }
-
-  // onSubmit() {}
+  onSubmit() {}
 }
+
+// @Component({
+//   selector: 'editUserRole',
+//   templateUrl: '../../shared/dialogs/editUserRole.html',
+//   styleUrls: ['../../shared/dialogs/editUserRole.css']
+// })
+// export class EditUserRole {
+
+//   public httpRequestFlag: boolean;
+
+//   public userRole: string;
+//   public userName: string;
+//   public userJobTitle: string;
+//   public userEmail: string;
+//   public userId: string;
+
+//   constructor(public router: Router, public editRoleService: EditRoleService, public kumulosService: KumulosService, public dialog: MatDialog) {
+//     this.userRole = this.editRoleService.getUserRole();
+//     this.userName = this.editRoleService.getUserName();
+//     this.userJobTitle = this.editRoleService.getUserJobTitle();
+//     this.userEmail = this.editRoleService.getUserEmail();
+//     this.userId = this.editRoleService.getUserId();
+
+//   }
+
+//   public updateUserRole(userRole: string): void {
+//     this.userRole = userRole;
+//   }
+
+//   public changeUserRole(): void {
+//     this.httpRequestFlag = true;
+
+//     this.kumulosService.updateUserRole(this.userRole, this.userId, this.userEmail, this.userName)
+//     .subscribe(response => 
+//       {
+//         this.dialog.closeAll()
+//       });
+
+//   }
+// }
