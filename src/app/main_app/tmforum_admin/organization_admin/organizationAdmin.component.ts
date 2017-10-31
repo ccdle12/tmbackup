@@ -199,6 +199,7 @@ export class EditOrgDialog {
       organizationName: [this.organizationName],
       contactName: [this.contactName],
       email: [this.contactEmail, [Validators.required, ValidationService.emailValidator]],
+      archive: [''],
      });
   }
 
@@ -206,6 +207,7 @@ export class EditOrgDialog {
   {
     this.editOrganizationForm.valueChanges.subscribe(data => {
       this.userMadeChangesFlag = true;
+
       console.log("Values changed listener has picked this up");
       console.log("user made changes: " + this.userMadeChangesFlag);
    });
@@ -215,9 +217,11 @@ export class EditOrgDialog {
     let organizationName: string = this.editOrganizationForm.value.organizationName;
     let contactName: string = this.editOrganizationForm.value.contactName;
     let email: string = this.editOrganizationForm.value.email;
+    let archiveFlag: boolean = this.editOrganizationForm.value.archive;
     
     this.httpRequestFlag = true;
-    this.kumulosService.webCreateUpdateOrganizations(organizationName, contactName, email, false, this.orgID).subscribe(responseJSON => {
+
+    this.kumulosService.webCreateUpdateOrganizations(organizationName, contactName, email, archiveFlag, this.orgID).subscribe(responseJSON => {
       this.dialog.closeAll();
     })
   }

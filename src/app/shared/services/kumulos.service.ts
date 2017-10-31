@@ -57,6 +57,8 @@ export class KumulosService {
 
     private webGetSurveysByOrgURI: string;
 
+    private webCreateUpdateSurveysURI: string;
+
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
@@ -116,6 +118,8 @@ export class KumulosService {
         this.webCreateUpdateOrganizationsURI = "webCreate_UpdateOrganizations.json/";
 
         this.webGetSurveysByOrgURI = "webGetSurveysByOrg.json/"
+
+        this.webCreateUpdateSurveysURI = "webCreate_UpdateSurveys.json/";
     }
 
     public createAuthorizationHeader(): Headers {
@@ -847,6 +851,37 @@ export class KumulosService {
         return this.http.post(this.domain + this.webGetSurveysByOrgURI, body, {headers: headers})
             .map(response => {
                 console.log(response.json());
+                return response.json();
+            })
+    }
+
+    public webCreateUpdateSurveys(orgName: string, survey: any, cityID: any, archivedFlag: boolean)
+    {
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        console.log(cityID);
+        let surveyData: string;
+        
+        let archive: string;
+        if (archivedFlag == true)
+            archive = "X";
+
+        if (cityID == null)
+            surveyData = '{"surveyData":[{"name":' + '"' + survey.name + '"' + ',"exBenchmark":"","licenseType":' + '"' + survey.license + '"' + ',"maxUsers":' + '"' + survey.maxUsers + '"' + ',"startDate":' + '"' + (survey.validFrom.getTime() / 1000) + '"' + ',"expiryDate":' + '"' + (survey.validTo.getTime() / 1000) + '"' + ',"archivedFlag":"","cityID":""}]}';
+        else
+            surveyData = '{"surveyData":[{"name":' + '"' + survey.name + '"' + ',"exBenchmark":"","licenseType":' + '"' + survey.license + '"' + ',"maxUsers":' + '"' + survey.maxUsers + '"' + ',"startDate":' + '"' + (survey.validFrom.getTime() / 1000) + '"' + ',"expiryDate":' + '"' + (survey.validTo.getTime() / 1000) + '"' + ',"archivedFlag":' + '"' + archive  + '"' + ',"cityID":' + '"'+ cityID + '"' +'}]}';
+        
+        console.log(surveyData);
+        urlSearchParams.append('params[organizationName]', orgName);
+        urlSearchParams.append('params[surveyData]', surveyData);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.webCreateUpdateSurveysURI, body, {headers: headers})
+            .map(response => {
+                console.log("RESPONSE FROM UPDATING EDIT:");
+                console.log(response);
                 return response.json();
             })
     }

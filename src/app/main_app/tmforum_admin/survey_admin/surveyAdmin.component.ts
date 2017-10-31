@@ -15,75 +15,87 @@ import { ValidationService } from '../../../shared/services/validation.service';
 })
 export class SurveyAdminComponent {
 
-    public backToDashboardTooltip;
-    public companiesInView;
-    private organizations;
-    private organizationAndCompanyPairs;
+  public backToDashboardTooltip: string;
+  public companiesInView: Array<any>;
+  public organizations: Array<any>;
+  public currentOrganizationSelected: any;
 
-    constructor(public router: Router, public kumulosService: KumulosService, public dialog: MatDialog,
-                public loadingSnackBar: LoadingSnackBar) {
-      this.initMemberVariables(); 
-      this.getAllOrganizationsAndCompanies();
-    }
+  private organizationAndCompanyPairs;
 
-    private initMemberVariables(): void {
-      this.backToDashboardTooltip = "Back To Dashboard";
-      this.companiesInView = new Array();
-      this.organizations = new Array();
-      this.organizationAndCompanyPairs = new Map<string, JSON[]>();
-    }
+  constructor(public router: Router, public kumulosService: KumulosService, public dialog: MatDialog,
+              public loadingSnackBar: LoadingSnackBar) {
+    this.initMemberVariables(); 
+    this.getAllOrganizationsAndCompanies();
+  }
 
-    /* Kumulos call */
-    /* Get all organizations and companies */
-    private getAllOrganizationsAndCompanies() {
-      this.webGetOrganizations();
-    }
+  private initMemberVariables(): void {
+    this.backToDashboardTooltip = "Back To Dashboard";
+    this.companiesInView = new Array();
+    this.organizations = new Array();
+    this.organizationAndCompanyPairs = new Map<string, JSON[]>();
+  }
 
-    private webGetOrganizations() {
-      this.loadingSnackBar.showLoadingSnackBar();
 
-      this.kumulosService.webGetOrganizations().subscribe(response => {
 
-        if (response.responseCode == 1) {
-          response.payload.forEach(element => {  
-            this.organizations.push(element.organizationName); 
-          });
+  /* Kumulos call */
+  /* Get all organizations and companies */
+  private getAllOrganizationsAndCompanies() {
+    this.webGetOrganizations();
+  }
 
-          this.getCompaniesFromOrganizations();
-        }
-        else {
-          console.log("there was an error");
-          this.loadingSnackBar.dismissLoadingSnackBar();
-        }
-      });
+  private webGetOrganizations() {
+    this.loadingSnackBar.showLoadingSnackBar();
 
-    }
+    this.kumulosService.webGetOrganizations().subscribe(response => {
 
-    private getCompaniesFromOrganizations() {
+      if (response.responseCode == 1) {
+        response.payload.forEach(element => {
+          this.organizations.push({label: element.organizationName, value: {id:element.organizationName, name: element.organizationName}});  
+        });
 
-      this.organizations.forEach(element => {
-        this.kumulosService.webGetSurveysByOrg(element).subscribe(response => {
-          this.organizationAndCompanyPairs.set(element, response.payload);
-          this.loadingSnackBar.dismissLoadingSnackBar();
-        })
-      });
-    }
-
-    
-  
-    /* Highlighting the nav tab */
-    public inOrganizationAdmin() {
-      let currentUrl: string = window.location.pathname;
-
-      if (currentUrl ===  "/main/tmforumadmin/organizationadmin") {
-          console.log("returning blue background?");
-          return { 'background-color': '#469ac0',
-                'color': 'white' };    
-      } else {
-      console.log(window.location.pathname);
-      return { 'background-color': '#62B3D1',
-                'color': 'white' };
+        this.getCompaniesFromOrganizations();
       }
+      else {
+        console.log("there was an error");
+        this.loadingSnackBar.dismissLoadingSnackBar();
+      }
+    });
+  }
+
+  private getCompaniesFromOrganizations() {
+
+    this.organizations.forEach(element => {
+
+      this.kumulosService.webGetSurveysByOrg(element.value.name).subscribe(response => {
+        this.organizationAndCompanyPairs.set(element.value.name, response.payload);
+        
+        this.currentOrganizationSelected = this.organizations[0].value;
+        this.updateCompaniesInView();
+
+        this.loadingSnackBar.dismissLoadingSnackBar();
+      })
+
+    });
+  }
+
+  private updateCompaniesInView(): void {
+    this.companiesInView = this.organizationAndCompanyPairs.get(this.currentOrganizationSelected.name);
+  }
+
+
+
+  
+  /* Highlighting the nav tab */
+  public inOrganizationAdmin() {
+    let currentUrl: string = window.location.pathname;
+
+    if (currentUrl ===  "/main/tmforumadmin/organizationadmin") {
+        return { 'background-color': '#469ac0',
+              'color': 'white' };    
+    } else {
+    return { 'background-color': '#62B3D1',
+              'color': 'white' };
+    }
   }
 
   /* Nav Bar Routing */
@@ -114,35 +126,108 @@ export class SurveyAdminComponent {
   }
 
 
-//   /* methods called from view */
-//   public addNewOrganization(): void 
-//   {
-//     let dialogRef = this.dialog.open(AddNewOrgDialog);
 
-//     dialogRef.afterClosed().subscribe(result => {
-//         this.webGetOrganizations();
-//     });
-//   }
 
-//   public editOrganization(index: number): void
-//   {
-//     let contactEmail = this.organizationsJSON[index].contactEmail;
-//     let contactName = this.organizationsJSON[index].contactName;
-//     let orgID = this.organizationsJSON[index].organizationID;
-//     let organizationName = this.organizationsJSON[index].organizationName;
+/* Methods called from view */
+public organizationHasChanged(): void {
+  this.updateCompaniesInView();
 
-//     let dialogRef = this.dialog.open(EditOrgDialog, {
-//       data: {
-//               contactName: contactName,
-//               contactEmail: contactEmail,
-//               orgID: orgID,
-//               organizationName: organizationName
-//             }
-//     });
+  console.log("Current Org: ");
+  console.log(this.currentOrganizationSelected.name);
+  console.log(this.companiesInView);
+}
 
-//     dialogRef.afterClosed().subscribe(result => {
-//       this.webGetOrganizations();
-//     });
-//   }
+public editCompany(company: any): void {
+  console.log(company);
 
+    let dialogRef = this.dialog.open(EditCompanyDialog, {
+      data: {
+              orgName: this.currentOrganizationSelected.name,
+              company: company
+            }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.getAllOrganizationsAndCompanies();
+    });
+    }
+}
+
+@Component({
+  selector: 'editCompanyDialog',
+  templateUrl: './edit_company_dialog/editCompanyDialog.html',
+  styleUrls: ['./edit_company_dialog/editCompanyDialog.css']
+})
+export class EditCompanyDialog {
+
+  public httpRequestFlag: boolean;
+  public company: any;
+  public userMadeChangesFlag;
+  public editCompanyForm: FormGroup;
+  public orgName;
+
+  @ViewChild('spinnerElement') loadingElement: ElementRef;
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, 
+              private formBuilder: FormBuilder,
+              public kumulosService: KumulosService, 
+              public dialog: MatDialog) 
+  {
+    this.initMemberVariables();
+    this.unpackInjectedData(data);
+    this.initEditCompanyForm();
+    this.setOrganizationFormListener();
+  }
+
+  private initMemberVariables(): void
+  {
+    this.userMadeChangesFlag = false; 
+  }
+
+  private unpackInjectedData(data: any): void
+  {
+    this.company = data.company;
+    this.orgName = data.orgName;
+  }
+
+  private initEditCompanyForm(): void 
+  {
+    let startDate = new Date(parseInt(this.company.startDate) * 1000);
+    let expiryDate = new Date(parseInt(this.company.expiryDate) * 1000);
+
+    this.editCompanyForm = this.formBuilder.group({
+      name: [this.company.name],
+      license: [this.company.licenseType],
+      maxUsers: [this.company.maxUsers],
+      validFrom: [startDate],
+      validTo: [expiryDate],
+      archive: [''],
+     });
+  }
+
+  private setOrganizationFormListener(){
+    this.editCompanyForm.valueChanges.subscribe(data => {
+      this.userMadeChangesFlag = true;
+   });
+  }
+
+  public editCompany(): void {
+    this.httpRequestFlag = true;
+    this.kumulosService.webCreateUpdateSurveys(this.orgName, this.editCompanyForm.value, this.company.cityID, this.editCompanyForm.value.archive).subscribe(responseJSON => {
+      this.dialog.closeAll();
+    })
+
+  }
+
+  public enableSubmitButton(): boolean 
+  {
+    let submitButtonState: boolean = true;
+
+    if (this.userMadeChangesFlag)
+      submitButtonState = false;
+
+    return submitButtonState;
+  }
+
+  onSubmit() {}
 }

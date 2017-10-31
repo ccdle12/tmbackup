@@ -48,6 +48,7 @@ import { UserRoleGuardService } from './shared/services/userRole-guard.service';
 import { LicenseService } from './shared/services/license.service';
 
 import { AddNewOrgDialog, EditOrgDialog } from './main_app/tmforum_admin/organization_admin/organizationAdmin.component';
+import { EditCompanyDialog } from './main_app/tmforum_admin/survey_admin/surveyAdmin.component';
 
 @NgModule({
   imports: 
@@ -95,7 +96,8 @@ import { AddNewOrgDialog, EditOrgDialog } from './main_app/tmforum_admin/organiz
     PublishSurveyDialog, 
     SelectCityOrgDialog,
     AddNewOrgDialog,
-    EditOrgDialog
+    EditOrgDialog,
+    EditCompanyDialog
   ],
   entryComponents: 
   [
@@ -125,7 +127,8 @@ import { AddNewOrgDialog, EditOrgDialog } from './main_app/tmforum_admin/organiz
     PublishSurveyDialog, 
     SelectCityOrgDialog, 
     AddNewOrgDialog,
-    EditOrgDialog
+    EditOrgDialog,
+    EditCompanyDialog
   ],
   providers: 
   [

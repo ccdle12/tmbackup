@@ -1,0 +1,50 @@
+<div class="loading-overlay" #loadingElement style="opacity: 100;">
+    <mat-spinner *ngIf="httpRequestFlag"></mat-spinner>
+</div>
+
+<h4>Edit Company</h4>
+<form [formGroup]="editCompanyForm" (ngSubmit)="onSubmit()">
+    <div>
+        
+        <div class="form">
+            <mat-form-field>
+                <input matInput placeholder="Name" type="text" formControlName="name">
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field>
+                <input matInput placeholder="License" type="text" formControlName="license">
+            </mat-form-field>
+        </div>
+    
+        <div class="form">
+            <mat-form-field>
+                <input matInput placeholder="Max Users" type="text" formControlName="maxUsers">
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field>
+                <input matInput [matDatepicker]="myDatepicker" placeholder="Valid From:" formControlName="validFrom">
+                <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
+                <mat-datepicker #myDatepicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field>
+                <input matInput [matDatepicker]="myDatepicker2" placeholder="Valid To:" formControlName="validTo">
+                <mat-datepicker-toggle [for]="myDatepicker2"></mat-datepicker-toggle>
+                <mat-datepicker #myDatepicker2></mat-datepicker>
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-checkbox formControlName="archive">Archive</mat-checkbox>
+        </div>
+
+    </div>
+    <button mat-button matDialogClose>Cancel</button>
+    <button mat-button (click)="editCompany()" [disabled]="enableSubmitButton()">Edit Survey</button>
+</form>
