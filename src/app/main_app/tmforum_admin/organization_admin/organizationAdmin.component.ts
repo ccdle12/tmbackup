@@ -62,10 +62,6 @@ export class OrganizationAdminComponent {
   {
     switch(surveyPage) 
     {
-      case('surveyadmin'):
-        this.router.navigateByUrl('/main/tmforumadmin/surveyadmin');
-        break;
-
       case ('surveyadmin'):
         this.router.navigateByUrl('main/tmforumadmin/surveyadmin');
         break;

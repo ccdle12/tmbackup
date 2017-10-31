@@ -6,15 +6,16 @@ import { SharedModule } from '../../shared/modules/sharedModule';
 
 import { UserRoleGuardService } from '../../shared/services/userRole-guard.service';
 
-import { tmforumAdminRouting } from './tmforumAdmin.routing'
-import { TMForumAdminComponent } from './tmforumAdmin.component'
-import { OrganizationAdminComponent } from './organization_admin/organizationAdmin.component'
+import { tmforumAdminRouting } from './tmforumAdmin.routing';
+import { TMForumAdminComponent } from './tmforumAdmin.component';
+import { OrganizationAdminComponent } from './organization_admin/organizationAdmin.component';
+import { SurveyAdminComponent } from './survey_admin/surveyAdmin.component';
 import { MatSliderModule, MatCardModule, MatTooltipModule, MatSidenavModule, MatButtonToggleModule, MatTabsModule, MatButtonModule, MatIconModule,  MatGridListModule} from '@angular/material';
 
 
 @NgModule({
   imports: [tmforumAdminRouting, MatCardModule, SharedModule, CommonModule, MatTooltipModule, MatSliderModule, MatSidenavModule, MatButtonToggleModule, MatTabsModule, MatButtonModule, MatIconModule, MatGridListModule],
-  declarations: [TMForumAdminComponent, OrganizationAdminComponent],
+  declarations: [TMForumAdminComponent, OrganizationAdminComponent, SurveyAdminComponent],
   providers: [UserRoleGuardService],
 })
 export class TMForumAdminModule { }

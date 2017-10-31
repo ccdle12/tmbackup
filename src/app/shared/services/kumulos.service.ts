@@ -55,6 +55,8 @@ export class KumulosService {
 
     private webCreateUpdateOrganizationsURI: string;
 
+    private webGetSurveysByOrgURI: string;
+
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
@@ -112,6 +114,8 @@ export class KumulosService {
 
         this.webGetOrganizationsURI = "webGetOrganizations.json/";
         this.webCreateUpdateOrganizationsURI = "webCreate_UpdateOrganizations.json/";
+
+        this.webGetSurveysByOrgURI = "webGetSurveysByOrg.json/"
     }
 
     public createAuthorizationHeader(): Headers {
@@ -265,13 +269,17 @@ export class KumulosService {
             cityId = userJSON['city_id'];
         }
 
+        console.log("User JSON");
+        console.log(userJSON);
+        
         urlSearchParams.append('params[groupId]', cityId);
+
+        console.log("CITY ID: " + cityId);
 
         let body: String = urlSearchParams.toString();
         
         return this.http.post(this. domain + this.getWebUsersURI, body, {headers: headers})
             .map(response => {
-                // console.log(response.json());
                 return response.json();
             }); 
     }
@@ -824,6 +832,21 @@ export class KumulosService {
         return this.http.post(this.domain + this.webCreateUpdateOrganizationsURI, body, {headers: headers})
             .map(response => {
                 console.log("Web Create response: " + response.json());
+                return response.json();
+            })
+    }
+
+    public webGetSurveysByOrg(orgName: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+
+        let urlSearchParams: URLSearchParams = this.createBody();
+        urlSearchParams.append('params[organizationName]', orgName);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.webGetSurveysByOrgURI, body, {headers: headers})
+            .map(response => {
+                console.log(response.json());
                 return response.json();
             })
     }

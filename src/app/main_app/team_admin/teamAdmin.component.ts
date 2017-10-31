@@ -40,8 +40,10 @@ export class TeamAdminComponent  {
 
   private getAllUsers(): void {
     this.loadingSnackBar.showLoadingSnackBar();
+    
     this.kumulosService.getWebUsers().subscribe(response => {
-          console.log("response", response.payload);
+          console.log("RESPONSE:") 
+          console.log(response.payload);
           this.userProfiles = response.payload
           console.log("Size of User Profiles: " + Object.keys(this.userProfiles).length);
           this.userProfilesSize = Object.keys(this.userProfiles).length;
