@@ -17,7 +17,7 @@
       <div class="row">
         <h1>Maintain Surveys</h1>
         <h5>Maintain Survey Groups with an Organizations</h5>
-        <button id="addOrganization" mat-mini-fab class="col-xs-3" color="primary"><mat-icon>add</mat-icon></button>
+        <button id="addOrganization" mat-mini-fab class="col-xs-3" color="primary" (click)="addCompany()"><mat-icon>add</mat-icon></button>
       </div>
     
     <p-dropdown id="dropDownMenu" [options]="organizations" [(ngModel)]="currentOrganizationSelected" (onChange)="organizationHasChanged()" [style]="{'width':'250px'}"></p-dropdown>

@@ -137,6 +137,18 @@ public organizationHasChanged(): void {
   console.log(this.companiesInView);
 }
 
+public addCompany(): void {
+  let dialogRef = this.dialog.open(AddCompanyDialog, {
+    data: {
+            orgName: this.currentOrganizationSelected.name,
+          }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    this.getAllOrganizationsAndCompanies();
+  });
+}
+
 public editCompany(company: any): void {
   console.log(company);
 
@@ -150,8 +162,85 @@ public editCompany(company: any): void {
     dialogRef.afterClosed().subscribe(result => {
       this.getAllOrganizationsAndCompanies();
     });
-    }
+  }
 }
+
+@Component({
+  selector: 'addCompanyDialog',
+  templateUrl: './add_company_dialog/addCompanyDialog.html',
+  styleUrls: ['./add_company_dialog/addCompanyDialog.css']
+})
+export class AddCompanyDialog {
+
+  public httpRequestFlag: boolean;
+  // public company: any;
+  public userMadeChangesFlag;
+  public addCompanyForm: FormGroup;
+  public orgName;
+
+  @ViewChild('spinnerElement') loadingElement: ElementRef;
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, 
+              private formBuilder: FormBuilder,
+              public kumulosService: KumulosService, 
+              public dialog: MatDialog) 
+  {
+    this.initMemberVariables();
+    this.unpackInjectedData(data);
+    this.initAddCompanyForm();
+    this.setCompanyFormListener();
+  }
+
+  private initMemberVariables(): void
+  {
+    this.userMadeChangesFlag = false; 
+  }
+
+  private unpackInjectedData(data: any): void
+  {
+    this.orgName = data.orgName;
+  }
+
+  private initAddCompanyForm(): void 
+  {
+    // let startDate = new Date(parseInt(this.company.startDate) * 1000);
+    // let expiryDate = new Date(parseInt(this.company.expiryDate) * 1000);
+
+    this.addCompanyForm = this.formBuilder.group({
+      name: [''],
+      license: [''],
+      maxUsers: [''],
+      validFrom: [''],
+      validTo: [''],
+     });
+  }
+
+  private setCompanyFormListener(){
+    this.addCompanyForm.valueChanges.subscribe(data => {
+      this.userMadeChangesFlag = true;
+   });
+  }
+
+  public addCompany(): void {
+    this.httpRequestFlag = true;
+    this.kumulosService.webCreateUpdateSurveys(this.orgName, this.addCompanyForm.value, null, null).subscribe(responseJSON => {
+      this.dialog.closeAll();
+    })
+  }
+
+  public enableSubmitButton(): boolean 
+  {
+    let submitButtonState: boolean = true;
+
+    if (this.userMadeChangesFlag)
+      submitButtonState = false;
+
+    return submitButtonState;
+  }
+
+  onSubmit() {}
+}
+
 
 @Component({
   selector: 'editCompanyDialog',
