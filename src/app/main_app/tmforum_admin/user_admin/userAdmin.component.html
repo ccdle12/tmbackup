@@ -1,0 +1,43 @@
+<nav mat-tab-nav-bar>
+    <div id="navigationIcon">
+      <img id="backToDashboard" src="../../../assets/Back To-100-white.png" (click)="backToDashboard()" [matTooltip]="backToDashboardTooltip">
+    </div>
+    
+    <div class="container">
+      <div class="row">
+        <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('organizationadmin')"><h4>Organization Admin</h4></a>
+        <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('surveyadmin')"><h4>Survey Admin</h4></a>
+        <a mat-tab-link class="defaultBtn whiteText navTitle"><h4>User Admin</h4></a>
+        <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('benchmarkdata')"><h4>Benchmark Data</h4></a>
+      </div>
+    </div> 
+</nav>
+
+<div class="container">
+  <div class="row">
+    <h1>Maintain Users</h1>
+    <h5>Maintain Survey Groups Users</h5>
+    <button id="addUser" mat-mini-fab class="col-xs-3" color="primary"><mat-icon>add</mat-icon></button>
+  </div>
+
+<p-dropdown id="dropDownMenu" [options]="surveyGroupsDropDown" [(ngModel)]="currentSurveyGroupSelected" (onChange)="surveyGroupHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
+
+<!-- <div class="row"  id="cardsContainer">
+  <mat-card class="col-sm-1" *ngFor="let companies of companiesInView; let i = index">
+     <div class="cardBody">
+       <h5>{{companies.name}}</h5>
+
+       <h6>License</h6>
+       <mat-card-content>
+         <p>{{companies.licenseType}}</p>
+         <p>Max Users: {{companies.maxUsers}}</p>
+         <p>Valid From: {{companies.startDate * 1000 | date}}</p>
+         <p>Valid To: {{companies.expiryDate * 1000 | date}}</p>
+       </mat-card-content>
+
+       <mat-card-actions>
+         <button mat-button class="editButton" (click)="editCompany(companies)">Edit</button>
+       </mat-card-actions>
+     </div> 
+  </mat-card>
+ </div> -->

@@ -7,6 +7,7 @@ import { tmforumAdminRouting } from './tmforumAdmin.routing';
 import { TMForumAdminComponent } from './tmforumAdmin.component';
 import { OrganizationAdminComponent } from './organization_admin/organizationAdmin.component';
 import { SurveyAdminComponent } from './survey_admin/surveyAdmin.component';
+import { UserAdminComponent } from './user_admin/userAdmin.component';
 import 
 { 
   MatSliderModule, 
@@ -49,7 +50,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   [
     TMForumAdminComponent,
     OrganizationAdminComponent, 
-    SurveyAdminComponent
+    SurveyAdminComponent,
+    UserAdminComponent
   ],
   providers: 
   [

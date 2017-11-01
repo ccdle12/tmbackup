@@ -82,22 +82,6 @@ export class SurveyAdminComponent {
     this.companiesInView = this.organizationAndCompanyPairs.get(this.currentOrganizationSelected.name);
   }
 
-
-
-  
-  /* Highlighting the nav tab */
-  public inOrganizationAdmin() {
-    let currentUrl: string = window.location.pathname;
-
-    if (currentUrl ===  "/main/tmforumadmin/organizationadmin") {
-        return { 'background-color': '#469ac0',
-              'color': 'white' };    
-    } else {
-    return { 'background-color': '#62B3D1',
-              'color': 'white' };
-    }
-  }
-
   /* Nav Bar Routing */
   public routeToPage(surveyPage: String) 
   {
@@ -203,9 +187,6 @@ export class AddCompanyDialog {
 
   private initAddCompanyForm(): void 
   {
-    // let startDate = new Date(parseInt(this.company.startDate) * 1000);
-    // let expiryDate = new Date(parseInt(this.company.expiryDate) * 1000);
-
     this.addCompanyForm = this.formBuilder.group({
       name: [''],
       license: [''],

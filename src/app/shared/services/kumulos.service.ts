@@ -288,6 +288,20 @@ export class KumulosService {
             }); 
     }
 
+    public getWebUsersCityIdOverload(cityId: any) {
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[groupId]', cityId);
+
+        let body: String = urlSearchParams.toString();
+        
+        return this.http.post(this. domain + this.getWebUsersURI, body, {headers: headers})
+            .map(response => {
+                return response.json();
+            }); 
+    }
+
     public getCaseStudies(areaID: string, dimensionID: string): any {
         let headers: Headers = this.createAuthorizationHeader();
 

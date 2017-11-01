@@ -6,6 +6,7 @@ import { UserRoleGuardService } from '../../shared/services/userRole-guard.servi
 import { TMForumAdminComponent } from './tmforumAdmin.component';
 import { OrganizationAdminComponent } from './organization_admin/organizationAdmin.component'
 import { SurveyAdminComponent } from './survey_admin/surveyAdmin.component'
+import { UserAdminComponent } from './user_admin/userAdmin.component'
 
 const tmforumAdminRoutes: Routes = [
     {
@@ -20,6 +21,10 @@ const tmforumAdminRoutes: Routes = [
         path: 'surveyadmin',
         component: SurveyAdminComponent,
     },
+    {
+        path: 'useradmin',
+        component: UserAdminComponent,
+    }
     
     // },
     // {
