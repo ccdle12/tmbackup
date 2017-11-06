@@ -1,0 +1,16 @@
+
+<nav mat-tab-nav-bar>
+    <div id="navigationIcon">
+      <img id="backToDashboard" src="../../../assets/Back To-100-white.png" (click)="backToDashboard()" [matTooltip]="backToDashboardTooltip">
+    </div>
+    
+    <div class="container">
+      <div class="row">
+        <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('organizationadmin')"><h4>Organization Admin</h4></a>
+        <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('surveyadmin')"><h4>Survey Admin</h4></a>
+        <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('useradmin')"><h4>User Admin</h4></a>
+        <a mat-tab-link class="defaultBtn whiteText navTitle" (click)="routeToPage('bulkinviteadmin')"><h4>Bulk Invite</h4></a>
+        <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('benchmarkdata')"><h4>Benchmark Data</h4></a>
+      </div>
+    </div> 
+</nav>

@@ -7,6 +7,7 @@ import { TMForumAdminComponent } from './tmforumAdmin.component';
 import { OrganizationAdminComponent } from './organization_admin/organizationAdmin.component'
 import { SurveyAdminComponent } from './survey_admin/surveyAdmin.component'
 import { UserAdminComponent } from './user_admin/userAdmin.component'
+import { BulkInviteAdminComponent } from './bulk_invite_admin/bulkInviteAdmin.component'
 
 const tmforumAdminRoutes: Routes = [
     {
@@ -24,6 +25,10 @@ const tmforumAdminRoutes: Routes = [
     {
         path: 'useradmin',
         component: UserAdminComponent,
+    },
+    {
+        path: 'bulkinviteadmin',
+        component: BulkInviteAdminComponent,
     }
     
     // },
