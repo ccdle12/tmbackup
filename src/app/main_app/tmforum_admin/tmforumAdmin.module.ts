@@ -26,6 +26,8 @@ import
 import { DropdownModule } from 'primeng/primeng';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { MatSelectModule } from '@angular/material';
+
 
 @NgModule({
   imports: 
@@ -45,7 +47,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatCheckboxModule,
     DropdownModule,
     FormsModule,
-    ReactiveFormsModule 
+    ReactiveFormsModule,
+    MatSelectModule 
   ],
   declarations: 
   [
