@@ -106,6 +106,10 @@ export class SurveyAdminComponent {
       case ('bulkinviteadmin'):
         this.router.navigateByUrl('main/tmforumadmin/bulkinviteadmin');
         break;
+      
+      case('publisheddataadmin'):
+        this.router.navigateByUrl('main/tmforumadmin/publisheddataadmin');
+        break;
       }
     }
 

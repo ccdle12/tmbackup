@@ -9,6 +9,7 @@ import { OrganizationAdminComponent } from './organization_admin/organizationAdm
 import { SurveyAdminComponent } from './survey_admin/surveyAdmin.component';
 import { UserAdminComponent } from './user_admin/userAdmin.component';
 import { BulkInviteAdminComponent } from './bulk_invite_admin/bulkInviteAdmin.component';
+import { PublishedDataAdminComponent } from './published_data_admin/publishedDataAdmin.component';
 import 
 { 
   MatSliderModule, 
@@ -56,7 +57,8 @@ import { MatSelectModule } from '@angular/material';
     OrganizationAdminComponent, 
     SurveyAdminComponent,
     UserAdminComponent,
-    BulkInviteAdminComponent
+    BulkInviteAdminComponent,
+    PublishedDataAdminComponent
   ],
   providers: 
   [

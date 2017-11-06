@@ -227,6 +227,10 @@ export class BulkInviteAdminComponent {
       case ('organizationadmin'):
         this.router.navigateByUrl('main/tmforumadmin/organizationadmin');
         break;
+
+      case('publisheddataadmin'):
+        this.router.navigateByUrl('main/tmforumadmin/publisheddataadmin');
+        break;
       }
     }
 

@@ -4,10 +4,11 @@ import { ModuleWithProviders } from '@angular/core'
 import { UserRoleGuardService } from '../../shared/services/userRole-guard.service';
 
 import { TMForumAdminComponent } from './tmforumAdmin.component';
-import { OrganizationAdminComponent } from './organization_admin/organizationAdmin.component'
-import { SurveyAdminComponent } from './survey_admin/surveyAdmin.component'
-import { UserAdminComponent } from './user_admin/userAdmin.component'
-import { BulkInviteAdminComponent } from './bulk_invite_admin/bulkInviteAdmin.component'
+import { OrganizationAdminComponent } from './organization_admin/organizationAdmin.component';
+import { SurveyAdminComponent } from './survey_admin/surveyAdmin.component';
+import { UserAdminComponent } from './user_admin/userAdmin.component';
+import { BulkInviteAdminComponent } from './bulk_invite_admin/bulkInviteAdmin.component';
+import { PublishedDataAdminComponent } from './published_data_admin/publishedDataAdmin.component';
 
 const tmforumAdminRoutes: Routes = [
     {
@@ -29,6 +30,10 @@ const tmforumAdminRoutes: Routes = [
     {
         path: 'bulkinviteadmin',
         component: BulkInviteAdminComponent,
+    },
+    {
+        path: 'publisheddataadmin',
+        component: PublishedDataAdminComponent,
     }
     
     // },
