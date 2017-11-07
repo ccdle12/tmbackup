@@ -109,6 +109,9 @@ export class BenchmarkComponent {
   private getCityId(): string {
     let user: JSON = JSON.parse(localStorage.getItem('user'));
     let cityId: string = user['city_id'];
+
+    console.log("City ID");
+    console.log(cityId);
     
     return cityId;
   }
@@ -184,8 +187,6 @@ export class BenchmarkComponent {
     this.comboCharts = [];
 
     let dimensionToIndexPos = new Map<Number, Number>();
-
-    
 
     // Last City Data in the payload from getAllBenchMarkData (most likely will be benchmark data)
     // console.log("Last city: ") 

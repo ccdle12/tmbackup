@@ -17,14 +17,67 @@ export class PublishedDataAdminComponent {
 
   public backToDashboardTooltip: string;
 
+
+
+
+
   constructor(public router: Router, public kumulosService: KumulosService, public dialog: MatDialog,
               public loadingSnackBar: LoadingSnackBar) {
     this.initMemberVariables(); 
+    this.getAllOrganizationsAndCompanies();
   }
 
   private initMemberVariables(): void {
     this.backToDashboardTooltip = "Back To Dashboard";
   }
+
+  /* Kumulos call */
+  /* Get all organizations and companies */
+  private getAllOrganizationsAndCompanies() {
+    this.webGetOrganizations();
+  }
+
+  private webGetOrganizations() {
+    this.loadingSnackBar.showLoadingSnackBar();
+
+    this.kumulosService.webGetOrganizations().subscribe(response => {
+      let listOfOrganizations = response.payload;
+  
+      if (response.responseCode == 1) {
+        listOfOrganizations.forEach(organization => {
+          let organizationName = organization.organizationName;
+          this.getCompaniesFromOrganizations(organizationName)
+        });
+      };
+
+      this.loadingSnackBar.dismissLoadingSnackBar();
+    });
+  }
+
+  private getCompaniesFromOrganizations(organizationName: any) {
+    
+          this.kumulosService.webGetSurveysByOrg(organizationName).subscribe(response => {
+            response.payload.forEach(element => {
+              let cityName = element.surveyName;
+              let cityID = element.cityID;
+              this.getAllBenchmarData(cityName, cityID);
+            });
+          })
+    
+  };
+
+  private getAllBenchmarData(surveyName:string, cityID: any) {
+    this.kumulosService.getAllBenchmarkData(cityID)
+      .subscribe(responseJSON => { console.log(responseJSON)});
+  }
+  
+
+
+
+
+
+
+
 
   /* Nav Bar Routing */
   public routeToPage(surveyPage: String) 

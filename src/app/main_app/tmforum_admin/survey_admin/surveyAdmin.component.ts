@@ -47,7 +47,8 @@ export class SurveyAdminComponent {
     this.loadingSnackBar.showLoadingSnackBar();
 
     this.kumulosService.webGetOrganizations().subscribe(response => {
-
+      console.log("web get orgs");
+      console.log(response);
       if (response.responseCode == 1) {
         response.payload.forEach(element => {
           this.organizations.push({label: element.organizationName, value: {id:element.organizationName, name: element.organizationName}});  

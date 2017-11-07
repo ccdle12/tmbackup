@@ -191,18 +191,18 @@ public isVerified(): boolean {
 
 public inDemoMode(): boolean {
   if (!this.isVerified()) {
-    console.log("not verified");
+    // console.log("not verified");
     return true;
   }
 
   if (this.isVerified() && this.isLeaderConsultant()) {
     
-    console.log("verified and leader or consultant");
+    // console.log("verified and leader or consultant");
     return false;
   }
     
   if (this.isVerified() && !this.isLeaderConsultant()) { 
-    console.log("verified but not leader or consultant");   
+    // console.log("verified but not leader or consultant");   
     return true;
   } 
 }

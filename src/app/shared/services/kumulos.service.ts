@@ -625,7 +625,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.allBenchmarkDataURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                // console.log(response.json());
                 return response.json();
             })
     }
@@ -864,7 +864,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.webGetSurveysByOrgURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                // console.log(response.json());
                 return response.json();
             })
     }
