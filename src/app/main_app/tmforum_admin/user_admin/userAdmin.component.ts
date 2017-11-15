@@ -16,95 +16,116 @@ import { ValidationService } from '../../../shared/services/validation.service';
 export class UserAdminComponent {
 
   public backToDashboardTooltip: string;
-  public organizations: Array<any>;
-  public organizationAndCompanyPairs: Map<string, JSON[]>;
+
+  /**
+   * Variables bound to the view
+   */
+  public organizationsInView: Array<any>;
+  public surveyGroupsInView: Array<any>;
+  public currentOrganizationSelected: any;
+  public currentSurveyGroupSelected: any;
+  public usersInView: Array<any>;
+
+
+  public surveyGroups: Array<any>; // Is this being used?
+  public organizationAndSurveyGroupPairs: Map<string, JSON[]>;
   public surveyGroupAndUserPairs: Map<string, JSON[]>;
   
-
-  public surveyGroupsDropDown: Array<any>;
-  public currentSurveyGroupSelected: any;
 
   constructor(public router: Router, public kumulosService: KumulosService, public dialog: MatDialog,
               public loadingSnackBar: LoadingSnackBar) {
     this.initMemberVariables(); 
-    this.getAllOrganizationsAndCompanies();
+    this.getAllOrganizationsAndSurveyGroups();
   }
 
   private initMemberVariables(): void {
     this.backToDashboardTooltip = "Back To Dashboard";
-    this.organizations = new Array();
-    this.organizationAndCompanyPairs = new Map<string, JSON[]>();
-    this.surveyGroupAndUserPairs = new Map<string, JSON[]>();
+    this.organizationsInView = new Array();
+    this.surveyGroups = new Array();
+    this.surveyGroupsInView = new Array();
+    this.usersInView = new Array();
 
-    this.surveyGroupsDropDown = new Array();
+    this.organizationAndSurveyGroupPairs = new Map<string, JSON[]>();
+    this.surveyGroupAndUserPairs = new Map<string, JSON[]>();
     // this.currentSurveyGroupSelected = new Map<string, JSON[]>();
   }
 
 
 
   /* Kumulos call */
-  /* Get all organizations and companies */
-  private getAllOrganizationsAndCompanies() {
+  /* Get all organizationsInViewInView and surveyGroups */
+  private getAllOrganizationsAndSurveyGroups() {
     this.webGetOrganizations();
   }
 
   private webGetOrganizations() {
     this.loadingSnackBar.showLoadingSnackBar();
 
-    this.kumulosService.webGetOrganizations().subscribe(response => {
+      this.kumulosService.webGetOrganizations().toPromise()
+        .then(res => {
+            res.payload.map(item => {
+              this.organizationsInView.push({label: item.organizationName, value: {id: item.organizationName, name: item.organizationName}});
+            });
 
-      if (response.responseCode == 1) {
+            this.currentOrganizationSelected = this.organizationsInView[0].value;
+          }
+        )
+        .catch(res => console.log("there was an error"))
+        .then(res => {
+              this.organizationsInView.forEach(org => {
+                let orgName = org.value.name;
+                this.reqSurveyGroups(orgName);
+              });
+        })
+}
 
-        response.payload.forEach(element => {
-          let organizationName = element.organizationName;
-
-          this.organizations.push({label: organizationName, value: {id:organizationName, name: organizationName}});  
-        });
-
-        this.getCompaniesFromOrganizations();
-      }
-      else {
-        console.log("there was an error");
-        this.loadingSnackBar.dismissLoadingSnackBar();
-      }
-    });
-
-
-  }
-
-  private getCompaniesFromOrganizations() {
-
-    this.organizations.forEach(organization => {
-
-      let organizationName = organization.value.name;
-
-      this.kumulosService.webGetSurveysByOrg(organizationName).subscribe(response => {
-        this.organizationAndCompanyPairs.set(organizationName, response.payload);      
-        // this.currentOrganizationSelected = this.organizations[0].value;
-        // this.updateCompaniesInView();
-
-        // this.loadingSnackBar.dismissLoadingSnackBar();
-
-        let listOfCompanies = this.organizationAndCompanyPairs.get(organizationName);
-        this.getUsersFromCompanies(listOfCompanies);
-      })
-    });
-
-  }
-
-  private getUsersFromCompanies(companies: any) {
-    companies.forEach(eachCompany => {
-      this.kumulosService.getWebUsersCityIdOverload(eachCompany.cityID).subscribe(response => {
-        console.log("CITY ID: " + eachCompany.cityID);
-        console.log("GETTING USERS:");
-        console.log(response);
+private reqSurveyGroups(orgName: string) {
+  return this.kumulosService.webGetSurveysByOrg(orgName).toPromise()
+    .then(res => { 
+      this.organizationAndSurveyGroupPairs.set(orgName, res.payload);
+      return res.payload;
+    })
+    .catch(res => console.log("There as an error"))
+    .then(res => {
+      this.setInitialSurveyGroupsInView();
+      return res;
+    }).then(res => {
+      res.forEach(element => {
+        this.reqUsersFromSurveyGroup(element["name"], element["cityID"]);
       });
     })
-  }
+};
 
-//   private updateCompaniesInView(): void {
-//     this.companiesInView = this.organizationAndCompanyPairs.get(this.currentOrganizationSelected.name);
-//   }
+private setInitialSurveyGroupsInView(){
+  let listOfCurrentSurveyGroups = this.organizationAndSurveyGroupPairs.get(this.currentOrganizationSelected.name);
+  
+  this.surveyGroupsInView = [];
+  listOfCurrentSurveyGroups.forEach(item => {
+    this.surveyGroupsInView.push({label: item["name"], value: {id: item["name"], name: item["name"]}});
+  });
+
+  this.currentSurveyGroupSelected = this.surveyGroupsInView[0].value;
+}
+
+private reqUsersFromSurveyGroup(surveyGroupName: string, cityID: string) {
+  this.kumulosService.getWebUsersCityIdOverload(cityID).toPromise()
+    .then(res => {
+      this.surveyGroupAndUserPairs.set(surveyGroupName, res.payload);
+    })
+    .catch(res => console.log("There was an error"))
+    .then(res => {
+      let listOfUsers = this.surveyGroupAndUserPairs.get(this.currentSurveyGroupSelected.name);
+      
+      if (listOfUsers) {
+        listOfUsers.forEach(element => {
+            this.usersInView.push(listOfUsers);
+            console.log(listOfUsers);
+          });
+      }
+
+      this.loadingSnackBar.dismissLoadingSnackBar()
+    });
+}
 
 
 
@@ -146,39 +167,51 @@ export class UserAdminComponent {
 
 
 
-/* Methods called from view */
+/* *
+ * Callback methods from the view 
+ */
 public surveyGroupHasChanged(): void {
-  // this.updateCompaniesInView();
-
-  // console.log("Current Org: ");
-  // console.log(this.currentOrganizationSelected.name);
-  // console.log(this.companiesInView);
+  this.usersInView = this.surveyGroupAndUserPairs.get(this.currentSurveyGroupSelected.name);
 }
 
-// public addCompany(): void {
-//   let dialogRef = this.dialog.open(AddCompanyDialog, {
+public organizationHasChanged(): void {
+  this.surveyGroupsInView = [];
+
+  let listOfSurveyGroups = this.organizationAndSurveyGroupPairs.get(this.currentOrganizationSelected.name);
+
+  listOfSurveyGroups.forEach(surveyGroup => {
+    let surveyGroupName = surveyGroup["name"];
+    this.surveyGroupsInView.push({label: surveyGroupName, value: {id: surveyGroupName, name: surveyGroupName }});
+  });
+
+  this.currentSurveyGroupSelected = listOfSurveyGroups[0]
+  this.surveyGroupHasChanged();
+}
+
+// public addSurveyGroup(): void {
+//   let dialogRef = this.dialog.open(AddSurveyGroupDialog, {
 //     data: {
 //             orgName: this.currentOrganizationSelected.name,
 //           }
 //   });
 
 //   dialogRef.afterClosed().subscribe(result => {
-//     this.getAllOrganizationsAndCompanies();
+//     this.getAllOrganizationsAndSurveyGroups();
 //   });
 // }
 
-// public editCompany(company: any): void {
-//   console.log(company);
+// public editSurveyGroup(surveyGroup: any): void {
+//   console.log(surveyGroup);
 
-//     let dialogRef = this.dialog.open(EditCompanyDialog, {
+//     let dialogRef = this.dialog.open(EditSurveyGroupDialog, {
 //       data: {
 //               orgName: this.currentOrganizationSelected.name,
-//               company: company
+//               surveyGroup: surveyGroup
 //             }
 //     });
 
 //     dialogRef.afterClosed().subscribe(result => {
-//       this.getAllOrganizationsAndCompanies();
+//       this.getAllOrganizationsAndSurveyGroups();
 //     });
 //   }
 }

@@ -21,12 +21,13 @@
     <button id="addUser" mat-mini-fab class="col-xs-3" color="primary"><mat-icon>add</mat-icon></button>
   </div>
 
-<p-dropdown id="dropDownMenu" [options]="surveyGroupsDropDown" [(ngModel)]="currentSurveyGroupSelected" (onChange)="surveyGroupHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
-
-<!-- <div class="row"  id="cardsContainer">
-  <mat-card class="col-sm-1" *ngFor="let companies of companiesInView; let i = index">
+<p-dropdown id="dropDownMenu" [options]="organizationsInView" [(ngModel)]="currentOrganizationSelected" (onChange)="organizationHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
+<p-dropdown id="dropDownMenu" [options]="surveyGroupsInView" [(ngModel)]="currentSurveyGroupSelected" (onChange)="surveyGroupHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
+<div class="row"  id="cardsContainer">
+  <mat-card class="col-sm-1" *ngFor="let users of usersInView; let i = index">
      <div class="cardBody">
-       <h5>{{companies.name}}</h5>
+       <h5>{{users.email}}</h5>
+       <!-- <h5>{{companies.name}}</h5>
 
        <h6>License</h6>
        <mat-card-content>
@@ -38,7 +39,7 @@
 
        <mat-card-actions>
          <button mat-button class="editButton" (click)="editCompany(companies)">Edit</button>
-       </mat-card-actions>
+       </mat-card-actions> -->
      </div> 
   </mat-card>
- </div> -->
+ </div>
