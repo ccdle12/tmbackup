@@ -18,28 +18,33 @@
   <div class="row">
     <h1>Maintain Users</h1>
     <h5>Maintain Survey Groups Users</h5>
-    <button id="addUser" mat-mini-fab class="col-xs-3" color="primary"><mat-icon>add</mat-icon></button>
+    <button id="addUser" mat-mini-fab class="col-xs-3" color="primary" (click)="inviteUser()"><mat-icon>add</mat-icon></button>
   </div>
 
-<p-dropdown id="dropDownMenu" [options]="organizationsInView" [(ngModel)]="currentOrganizationSelected" (onChange)="organizationHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
-<p-dropdown id="dropDownMenu" [options]="surveyGroupsInView" [(ngModel)]="currentSurveyGroupSelected" (onChange)="surveyGroupHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
+<div>
+  <p-dropdown id="dropDownMenu" [options]="organizationsInView" [(ngModel)]="currentOrganizationSelected" (onChange)="organizationHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
+</div>
+<div>
+  <p-dropdown id="dropDownMenu" [options]="surveyGroupsInView" [(ngModel)]="currentSurveyGroupSelected" (onChange)="surveyGroupHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
+</div>
+
 <div class="row"  id="cardsContainer">
-  <mat-card class="col-sm-1" *ngFor="let users of usersInView; let i = index">
-     <div class="cardBody">
-       <h5>{{users.email}}</h5>
-       <!-- <h5>{{companies.name}}</h5>
+  <mat-card class="col-sm-1" *ngFor="let user of usersInView; let i = index">
+      <img class="roundImage reduceImageSize" [src]="user.picture"/>
 
-       <h6>License</h6>
-       <mat-card-content>
-         <p>{{companies.licenseType}}</p>
-         <p>Max Users: {{companies.maxUsers}}</p>
-         <p>Valid From: {{companies.startDate * 1000 | date}}</p>
-         <p>Valid To: {{companies.expiryDate * 1000 | date}}</p>
-       </mat-card-content>
+      <div class="cardBody">
+        <h5><strong>{{getUsersName(i)}}</strong></h5>
+        <h6>{{user.app_metadata.user_role}}</h6>
 
-       <mat-card-actions>
-         <button mat-button class="editButton" (click)="editCompany(companies)">Edit</button>
-       </mat-card-actions> -->
-     </div> 
+        <mat-card-content>
+          <h6>{{user.headline}}</h6>
+          <h6>{{user.email}}</h6>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button (click)="editUserRole(i)" mat-button>Edit Role</button>
+          <button (click)="deleteUser(i)" mat-button>Delete</button>
+        </mat-card-actions>
+      </div>
   </mat-card>
  </div>

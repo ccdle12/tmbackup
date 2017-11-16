@@ -7,6 +7,7 @@ import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
 import { ValidationService } from '../../../shared/services/validation.service';
+import { InviteUserDialog } from 'app/main_app/team_admin/teamAdmin.component';
 
 @Component({
   selector: 'userAdminComponent',
@@ -47,7 +48,6 @@ export class UserAdminComponent {
 
     this.organizationAndSurveyGroupPairs = new Map<string, JSON[]>();
     this.surveyGroupAndUserPairs = new Map<string, JSON[]>();
-    // this.currentSurveyGroupSelected = new Map<string, JSON[]>();
   }
 
 
@@ -100,16 +100,21 @@ private setInitialSurveyGroupsInView(){
   let listOfCurrentSurveyGroups = this.organizationAndSurveyGroupPairs.get(this.currentOrganizationSelected.name);
   
   this.surveyGroupsInView = [];
-  listOfCurrentSurveyGroups.forEach(item => {
-    this.surveyGroupsInView.push({label: item["name"], value: {id: item["name"], name: item["name"]}});
-  });
 
-  this.currentSurveyGroupSelected = this.surveyGroupsInView[0].value;
+  if (listOfCurrentSurveyGroups) {
+    listOfCurrentSurveyGroups.forEach(item => {
+      this.surveyGroupsInView.push({label: item["name"], value: {id: item["name"], name: item["name"]}});
+    });
+
+    this.currentSurveyGroupSelected = this.surveyGroupsInView[0].value;
+  }
 }
 
 private reqUsersFromSurveyGroup(surveyGroupName: string, cityID: string) {
   this.kumulosService.getWebUsersCityIdOverload(cityID).toPromise()
     .then(res => {
+      console.log("Users:");
+      console.log(res.payload);
       this.surveyGroupAndUserPairs.set(surveyGroupName, res.payload);
     })
     .catch(res => console.log("There was an error"))
@@ -119,7 +124,6 @@ private reqUsersFromSurveyGroup(surveyGroupName: string, cityID: string) {
       if (listOfUsers) {
         listOfUsers.forEach(element => {
             this.usersInView.push(listOfUsers);
-            console.log(listOfUsers);
           });
       }
 
@@ -171,7 +175,10 @@ private reqUsersFromSurveyGroup(surveyGroupName: string, cityID: string) {
  * Callback methods from the view 
  */
 public surveyGroupHasChanged(): void {
-  this.usersInView = this.surveyGroupAndUserPairs.get(this.currentSurveyGroupSelected.name);
+  if (this.currentSurveyGroupSelected)
+    this.usersInView = this.surveyGroupAndUserPairs.get(this.currentSurveyGroupSelected.name);
+  else
+    this.usersInView = [];
 }
 
 public organizationHasChanged(): void {
@@ -188,6 +195,44 @@ public organizationHasChanged(): void {
   this.surveyGroupHasChanged();
 }
 
+
+
+public getUsersName(index: number): string {
+  let userName: string;
+
+  if (this.usersInView[index].name)
+    userName = this.usersInView[index].name;
+  else
+    userName = "Name not set by user";
+
+  return userName;
+}
+
+public getUsersTitle(index: number): string {
+  let userTitle: string;
+
+
+  return userTitle;
+}  
+
+public inviteUser(): void {
+  let dialogRef = this.dialog.open(InviteUserDialog, {
+
+  });
+}
+
+public editUserRole(index: number): void {
+
+}
+
+public deleteUser(index: number): void {
+
+}
+
+
+// private hasUserMetaData(index: number): boolean {
+//   return this.usersInView[index].user_metadata ? true : false;
+// }
 // public addSurveyGroup(): void {
 //   let dialogRef = this.dialog.open(AddSurveyGroupDialog, {
 //     data: {
@@ -214,4 +259,58 @@ public organizationHasChanged(): void {
 //       this.getAllOrganizationsAndSurveyGroups();
 //     });
 //   }
+}
+
+@Component({
+  selector: 'adminInviteUserDialog',
+  templateUrl: './adminInviteUserDialog.html',
+  styleUrls: ['./adminInviteUserDialog.css']
+})
+export class AdminInviteUserDialog {
+
+  httpRequestFlag: boolean;
+  inviteUserForm: FormGroup;
+  
+  @ViewChild('spinnerElement') loadingElement: ElementRef;
+
+  constructor(public dialog: MatDialog, private formBuilder: FormBuilder, public kumulosService: KumulosService, 
+              public renderer: Renderer, private ngZone: NgZone) {
+    
+    this.inviteUserForm = this.formBuilder.group({
+     email: ['', [Validators.required, ValidationService.emailValidator]],
+    });
+  }
+
+  public inviteNewUser(): void {
+    let cityName: string = this.getCityName();
+    console.log("City Name: " + cityName);
+    let cityId: string = this.getCityId();
+    let email: string = this.inviteUserForm.value.email;
+    
+    this.httpRequestFlag = true;
+    this.kumulosService.inviteUser(email, cityName, cityId).subscribe(responseJSON => {
+      console.log("response", responseJSON.payload);
+      // this.reloadPage();
+      this.dialog.closeAll();
+    })
+  }
+
+  private getCityName(): string {
+    let userProfile: JSON = this.getUserProfile();
+    let city: string = userProfile['app_metadata']['city'];
+    return city;
+  };
+
+  private getCityId(): string {
+    let userProfile: JSON = this.getUserProfile();
+    let cityId: string = userProfile['app_metadata']['city_id'];
+
+    return cityId;
+  }
+
+  private getUserProfile(): JSON {
+    return JSON.parse(localStorage.getItem('userProfile'));
+  }
+
+  onSubmit() {}
 }

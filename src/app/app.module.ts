@@ -49,6 +49,7 @@ import { LicenseService } from './shared/services/license.service';
 
 import { AddNewOrgDialog, EditOrgDialog } from './main_app/tmforum_admin/organization_admin/organizationAdmin.component';
 import { AddCompanyDialog, EditCompanyDialog } from './main_app/tmforum_admin/survey_admin/surveyAdmin.component';
+import { AdminInviteUserDialog } from './main_app/tmforum_admin/user_admin/userAdmin.component';
 
 @NgModule({
   imports: 
@@ -99,6 +100,7 @@ import { AddCompanyDialog, EditCompanyDialog } from './main_app/tmforum_admin/su
     EditOrgDialog,
     EditCompanyDialog,
     AddCompanyDialog,
+    AdminInviteUserDialog,
   ],
   entryComponents: 
   [
@@ -131,6 +133,7 @@ import { AddCompanyDialog, EditCompanyDialog } from './main_app/tmforum_admin/su
     EditOrgDialog,
     EditCompanyDialog,
     AddCompanyDialog,
+    AdminInviteUserDialog,
   ],
   providers: 
   [

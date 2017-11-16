@@ -15,9 +15,13 @@
     </div> 
 </nav>
 
-<p-dropdown id="dropDownMenu" [options]="organizations" [(ngModel)]="currentOrganizationSelected" (onChange)="organizationHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
-<p-dropdown id="dropDownMenu" [options]="companiesInView" [(ngModel)]="currentCitySelectedName" (onChange)="cityHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
+<div>
+  <p-dropdown id="dropDownMenu" [options]="organizations" [(ngModel)]="currentOrganizationSelected" (onChange)="organizationHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
+</div>
 
+<div>
+  <p-dropdown id="dropDownMenu" [options]="companiesInView" [(ngModel)]="currentCitySelectedName" (onChange)="cityHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
+</div>
 
 <div class="container">
   <div class="row">
