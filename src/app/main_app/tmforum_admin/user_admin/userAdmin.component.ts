@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
 import { ValidationService } from '../../../shared/services/validation.service';
 import { InviteUserDialog } from 'app/main_app/team_admin/teamAdmin.component';
+import { ElementSchemaRegistry } from '@angular/compiler';
 
 @Component({
   selector: 'userAdminComponent',
@@ -28,9 +29,10 @@ export class UserAdminComponent {
   public usersInView: Array<any>;
 
 
-  public surveyGroups: Array<any>; // Is this being used?
+  // public surveyGroups: Array<any>; // Is this being used?
   public organizationAndSurveyGroupPairs: Map<string, JSON[]>;
   public surveyGroupAndUserPairs: Map<string, JSON[]>;
+  public surveyGroupNameAndObjectDetails: Map<string, JSON[]>;
   
 
   constructor(public router: Router, public kumulosService: KumulosService, public dialog: MatDialog,
@@ -42,12 +44,12 @@ export class UserAdminComponent {
   private initMemberVariables(): void {
     this.backToDashboardTooltip = "Back To Dashboard";
     this.organizationsInView = new Array();
-    this.surveyGroups = new Array();
     this.surveyGroupsInView = new Array();
     this.usersInView = new Array();
 
     this.organizationAndSurveyGroupPairs = new Map<string, JSON[]>();
     this.surveyGroupAndUserPairs = new Map<string, JSON[]>();
+    this.surveyGroupNameAndObjectDetails = new Map<string, JSON[]>();
   }
 
 
@@ -91,6 +93,11 @@ private reqSurveyGroups(orgName: string) {
       return res;
     }).then(res => {
       res.forEach(element => {
+        /**
+         * a. Creating Map, pairing survey group name and its JSON object
+         * b. Requesting users according to each survey group
+         */
+        this.surveyGroupNameAndObjectDetails.set(element.name, element);
         this.reqUsersFromSurveyGroup(element["name"], element["cityID"]);
       });
     })
@@ -103,6 +110,7 @@ private setInitialSurveyGroupsInView(){
 
   if (listOfCurrentSurveyGroups) {
     listOfCurrentSurveyGroups.forEach(item => {
+      console.log(item);
       this.surveyGroupsInView.push({label: item["name"], value: {id: item["name"], name: item["name"]}});
     });
 
@@ -113,15 +121,18 @@ private setInitialSurveyGroupsInView(){
 private reqUsersFromSurveyGroup(surveyGroupName: string, cityID: string) {
   this.kumulosService.getWebUsersCityIdOverload(cityID).toPromise()
     .then(res => {
-      console.log("Users:");
+      console.log("Users for each survey");
       console.log(res.payload);
       this.surveyGroupAndUserPairs.set(surveyGroupName, res.payload);
     })
     .catch(res => console.log("There was an error"))
     .then(res => {
       let listOfUsers = this.surveyGroupAndUserPairs.get(this.currentSurveyGroupSelected.name);
-      
+      console.log("LIST OF USERSE!!!!!!!");
+      console.log(listOfUsers);
+
       if (listOfUsers) {
+        this.usersInView = [];
         listOfUsers.forEach(element => {
             this.usersInView.push(listOfUsers);
           });
@@ -175,10 +186,13 @@ private reqUsersFromSurveyGroup(surveyGroupName: string, cityID: string) {
  * Callback methods from the view 
  */
 public surveyGroupHasChanged(): void {
-  if (this.currentSurveyGroupSelected)
+  if (this.currentSurveyGroupSelected) {
     this.usersInView = this.surveyGroupAndUserPairs.get(this.currentSurveyGroupSelected.name);
-  else
+    console.log("CURRENT SURVEY GROUP");
+    console.log(this.currentSurveyGroupSelected);
+  } else {
     this.usersInView = [];
+  }
 }
 
 public organizationHasChanged(): void {
@@ -198,31 +212,133 @@ public organizationHasChanged(): void {
 
 
 public getUsersName(index: number): string {
-  let userName: string;
 
-  if (this.usersInView[index].name)
-    userName = this.usersInView[index].name;
-  else
-    userName = "Name not set by user";
+  if (this.usersInView[index][0])
+    return this.usersInView[index][0]["user_metadata"]["name"];
 
-  return userName;
+  if (this.usersInView[index]["user_metadata"])
+  {
+    let userMetaData: JSON = this.usersInView[index]["user_metadata"];
+
+    if(userMetaData["name"] && userMetaData["name"].length > 1 && userMetaData["name"] != "" && userMetaData["name"] != " ")  
+      return userMetaData["name"];
+  }
+
+    return "Name not set by user";
+}
+
+public getUserRole(index: number): string {
+
+  if (this.usersInView[index][0])
+    return this.usersInView[index][0]["app_metadata"]["user_role"];
+
+  if (this.usersInView[index]["app_metadata"])
+  {
+    let appMetaData: JSON = this.usersInView[index]["app_metadata"];
+
+    if(appMetaData["user_role"] && appMetaData["user_role"].length > 1 && appMetaData["user_role"] != "" && appMetaData["user_role"] != " ")  
+      return appMetaData["user_role"];
+  }
+
+    return "User role not set by user";
 }
 
 public getUsersTitle(index: number): string {
-  let userTitle: string;
+  
+  if (this.usersInView[index][0])
+    return this.usersInView[index][0]["user_metadata"]["job_title"];
 
+  if (this.usersInView[index]["user_metadata"])
+  {
+    let userMetaData: JSON = this.usersInView[index]["user_metadata"];
 
-  return userTitle;
+    if(userMetaData["job_tilte"] && userMetaData["job_tilte"].length > 1 && userMetaData["job_tilte"] != "" && userMetaData["job_tilte"] != " ")  
+      return userMetaData["job_tilte"];
+  }
+
+    return "User role not set by user";
 }  
 
-public inviteUser(): void {
-  let dialogRef = this.dialog.open(InviteUserDialog, {
+public getUsersEmail(index: number): string {
 
+  if (this.usersInView[index][0])
+    return this.usersInView[index][0]["email"];
+
+  if (this.usersInView[index])
+    // if (this.usersInView[index]["email"] && this.usersInView["email"].length > 1 && this.usersInView["email"] != "" && this.usersInView["email"] != " ")
+      return this.usersInView[index]["email"];
+
+    return "Email not set by user"
+}
+
+public inviteUser(): void {
+  let city = this.currentSurveyGroupSelected.name;
+
+  let surveyGroup: JSON[] = this.surveyGroupNameAndObjectDetails.get(this.currentSurveyGroupSelected.name);
+  let cityId =  surveyGroup['cityID'];
+
+  let dialogRef = this.dialog.open(AdminInviteUserDialog, {
+    data: { cityName: city,
+            cityID: cityId,
+          },
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+
+    this.loadingSnackBar.showLoadingSnackBar();
+    this.resetAllStateArrays();
+    this.webGetOrganizations();
   });
 }
 
-public editUserRole(index: number): void {
+private resetAllStateArrays()
+{
+  this.organizationsInView = [];
+  this.surveyGroupsInView = [];
+  this.currentOrganizationSelected = [];
+  this.currentSurveyGroupSelected = [];
+  this.usersInView = [];
 
+  this.organizationAndSurveyGroupPairs.clear();
+  this.surveyGroupAndUserPairs.clear();
+  this.surveyGroupNameAndObjectDetails.clear();
+}
+
+public editUserRole(index: number): void {
+  
+  let selectedUser: JSON = this.usersInView[index][0];
+  let userId = selectedUser["user_id"];
+
+  let surveyGroup: JSON[] = this.surveyGroupNameAndObjectDetails.get(this.currentSurveyGroupSelected.name);
+  let cityId =  surveyGroup['cityID'];
+  
+  let userEmail = selectedUser["email"];
+
+  let userName = selectedUser["user_metadata"]["name"];
+  let userJobTitle = selectedUser["user_metadata"]["job_title"];
+  let userRole = selectedUser["app_metadata"]["user_role"]; 
+
+
+  let dialogRef = this.dialog.open(AdminEditUserRoleDialog, {
+    data: {
+      userId: userId,
+      cityId: cityId,
+      city: this.currentSurveyGroupSelected.name,
+      userEmail: userEmail,
+      userName: userName,
+      userJobTitle: userJobTitle,
+      listOfSurveyGroups: this.surveyGroupsInView,
+      mapOfSurveyGroupAndData: this.surveyGroupNameAndObjectDetails,
+      userRole: userRole,
+    }
+  });
+  
+  dialogRef.afterClosed().subscribe(result => {
+    
+        this.loadingSnackBar.showLoadingSnackBar();
+        this.resetAllStateArrays();
+        this.webGetOrganizations();
+      });
 }
 
 public deleteUser(index: number): void {
@@ -270,47 +386,80 @@ export class AdminInviteUserDialog {
 
   httpRequestFlag: boolean;
   inviteUserForm: FormGroup;
+  dataFromParent: any;
   
   @ViewChild('spinnerElement') loadingElement: ElementRef;
 
-  constructor(public dialog: MatDialog, private formBuilder: FormBuilder, public kumulosService: KumulosService, 
-              public renderer: Renderer, private ngZone: NgZone) {
-    
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private formBuilder: FormBuilder, 
+              public kumulosService: KumulosService,public renderer: Renderer, private ngZone: NgZone) {
+
+    this.dataFromParent = data;
     this.inviteUserForm = this.formBuilder.group({
      email: ['', [Validators.required, ValidationService.emailValidator]],
+     city: [data.cityName],
+     name: [''],
+     jobTitle: [''],
+     userRole: [''],
     });
   }
 
   public inviteNewUser(): void {
-    let cityName: string = this.getCityName();
-    console.log("City Name: " + cityName);
-    let cityId: string = this.getCityId();
-    let email: string = this.inviteUserForm.value.email;
-    
+    // webAdminInviteUser(email: string, city: string, city_id: string, role: string, name: string, jobTitle: string)
     this.httpRequestFlag = true;
-    this.kumulosService.inviteUser(email, cityName, cityId).subscribe(responseJSON => {
-      console.log("response", responseJSON.payload);
-      // this.reloadPage();
-      this.dialog.closeAll();
-    })
-  }
+    let inviteUserFormValue = this.inviteUserForm.value;
+    console.log(this.dataFromParent.cityID);
 
-  private getCityName(): string {
-    let userProfile: JSON = this.getUserProfile();
-    let city: string = userProfile['app_metadata']['city'];
-    return city;
-  };
-
-  private getCityId(): string {
-    let userProfile: JSON = this.getUserProfile();
-    let cityId: string = userProfile['app_metadata']['city_id'];
-
-    return cityId;
-  }
-
-  private getUserProfile(): JSON {
-    return JSON.parse(localStorage.getItem('userProfile'));
+    this.kumulosService.webAdminInviteUser(inviteUserFormValue.email, inviteUserFormValue.city,
+                                            this.dataFromParent.cityID, inviteUserFormValue.userRole, 
+                                            inviteUserFormValue.name, inviteUserFormValue.jobTitle)
+      .subscribe(response => {
+        this.httpRequestFlag = false;
+        this.dialog.closeAll();
+      });
   }
 
   onSubmit() {}
+}
+
+@Component({
+  selector: 'adminEditUserRole',
+  templateUrl: './adminEditUserRole.html',
+  styleUrls: ['./adminEditUserRole.css']
+})
+export class AdminEditUserRoleDialog {
+
+  httpRequestFlag: boolean;
+  editUserForm: FormGroup;
+  dataFromParent: any;
+
+  listOfSurveyGroups: Array<any>;
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public router: Router, private formBuilder: FormBuilder, 
+                public kumulosService: KumulosService, public dialog: MatDialog) 
+  {
+    
+      this.dataFromParent = data;
+      this.listOfSurveyGroups = new Array();
+
+      this.dataFromParent.listOfSurveyGroups.forEach(item => this.listOfSurveyGroups.push(item.value.name));
+
+      this.editUserForm = this.formBuilder.group({
+        email: [this.dataFromParent.userEmail, [Validators.required, ValidationService.emailValidator]],
+        city: [this.dataFromParent.city],
+        name: [this.dataFromParent.userEmail],
+        jobTitle: [this.dataFromParent.userJobTitle],
+        userRole: [this.dataFromParent.userRole],
+      })
+  }
+
+  public editUser(): void {
+    this.httpRequestFlag = true;
+    let formVal = this.editUserForm.value;
+    this.kumulosService.webAdminUpdateUser(formVal.userRole, this.dataFromParent.userId, formVal.email, formVal.name, formVal.jobTitle,
+                                            this.dataFromParent.cityId)
+          .subscribe(resposne => {
+            this.dialog.closeAll();
+          })
+  }
+
 }

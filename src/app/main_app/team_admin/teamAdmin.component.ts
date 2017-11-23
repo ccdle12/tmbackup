@@ -74,9 +74,9 @@ export class TeamAdminComponent  {
   public deleteUser(index: number): void {
     let deleteUser: JSON = this.userProfiles[index];
     let userId: string = deleteUser['user_id']; 
-    
+    console.log(deleteUser);
+    console.log(userId);
     this.deleteUserService.deleteUser(index, userId);
-
     let dialogRef = this.dialog.open(DeleteUserDialog);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -98,41 +98,64 @@ export class TeamAdminComponent  {
   }
 
 
+  /**
+   * Temporary Fix since auth0 app_meta data is not working in the dev environment
+   */
+  // public getUsersName(index: number): string {
+  //   let userName: string;
 
+  //   if (this.hasUserMetaData(index))
+  //   {
+  //     userName = this.userProfiles[index]['user_metadata']['name'];
+      
+  //     if (userName.length < 1)
+  //       userName = "Name not set by user";
+  //   }
+  //   else 
+  //     userName = "Name not set by user";
+    
+  //   return userName;
+  // }
+
+  // public getUsersTitle(index: number): string {
+  //   let userTitle: string;
+
+  //   if (this.hasUserMetaData(index))
+  //     userTitle = this.userProfiles[index]['user_metadata']['jobTitle'];
+  //   else  if (this.userProfiles[index]['headline'])
+  //     userTitle = this.userProfiles[index]['headline'];
+  //   else 
+  //     userTitle = "Job title not set by user";
+    
+  //   if (userTitle.length > 100)
+  //     userTitle = userTitle.slice(0, 60);
+
+  //   return userTitle;
+  // }  
+
+  // private hasUserMetaData(index: number): boolean {
+  //   return this.userProfiles[index]['user_metadata'] ? true : false;
+  // }
   public getUsersName(index: number): string {
     let userName: string;
-
-    if (this.hasUserMetaData(index))
-    {
-      userName = this.userProfiles[index]['user_metadata']['name'];
-      
-      if (userName.length < 1)
-        userName = "Name not set by user";
-    }
-    else 
-      userName = "Name not set by user";
     
-    return userName;
+      if (this.userProfiles[index]['name'])
+        userName = this.userProfiles[index]['name'];
+      else
+        userName = "Name not set by user";
+    
+      return userName;
   }
 
   public getUsersTitle(index: number): string {
     let userTitle: string;
-
-    if (this.hasUserMetaData(index))
-      userTitle = this.userProfiles[index]['user_metadata']['jobTitle'];
-    else  if (this.userProfiles[index]['headline'])
-      userTitle = this.userProfiles[index]['headline'];
-    else 
-      userTitle = "Job title not set by user";
     
-    if (userTitle.length > 100)
-      userTitle = userTitle.slice(0, 60);
-
+    if (this.userProfiles[index]['headline'])
+      userTitle = this.userProfiles[index]['headline'];
+    else
+      userTitle = "Job title not set by user";
+  
     return userTitle;
-  }  
-
-  private hasUserMetaData(index: number): boolean {
-    return this.userProfiles[index]['user_metadata'] ? true : false;
   }
 }
 
@@ -207,7 +230,9 @@ export class DeleteUserDialog {
     this.httpRequestFlag = true;
     this.kumulosService.deleteUser(deleteUserId).subscribe(responseJSON => {
       
-      // console.log("response", responseJSON.payload);
+      console.log("Delete response:");
+      console.log(responseJSON);
+      console.log("response", responseJSON.payload);
       // window.location.reload();
       
       this.dialog.closeAll();

@@ -138,6 +138,7 @@ public addCompany(): void {
   });
 
   dialogRef.afterClosed().subscribe(result => {
+    this.organizations = [];
     this.getAllOrganizationsAndCompanies();
   });
 }
@@ -153,6 +154,7 @@ public editCompany(company: any): void {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.organizations = [];
       this.getAllOrganizationsAndCompanies();
     });
   }
@@ -273,6 +275,9 @@ export class EditCompanyDialog {
   {
     let startDate = new Date(parseInt(this.company.startDate) * 1000);
     let expiryDate = new Date(parseInt(this.company.expiryDate) * 1000);
+
+    console.log("LICENSE TYPE!");
+    console.log(this.company.licenseType);
 
     this.editCompanyForm = this.formBuilder.group({
       name: [this.company.name],

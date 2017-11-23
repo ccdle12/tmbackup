@@ -11,11 +11,27 @@
                 <input matInput placeholder="Name" type="text" formControlName="name">
             </mat-form-field>
         </div>
-
-        <div class="form">
+<!-- 
+        <div>
             <mat-form-field>
-                <input matInput placeholder="License" type="text" formControlName="license">
+                <mat-select placeholder="User Role" formControlName="userRole">
+                    <mat-option value="Leader">Leader</mat-option>
+                    <mat-option value="Consultant">Consultant</mat-option>
+                    <mat-option value="Evidencer">Evidencer</mat-option>
+                    <mat-option value="Team">Team</mat-option>
+                </mat-select>
             </mat-form-field>
+        </div> -->
+        <!-- <input matInput placeholder="License" type="text" formControlName="license">
+         -->
+         <div class="form">
+                <mat-form-field>
+                    <mat-select placeholder="License" formControlName="license">
+                        <mat-option value="DEMO">DEMO</mat-option>
+                        <mat-option value="WORKSHOP">WORKSHOP</mat-option>
+                        <mat-option value="FULL">FULL</mat-option>
+                    </mat-select>
+                </mat-form-field>
         </div>
     
         <div class="form">

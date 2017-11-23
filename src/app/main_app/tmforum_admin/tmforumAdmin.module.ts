@@ -28,6 +28,7 @@ import { DropdownModule } from 'primeng/primeng';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatSelectModule } from '@angular/material';
+import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { MatSelectModule } from '@angular/material';
     DropdownModule,
     FormsModule,
     ReactiveFormsModule,
-    MatSelectModule 
+    MatSelectModule,
+    Ng2GoogleChartsModule 
   ],
   declarations: 
   [

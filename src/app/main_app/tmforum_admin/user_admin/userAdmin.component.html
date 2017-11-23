@@ -34,11 +34,11 @@
 
       <div class="cardBody">
         <h5><strong>{{getUsersName(i)}}</strong></h5>
-        <h6>{{user.app_metadata.user_role}}</h6>
+        <h6>{{getUserRole(i)}}</h6>
 
         <mat-card-content>
-          <h6>{{user.headline}}</h6>
-          <h6>{{user.email}}</h6>
+          <h6>{{getUsersTitle(i)}}</h6>
+          <h6>{{getUsersEmail(i)}}</h6>
         </mat-card-content>
 
         <mat-card-actions>

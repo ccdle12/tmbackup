@@ -12,10 +12,19 @@
             </mat-form-field>
         </div>
 
-        <div class="form">
+        <!-- <div class="form">
             <mat-form-field>
                 <input matInput placeholder="License" type="text" formControlName="license">
             </mat-form-field>
+        </div> -->
+        <div class="form">
+                <mat-form-field>
+                    <mat-select placeholder="License" formControlName="license">
+                        <mat-option value="DEMO">DEMO</mat-option>
+                        <mat-option value="WORKSHOP">WORKSHOP</mat-option>
+                        <mat-option value="FULL">FULL</mat-option>
+                    </mat-select>
+                </mat-form-field>
         </div>
     
         <div class="form">

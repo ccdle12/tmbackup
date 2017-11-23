@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, URLSearchParams } from '@angular/http';
 import { AuthService } from '../../shared/services/auth.service'
 import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
 
 
 @Injectable()
@@ -58,6 +59,10 @@ export class KumulosService {
     private webGetSurveysByOrgURI: string;
 
     private webCreateUpdateSurveysURI: string;
+
+    private webAdminInviteUserURI: string;
+
+    private webAdminUpdateUserURI: string;
 
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
@@ -120,6 +125,10 @@ export class KumulosService {
         this.webGetSurveysByOrgURI = "webGetSurveysByOrg.json/"
 
         this.webCreateUpdateSurveysURI = "webCreate_UpdateSurveys.json/";
+
+        this.webAdminInviteUserURI = "webAdminInviteUser.json/";
+
+        this.webAdminUpdateUserURI = "webAdminUpdateUser.json/";
     }
 
     public createAuthorizationHeader(): Headers {
@@ -899,4 +908,48 @@ export class KumulosService {
                 return response.json();
             })
     }
+
+    public webAdminInviteUser(email: string, city: string, city_id: string, role: string, name: string, jobTitle: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[email]', email);
+        urlSearchParams.append('params[city]', city);
+        urlSearchParams.append('params[city_id]', city_id);
+        urlSearchParams.append('params[role]', role);
+        urlSearchParams.append('params[name]', name);
+        urlSearchParams.append('params[jobTitle]', jobTitle);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.webAdminInviteUserURI, body, {headers: headers})
+            .map(response => {
+                console.log("Web Invite User response");
+                console.log(response);
+                return response.json();
+            })
+    }
+    
+    public webAdminUpdateUser(role: string, userId: string, email: string, name: string, jobTitle: string, city_id: string) {
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[role]', role);
+        urlSearchParams.append('params[userId]', userId);
+        urlSearchParams.append('params[email]', email);
+        urlSearchParams.append('params[name]', name);
+        urlSearchParams.append('params[jobTitle]', jobTitle);
+        urlSearchParams.append('params[city_id]', city_id);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.webAdminUpdateUserURI, body, {headers: headers})
+            .map(response => {
+                console.log("Admin Web Edit User Response");
+                console.log(response);
+
+                return response.json();
+            });
+    }
+    
 }
