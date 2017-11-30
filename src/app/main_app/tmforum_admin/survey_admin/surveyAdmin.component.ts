@@ -297,7 +297,22 @@ export class EditCompanyDialog {
 
   public editCompany(): void {
     this.httpRequestFlag = true;
-    this.kumulosService.webCreateUpdateSurveys(this.orgName, this.editCompanyForm.value, this.company.cityID, this.editCompanyForm.value.archive).subscribe(responseJSON => {
+
+    let archiveFlag: boolean = this.editCompanyForm.value.archive;
+
+    if (this.editCompanyForm.value.archive == "")
+      archiveFlag = false;
+    else
+    {
+      console.log("THERES SOMETHING THERE");
+      console.log(this.editCompanyForm.value.archive);
+    }
+
+    console.log("ARCHIVE FLAG");
+    console.log(this.editCompanyForm.value.archive);
+
+    this.kumulosService.webCreateUpdateSurveys(this.orgName, this.editCompanyForm.value, this.company.cityID, archiveFlag).subscribe(responseJSON => {
+      console.log(responseJSON);
       this.dialog.closeAll();
     })
 

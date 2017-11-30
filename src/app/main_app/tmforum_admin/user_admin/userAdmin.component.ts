@@ -134,9 +134,15 @@ private reqUsersFromSurveyGroup(surveyGroupName: string, cityID: string) {
       if (listOfUsers) {
         this.usersInView = [];
         listOfUsers.forEach(element => {
+            console.log("EACH USER IN LIST");
+            console.log(element);
             this.usersInView.push(listOfUsers);
           });
       }
+
+      console.log("USERS IN VIEW!!!!");
+      this.usersInView = this.usersInView[0];
+      console.log(this.usersInView);
 
       this.loadingSnackBar.dismissLoadingSnackBar()
     });
@@ -187,6 +193,7 @@ private reqUsersFromSurveyGroup(surveyGroupName: string, cityID: string) {
  */
 public surveyGroupHasChanged(): void {
   if (this.currentSurveyGroupSelected) {
+    // this.usersInView = [];
     this.usersInView = this.surveyGroupAndUserPairs.get(this.currentSurveyGroupSelected.name);
     console.log("CURRENT SURVEY GROUP");
     console.log(this.currentSurveyGroupSelected);
@@ -284,7 +291,6 @@ public inviteUser(): void {
   });
 
   dialogRef.afterClosed().subscribe(result => {
-
     this.loadingSnackBar.showLoadingSnackBar();
     this.resetAllStateArrays();
     this.webGetOrganizations();
@@ -306,7 +312,10 @@ private resetAllStateArrays()
 
 public editUserRole(index: number): void {
   
-  let selectedUser: JSON = this.usersInView[index][0];
+  // let selectedUser: JSON = this.usersInView[index][0];
+  let selectedUser: JSON = this.usersInView[index];
+  console.log("SELECTED USER");
+  console.log(selectedUser);
   let userId = selectedUser["user_id"];
 
   let surveyGroup: JSON[] = this.surveyGroupNameAndObjectDetails.get(this.currentSurveyGroupSelected.name);

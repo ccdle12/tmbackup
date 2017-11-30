@@ -46,26 +46,44 @@ export class PublishedDataAdminComponent {
 
     let cityID = this.getCityId();
 
-    this.kumulosService.getAllBenchmarkData(cityID)
-    .subscribe(response => {
+    this.kumulosService.webAdminGetAllPublishedData()
+      .subscribe(response => {
+        this.allCitiesData = response.payload;
+          let cityDataLength = this.allCitiesData.length;
+          this.currentCityData = this.allCitiesData[cityDataLength - 1];
+    
+          this.updateAllCityNames();
+          this.mapCityNameToData();
+    
+          this.mapCityToVersionId();
+          
+          this.currentCitySelected = this.allCityNames[0].value;
+          localStorage.setItem('benchmarkId', response.payload[0].versionID);
+    
+          this.createComboCharts();
+          this.loadingSnackBar.dismissLoadingSnackBar();
+      })
+
+    // this.kumulosService.getAllBenchmarkData(cityID)
+    // .subscribe(response => {
       
-      this.allCitiesData = response.payload;
+    //   this.allCitiesData = response.payload;
 
-      let cityDataLength = this.allCitiesData.length;
-      this.currentCityData = this.allCitiesData[cityDataLength - 1];
+    //   let cityDataLength = this.allCitiesData.length;
+    //   this.currentCityData = this.allCitiesData[cityDataLength - 1];
 
-      this.updateAllCityNames();
-      this.mapCityNameToData();
+    //   this.updateAllCityNames();
+    //   this.mapCityNameToData();
 
-      this.mapCityToVersionId();
+    //   this.mapCityToVersionId();
       
-      this.currentCitySelected = this.allCityNames[0].value;
-      localStorage.setItem('benchmarkId', response.payload[0].versionID);
+    //   this.currentCitySelected = this.allCityNames[0].value;
+    //   localStorage.setItem('benchmarkId', response.payload[0].versionID);
 
-      this.createComboCharts();
-      this.loadingSnackBar.dismissLoadingSnackBar();
+    //   this.createComboCharts();
+    //   this.loadingSnackBar.dismissLoadingSnackBar();
 
-    }); 
+    // }); 
   }
 
    // Adds all the citie names to a cached array starting from the last city
@@ -295,4 +313,9 @@ export class PublishedDataAdminComponent {
     this.router.navigateByUrl('/main/takesurvey');
   }
 
+
+  public cityHasChanged() {
+     this.currentCityData = (this.cityNameMappedToData.get(this.currentCitySelected.name));
+      this.createComboCharts();
+  }
 }

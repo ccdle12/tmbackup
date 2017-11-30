@@ -64,6 +64,8 @@ export class KumulosService {
 
     private webAdminUpdateUserURI: string;
 
+    private webAdminGetAllPublishedDataURI: string;
+
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
@@ -129,6 +131,8 @@ export class KumulosService {
         this.webAdminInviteUserURI = "webAdminInviteUser.json/";
 
         this.webAdminUpdateUserURI = "webAdminUpdateUser.json/";
+
+        this.webAdminGetAllPublishedDataURI = "webAdminGetAllPublishedData.json/"
     }
 
     public createAuthorizationHeader(): Headers {
@@ -889,6 +893,8 @@ export class KumulosService {
         let archive: string;
         if (archivedFlag == true)
             archive = "X";
+        else
+            archive = "";
 
         if (cityID == null)
             surveyData = '{"surveyData":[{"name":' + '"' + survey.name + '"' + ',"exBenchmark":"","licenseType":' + '"' + survey.license + '"' + ',"maxUsers":' + '"' + survey.maxUsers + '"' + ',"startDate":' + '"' + (survey.validFrom.getTime() / 1000) + '"' + ',"expiryDate":' + '"' + (survey.validTo.getTime() / 1000) + '"' + ',"archivedFlag":"","cityID":""}]}';
@@ -948,6 +954,18 @@ export class KumulosService {
                 console.log("Admin Web Edit User Response");
                 console.log(response);
 
+                return response.json();
+            });
+    }
+
+    public webAdminGetAllPublishedData() {
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.webAdminGetAllPublishedDataURI, body, {headers: headers})
+            .map(response => {
                 return response.json();
             });
     }
