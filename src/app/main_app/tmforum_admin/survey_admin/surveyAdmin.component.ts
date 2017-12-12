@@ -7,6 +7,7 @@ import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
 import { ValidationService } from '../../../shared/services/validation.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'surveyAdminComponent',
@@ -19,7 +20,7 @@ export class SurveyAdminComponent {
   public companiesInView: Array<any>;
   public organizations: Array<any>;
   public currentOrganizationSelected: any;
-
+  public lastSelectedOrg: any;
   private organizationAndCompanyPairs;
 
   constructor(public router: Router, public kumulosService: KumulosService, public dialog: MatDialog,
@@ -50,9 +51,15 @@ export class SurveyAdminComponent {
       console.log("web get orgs");
       console.log(response);
       if (response.responseCode == 1) {
-        response.payload.forEach(element => {
-          this.organizations.push({label: element.organizationName, value: {id:element.organizationName, name: element.organizationName}});  
-        });
+
+        for (let i = 0; i < response.payload.length; i++)
+        {
+          console.log("incrementing");
+          this.organizations.push({label: response.payload[i].organizationName, value: {id:i, name: response.payload[i].organizationName}});
+        }
+
+        if (!this.currentOrganizationSelected)
+          this.currentOrganizationSelected = this.organizations[0].value;
 
         this.getCompaniesFromOrganizations();
       }
@@ -69,13 +76,11 @@ export class SurveyAdminComponent {
 
       this.kumulosService.webGetSurveysByOrg(element.value.name).subscribe(response => {
         this.organizationAndCompanyPairs.set(element.value.name, response.payload);
-        
-        this.currentOrganizationSelected = this.organizations[0].value;
+    
         this.updateCompaniesInView();
 
         this.loadingSnackBar.dismissLoadingSnackBar();
       })
-
     });
   }
 

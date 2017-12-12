@@ -73,6 +73,7 @@ a {
 
 /* Cards Styles */
 #cardsContainer {
+    padding-top: 25px;
     text-align: center;
     padding-left: 50px;
 }

@@ -8,7 +8,7 @@
             <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('organizationadmin')"><h4>Organization Admin</h4></a>
             <a mat-tab-link class="defaultBtn whiteText navTitle" (click)="routeToPage('surveyadmin')"><h4>Survey Admin</h4></a>
             <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('useradmin')"><h4>User Admin</h4></a>
-            <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('bulkinviteadmin')"><h4>Bulk Invite</h4></a>
+            <!-- <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('bulkinviteadmin')"><h4>Bulk Invite</h4></a> -->
             <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('publisheddataadmin')"><h4>Published Data</h4></a>
           </div>
         </div> 
@@ -21,6 +21,7 @@
         <button id="addOrganization" mat-mini-fab class="col-xs-3" color="primary" (click)="addCompany()"><mat-icon>add</mat-icon></button>
       </div>
     
+    <h2>Organizations</h2>
     <p-dropdown id="dropDownMenu" [options]="organizations" [(ngModel)]="currentOrganizationSelected" (onChange)="organizationHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
     
     <div class="row"  id="cardsContainer">
