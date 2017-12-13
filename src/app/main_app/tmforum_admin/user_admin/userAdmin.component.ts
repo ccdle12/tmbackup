@@ -341,13 +341,6 @@ public editUserRole(index: number): void {
       userRole: userRole,
     }
   });
-  
-  dialogRef.afterClosed().subscribe(result => {
-    
-        this.loadingSnackBar.showLoadingSnackBar();
-        this.resetAllStateArrays();
-        this.webGetOrganizations();
-      });
 }
 
 public deleteUser(index: number): void {
@@ -396,27 +389,48 @@ export class AdminInviteUserDialog {
   httpRequestFlag: boolean;
   inviteUserForm: FormGroup;
   dataFromParent: any;
+
+  listOfAllCities: Array<string>;
+  mapOfCitiesAndId: Map<string, string>;
   
   @ViewChild('spinnerElement') loadingElement: ElementRef;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private formBuilder: FormBuilder, 
               public kumulosService: KumulosService,public renderer: Renderer, private ngZone: NgZone) {
 
+    this.initMemberVariables();
+    this.getAllCities();
+    
     this.dataFromParent = data;
     this.inviteUserForm = this.formBuilder.group({
      email: ['', [Validators.required, ValidationService.emailValidator]],
-     city: [data.cityName],
+     surveyGroup: [data.cityName],
      name: [''],
      jobTitle: [''],
      userRole: [''],
     });
   }
 
+  private initMemberVariables()
+  {
+    this.listOfAllCities = new Array();
+    this.mapOfCitiesAndId = new Map();
+  }
+
+  private getAllCities()
+  {
+    this.kumulosService.getAllCities()
+      .subscribe(response => {
+        response.payload.forEach(city => {
+          this.listOfAllCities.push(city.name);
+          this.mapOfCitiesAndId.set(city.name, city.cityID);
+        });
+      });
+  }
+
   public inviteNewUser(): void {
-    // webAdminInviteUser(email: string, city: string, city_id: string, role: string, name: string, jobTitle: string)
     this.httpRequestFlag = true;
     let inviteUserFormValue = this.inviteUserForm.value;
-    console.log(this.dataFromParent.cityID);
 
     this.kumulosService.webAdminInviteUser(inviteUserFormValue.email, inviteUserFormValue.city,
                                             this.dataFromParent.cityID, inviteUserFormValue.userRole, 
@@ -441,34 +455,50 @@ export class AdminEditUserRoleDialog {
   editUserForm: FormGroup;
   dataFromParent: any;
 
-  listOfSurveyGroups: Array<any>;
+  listOfAllCities: Array<string>;
+  mapOfCitiesAndId: Map<string, string>;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public router: Router, private formBuilder: FormBuilder, 
                 public kumulosService: KumulosService, public dialog: MatDialog) 
   {
+    this.initMemberVariables();
+    this.getAllCities();
     
-      this.dataFromParent = data;
-      this.listOfSurveyGroups = new Array();
+    this.dataFromParent = data;
 
-      this.dataFromParent.listOfSurveyGroups.forEach(item => this.listOfSurveyGroups.push(item.value.name));
-
-      this.editUserForm = this.formBuilder.group({
-        email: [this.dataFromParent.userEmail, [Validators.required, ValidationService.emailValidator]],
-        city: [this.dataFromParent.city],
-        name: [this.dataFromParent.userEmail],
-        jobTitle: [this.dataFromParent.userJobTitle],
-        userRole: [this.dataFromParent.userRole],
-      })
+    this.editUserForm = this.formBuilder.group({
+      email: [this.dataFromParent.userEmail, [Validators.required, ValidationService.emailValidator]],
+      surveyGroup: [this.dataFromParent.city],
+      name: [this.dataFromParent.userEmail],
+      jobTitle: [this.dataFromParent.userJobTitle],
+      userRole: [this.dataFromParent.userRole],
+    })
   }
+
+  private initMemberVariables()
+  {
+    this.listOfAllCities = new Array();
+    this.mapOfCitiesAndId = new Map();
+  }
+
+  private getAllCities()
+  {
+    this.kumulosService.getAllCities()
+      .subscribe(response => {
+        response.payload.forEach(city => {
+          this.listOfAllCities.push(city.name);
+          this.mapOfCitiesAndId.set(city.name, city.cityID);
+        });
+      });
+  }
+
 
   public editUser(): void {
     this.httpRequestFlag = true;
     let formVal = this.editUserForm.value;
-    this.kumulosService.webAdminUpdateUser(formVal.userRole, this.dataFromParent.userId, formVal.email, formVal.name, formVal.jobTitle,
-                                            this.dataFromParent.cityId)
-          .subscribe(resposne => {
-            this.dialog.closeAll();
-          })
-  }
 
+    let cityId = this.mapOfCitiesAndId.get(formVal.surveyGroup);
+    this.kumulosService.webAdminUpdateUser(formVal.userRole, this.dataFromParent.userId, formVal.email, formVal.name, formVal.jobTitle,
+                                            cityId).subscribe(resposne => { this.dialog.closeAll(); })
+  }
 }

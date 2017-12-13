@@ -24,6 +24,12 @@
     <h2>Organizations</h2>
     <p-dropdown id="dropDownMenu" [options]="organizations" [(ngModel)]="currentOrganizationSelected" (onChange)="organizationHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
     
+    <!-- <mat-form-field>
+      <mat-select placeholder="Select" [(ngModel)]="currentOrganizationSelected" (onChange)="organizationHasChanged()">
+        <mat-option *ngFor="let orgs of organizations; let i = index">{{organizations[i].label}}</mat-option>
+      </mat-select>
+    </mat-form-field> -->
+
     <div class="row"  id="cardsContainer">
       <mat-card class="col-sm-1" *ngFor="let companies of companiesInView; let i = index">
          <div class="cardBody">

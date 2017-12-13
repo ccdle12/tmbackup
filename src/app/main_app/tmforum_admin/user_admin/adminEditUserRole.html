@@ -10,9 +10,12 @@
             <control-messages [control]="editUserForm.controls.email"></control-messages>
         </mat-form-field>
     </div>
+    
     <div>
         <mat-form-field>
-            <input matInput placeholder="City" formControlName="city">
+            <mat-select placeholder="Survey Group" formControlName="surveyGroup">
+                <mat-option  *ngFor="let city of listOfAllCities; let i = index" value="{{city}}">{{city}}</mat-option>
+            </mat-select>
         </mat-form-field>
     </div>
 

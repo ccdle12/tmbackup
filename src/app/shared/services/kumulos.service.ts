@@ -66,6 +66,8 @@ export class KumulosService {
 
     private webAdminGetAllPublishedDataURI: string;
 
+    private webAdminRequestPublishedDataCSVURI: string;
+
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
@@ -133,6 +135,8 @@ export class KumulosService {
         this.webAdminUpdateUserURI = "webAdminUpdateUser.json/";
 
         this.webAdminGetAllPublishedDataURI = "webAdminGetAllPublishedData.json/"
+
+        this.webAdminRequestPublishedDataCSVURI = "webAdminRequestPublishedDataCSV.json/"
     }
 
     public createAuthorizationHeader(): Headers {
@@ -969,5 +973,22 @@ export class KumulosService {
                 return response.json();
             });
     }
+
+    public webAdminRequestPublishedDataCSV(emailAddress) {
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[emailAddress]', emailAddress);
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.webAdminRequestPublishedDataCSVURI, body, {headers: headers})
+            .map(response => {
+                console.log("Web adminr equest published data CSV response");
+                console.log(response);
+                return response.json();
+            })
+    }
+
+    
     
 }

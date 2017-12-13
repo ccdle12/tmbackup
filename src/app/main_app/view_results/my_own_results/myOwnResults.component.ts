@@ -211,7 +211,6 @@ export class EmailMyOwnResultsDialog {
         .subscribe(responseJSON => {
           console.log(responseJSON.payload);
           this.dialog.closeAll();
-          // this.showSnackBar();
       });
   }
 

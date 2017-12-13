@@ -18,6 +18,7 @@ import { LicenseService } from '../../../shared/services/license.service';
 export class PublishedDataAdminComponent {
 
   public backToDashboardTooltip: string;
+  public emailResults: string;
 
   // Combo Charts holds the 'combo chart' object needed for each graph to display
   public comboCharts: Array<any>;
@@ -38,6 +39,7 @@ export class PublishedDataAdminComponent {
   isLicenseValid: boolean;
 
   public surveyDashboard;
+
   
   constructor(public router: Router, public kumulosService: KumulosService, public dialog: MatDialog,
               public loadingSnackBar: LoadingSnackBar, public licenseService: LicenseService) {
@@ -150,6 +152,9 @@ export class PublishedDataAdminComponent {
 
     // Survey Dashboard holding Area Text and Dimension Texts
     this.surveyDashboard = JSON.parse(localStorage.getItem('surveydashboard'));
+
+    this.backToDashboardTooltip = "Back to Dashboard"
+    this.emailResults = "Email Results"
   }
 
   private getCityId(): string {
@@ -318,4 +323,42 @@ export class PublishedDataAdminComponent {
      this.currentCityData = (this.cityNameMappedToData.get(this.currentCitySelected.name));
       this.createComboCharts();
   }
+
+  public requestSurveyCSV(): void {
+    this.dialog.open(PublishedDataEmailResultsDialog);
+}
+}
+
+@Component({
+  selector: 'publishedDataEmailResults',
+  templateUrl: './publishedDataEmailResults.html',
+  styleUrls: ['./publishedDataEmailResults.css'],
+})
+export class PublishedDataEmailResultsDialog {
+
+  public httpRequestFlag: boolean;
+
+  @ViewChild('spinnerElement') loadingElement: ElementRef;
+
+  constructor(public router: Router,  public authService: AuthService, public kumulosService: KumulosService,
+              public dialog: MatDialog) {
+  }
+
+
+  public sendSurveyRequest(): void {
+    let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
+
+    let emailAddress: string = userProfile['email'];
+    console.log("EMAIL ADDRESS");
+    console.log(emailAddress);
+
+    this.httpRequestFlag = true;
+      this.kumulosService.webAdminRequestPublishedDataCSV(emailAddress)
+        .subscribe(responseJSON => {
+          console.log("Request for csv extract");
+          console.log(responseJSON.payload);
+          this.dialog.closeAll();
+      });
+  }
+
 }

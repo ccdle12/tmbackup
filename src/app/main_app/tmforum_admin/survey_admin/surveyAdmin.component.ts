@@ -22,6 +22,7 @@ export class SurveyAdminComponent {
   public currentOrganizationSelected: any;
   public lastSelectedOrg: any;
   private organizationAndCompanyPairs;
+  public organizationAndIdDict;
 
   constructor(public router: Router, public kumulosService: KumulosService, public dialog: MatDialog,
               public loadingSnackBar: LoadingSnackBar) {
@@ -34,6 +35,7 @@ export class SurveyAdminComponent {
     this.companiesInView = new Array();
     this.organizations = new Array();
     this.organizationAndCompanyPairs = new Map<string, JSON[]>();
+    this.organizationAndIdDict = new Map<any, any>();
   }
 
 
@@ -47,23 +49,29 @@ export class SurveyAdminComponent {
   private webGetOrganizations() {
     this.loadingSnackBar.showLoadingSnackBar();
 
-    this.kumulosService.webGetOrganizations().subscribe(response => {
-      console.log("web get orgs");
-      console.log(response);
-      if (response.responseCode == 1) {
+    this.kumulosService.webGetOrganizations().subscribe(response => 
+    {
+      if (response.responseCode == 1) 
+      {
 
         for (let i = 0; i < response.payload.length; i++)
         {
-          console.log("incrementing");
           this.organizations.push({label: response.payload[i].organizationName, value: {id:i, name: response.payload[i].organizationName}});
+          this.organizationAndIdDict.set(this.organizations[i].value, i);
         }
-
+      
         if (!this.currentOrganizationSelected)
           this.currentOrganizationSelected = this.organizations[0].value;
+        else
+        {
+          let id = this.organizationAndIdDict.get(this.currentOrganizationSelected);
+          this.currentOrganizationSelected = this.organizations[id].value;
+        }
 
         this.getCompaniesFromOrganizations();
       }
-      else {
+      else 
+      {
         console.log("there was an error");
         this.loadingSnackBar.dismissLoadingSnackBar();
       }
