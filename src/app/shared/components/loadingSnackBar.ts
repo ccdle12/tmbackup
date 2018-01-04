@@ -17,4 +17,15 @@ export class LoadingSnackBar
     this.snackbar.dismiss();
   }
 
+  public showLoadingSnackBarWithMessage(message)
+  {
+    this.snackbar.open(message)
+  }
+
+  public showLoadingSnackBarWithMessageAndTimer(message)
+  {
+    this.snackbar.open(message, '', {
+      duration: 3000
+    });
+  }
 }

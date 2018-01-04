@@ -68,6 +68,10 @@ export class KumulosService {
 
     private webAdminRequestPublishedDataCSVURI: string;
 
+    private webDeleteUserURI: string;
+
+    private utilityEmailAllUsersURI: string;
+
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
@@ -137,6 +141,10 @@ export class KumulosService {
         this.webAdminGetAllPublishedDataURI = "webAdminGetAllPublishedData.json/"
 
         this.webAdminRequestPublishedDataCSVURI = "webAdminRequestPublishedDataCSV.json/"
+
+        this.webDeleteUserURI = "webDeleteUser.json/"
+
+        this.utilityEmailAllUsersURI = "utilityEmailAllUsers.json/"
     }
 
     public createAuthorizationHeader(): Headers {
@@ -886,7 +894,7 @@ export class KumulosService {
             })
     }
 
-    public webCreateUpdateSurveys(orgName: string, survey: any, cityID: any, archivedFlag: boolean)
+    public webCreateUpdateSurveys(orgName: string, survey: any, cityID: any, archivedFlag: boolean, excludeFromBenchmarkFlag: boolean)
     {
         let headers: Headers = this.createAuthorizationHeader();
         let urlSearchParams: URLSearchParams = this.createBody();
@@ -900,10 +908,20 @@ export class KumulosService {
         else
             archive = "";
 
+        //TODO: capital "Y" to send to exclude benchmark
+        // Only on edit 
+        // Is already included when pulling data on survey groups, send this state to the edit dialog
+                // "" == false
+        let excludeFromBenchmark: string;
+        if (excludeFromBenchmarkFlag)
+            excludeFromBenchmark = "Y"
+        else
+            excludeFromBenchmark = ""
+
         if (cityID == null)
             surveyData = '{"surveyData":[{"name":' + '"' + survey.name + '"' + ',"exBenchmark":"","licenseType":' + '"' + survey.license + '"' + ',"maxUsers":' + '"' + survey.maxUsers + '"' + ',"startDate":' + '"' + (survey.validFrom.getTime() / 1000) + '"' + ',"expiryDate":' + '"' + (survey.validTo.getTime() / 1000) + '"' + ',"archivedFlag":"","cityID":""}]}';
         else
-            surveyData = '{"surveyData":[{"name":' + '"' + survey.name + '"' + ',"exBenchmark":"","licenseType":' + '"' + survey.license + '"' + ',"maxUsers":' + '"' + survey.maxUsers + '"' + ',"startDate":' + '"' + (survey.validFrom.getTime() / 1000) + '"' + ',"expiryDate":' + '"' + (survey.validTo.getTime() / 1000) + '"' + ',"archivedFlag":' + '"' + archive  + '"' + ',"cityID":' + '"'+ cityID + '"' +'}]}';
+            surveyData = '{"surveyData":[{"name":' + '"' + survey.name + '"' + ',"exBenchmark":' + '"' + excludeFromBenchmark  + '"' + ',"licenseType":' + '"' + survey.license + '"' + ',"maxUsers":' + '"' + survey.maxUsers + '"' + ',"startDate":' + '"' + (survey.validFrom.getTime() / 1000) + '"' + ',"expiryDate":' + '"' + (survey.validTo.getTime() / 1000) + '"' + ',"archivedFlag":' + '"' + archive  + '"' + ',"cityID":' + '"'+ cityID + '"' +'}]}';
         
         console.log(surveyData);
         urlSearchParams.append('params[organizationName]', orgName);
@@ -936,6 +954,7 @@ export class KumulosService {
             .map(response => {
                 console.log("Web Invite User response");
                 console.log(response);
+
                 return response.json();
             })
     }
@@ -952,7 +971,7 @@ export class KumulosService {
         urlSearchParams.append('params[city_id]', city_id);
 
         let body: string = urlSearchParams.toString();
-
+        console.log("Email address in webAdminUpdateUser: " + email)
         return this.http.post(this.domain + this.webAdminUpdateUserURI, body, {headers: headers})
             .map(response => {
                 console.log("Admin Web Edit User Response");
@@ -989,6 +1008,34 @@ export class KumulosService {
             })
     }
 
-    
+    public webDeleteUser(userId) {
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[userId]', userId);
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.webDeleteUserURI, body, {headers: headers})
+            .map(response => {
+                console.log("Response from calling web delete user api")
+                console.log(response)
+                return response.json();
+            })
+    }
+
+    public utilityEmailAllUsers(email) {
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[emailAddresses]', email);
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.utilityEmailAllUsersURI, body, {headers: headers})
+            .map(response => {
+                console.log("Response from calling get all user emails api")
+                console.log(response)
+                return response.json();
+            })
+    }
     
 }

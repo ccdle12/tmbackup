@@ -20,7 +20,7 @@ export class SurveyAdminComponent {
   public companiesInView: Array<any>;
   public organizations: Array<any>;
   public currentOrganizationSelected: any;
-  public lastSelectedOrg: any;
+  // public lastSelectedOrg: any;
   private organizationAndCompanyPairs;
   public organizationAndIdDict;
 
@@ -51,6 +51,7 @@ export class SurveyAdminComponent {
 
     this.kumulosService.webGetOrganizations().subscribe(response => 
     {
+      console.log(response)
       if (response.responseCode == 1) 
       {
 
@@ -228,7 +229,7 @@ export class AddCompanyDialog {
 
   public addCompany(): void {
     this.httpRequestFlag = true;
-    this.kumulosService.webCreateUpdateSurveys(this.orgName, this.addCompanyForm.value, null, null).subscribe(responseJSON => {
+    this.kumulosService.webCreateUpdateSurveys(this.orgName, this.addCompanyForm.value, null, null, null).subscribe(responseJSON => {
       this.dialog.closeAll();
     })
   }
@@ -292,6 +293,11 @@ export class EditCompanyDialog {
     console.log("LICENSE TYPE!");
     console.log(this.company.licenseType);
 
+    let companyExcludeFromBenchmark = false
+    
+    if (this.company.exBenchmark != "")
+      companyExcludeFromBenchmark = true
+
     this.editCompanyForm = this.formBuilder.group({
       name: [this.company.name],
       license: [this.company.licenseType],
@@ -299,6 +305,7 @@ export class EditCompanyDialog {
       validFrom: [startDate],
       validTo: [expiryDate],
       archive: [''],
+      excludeFromBenchmark: [companyExcludeFromBenchmark]
      });
   }
 
@@ -321,10 +328,17 @@ export class EditCompanyDialog {
       console.log(this.editCompanyForm.value.archive);
     }
 
+    // if (this.editCompanyForm.value.excludeFromBenchmark == "")
+      
+
     console.log("ARCHIVE FLAG");
     console.log(this.editCompanyForm.value.archive);
 
-    this.kumulosService.webCreateUpdateSurveys(this.orgName, this.editCompanyForm.value, this.company.cityID, archiveFlag).subscribe(responseJSON => {
+    console.log("Exlcude from Benchmark Flag")
+    console.log(this.editCompanyForm.value.excludeFromBenchmark)
+    let excludeFromBenchmarkFlag = this.editCompanyForm.value.excludeFromBenchmark
+
+    this.kumulosService.webCreateUpdateSurveys(this.orgName, this.editCompanyForm.value, this.company.cityID, archiveFlag, excludeFromBenchmarkFlag).subscribe(responseJSON => {
       console.log(responseJSON);
       this.dialog.closeAll();
     })

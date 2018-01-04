@@ -53,6 +53,10 @@
             <mat-checkbox formControlName="archive">Archive</mat-checkbox>
         </div>
 
+        <div class="form">
+            <mat-checkbox formControlName="excludeFromBenchmark">Exclude from Benchmark</mat-checkbox>
+        </div>
+
     </div>
     <button mat-button matDialogClose>Cancel</button>
     <button mat-button (click)="editCompany()" [disabled]="enableSubmitButton()">Edit Survey</button>

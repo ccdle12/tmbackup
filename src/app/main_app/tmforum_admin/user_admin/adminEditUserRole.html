@@ -3,13 +3,13 @@
 </div>
 
 <h4>Edit User</h4>
-<form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
-    <div>
-        <mat-form-field>
-            <input matInput placeholder="Email" type="text" formControlName="email">
-            <control-messages [control]="editUserForm.controls.email"></control-messages>
-        </mat-form-field>
-    </div>
+<form [formGroup]="editUserForm"> 
+    <!-- <div> -->
+        <!-- <mat-form-field> -->
+            <!-- <input matInput placeholder="Email" type="text" formControlName="email"> -->
+            <!-- <control-messages [control]="editUserForm.controls.email"></control-messages> -->
+        <!-- </mat-form-field> -->
+    <!-- </div> -->
     
     <div>
         <mat-form-field>

@@ -17,6 +17,8 @@
 
 <div class="container">
   <div class="row">
+    <h3><strong>Published Data</strong></h3>
+    <h5><strong>Select Survey Group to view results</strong></h5>
     <p-dropdown id="dropDownMenu" [options]="allCityNames" [(ngModel)]="currentCitySelected" (onChange)="cityHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
 
     <h3><strong>{{currentCitySelected ? currentCitySelected.name : ''}}</strong></h3>

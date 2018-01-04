@@ -18,6 +18,7 @@ import { ElementSchemaRegistry } from '@angular/compiler';
 export class UserAdminComponent {
 
   public backToDashboardTooltip: string;
+  public getUserEmails: string;
 
   /**
    * Variables bound to the view
@@ -25,6 +26,9 @@ export class UserAdminComponent {
   public organizationsInView: Array<any>;
   public surveyGroupsInView: Array<any>;
   public currentOrganizationSelected: any;
+  public httpRequestFlag: boolean;
+
+  //Recording id position?
   public currentSurveyGroupSelected: any;
   public usersInView: Array<any>;
 
@@ -33,6 +37,8 @@ export class UserAdminComponent {
   public organizationAndSurveyGroupPairs: Map<string, JSON[]>;
   public surveyGroupAndUserPairs: Map<string, JSON[]>;
   public surveyGroupNameAndObjectDetails: Map<string, JSON[]>;
+  public organizationAndIdDict: Map<any, any>;
+  public surveyGroupAndIdDict: Map<any, any>;
   
 
   constructor(public router: Router, public kumulosService: KumulosService, public dialog: MatDialog,
@@ -43,6 +49,7 @@ export class UserAdminComponent {
 
   private initMemberVariables(): void {
     this.backToDashboardTooltip = "Back To Dashboard";
+    this.getUserEmails = "Get All Users Emails";
     this.organizationsInView = new Array();
     this.surveyGroupsInView = new Array();
     this.usersInView = new Array();
@@ -50,6 +57,8 @@ export class UserAdminComponent {
     this.organizationAndSurveyGroupPairs = new Map<string, JSON[]>();
     this.surveyGroupAndUserPairs = new Map<string, JSON[]>();
     this.surveyGroupNameAndObjectDetails = new Map<string, JSON[]>();
+    this.organizationAndIdDict = new Map<any, any>();
+    this.surveyGroupAndIdDict = new Map<any, any>();
   }
 
 
@@ -69,13 +78,32 @@ export class UserAdminComponent {
               this.organizationsInView.push({label: item.organizationName, value: {id: item.organizationName, name: item.organizationName}});
             });
 
-            this.currentOrganizationSelected = this.organizationsInView[0].value;
+            for (let i = 0; i < res.payload.length; i++)
+            {
+              // console.log(this.organizationsInView[i].value)
+              // this.organizationsInView.push({label: res.payload[i].organizationName, value: {id: res.payload[i].organizationName, name: res.payload[i].organizationName}});
+              this.organizationAndIdDict.set(this.organizationsInView[i].value, i);
+            }
+            
+            if (!this.currentOrganizationSelected)
+            {
+              this.currentOrganizationSelected = this.organizationsInView[0].value;
+              console.log("Current org selected: ");
+              console.log(this.currentOrganizationSelected)
+            }
+            else 
+            {
+              let id = this.organizationAndIdDict.get(this.currentOrganizationSelected);
+              this.currentOrganizationSelected = this.organizationsInView[id].value;
+            }
+            
           }
         )
         .catch(res => console.log("there was an error"))
         .then(res => {
               this.organizationsInView.forEach(org => {
                 let orgName = org.value.name;
+                console.log(orgName)
                 this.reqSurveyGroups(orgName);
               });
         })
@@ -103,6 +131,7 @@ private reqSurveyGroups(orgName: string) {
     })
 };
 
+//TODO!!!
 private setInitialSurveyGroupsInView(){
   let listOfCurrentSurveyGroups = this.organizationAndSurveyGroupPairs.get(this.currentOrganizationSelected.name);
   
@@ -110,39 +139,52 @@ private setInitialSurveyGroupsInView(){
 
   if (listOfCurrentSurveyGroups) {
     listOfCurrentSurveyGroups.forEach(item => {
-      console.log(item);
       this.surveyGroupsInView.push({label: item["name"], value: {id: item["name"], name: item["name"]}});
     });
 
-    this.currentSurveyGroupSelected = this.surveyGroupsInView[0].value;
+    for (let i = 0; i < this.surveyGroupsInView.length; i++)
+    {
+      this.surveyGroupAndIdDict.set(this.surveyGroupsInView[i].value.id, i);
+    }
+
+
+    if (!this.currentSurveyGroupSelected)
+      this.currentSurveyGroupSelected = this.surveyGroupsInView[0].value;
+    else
+    {
+      let id = this.surveyGroupAndIdDict.get(this.currentSurveyGroupSelected.id);
+      this.currentSurveyGroupSelected = this.surveyGroupsInView[id].value;
+    }
+
   }
 }
 
 private reqUsersFromSurveyGroup(surveyGroupName: string, cityID: string) {
   this.kumulosService.getWebUsersCityIdOverload(cityID).toPromise()
     .then(res => {
-      console.log("Users for each survey");
-      console.log(res.payload);
+      // console.log("Users for each survey");
+      // console.log(res.payload);
       this.surveyGroupAndUserPairs.set(surveyGroupName, res.payload);
     })
     .catch(res => console.log("There was an error"))
     .then(res => {
       let listOfUsers = this.surveyGroupAndUserPairs.get(this.currentSurveyGroupSelected.name);
-      console.log("LIST OF USERSE!!!!!!!");
-      console.log(listOfUsers);
+      // console.log("LIST OF USERSE!!!!!!!");
+      // console.log(listOfUsers);
 
       if (listOfUsers) {
         this.usersInView = [];
         listOfUsers.forEach(element => {
-            console.log("EACH USER IN LIST");
-            console.log(element);
+            // console.log("EACH USER IN LIST");
+            // console.log(element);
             this.usersInView.push(listOfUsers);
           });
       }
 
-      console.log("USERS IN VIEW!!!!");
-      this.usersInView = this.usersInView[0];
-      console.log(this.usersInView);
+      // console.log("USERS IN VIEW!!!!");
+      if (this.usersInView[0])
+        this.usersInView = this.usersInView[0];
+      // console.log(this.usersInView);
 
       this.loadingSnackBar.dismissLoadingSnackBar()
     });
@@ -197,6 +239,10 @@ public surveyGroupHasChanged(): void {
     this.usersInView = this.surveyGroupAndUserPairs.get(this.currentSurveyGroupSelected.name);
     console.log("CURRENT SURVEY GROUP");
     console.log(this.currentSurveyGroupSelected);
+
+    console.log("Current Survey Group Selected ID!!!")
+    console.log(this.surveyGroupAndIdDict.get(this.currentSurveyGroupSelected))
+    
   } else {
     this.usersInView = [];
   }
@@ -227,8 +273,8 @@ public getUsersName(index: number): string {
   {
     let userMetaData: JSON = this.usersInView[index]["user_metadata"];
 
-    if(userMetaData["name"] && userMetaData["name"].length > 1 && userMetaData["name"] != "" && userMetaData["name"] != " ")  
-      return userMetaData["name"];
+    // if(userMetaData["name"] && userMetaData["name"].length > 1 && userMetaData["name"] != "" && userMetaData["name"] != " ")  
+    return userMetaData["name"];
   }
 
     return "Name not set by user";
@@ -243,8 +289,8 @@ public getUserRole(index: number): string {
   {
     let appMetaData: JSON = this.usersInView[index]["app_metadata"];
 
-    if(appMetaData["user_role"] && appMetaData["user_role"].length > 1 && appMetaData["user_role"] != "" && appMetaData["user_role"] != " ")  
-      return appMetaData["user_role"];
+    // if(appMetaData["user_role"] && appMetaData["user_role"].length > 1 && appMetaData["user_role"] != "" && appMetaData["user_role"] != " ")  
+    return appMetaData["user_role"];
   }
 
     return "User role not set by user";
@@ -257,10 +303,12 @@ public getUsersTitle(index: number): string {
 
   if (this.usersInView[index]["user_metadata"])
   {
+    // console.log("getting user metadata")
     let userMetaData: JSON = this.usersInView[index]["user_metadata"];
+    // console.log(userMetaData["job_title"])
 
-    if(userMetaData["job_tilte"] && userMetaData["job_tilte"].length > 1 && userMetaData["job_tilte"] != "" && userMetaData["job_tilte"] != " ")  
-      return userMetaData["job_tilte"];
+    // if(userMetaData["job_tilte"] && userMetaData["job_tilte"].length > 1 && userMetaData["job_tilte"] != "" && userMetaData["job_tilte"] != " ")  
+    return userMetaData["job_title"];
   }
 
     return "User role not set by user";
@@ -301,8 +349,8 @@ private resetAllStateArrays()
 {
   this.organizationsInView = [];
   this.surveyGroupsInView = [];
-  this.currentOrganizationSelected = [];
-  this.currentSurveyGroupSelected = [];
+  // this.currentOrganizationSelected = [];
+  // this.currentSurveyGroupSelected = [];
   this.usersInView = [];
 
   this.organizationAndSurveyGroupPairs.clear();
@@ -314,8 +362,8 @@ public editUserRole(index: number): void {
   
   // let selectedUser: JSON = this.usersInView[index][0];
   let selectedUser: JSON = this.usersInView[index];
-  console.log("SELECTED USER");
-  console.log(selectedUser);
+  // console.log("SELECTED USER");
+  // console.log(selectedUser);
   let userId = selectedUser["user_id"];
 
   let surveyGroup: JSON[] = this.surveyGroupNameAndObjectDetails.get(this.currentSurveyGroupSelected.name);
@@ -341,10 +389,36 @@ public editUserRole(index: number): void {
       userRole: userRole,
     }
   });
+
+  dialogRef.afterClosed().subscribe(result => {
+    this.loadingSnackBar.showLoadingSnackBar();
+    this.resetAllStateArrays();
+    this.webGetOrganizations();
+  })
 }
 
 public deleteUser(index: number): void {
+  let selectedUser: JSON = this.usersInView[index];
+  this.loadingSnackBar.showLoadingSnackBarWithMessage("Deleting User...");
+  this.kumulosService.webDeleteUser(selectedUser["user_id"]).subscribe(res => 
+    {
+      this.loadingSnackBar.dismissLoadingSnackBar();
+      this.resetAllStateArrays();
+      this.webGetOrganizations();
+    });
+}
 
+public getAllUserEmails(): void {
+  let currentUserEmail: string = localStorage.getItem("userEmail");
+  currentUserEmail = currentUserEmail.slice(1, (currentUserEmail.length - 1))
+  
+  this.loadingSnackBar.showLoadingSnackBarWithMessage("Sending all users emails...")
+
+  this.kumulosService.utilityEmailAllUsers(currentUserEmail).subscribe(response => {
+    console.log(response);
+    this.loadingSnackBar.dismissLoadingSnackBar();
+    this.loadingSnackBar.showLoadingSnackBarWithMessageAndTimer("Email succesfully sent");
+  })
 }
 
 
@@ -469,7 +543,7 @@ export class AdminEditUserRoleDialog {
     this.editUserForm = this.formBuilder.group({
       email: [this.dataFromParent.userEmail, [Validators.required, ValidationService.emailValidator]],
       surveyGroup: [this.dataFromParent.city],
-      name: [this.dataFromParent.userEmail],
+      name: [this.dataFromParent.userName],
       jobTitle: [this.dataFromParent.userJobTitle],
       userRole: [this.dataFromParent.userRole],
     })
@@ -494,6 +568,8 @@ export class AdminEditUserRoleDialog {
 
 
   public editUser(): void {
+    console.log(this.editUserForm.controls.email.value)
+    console.log(this.editUserForm.value.email)
     this.httpRequestFlag = true;
     let formVal = this.editUserForm.value;
 

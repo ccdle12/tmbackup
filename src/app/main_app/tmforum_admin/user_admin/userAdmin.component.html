@@ -1,6 +1,11 @@
+<!-- <div class="loading-overlay" #loadingElement style="opacity: 100;">
+  <mat-spinner *ngIf="httpRequestFlag"></mat-spinner>
+</div> -->
+
 <nav mat-tab-nav-bar>
     <div id="navigationIcon">
       <img id="backToDashboard" src="../../../assets/Back To-100-white.png" (click)="backToDashboard()" [matTooltip]="backToDashboardTooltip">
+      <img id="emailDocument" src="../../../assets/Email Document-100-white.png"  (click)="getAllUserEmails()"  [matTooltip]="getUserEmails">
     </div>
     
     <div class="container">
