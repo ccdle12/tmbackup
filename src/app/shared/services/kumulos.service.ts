@@ -72,6 +72,8 @@ export class KumulosService {
 
     private utilityEmailAllUsersURI: string;
 
+    private webGetOrgbyCityIDURI: string;
+
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
@@ -145,6 +147,8 @@ export class KumulosService {
         this.webDeleteUserURI = "webDeleteUser.json/"
 
         this.utilityEmailAllUsersURI = "utilityEmailAllUsers.json/"
+
+        this.webGetOrgbyCityIDURI = "webGetOrgbyCityID.json/"
     }
 
     public createAuthorizationHeader(): Headers {
@@ -521,7 +525,7 @@ export class KumulosService {
             });
     }
 
-    public updateUserNameAndJobTitle(userId: string, name: string, jobTitle: string) {
+    public updateUserNameAndJobTitle(userId: string, name: string, jobTitle: string, cityId: string, city: string) {
         let headers: Headers = this.createAuthorizationHeader();
 
         let urlSearchParams: URLSearchParams = this.createBody();
@@ -529,6 +533,8 @@ export class KumulosService {
         urlSearchParams.append('params[userId]', userId);
         urlSearchParams.append('params[name]', name);
         urlSearchParams.append('params[jobTitle]', jobTitle);
+        urlSearchParams.append('params[cityID]', cityId);
+        urlSearchParams.append('params[city]', city);
 
         let body: string = urlSearchParams.toString();
 
@@ -1033,6 +1039,21 @@ export class KumulosService {
         return this.http.post(this.domain + this.utilityEmailAllUsersURI, body, {headers: headers})
             .map(response => {
                 console.log("Response from calling get all user emails api")
+                console.log(response)
+                return response.json();
+            })
+    }
+
+    public webGetOrgbyCityID(cityID) {
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[cityID]', cityID);
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.webGetOrgbyCityIDURI, body, {headers: headers})
+            .map(response => {
+                console.log("Response from calling get org by city id")
                 console.log(response)
                 return response.json();
             })

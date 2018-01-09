@@ -2,17 +2,25 @@
     <mat-spinner *ngIf="httpRequestFlag"></mat-spinner>
 </div>
 
-<div class="form">
-    <mat-form-field>
-        <input matInput placeholder="Name" [(ngModel)]="userName" value={{userName}}>
-    </mat-form-field>
-</div>
+<form [formGroup]="editUserDetailsForm" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+            <input matInput placeholder="Name" formControlName="name" value={{userName}}>
+        </mat-form-field>
 
-<div class="form">
-    <mat-form-field>
-        <input matInput placeholder="Job Title" [(ngModel)]="userTitle" value="{{userTitle}}">
-    </mat-form-field>
-</div>
+        <div class="form">
+            <mat-form-field>
+                <input matInput placeholder="Job Title" formControlName="jobTitle" value="{{userTitle}}">
+            </mat-form-field>
+        </div>
 
-<button mat-button matDialogClose>Cancel</button>
-<button mat-button (click)="updateUserDetails()">Save</button>
+        <div class="form" *ngIf="this.authService.isOrganizationAdmin()">
+            <mat-form-field>
+                <mat-select placeholder="Survey Group" formControlName="surveyGroup">
+                    <mat-option *ngFor="let group of namesOfSurveyGroups; let i = index" value="{{namesOfSurveyGroups[i]}}">{{namesOfSurveyGroups[i]}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+    <button mat-button matDialogClose>Cancel</button>
+    <button mat-button (click)="updateUserDetails()">Save</button>
+</form>

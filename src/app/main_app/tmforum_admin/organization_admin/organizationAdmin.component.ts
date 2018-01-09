@@ -45,11 +45,11 @@ export class OrganizationAdminComponent {
       let currentUrl: string = window.location.pathname;
 
       if (currentUrl ===  "/main/tmforumadmin/organizationadmin") {
-          console.log("returning blue background?");
+          // console.log("returning blue background?");
           return { 'background-color': '#469ac0',
                 'color': 'white' };    
       } else {
-      console.log(window.location.pathname);
+      // console.log(window.location.pathname);
       return { 'background-color': '#62B3D1',
                 'color': 'white' };
       }
