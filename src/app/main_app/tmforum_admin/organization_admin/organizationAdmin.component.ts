@@ -92,7 +92,10 @@ export class OrganizationAdminComponent {
   /* methods called from view */
   public addNewOrganization(): void 
   {
-    let dialogRef = this.dialog.open(AddNewOrgDialog);
+    let dialogRef = this.dialog.open(AddNewOrgDialog, {
+      height: '400px',
+      width: '600px',
+    });
 
     dialogRef.afterClosed().subscribe(result => {
         this.webGetOrganizations();
@@ -141,6 +144,20 @@ export class AddNewOrgDialog {
      organizationName: [''],
      contactName: [''],
      email: ['', [Validators.required, ValidationService.emailValidator]],
+     primaryProductsAndServices: [''],
+     regions: [''],
+     sectors: [''],
+     customerTypes: [''],
+     totalEmployees: [''],
+     totalAnnualRevenue: [''],
+     operatingTime: [''],
+     headquartersLocation: [''],
+    //  transformation: [''],
+    //  personalInvolvment: [''],
+    //  personalAssociation: [''],
+    //  businessFunction: [''],
+    //  levelOfManagement: [''],
+    //  productLine: [''],
     });
   }
 
@@ -150,7 +167,9 @@ export class AddNewOrgDialog {
     let email: string = this.inviteOrganizationForm.value.email;
 
     this.httpRequestFlag = true;
-    this.kumulosService.webCreateUpdateOrganizations(organizationName, contactName, email, false, null).subscribe(responseJSON => {
+    this.kumulosService.webCreateUpdateOrganizations(organizationName, contactName, email, false, null, this.inviteOrganizationForm).subscribe(responseJSON => {
+        console.log("Rseponse");
+        console.log(responseJSON);
       this.dialog.closeAll();
     })
   }
@@ -229,7 +248,7 @@ export class EditOrgDialog {
     
     this.httpRequestFlag = true;
 
-    this.kumulosService.webCreateUpdateOrganizations(organizationName, contactName, email, archiveFlag, this.orgID).subscribe(responseJSON => {
+    this.kumulosService.webCreateUpdateOrganizations(organizationName, contactName, email, archiveFlag, this.orgID, null).subscribe(responseJSON => {
       this.dialog.closeAll();
     })
   }

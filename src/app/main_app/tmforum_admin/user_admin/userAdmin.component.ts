@@ -149,11 +149,18 @@ private setInitialSurveyGroupsInView(){
 
 
     if (!this.currentSurveyGroupSelected)
-      this.currentSurveyGroupSelected = this.surveyGroupsInView[0].value;
+    {
+      if (this.surveyGroupsInView[0]) {
+        this.currentSurveyGroupSelected = this.surveyGroupsInView[0].value;
+      }
+    }
     else
     {
-      let id = this.surveyGroupAndIdDict.get(this.currentSurveyGroupSelected.id);
-      this.currentSurveyGroupSelected = this.surveyGroupsInView[id].value;
+      //Uncommented was causing crash, seems we are cahcing the last survey group selected somewhere??
+      // let id = this.surveyGroupAndIdDict.get(this.currentSurveyGroupSelected.id);
+
+      // if (this.surveyGroupsInView.length > 0)
+      // this.currentSurveyGroupSelected = this.surveyGroupsInView[id].value;
     }
 
   }
@@ -168,7 +175,12 @@ private reqUsersFromSurveyGroup(surveyGroupName: string, cityID: string) {
     })
     .catch(res => console.log("There was an error"))
     .then(res => {
-      let listOfUsers = this.surveyGroupAndUserPairs.get(this.currentSurveyGroupSelected.name);
+
+      let listOfUsers;
+
+      if (this.currentSurveyGroupSelected)
+        listOfUsers = this.surveyGroupAndUserPairs.get(this.currentSurveyGroupSelected.name);
+
       // console.log("LIST OF USERSE!!!!!!!");
       // console.log(listOfUsers);
 
@@ -327,22 +339,28 @@ public getUsersEmail(index: number): string {
 }
 
 public inviteUser(): void {
-  let city = this.currentSurveyGroupSelected.name;
 
-  let surveyGroup: JSON[] = this.surveyGroupNameAndObjectDetails.get(this.currentSurveyGroupSelected.name);
-  let cityId =  surveyGroup['cityID'];
+  if (this.currentSurveyGroupSelected) {
+    let city = this.currentSurveyGroupSelected.name;
 
-  let dialogRef = this.dialog.open(AdminInviteUserDialog, {
-    data: { cityName: city,
-            cityID: cityId,
-          },
-  });
+    let surveyGroup: JSON[] = this.surveyGroupNameAndObjectDetails.get(this.currentSurveyGroupSelected.name);
+    let cityId =  surveyGroup['cityID'];
 
-  dialogRef.afterClosed().subscribe(result => {
-    this.loadingSnackBar.showLoadingSnackBar();
-    this.resetAllStateArrays();
-    this.webGetOrganizations();
-  });
+    let dialogRef = this.dialog.open(AdminInviteUserDialog, {
+      data: { cityName: city,
+              cityID: cityId,
+            },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadingSnackBar.showLoadingSnackBar();
+      this.resetAllStateArrays();
+      this.webGetOrganizations();
+    });
+  }
+  else {
+    this.loadingSnackBar.showLoadingSnackBarWithMessageAndTimer("No Survey Group Selected");
+  }
 }
 
 private resetAllStateArrays()
@@ -506,7 +524,7 @@ export class AdminInviteUserDialog {
     this.httpRequestFlag = true;
     let inviteUserFormValue = this.inviteUserForm.value;
 
-    this.kumulosService.webAdminInviteUser(inviteUserFormValue.email, inviteUserFormValue.city,
+    this.kumulosService.webAdminInviteUser(inviteUserFormValue.email, inviteUserFormValue.surveyGroup,
                                             this.dataFromParent.cityID, inviteUserFormValue.userRole, 
                                             inviteUserFormValue.name, inviteUserFormValue.jobTitle)
       .subscribe(response => {

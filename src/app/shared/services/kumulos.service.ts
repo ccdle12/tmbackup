@@ -847,15 +847,25 @@ export class KumulosService {
             })
     }
 
-    public webCreateUpdateOrganizations(orgName: string, contactName: string, contactEmail: string, archivedFlag: boolean, orgID: number)
+    public webCreateUpdateOrganizations(orgName: string, contactName: string, contactEmail: string, archivedFlag: boolean, orgID: number, orgData: any)
     {
         let headers: Headers = this.createAuthorizationHeader();
         let urlSearchParams: URLSearchParams = this.createBody();
         let organizationData: string
 
+        //Unpacking orgData
+        let primaryProductsAndServices = orgData.value.primaryProductsAndServices;
+        let regions = orgData.value.regions;
+        let sectors = orgData.value.sectors;
+        let customerTypes = orgData.value.customerTypes;
+        let totalEmployees = orgData.value.totalEmployees;
+        let totalAnnualRevenue = orgData.value.totalAnnualRevenue;
+        let operatingTime = orgData.value.operatingTime;
+        let headquartersLocation = orgData.value.headquartersLocation;
+
         //Create a new organization
         if (archivedFlag == false && orgID == null)
-            organizationData = '{"organizationData":[{"organizationName":' + '"' + orgName + '"' + ',"contactName":' + '"' + contactName + '"'  + ',"contactEmail":' + '"' + contactEmail + '"' + ',"archivedFlag":"", "organizationID":""}]}';
+            organizationData = '{"organizationData":[{"organizationName":' + '"' + orgName + '"' + ',"contactName":' + '"' + contactName + '"'  + ',"contactEmail":' + '"' + contactEmail + '"' + ',"archivedFlag":"", "organizationID":"", "primaryProductsAndServices":' + '"' + primaryProductsAndServices + '"' + ', "regions":' + '"' + regions + '"' + ', "sectors":' + '"' + sectors + '"' + ', "customerTypes":' + '"' + customerTypes + '"' + ',,"totalEmployees":' + '"' + totalEmployees + '"' + ',, "totalAnnualRevenue":' + '"' + totalAnnualRevenue + '"' + ',, "operatingTime":' + '"' + operatingTime + '"' + ',, "headquartersLocation":' + '"' + headquartersLocation + '"' + ' }]}}]}';
         else
         {
         //Update an existing organization
