@@ -865,20 +865,22 @@ export class KumulosService {
 
         //Create a new organization
         if (archivedFlag == false && orgID == null)
-            organizationData = '{"organizationData":[{"organizationName":' + '"' + orgName + '"' + ',"contactName":' + '"' + contactName + '"'  + ',"contactEmail":' + '"' + contactEmail + '"' + ',"archivedFlag":"", "organizationID":"", "primaryProductsAndServices":' + '"' + primaryProductsAndServices + '"' + ', "regions":' + '"' + regions + '"' + ', "sectors":' + '"' + sectors + '"' + ', "customerTypes":' + '"' + customerTypes + '"' + ',,"totalEmployees":' + '"' + totalEmployees + '"' + ',, "totalAnnualRevenue":' + '"' + totalAnnualRevenue + '"' + ',, "operatingTime":' + '"' + operatingTime + '"' + ',, "headquartersLocation":' + '"' + headquartersLocation + '"' + ' }]}}]}';
+            organizationData = '{"organizationData":[{"organizationName":' + '"' + orgName + '"' + ',"contactName":' + '"' + contactName + '"'  + ',"contactEmail":' + '"' + contactEmail + '"' + ',"archivedFlag":"", "organizationID":"", "primaryProductsAndServices":' + '"' + primaryProductsAndServices + '"' + ', "regions":' + '"' + regions + '"' + ', "sectors":' + '"' + sectors + '"' + ', "customerTypes":' + '"' + customerTypes + '"' + ',"totalEmployees":' + '"' + totalEmployees + '"' + ', "totalAnnualRevenue":' + '"' + totalAnnualRevenue + '"' + ', "operatingTime":' + '"' + operatingTime + '"' + ',"headquartersLocation":' + '"' + headquartersLocation + '"' + ' }]}';
         else
         {
+            console.log("Should be editing an org");
         //Update an existing organization
             let orgIDAsString = String(orgID); 
-
             if (archivedFlag == true)
             {
                 let archivedFlagAsString = "X";
-                organizationData = '{"organizationData":[{"organizationName":' + '"' + orgName + '"' + ',"contactName":' + '"' + contactName + '"'  + ',"contactEmail":' + '"' + contactEmail + '"' + ',"archivedFlag":' + '"' + archivedFlagAsString + '"' + ', "organizationID":' + '"' + orgIDAsString + '"' + '}]}';
+                //organizationData = '{"organizationData":[{"organizationName":' + '"' + orgName + '"' + ',"contactName":' + '"' + contactName + '"'  + ',"contactEmail":' + '"' + contactEmail + '"' + ',"archivedFlag":' + '"' + archivedFlagAsString + '"' + ', "organizationID":' + '"' + orgIDAsString + '"' + '}]}';
+                organizationData = '{"organizationData":[{"organizationName":' + '"' + orgName + '"' + ',"contactName":' + '"' + contactName + '"'  + ',"contactEmail":' + '"' + contactEmail + '"' + ',"archivedFlag":' + '"' + archivedFlagAsString + '"' +  ', "organizationID":' + '"' + orgIDAsString + '"' + ', "primaryProductsAndServices":' + '"' + primaryProductsAndServices + '"' + ', "regions":' + '"' + regions + '"' + ', "sectors":' + '"' + sectors + '"' + ', "customerTypes":' + '"' + customerTypes + '"' + ',"totalEmployees":' + '"' + totalEmployees + '"' + ', "totalAnnualRevenue":' + '"' + totalAnnualRevenue + '"' + ', "operatingTime":' + '"' + operatingTime + '"' + ',"headquartersLocation":' + '"' + headquartersLocation + '"' + ' }]}';
             }
             else
             {
-                organizationData = '{"organizationData":[{"organizationName":' + '"' + orgName + '"' + ',"contactName":' + '"' + contactName + '"'  + ',"contactEmail":' + '"' + contactEmail + '"' + ',"archivedFlag":"", "organizationID":' + '"' + orgIDAsString + '"' + '}]}';
+                // organizationData = '{"organizationData":[{"organizationName":' + '"' + orgName + '"' + ',"contactName":' + '"' + contactName + '"'  + ',"contactEmail":' + '"' + contactEmail + '"' + ',"archivedFlag":"", "organizationID":' + '"' + orgIDAsString + '"' + '}]}';
+                organizationData = '{"organizationData":[{"organizationName":' + '"' + orgName + '"' + ',"contactName":' + '"' + contactName + '"'  + ',"contactEmail":' + '"' + contactEmail + '"' + ',"archivedFlag":"", "organizationID":' + '"' + orgIDAsString + '"' + ', "primaryProductsAndServices":' + '"' + primaryProductsAndServices + '"' + ', "regions":' + '"' + regions + '"' + ', "sectors":' + '"' + sectors + '"' + ', "customerTypes":' + '"' + customerTypes + '"' + ',"totalEmployees":' + '"' + totalEmployees + '"' + ', "totalAnnualRevenue":' + '"' + totalAnnualRevenue + '"' + ', "operatingTime":' + '"' + operatingTime + '"' + ',"headquartersLocation":' + '"' + headquartersLocation + '"' + ' }]}';
             }
             
         }

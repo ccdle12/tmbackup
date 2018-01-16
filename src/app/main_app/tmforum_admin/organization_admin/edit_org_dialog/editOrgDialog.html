@@ -28,6 +28,121 @@
             <div class="form">
                 <mat-checkbox formControlName="archive">Archive</mat-checkbox>
             </div>
+
+            <div class="form">
+                <mat-form-field>
+                    <mat-select placeholder="What are your primary products and services?" formControlName="primaryProductsAndServices">
+                        <mat-option value="Fixed Operator">Fixed Operator</mat-option>
+                        <mat-option value="Mobile Operator">Mobile Operator</mat-option>
+                        <mat-option value="Converged Operator (some combination of mobile, fixed voice and data, and TV)">Converged Operator (some combination of mobile, fixed voice and data, and TV)</mat-option>
+                        <mat-option value="Cable operator">Cable operator</mat-option>
+                        <mat-option value="Digital services provider (e.g. IoT, smart cities)">Digital services provider (e.g. IoT, smart cities)</mat-option>
+                        <mat-option value="Other">Other</mat-option>   
+                    </mat-select>
+                </mat-form-field>
+            </div>
+    
+            <div class="form">
+                <mat-form-field>
+                    <mat-select placeholder="Which region(s) does your organization operate in? " formControlName="regions">
+                        <mat-option value="North America">North America</mat-option>
+                        <mat-option value="Latin/America/Caribbean">Latin/America/Caribbean</mat-option>
+                        <mat-option value="Europe and/or Russia">Europe and/or Russia</mat-option>
+                        <mat-option value="Middle East and/or Africa">Middle East and/or Africa</mat-option>
+                        <mat-option value="Asia/Pacific">Asia/Pacific</mat-option>
+                        <mat-option value="Global">Global</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+    
+    
+            <div class="form">
+                <mat-form-field>
+                    <mat-select placeholder="Which sectors does your company primarily serve?" formControlName="sectors">
+                        <mat-option value="Aerospace industry">Aerospace industry</mat-option>
+                        <mat-option value="Agriculture industry">Agriculture industry</mat-option>
+                        <mat-option value="Chemical industry">Chemical industry</mat-option>
+                        <mat-option value="Pharmaceutical industry">Pharmaceutical industry</mat-option>
+                        <mat-option value="Computer industry">Computer industry</mat-option>
+                        <mat-option value="Software industry">Software industry</mat-option>
+                        <mat-option value="Construction industry">Construction industry</mat-option>
+                        <mat-option value="Defense industry">Defense industry</mat-option>
+                        <mat-option value="Education industry">Education industry</mat-option>
+                        <mat-option value="Energy industry">Energy industry</mat-option>
+                        <mat-option value="Entertainment industry">Entertainment industry</mat-option>
+                        <mat-option value="Financial services industry">Financial services industry</mat-option>
+                        <mat-option value="Food industry">Food industry</mat-option>
+                        <mat-option value="Health care industry">Health care industry</mat-option>
+                        <mat-option value="Hospitality industry">Hospitality industry</mat-option>
+                        <mat-option value="Information industry">Information industry</mat-option>
+                        <mat-option value="Manufacturing">Manufacturing</mat-option>
+                        <mat-option value="Mass media">Mass media</mat-option>
+                        <mat-option value="Telecommunications industry">Telecommunications industry</mat-option>
+                        <mat-option value="Transport industry">Transport industry</mat-option>
+                        <mat-option value="Water industry">Water industry</mat-option>
+                        <mat-option value="All of the above">All of the above</mat-option>
+                        <mat-option value="Other">Other</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+    
+            <div class="form">
+                <mat-form-field>
+                    <mat-select placeholder="Which customer types do you serve?" formControlName="customerTypes">
+                        <mat-option value="Business">Business</mat-option>
+                        <mat-option value="SME">SME</mat-option>
+                        <mat-option value="Consumer">Consumer</mat-option>
+                        <mat-option value="Wholesale">Wholesale</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+    
+            <div class="form">
+                <mat-form-field>
+                    <mat-select placeholder="How many total employees does your organization have?" formControlName="totalEmployees">
+                        <mat-option value="Fewer than 100">Fewer than 100</mat-option>
+                        <mat-option value="100-500">100-500</mat-option>
+                        <mat-option value="500-1,000">500-1,000</mat-option>
+                        <mat-option value="1,000-10,000">1,000-10,000</mat-option>
+                        <mat-option value="10,000-100,0000">10,000-100,0000</mat-option>
+                        <mat-option value="More than 100,000">More than 100,000</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+    
+            <div class="form">
+                <mat-form-field>
+                    <mat-select placeholder="What was your organization’s total annual revenue last year?" formControlName="totalAnnualRevenue">
+                        <mat-option value="less than $1 million USD">less than $1 million USD</mat-option>
+                        <mat-option value="$ 1 million to $25 million USD">$ 1 million to $25 million USD</mat-option>
+                        <mat-option value="$ 25 million to $100 million USD">$ 25 million to $100 million USD</mat-option>
+                        <mat-option value="$ 100 million to $1 billion USD">$ 100 million to $1 billion USD</mat-option>
+                        <mat-option value="$ 1 billion to $10 million USD">$ 1 billion to $10 million USD</mat-option>
+                        <mat-option value="$ 10 billion to $25 million USD">$ 10 billion to $25 million USD</mat-option>
+                        <mat-option value="$ 25 billion to $40 million USD">$ 25 billion to $40 million USD</mat-option>
+                        <mat-option value="More than $40 billion USD">More than $40 billion USD</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+    
+            <div class="form">
+                <mat-form-field>
+                    <mat-select placeholder="How long has your company been in business?" formControlName="operatingTime">
+                        <mat-option value="less then 1 year">less then 1 year</mat-option>
+                        <mat-option value="1 year to 5 years">1 year to 5 years</mat-option>
+                        <mat-option value="5 years to 10 years">5 years to 10 years</mat-option>
+                        <mat-option value="10 years to 20 years">10 years to 20 years</mat-option>
+                        <mat-option value="20 years to 50 years">20 years to 50 years</mat-option>
+                        <mat-option value="greater than  100 years">greater than  100 years</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+    
+            <div class="form">
+                    <mat-form-field>
+                        <input matInput placeholder="Where is your headquarters?" type="text" formControlName="headquartersLocation">
+                    </mat-form-field>
+            </div>
     
         </div>
         <button mat-button matDialogClose>Cancel</button>

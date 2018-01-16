@@ -30,6 +30,7 @@ export class OrganizationAdminComponent {
       this.loadingSnackBar.showLoadingSnackBar();
       this.kumulosService.webGetOrganizations().subscribe(response => {
         this.organizationsJSON = response.payload;
+        console.log(this.organizationsJSON);
         this.loadingSnackBar.dismissLoadingSnackBar();
       });
     }
@@ -108,13 +109,30 @@ export class OrganizationAdminComponent {
     let contactName = this.organizationsJSON[index].contactName;
     let orgID = this.organizationsJSON[index].organizationID;
     let organizationName = this.organizationsJSON[index].organizationName;
+    let customerTypes = this.organizationsJSON[index].customerTypes;
+    let headquartersLocation = this.organizationsJSON[index].headquartersLocation;
+    let operatingTime = this.organizationsJSON[index].operatingTime;
+    let primaryProductsAndServices = this.organizationsJSON[index].primaryProductsAndServices;
+    let regions = this.organizationsJSON[index].regions;
+    let sectors = this.organizationsJSON[index].sectors;
+    let totalEmployees = this.organizationsJSON[index].totalEmployees;
+    let totalAnnualRevenue = this.organizationsJSON[index].totalAnnualRevenue;
+
 
     let dialogRef = this.dialog.open(EditOrgDialog, {
       data: {
               contactName: contactName,
               contactEmail: contactEmail,
               orgID: orgID,
-              organizationName: organizationName
+              organizationName: organizationName,
+              customerTypes: customerTypes,
+              headquartersLocation: headquartersLocation,
+              operatingTime: operatingTime,
+              primaryProductsAndServices: primaryProductsAndServices,
+              regions: regions,
+              sectors: sectors,
+              totalAnnualRevenue: totalAnnualRevenue,
+              totalEmployees: totalEmployees,
             }
     });
 
@@ -191,6 +209,15 @@ export class EditOrgDialog {
   public organizationName;
   private orgID;
 
+  customerTypes;
+  headquartersLocation;
+  operatingTime;
+  primaryProductsAndServices;
+  regions;
+  sectors;
+  totalEmployees;
+  totalAnnualRevenue;
+
   public userMadeChangesFlag;
   public editOrganizationForm: FormGroup;
 
@@ -218,6 +245,16 @@ export class EditOrgDialog {
     this.contactName = data.contactName;
     this.organizationName = data.organizationName;
     this.orgID = data.orgID;
+
+    this.organizationName =  data.organizationName;
+    this.customerTypes = data.customerTypes;
+    this.headquartersLocation = data.headquartersLocation;
+    this.operatingTime = data.operatingTime;
+    this.primaryProductsAndServices = data.primaryProductsAndServices;
+    this.regions = data.regions;
+    this.sectors = data.sectors;
+    this.totalEmployees = data.totalEmployees;
+    this.totalAnnualRevenue = data.totalAnnualRevenue;
   }
 
   private initEditOrganizationForm(): void 
@@ -227,6 +264,14 @@ export class EditOrgDialog {
       contactName: [this.contactName],
       email: [this.contactEmail, [Validators.required, ValidationService.emailValidator]],
       archive: [''],
+      primaryProductsAndServices: [this.primaryProductsAndServices],
+      regions: [this.regions],
+      sectors: [this.sectors],
+      customerTypes: [this.customerTypes],
+      totalEmployees: [this.totalEmployees],
+      totalAnnualRevenue: [this.totalAnnualRevenue],
+      operatingTime: [this.operatingTime],
+      headquartersLocation: [this.headquartersLocation],
      });
   }
 
@@ -247,8 +292,8 @@ export class EditOrgDialog {
     let archiveFlag: boolean = this.editOrganizationForm.value.archive;
     
     this.httpRequestFlag = true;
-
-    this.kumulosService.webCreateUpdateOrganizations(organizationName, contactName, email, archiveFlag, this.orgID, null).subscribe(responseJSON => {
+    //console.log(this.orgID);
+    this.kumulosService.webCreateUpdateOrganizations(organizationName, contactName, email, archiveFlag, this.orgID, this.editOrganizationForm).subscribe(responseJSON => {
       this.dialog.closeAll();
     })
   }

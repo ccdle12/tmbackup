@@ -18,6 +18,7 @@ import {
 
 import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
 import { forEach } from '@angular/router/src/utils/collection';
+import { LoadingSnackBar } from 'app/shared/components/loadingSnackBar';
 
 @Component({
   selector: 'app-root',
@@ -183,6 +184,7 @@ export class EditUserDetailsDialog {
   public editUserDetailsForm: FormGroup;
 
   httpRequestFlag: boolean;
+  surveyGroupChangedFlag: boolean;
   
   @ViewChild('spinnerElement') loadingElement: ElementRef;
 
@@ -190,7 +192,8 @@ export class EditUserDetailsDialog {
               public authService: AuthService,  
               public dialog: MatDialog, 
               public userJSON: EditRoleService,
-              public formBuilder: FormBuilder,) { 
+              public formBuilder: FormBuilder,
+              public loadingSnackBar: LoadingSnackBar) { 
     this.setupInstanceVariables();
     this.getSurveyGroupsInOrg();  
     this.setUserNameAndTitle();
@@ -201,6 +204,7 @@ export class EditUserDetailsDialog {
       this.mapOfSurveyGroupNameToIndexPostion = new Map();
       this.surveyGroupObjects = new Array();
       this.namesOfSurveyGroups = new Array();
+      this.surveyGroupChangedFlag = false;
   }
 
   private initEditUserDetailsForm(): void 
@@ -343,8 +347,22 @@ export class EditUserDetailsDialog {
   }
 
 
+  /**
+   * Function bind to view
+   */
+  public surveyGroupChanged() {
+      this.surveyGroupChangedFlag = true;
+  }
+
   private updateUserProfile(): void {
-    this.requestUpdatedUserProfile();
+    if (this.surveyGroupChangedFlag) {
+        let snackBarRef= this.loadingSnackBar.customSnackBar("The application will automatically logout");
+        snackBarRef.afterDismissed().subscribe(() => {
+            this.requestUpdatedUserProfile();
+        })
+    } else {
+        this.requestUpdatedUserProfile();
+    }
   }
 
   private requestUpdatedUserProfile(): void {
@@ -357,6 +375,10 @@ export class EditUserDetailsDialog {
             this.cacheUserProfile(userProfile);
             this.cacheUserName(userProfile);
             this.dialog.closeAll();
+
+            if (this.surveyGroupChangedFlag) {
+                this.authService.logout();
+            }
             
         });
   }

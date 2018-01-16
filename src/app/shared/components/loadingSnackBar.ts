@@ -28,4 +28,8 @@ export class LoadingSnackBar
       duration: 3000
     });
   }
+
+  public customSnackBar(message) {
+    return this.snackbar.open(message, 'OK');
+  }
 }
