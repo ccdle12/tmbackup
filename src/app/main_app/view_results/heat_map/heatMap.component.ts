@@ -31,8 +31,11 @@ export class HeatMapComponent {
   constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MatSnackBar, 
     public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MatDialog) {
 
-      this.loadingSnackBar.showLoadingSnackBar();
+      // this.loadingSnackBar.showLoadingSnackBar();
+
       this.initInstanceVariables();
+      this.initMapDescriptor();
+      
       // this.getHeatMapData();
       this.getWebDashboard();
   }
@@ -71,7 +74,7 @@ export class HeatMapComponent {
     this.mapOfDescriptorToStatementID.set("1.3.6", "Digital interactions");
    this.mapOfDescriptorToStatementID.set("1.3.7",  "Customer culture"); 
 
-   this.mapOfDescriptorToStatementID.set("1.4.1", " ");
+   this.mapOfDescriptorToStatementID.set("1.4.1", " empty ");
    this.mapOfDescriptorToStatementID.set("1.4.2","Negative follow-up")
    this.mapOfDescriptorToStatementID.set("1.4.3","Easy to do business")
    this.mapOfDescriptorToStatementID.set("1.4.4", "Complaints")
@@ -100,16 +103,16 @@ export class HeatMapComponent {
    this.mapOfDescriptorToStatementID.set("2.3.5","Financial modelling") 
    
    this.mapOfDescriptorToStatementID.set("2.4.1", "Strategic alignment")
-   this.mapOfDescriptorToStatementID.set("2.4.1","Intelligence")
-   this.mapOfDescriptorToStatementID.set("2.4.1","Benchmarking")
-   this.mapOfDescriptorToStatementID.set("2.4.1","Digital marketing") 
+   this.mapOfDescriptorToStatementID.set("2.4.2","Intelligence")
+   this.mapOfDescriptorToStatementID.set("2.4.3","Benchmarking")
+   this.mapOfDescriptorToStatementID.set("2.4.4","Digital marketing") 
 
     
    this.mapOfDescriptorToStatementID.set("2.5.1","Digital portfolio")
-   this.mapOfDescriptorToStatementID.set("2.5.1","Delivery options")
-   this.mapOfDescriptorToStatementID.set("2.5.1","Market-shaping")
-   this.mapOfDescriptorToStatementID.set("2.5.1",'Digital knowledge')
-   this.mapOfDescriptorToStatementID.set("2.5.1", 'Innovation process') 
+   this.mapOfDescriptorToStatementID.set("2.5.2","Delivery options")
+   this.mapOfDescriptorToStatementID.set("2.5.3","Market-shaping")
+   this.mapOfDescriptorToStatementID.set("2.5.4",'Digital knowledge')
+   this.mapOfDescriptorToStatementID.set("2.5.5", 'Innovation process') 
 
    
    this.mapOfDescriptorToStatementID.set("2.6.1", 'Engagement')
@@ -150,12 +153,12 @@ export class HeatMapComponent {
 
    
    this.mapOfDescriptorToStatementID.set("3.4.1",  'Agility')
-   this.mapOfDescriptorToStatementID.set("3.4.1", 'Teams')
-   this.mapOfDescriptorToStatementID.set("3.4.1", 'Dev Ops')
-   this.mapOfDescriptorToStatementID.set("3.4.1", 'Promotion')
-   this.mapOfDescriptorToStatementID.set("3.4.1", 'Reviews')
-   this.mapOfDescriptorToStatementID.set("3.4.1",  'IT operating model')
-   this.mapOfDescriptorToStatementID.set("3.4.1",  'Project roadmaps') 
+   this.mapOfDescriptorToStatementID.set("3.4.2", 'Teams')
+   this.mapOfDescriptorToStatementID.set("3.4.3", 'Dev Ops')
+   this.mapOfDescriptorToStatementID.set("3.4.4", 'Promotion')
+   this.mapOfDescriptorToStatementID.set("3.4.5", 'Reviews')
+   this.mapOfDescriptorToStatementID.set("3.4.6",  'IT operating model')
+   this.mapOfDescriptorToStatementID.set("3.4.7",  'Project roadmaps') 
 
    
    this.mapOfDescriptorToStatementID.set("3.5.1",'Infrastructure')
@@ -282,8 +285,7 @@ export class HeatMapComponent {
 
     this.kumulosService.getWebDashboard(version).subscribe(response => {
 
-      //Get the web dashboard so we can reuse the code from take survey
-      this.loadingSnackBar.dismissLoadingSnackBar();
+      //Get the web dashboard so we can reuse the code from take surveys
       this.surveyDashboard = response.payload;
 
       //Unpack the surveyDashboard to be formatted for the view
@@ -302,7 +304,7 @@ export class HeatMapComponent {
   }
 
   public getHeatMapData() {
-
+    console.log(this.surveyModules[this.surveyModules.length-1]);
     let version = this.getActiveVersion();
     this.kumulosService.webGetHeatMap(version).subscribe(response => {
 
@@ -315,7 +317,7 @@ export class HeatMapComponent {
 
       console.log("Unpack 0 of 0");
       console.log(this.sortedSurveyAndHeatMap);
-      console.log(this.sortedSurveyAndHeatMap[0][0][0]["statementText"]);
+      console.log(this.sortedSurveyAndHeatMap[this.surveyModules.length-1][this.sectionModules.length][0]["statementText"]);
       // console.log(this.getStatementText(2, 4, 2));
 
       console.log("Survey Modules: ");
@@ -350,18 +352,20 @@ export class HeatMapComponent {
 
   private unpackHeatMap() {
 
+     // An array to hold the heat map data at the position of each survey module
+     let outerArraySurveyPosition = new Array();
+
+      // An array corresponding to each module position
+      let innerArrayModulePosition = new Array();
+
+
+
     // Iterate through the survey modules
     for (let i = 0; i < this.surveyModules.length; i++) {
-
-      // An array to hold the heat map data at the position of each survey module
-      let outerArraySurveyPosition = new Array();
 
       // Iterating through each survey in the module
       for (let k = 0; k < this.surveyModules[i].length; k++) {
         let targetDimensionID = this.surveyModules[i][k].dimensionID
-
-        // An array corresponding to each module position
-        let innerArrayModulePosition = new Array();
 
         // Iterate through heat map and find corresponding ids to target
         for (let j = 0; j < this.heatMapJSON.length; j++) {
@@ -374,10 +378,12 @@ export class HeatMapComponent {
       }
 
       outerArraySurveyPosition.push(innerArrayModulePosition);
+      innerArrayModulePosition = [];
     }
 
     //Push the outer array to the sorted survey and heatmap
     this.sortedSurveyAndHeatMap.push(outerArraySurveyPosition);
+    outerArraySurveyPosition = [];
     }
   }
 
@@ -457,7 +463,12 @@ public inChildComponents(): boolean {
 }
 
 public getStatementText(i, j ,k) {
-  console.log(i);
-  return String(this.sortedSurveyAndHeatMap[i][j][k]["statementText"]);
+  let statementID = this.sortedSurveyAndHeatMap[i][j][k]["statementID"];
+  return this.mapOfDescriptorToStatementID.get(statementID);
+}
+
+public getHeatMapItems(i, j) {
+  console.log(this.sortedSurveyAndHeatMap[i][j]);
+  return this.sortedSurveyAndHeatMap[i][j];
 }
 }
