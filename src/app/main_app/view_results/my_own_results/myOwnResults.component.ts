@@ -132,6 +132,10 @@ export class MyOwnResultsComponent {
         this.loadingSnackBar.showLoadingSnackBar();
         this.router.navigateByUrl('main/viewresults/adjustaggregates');
         break;
+
+      case ('heatmap'):
+        this.router.navigateByUrl('main/viewresults/heatmap');
+        break;
       }
     }
 

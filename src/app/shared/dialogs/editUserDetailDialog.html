@@ -13,7 +13,7 @@
             </mat-form-field>
         </div>
 
-        <div class="form" *ngIf="this.authService.isOrganizationAdmin()">
+        <div class="form" *ngIf="this.authService.isSuperUser()">
             <mat-form-field>
                 <mat-select placeholder="Survey Group" formControlName="surveyGroup" (change)="surveyGroupChanged()">
                     <mat-option *ngFor="let group of namesOfSurveyGroups; let i = index" value="{{namesOfSurveyGroups[i]}}">{{namesOfSurveyGroups[i]}}</mat-option>

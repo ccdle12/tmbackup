@@ -74,6 +74,8 @@ export class KumulosService {
 
     private webGetOrgbyCityIDURI: string;
 
+    private webGetHeatMapURI: string;
+
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
@@ -149,6 +151,8 @@ export class KumulosService {
         this.utilityEmailAllUsersURI = "utilityEmailAllUsers.json/"
 
         this.webGetOrgbyCityIDURI = "webGetOrgbyCityID.json/"
+
+        this.webGetHeatMapURI = "webGetHeatmap.json/"
     }
 
     public createAuthorizationHeader(): Headers {
@@ -1067,6 +1071,19 @@ export class KumulosService {
             .map(response => {
                 console.log("Response from calling get org by city id")
                 console.log(response)
+                return response.json();
+            })
+    }
+
+    public webGetHeatMap(version) {
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[version]', version);
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.webGetHeatMapURI, body, {headers: headers})
+            .map(response => {
                 return response.json();
             })
     }

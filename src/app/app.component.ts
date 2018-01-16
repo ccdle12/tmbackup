@@ -172,7 +172,7 @@ export class EditUserDetailsDialog {
   userTitle: string;
   surveyGroup: string;
 
-  /** Survey Groups that will allow Organization Admins to switch between */
+  /** Survey Groups that will allow Super User to switch between */
   surveyGroupObjects: Array<any>;
   namesOfSurveyGroups: Array<string>;
   mapOfSurveyGroupNameToIndexPostion: Map<any, any>;

@@ -51,6 +51,7 @@ import { AddNewOrgDialog, EditOrgDialog } from './main_app/tmforum_admin/organiz
 import { AddCompanyDialog, EditCompanyDialog } from './main_app/tmforum_admin/survey_admin/surveyAdmin.component';
 import { AdminInviteUserDialog, AdminEditUserRoleDialog } from './main_app/tmforum_admin/user_admin/userAdmin.component';
 import {PublishedDataEmailResultsDialog} from './main_app/tmforum_admin/published_data_admin/publishedDataAdmin.component'
+// import { HeatMapComponent } from './main_app/view_results/heat_map/heatMap.component';
 
 @NgModule({
   imports: 
@@ -104,6 +105,7 @@ import {PublishedDataEmailResultsDialog} from './main_app/tmforum_admin/publishe
     AdminInviteUserDialog,
     AdminEditUserRoleDialog,
     PublishedDataEmailResultsDialog,
+    // HeatMapComponent,
   ],
   entryComponents: 
   [

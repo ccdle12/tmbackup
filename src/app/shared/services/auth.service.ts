@@ -153,18 +153,18 @@ public isAdmin(): boolean {
   }
 }
 
-public isOrganizationAdmin(): boolean {
+public isSuperUser(): boolean {
   if (localStorage.getItem('user') !== null) {
     var user = JSON.parse(localStorage.getItem('user'))
 
-    return user.user_role == 'Organization Admin';
+    return user.user_role == 'Super User';
   }
 }
 
 public isLeaderConsultant(): boolean {
   if (localStorage.getItem('user') !== null) {
     var userLeaderConsultant = JSON.parse(localStorage.getItem('user'));
-    return userLeaderConsultant.user_role == 'Leader' || userLeaderConsultant.user_role == 'Consultant' ||   userLeaderConsultant.user_role == 'Admin' || userLeaderConsultant.user_role == 'Organization Admin';
+    return userLeaderConsultant.user_role == 'Leader' || userLeaderConsultant.user_role == 'Consultant' ||   userLeaderConsultant.user_role == 'Admin' || userLeaderConsultant.user_role == 'Super User';
   }
   return false;
 }
