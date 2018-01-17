@@ -26,10 +26,12 @@
        <!-- </div> -->
   </div>
 
-  <div *ngIf="inChildComponents()" class="container">
+  <div *ngIf="inChildComponents() && this.heatMapUnpacked" class="container">
 
     <div class="row" *ngFor="let eachSurvey of surveyModules; let i = index">
       <h4>{{surveyModules[i][0].areaText}}</h4>  
+
+
       <div id="cardsContainer">
 
       <!-- <mat-card class="col-xs-2" *ngFor="let test of eachSurvey; let j = index">
@@ -37,6 +39,7 @@
       </mat-card>  -->
 
       <mat-expansion-panel class="col-xs-2" *ngFor="let test of eachSurvey; let j = index">
+        <!-- <div>{{j}}</div> -->
           <mat-expansion-panel-header>
             <mat-panel-title>
               <h5>{{surveyModules[i][j].dimensionText}}</h5>
@@ -48,8 +51,9 @@
           <div class="heat-map-dropdown" *ngFor="let eachDropDown of sortedSurveyAndHeatMap[i][j]; let k = index"> {{getStatementText(i, j, k)}}</div>
       </mat-expansion-panel> 
       </div>
-        
-<!-- 
+
+      <!-- <div>{{i}}</div>   -->
+<!--  
         <div id="cardsContainer">
         <mat-card class="col-xs-2" *ngFor="let test of eachSurvey; let j = index" (click)="navigateToSurveyModule(i, j)">
              <h6>{{surveyModules[i][j].dimensionText}}</h6>

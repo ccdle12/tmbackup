@@ -120,6 +120,8 @@ export class OrganizationAdminComponent {
 
 
     let dialogRef = this.dialog.open(EditOrgDialog, {
+      height: '400px',
+      width: '600px',
       data: {
               contactName: contactName,
               contactEmail: contactEmail,

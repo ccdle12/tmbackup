@@ -28,6 +28,8 @@ export class HeatMapComponent {
   public sortedSurveyAndHeatMap: Array<any>;
   public mapOfDescriptorToStatementID: Map<string, string>;
 
+  public heatMapUnpacked: boolean;
+
   constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MatSnackBar, 
     public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MatDialog) {
 
@@ -47,6 +49,7 @@ export class HeatMapComponent {
     this.sectionModules = new Array();
     this.sortedSurveyAndHeatMap = new Array();
     this.mapOfDescriptorToStatementID = new Map();
+    this.heatMapUnpacked = false;
   }
 
   private initMapDescriptor() {
@@ -303,28 +306,6 @@ export class HeatMapComponent {
     return localStorage.getItem("activeCityVersion");
   }
 
-  public getHeatMapData() {
-    console.log(this.surveyModules[this.surveyModules.length-1]);
-    let version = this.getActiveVersion();
-    this.kumulosService.webGetHeatMap(version).subscribe(response => {
-
-      //Adding the payload to heat map json
-      this.loadingSnackBar.dismissLoadingSnackBar();
-      this.heatMapJSON = response.payload;
-
-      // Unpack heat map data into [][] array corresponding to each survey module index position
-      this.unpackHeatMap();
-
-      console.log("Unpack 0 of 0");
-      console.log(this.sortedSurveyAndHeatMap);
-      console.log(this.sortedSurveyAndHeatMap[this.surveyModules.length-1][this.sectionModules.length][0]["statementText"]);
-      // console.log(this.getStatementText(2, 4, 2));
-
-      console.log("Survey Modules: ");
-      console.log(this.surveyModules);
-    });
-  }
-
   public addModules(size: number): void {
     
     if (size < 0)
@@ -348,6 +329,30 @@ export class HeatMapComponent {
     }
 
     return this.addModules(size - 1);
+  }
+
+  public getHeatMapData() {
+    console.log("Called from get HeatMap Data: ");
+    console.log(this.surveyModules[this.surveyModules.length-1]);
+
+    let version = this.getActiveVersion();
+    this.kumulosService.webGetHeatMap(version).subscribe(response => {
+
+      //Adding the payload to heat map json
+      this.loadingSnackBar.dismissLoadingSnackBar();
+      this.heatMapJSON = response.payload;
+
+      // Unpack heat map data into [][] array corresponding to each survey module index position
+      this.unpackHeatMap();
+
+      console.log("Unpack 0 of 0");
+      console.log(this.sortedSurveyAndHeatMap);
+      console.log(this.sortedSurveyAndHeatMap[this.surveyModules.length-1][this.sectionModules.length][0]["statementText"]);
+      // console.log(this.getStatementText(2, 4, 2));
+
+      console.log("Survey Modules: ");
+      console.log(this.surveyModules);
+    });
   }
 
   private unpackHeatMap() {
@@ -386,6 +391,8 @@ export class HeatMapComponent {
     this.sortedSurveyAndHeatMap.push(outerArraySurveyPosition);
     outerArraySurveyPosition = [];
     }
+
+    this.heatMapUnpacked = true;
   }
 
 
@@ -464,6 +471,7 @@ public inChildComponents(): boolean {
 }
 
 public getStatementText(i, j ,k) {
+  console.log("Getting statement text: " + "i: " + i  + " " + "j: " + j + " " +  "k: " + k);
   let statementID = this.sortedSurveyAndHeatMap[i][j][k]["statementID"];
   return this.mapOfDescriptorToStatementID.get(statementID);
 }
