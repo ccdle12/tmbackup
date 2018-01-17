@@ -373,6 +373,7 @@ export class HeatMapComponent {
           let current = this.heatMapJSON[j]["dimensionID"];
 
           if (current == targetDimensionID) {
+            console.log(this.heatMapJSON[j]);
             innerArrayModulePosition.push(this.heatMapJSON[j]);
           }
       }

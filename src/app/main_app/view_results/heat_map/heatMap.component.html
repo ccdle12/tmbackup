@@ -43,9 +43,9 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <div>{{i}} {{j}}</div>
-          <div>Length of each sub: {{sortedSurveyAndHeatMap[i][j].length}}</div>
+          <!-- <div>Length of each sub: {{sortedSurveyAndHeatMap[i][j].length}}</div> -->
           <!-- <div class="heat-map-dropdown" *ngFor="let eachDropDown of sortedSurveyAndHeatMap[i][j]; let k = index">{{i}} {{j}}</div> -->
-          <!-- <div class="heat-map-dropdown" *ngFor="let eachDropDown of sortedSurveyAndHeatMap[i][j]; let k = index"> {{getStatementText(i, j, k)}}</div> -->
+          <div class="heat-map-dropdown" *ngFor="let eachDropDown of sortedSurveyAndHeatMap[i][j]; let k = index"> {{getStatementText(i, j, k)}}</div>
       </mat-expansion-panel> 
       </div>
         
