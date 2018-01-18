@@ -220,6 +220,9 @@ export class TeamDynamicsComponent {
       case ('adjustaggregates'):
         this.router.navigateByUrl('main/viewresults/adjustaggregates');
         break;
+      case ('heatmap'):
+        this.router.navigateByUrl('main/viewresults/heatmap');
+        break;
       }
     }
 

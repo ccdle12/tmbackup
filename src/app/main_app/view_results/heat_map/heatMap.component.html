@@ -1,7 +1,10 @@
+<!-- <div class="loading-overlay" #loadingElement style="opacity: 100;">
+    <mat-spinner *ngIf="this.httpRequestFlag"></mat-spinner>
+</div> -->
+
 <nav mat-tab-nav-bar>
     <div id="navigationIcon">
       <img id="backToDashboard" src="../../../assets/Back To-100-white.png" (click)="backToDashboard()" [matTooltip]="backToDashboardTooltip">
-      <img id="emailDocument" src="../../../assets/Email Document-100-white.png" (click)="requestSurveyCSV()" *ngIf="this.authService.isLeaderConsultant();" [matTooltip]="emailResults">
     </div>
     
     <div class="container">
@@ -13,55 +16,31 @@
         <a mat-tab-link *ngIf="showResultsTab()" class="defaultBtn whiteText navTitle" (click)="routeToPage('heatmap')"><h4>Our Organization's Heat Map</h4></a>
     </div>
   </div>
-  </nav>
+  </nav>  
 
 
   <div id="surveyProgressBarArea" *ngIf="inChildComponents()">
     <h2><strong>Digital Heat Map</strong></h2>
        <p id="subHeading">Please select Detailed View for a criteria level</p>
-       <!-- <div class="row"> -->
-           <!-- <h4 id="overallProgress">Survey Completion Status -  {{progressValue}}%</h4> -->
-           <!-- <mat-progress-bar id="progressBar" *ngIf="inChildComponents()" color="accent" [mode]="determinate" [value]="progressValue"> -->
-        <!-- </mat-progress-bar>  -->
-       <!-- </div> -->
   </div>
 
   <div *ngIf="inChildComponents() && this.heatMapUnpacked" class="container">
-
+    
     <div class="row" *ngFor="let eachSurvey of surveyModules; let i = index">
       <h4>{{surveyModules[i][0].areaText}}</h4>  
-
-
+      
       <div id="cardsContainer">
+          <!-- [ngStyle]="areaColorToScore(i, j)" -->
+        <mat-expansion-panel class="col-xs-2" *ngFor="let test of eachSurvey; let j = index"  [style.background-color]="revertToDropDownColor(i , j)" (click)="toggleSurveyModuleColor(i, j)">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <h5>{{surveyModules[i][j].dimensionText}}</h5>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
 
-      <!-- <mat-card class="col-xs-2" *ngFor="let test of eachSurvey; let j = index">
-          <h6>{{surveyModules[i][j].dimensionText}}</h6>
-      </mat-card>  -->
-
-      <mat-expansion-panel class="col-xs-2" *ngFor="let test of eachSurvey; let j = index">
-        <!-- <div>{{j}}</div> -->
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <h5>{{surveyModules[i][j].dimensionText}}</h5>
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <div>{{i}} {{j}}</div>
-          <!-- <div>Length of each sub: {{sortedSurveyAndHeatMap[i][j].length}}</div> -->
-          <!-- <div class="heat-map-dropdown" *ngFor="let eachDropDown of sortedSurveyAndHeatMap[i][j]; let k = index">{{i}} {{j}}</div> -->
-          <div class="heat-map-dropdown" *ngFor="let eachDropDown of sortedSurveyAndHeatMap[i][j]; let k = index"> {{getStatementText(i, j, k)}}</div>
-      </mat-expansion-panel> 
+            <div class="heat-map-dropdown" *ngFor="let eachDropDown of sortedSurveyAndHeatMap[i][j]; let k = index" [ngStyle]="colorToScore(i, j, k)"  (mouseenter)="mouseEnter(i ,j ,k)" [matTooltip]="currentHoverText"> {{sortedSurveyAndHeatMap[i][j][k]["statementShortText"]}}</div>
+        </mat-expansion-panel> 
       </div>
-
-      <!-- <div>{{i}}</div>   -->
-<!--  
-        <div id="cardsContainer">
-        <mat-card class="col-xs-2" *ngFor="let test of eachSurvey; let j = index" (click)="navigateToSurveyModule(i, j)">
-             <h6>{{surveyModules[i][j].dimensionText}}</h6>
-        <div class="progressBox" [ngStyle]="changeSurveyProgressBackground(i, j)">
-            <p><strong>{{surveyModules[i][j].surveyCount}} / {{surveyModules[i][j].statementCount}}</strong></p>
-        </div>
-        </mat-card>
-        </div> -->
 
     </div>
 </div>

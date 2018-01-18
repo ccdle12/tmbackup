@@ -65,18 +65,17 @@ a {
 }
 
 mat-expansion-panel {
-    /* height: 100px; */
-    /* width: 150px; */
     margin: 0 0 25px 10px;
-    /* position:relative; */
     background-color: rgb(230, 230, 230);
 }
 
 .heat-map-dropdown {
-    background-color: yellow;
     margin: 0 0 25px 0px;
-    /* width: auto; */
 }
+
+/* mat-panel-title {
+    color: white;
+} */
 
 mat-card {
     height: 100px;
@@ -85,6 +84,7 @@ mat-card {
     position:relative;
     background-color: rgb(230, 230, 230);
 }
+
 
 mat-card:hover {
     cursor: pointer;
