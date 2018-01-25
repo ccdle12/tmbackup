@@ -270,7 +270,9 @@ public colorToScore(i, j, k) {
 
     case(2):
       //Amber / Red
-      return { 'background-color': '#ff6600', 'color': 'white' };
+      //Using Amber for now for 2
+      return { 'background-color': '#FFBF00', 'color': 'white' };
+      // return { 'background-color': '#ff6600', 'color': 'white' };
 
     case(3):
       // Red
@@ -309,7 +311,7 @@ public colorToScore(i, j, k) {
       for (let k = 0; k < dropDownArray.length; k++) {
         let gap = Number(dropDownArray[k]["gap"]);
         
-        if (gap == 2 || gap == 3) return "#ff0000";
+        if (gap == 3 || gap == 4) return "#ff0000";
 
         //If all grey, then the top level is grey
         if (gap == 9) nineCount++;
@@ -328,7 +330,7 @@ public colorToScore(i, j, k) {
         return "#88C158"
       }
       else {
-        return "#ff6600"
+        return "#FFBF00"
       }
     }
   }
@@ -351,7 +353,7 @@ public colorToScore(i, j, k) {
     let gap = highlightedArea["gap"];
     let statementText = highlightedArea["statementText"];
 
-    this.currentHoverText =  "Importance: " + importance + "\n" + "Score: " + score + "\n" + "Target: " + target + "\n" + "Gap: " + gap + "\n" + "Statement: " + statementText;
+    this.currentHoverText =  "Importance: " + importance + "\n, " + "Score: " + score + "\n, " + "Target: " + target + "\n, " + "Gap: " + gap + "\n, " + "Statement: " + statementText;
     console.log(i, j, k);
   }
 }

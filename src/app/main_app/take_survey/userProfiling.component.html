@@ -1,0 +1,92 @@
+<div class="loading-overlay" #loadingElement style="opacity: 100;">
+    <mat-spinner *ngIf="httpRequestFlag"></mat-spinner>
+</div>
+
+<h4>User Profiling</h4>
+<h5 class="sub-header">Please answer the following questions to proceed to the survey: </h5>
+<form [formGroup]="userProfilingForm" (ngSubmit)="onSubmit()">
+    <div>
+        
+
+        <div class="form">
+            <mat-form-field>
+                <mat-select placeholder="What is the status of your digital transformation program?" formControlName="programStatusAnswer">
+                    <mat-option value="We are aware of the need to transform but have not started">We are aware of the need to transform but have not started</mat-option>
+                    <mat-option value="We are in the planning process">We are in the planning process</mat-option>
+                    <mat-option value="We are just starting implementation">We are just starting implementation</mat-option>
+                    <mat-option value="We are well along the road and reaping significant benefits">We are well along the road and reaping significant benefits</mat-option>
+                    <mat-option value="Other">Other</mat-option>   
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field>
+                <mat-select placeholder="Are you personally involved in a current digital transformation programme effort?" formControlName="personallyEngagedAnswer">
+                    <mat-option value="Yes">Yes</mat-option>
+                    <mat-option value="No">No</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+
+        <div class="form">
+            <mat-form-field>
+                <mat-select placeholder="Which DMM Dimension do you most personally associate with?" formControlName="dimensionAnswer">
+                    <mat-option value="Customer">Customer</mat-option>
+                    <mat-option value="Strategy">Strategy</mat-option>
+                    <mat-option value="IT">IT</mat-option>
+                    <mat-option value="Operations">Operations</mat-option>
+                    <mat-option value="Culture">Culture</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field>
+                <mat-select placeholder="What business function do you work for? " formControlName="businessFunctionAnswer">
+                    <mat-option value="Network">Network</mat-option>
+                    <mat-option value="IT">IT</mat-option>
+                    <mat-option value="Operations">Operations</mat-option>
+                    <mat-option value="Sales and marketing">Sales and marketing</mat-option>
+                    <mat-option value="Product Management">Product Management</mat-option>
+                    <mat-option value="Business transformation or change management">Business transformation or change management</mat-option>
+                    <mat-option value="Strategy">Strategy</mat-option>
+                    <mat-option value="Finance">Finance</mat-option>
+                    <mat-option value="HR">HR</mat-option>
+                    <mat-option value="Other">Other</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field>
+                <mat-select placeholder="Which level of management would best describe your role at the company?" formControlName="roleAnswer">
+                    <mat-option value="C-level executive">C-level executive </mat-option>
+                    <mat-option value="Senior Management">Senior Management </mat-option>
+                    <mat-option value="Middle Management">Middle Management</mat-option>
+                    <mat-option value="Junior Management">Junior Management</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field>
+                <mat-select placeholder="Which product line do you service? (Optional)" formControlName="productLineAnswer">
+                    <mat-option value="Fixed communications voice">Fixed communications voice</mat-option>
+                    <mat-option value="Fixed communications data">Fixed communications data</mat-option>
+                    <mat-option value="Mobile communications">Mobile communications</mat-option>
+                    <mat-option value="TV and Broadcast Media">TV and Broadcast Media</mat-option>
+                    <mat-option value="Business conferencing services">Business conferencing services</mat-option>
+                    <mat-option value="Computing and apps">Computing and apps</mat-option>
+                    <mat-option value="Consulting">Consulting</mat-option>
+                    <mat-option value="Other">Other</mat-option>
+                    <mat-option value="Not applicable">Not applicable</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+    </div>
+    <button mat-button matDialogClose>Cancel</button>
+    <button mat-button (click)="submitUserSurvey()" [disabled]="enableSubmitButton()">Submit Survey</button>
+</form>

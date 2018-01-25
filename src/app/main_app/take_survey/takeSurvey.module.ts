@@ -7,9 +7,22 @@ import { TakeSurveyComponent } from './takeSurvey.component';
 import { KumulosService } from '../../shared/services/kumulos.service';
 
 @NgModule({
-  imports: [takeSurveyRouting, CommonModule, MatCardModule, MatSnackBarModule, MatProgressBarModule],
-  declarations: [TakeSurveyComponent],
-  providers: [KumulosService],
+  imports: 
+  [
+    takeSurveyRouting, 
+    CommonModule, 
+    MatCardModule, 
+    MatSnackBarModule, 
+    MatProgressBarModule,
+  ],
+  declarations: 
+  [
+    TakeSurveyComponent,
+  ],
+  providers: 
+  [
+    KumulosService
+  ],
   
 })
 export class TakeSurveyModule { }

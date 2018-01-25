@@ -50,7 +50,8 @@ import { LicenseService } from './shared/services/license.service';
 import { AddNewOrgDialog, EditOrgDialog } from './main_app/tmforum_admin/organization_admin/organizationAdmin.component';
 import { AddCompanyDialog, EditCompanyDialog } from './main_app/tmforum_admin/survey_admin/surveyAdmin.component';
 import { AdminInviteUserDialog, AdminEditUserRoleDialog } from './main_app/tmforum_admin/user_admin/userAdmin.component';
-import {PublishedDataEmailResultsDialog} from './main_app/tmforum_admin/published_data_admin/publishedDataAdmin.component'
+import {PublishedDataEmailResultsDialog} from './main_app/tmforum_admin/published_data_admin/publishedDataAdmin.component';
+import { UserProfilingModal } from './main_app/take_survey/takeSurvey.component';
 // import { HeatMapComponent } from './main_app/view_results/heat_map/heatMap.component';
 
 @NgModule({
@@ -105,6 +106,7 @@ import {PublishedDataEmailResultsDialog} from './main_app/tmforum_admin/publishe
     AdminInviteUserDialog,
     AdminEditUserRoleDialog,
     PublishedDataEmailResultsDialog,
+    UserProfilingModal,
     // HeatMapComponent,
   ],
   entryComponents: 
@@ -141,6 +143,7 @@ import {PublishedDataEmailResultsDialog} from './main_app/tmforum_admin/publishe
     AdminInviteUserDialog,
     AdminEditUserRoleDialog,
     PublishedDataEmailResultsDialog,
+    UserProfilingModal,
   ],
   providers: 
   [

@@ -76,6 +76,10 @@ export class KumulosService {
 
     private webGetHeatMapURI: string;
 
+    private getUserProfileCountURI: string;
+
+    private createUpdateUserProfilingURI: string;
+
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
@@ -153,6 +157,10 @@ export class KumulosService {
         this.webGetOrgbyCityIDURI = "webGetOrgbyCityID.json/"
 
         this.webGetHeatMapURI = "webGetHeatmap.json/"
+
+        this.getUserProfileCountURI = "getUserProfileCount.json/"
+
+        this.createUpdateUserProfilingURI = "create_updateUserProfiling.json/"
     }
 
     public createAuthorizationHeader(): Headers {
@@ -1084,6 +1092,51 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.webGetHeatMapURI, body, {headers: headers})
             .map(response => {
+                return response.json();
+            })
+    }
+
+    public getUserProfileCount(version) {
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[version]', version);
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.getUserProfileCountURI, body, {headers: headers})
+            .map(response => {
+                console.log("RESPONSE FROM USER COUNT")
+                console.log(response.json());
+                return response.json()
+            })
+    }
+
+    public createUpdateUserProfiling(version, profiling: any) {
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        let surveyData: string;
+
+        console.log("PROFILING!!!");
+        console.log(profiling);
+        
+        urlSearchParams.append('params[version]', version);
+        console.log("PROFILING!!!")
+        console.log(profiling.value)
+        console.log(profiling.value.programStatusAnswer);
+        urlSearchParams.append('params[programStatusAnswer]', profiling.value.programStatusAnswer);
+        urlSearchParams.append('params[personallyEngagedAnswer]', profiling.value.personallyEngagedAnswer);
+        urlSearchParams.append('params[dimensionAnswer]', profiling.value.dimensionAnswer);
+        urlSearchParams.append('params[businessFunctionAnswer]', profiling.value.businessFunctionAnswer);
+        urlSearchParams.append('params[roleAnswer]', profiling.value.roleAnswer);
+        urlSearchParams.append('params[productLineAnswer]', profiling.value.productLineAnswer);
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.createUpdateUserProfilingURI, body, {headers: headers})
+            .map(response => {
+                console.log("RESPONSE FROM CREATE UPDATE USER PROFILING:");
+                console.log(response);
                 return response.json();
             })
     }
