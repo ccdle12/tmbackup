@@ -868,6 +868,8 @@ export class KumulosService {
         //Unpacking orgData
         let primaryProductsAndServices = orgData.value.primaryProductsAndServices;
         let regions = orgData.value.regions;
+        console.log("Multi select")
+        console.log(regions);
         let sectors = orgData.value.sectors;
         let customerTypes = orgData.value.customerTypes;
         let totalEmployees = orgData.value.totalEmployees;

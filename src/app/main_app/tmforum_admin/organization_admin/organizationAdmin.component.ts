@@ -2,11 +2,12 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { MatDialog, MatTooltip, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatTooltip, MatSnackBar, MAT_DIALOG_DATA, MatOption } from '@angular/material';
 import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
 import { ValidationService } from '../../../shared/services/validation.service';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'organizationAdminComponent',
@@ -113,7 +114,12 @@ export class OrganizationAdminComponent {
     let headquartersLocation = this.organizationsJSON[index].headquartersLocation;
     let operatingTime = this.organizationsJSON[index].operatingTime;
     let primaryProductsAndServices = this.organizationsJSON[index].primaryProductsAndServices;
-    let regions = this.organizationsJSON[index].regions;
+
+    console.log("REGIONS");
+    console.log(this.organizationsJSON[index].regions.split(/\|/g));
+    // SPlitting string into array to send to edit dialog
+    let regions = this.organizationsJSON[index].regions.split(/\|/g);
+
     let sectors = this.organizationsJSON[index].sectors;
     let totalEmployees = this.organizationsJSON[index].totalEmployees;
     let totalAnnualRevenue = this.organizationsJSON[index].totalAnnualRevenue;
@@ -154,11 +160,16 @@ export class AddNewOrgDialog {
 
   httpRequestFlag: boolean;
   inviteOrganizationForm: FormGroup;
+
+  public regionsFormControl = new FormControl();
+  public regionsList;
   
   @ViewChild('spinnerElement') loadingElement: ElementRef;
 
   constructor(public dialog: MatDialog, private formBuilder: FormBuilder, public kumulosService: KumulosService, 
               public renderer: Renderer, private ngZone: NgZone) {
+    
+    this.initMemberVariables();
     
     this.inviteOrganizationForm = this.formBuilder.group({
      organizationName: [''],
@@ -181,14 +192,20 @@ export class AddNewOrgDialog {
     });
   }
 
+  public initMemberVariables(): void {
+    this.regionsList = ['North America', 'Latin/America/Caribbean', 'Europe and/or Russia', 'Middle East and/or Africa', 'Asia/Pacific', 'Global'];
+  }
+
   public addNewOrganization(): void {
     let organizationName: string = this.inviteOrganizationForm.value.organizationName;
     let contactName: string = this.inviteOrganizationForm.value.contactName;
     let email: string = this.inviteOrganizationForm.value.email;
 
     this.httpRequestFlag = true;
+    this.inviteOrganizationForm.value.region = String(this.regionsFormControl.value);
+    console.log(this.inviteOrganizationForm.value.region);
     this.kumulosService.webCreateUpdateOrganizations(organizationName, contactName, email, false, null, this.inviteOrganizationForm).subscribe(responseJSON => {
-        console.log("Rseponse");
+        console.log("Response");
         console.log(responseJSON);
       this.dialog.closeAll();
     })
@@ -223,6 +240,10 @@ export class EditOrgDialog {
   public userMadeChangesFlag;
   public editOrganizationForm: FormGroup;
 
+  public regionsFormControl = new FormControl();
+  public regionsList;
+  public resultLocation;
+  
   @ViewChild('spinnerElement') loadingElement: ElementRef;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, 
@@ -239,6 +260,33 @@ export class EditOrgDialog {
   private initMemberVariables(): void
   {
     this.userMadeChangesFlag = false; 
+    this.regionsList = 
+    [
+      {
+      id: "NA",
+      value: 'North America', 
+      },
+      {
+      id: "LA",
+      value: 'Latin/America/Caribbean', 
+      },
+      {
+      id: "EU",
+      value: 'Europe and/or Russia', 
+      },
+      {
+      id: "MEORAFR",
+      value: 'Middle East and/or Africa', 
+      },
+      {
+      id: "AP",
+      value: 'Asia/Pacific', 
+      },
+      {
+      id: "GL",  
+      value: 'Global'
+      }
+    ];
   }
 
   private unpackInjectedData(data: any): void
@@ -257,6 +305,21 @@ export class EditOrgDialog {
     this.sectors = data.sectors;
     this.totalEmployees = data.totalEmployees;
     this.totalAnnualRevenue = data.totalAnnualRevenue;
+
+
+    /**
+     * Unpack selected regions and show them on the view as selected
+     */
+    this.resultLocation = [];
+    for (let i = 0; i < this.regions.length; i++)
+      for (let j = 0; j < this.regionsList.length; j++)
+      {
+        if (this.regions[i] == this.regionsList[j].value)
+        {
+          var regionToToggle = this.regionsList[j];
+          this.resultLocation.push(regionToToggle);
+        }
+      }    
   }
 
   private initEditOrganizationForm(): void 
@@ -267,7 +330,7 @@ export class EditOrgDialog {
       email: [this.contactEmail, [Validators.required, ValidationService.emailValidator]],
       archive: [''],
       primaryProductsAndServices: [this.primaryProductsAndServices],
-      regions: [this.regions],
+      regions: [this.regionsFormControl],
       sectors: [this.sectors],
       customerTypes: [this.customerTypes],
       totalEmployees: [this.totalEmployees],
@@ -292,9 +355,26 @@ export class EditOrgDialog {
     let contactName: string = this.editOrganizationForm.value.contactName;
     let email: string = this.editOrganizationForm.value.email;
     let archiveFlag: boolean = this.editOrganizationForm.value.archive;
+
+    /**
+     * Taking selected regions and converting to string
+     */
+    let regionsToSend = "";
+    let selectedRegions = this.editOrganizationForm.value.regions.value;
+    for (let i = 0; i < selectedRegions.length; i++)
+    {
+      if (i != selectedRegions.length - 1)
+        regionsToSend += selectedRegions[i].value + "|";
+      else
+        regionsToSend += selectedRegions[i].value;
+    }
     
+    this.editOrganizationForm.value.regions = regionsToSend;
+
+    console.log(this.editOrganizationForm.value.regions);
+
     this.httpRequestFlag = true;
-    //console.log(this.orgID);
+    console.log(this.orgID);
     this.kumulosService.webCreateUpdateOrganizations(organizationName, contactName, email, archiveFlag, this.orgID, this.editOrganizationForm).subscribe(responseJSON => {
       this.dialog.closeAll();
     })
