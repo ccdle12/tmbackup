@@ -31,73 +31,33 @@
 
             <div class="form">
                 <mat-form-field>
-                    <mat-select placeholder="What are your primary products and services?" formControlName="primaryProductsAndServices">
-                        <mat-option value="Fixed Operator">Fixed Operator</mat-option>
-                        <mat-option value="Mobile Operator">Mobile Operator</mat-option>
-                        <mat-option value="Converged Operator (some combination of mobile, fixed voice and data, and TV)">Converged Operator (some combination of mobile, fixed voice and data, and TV)</mat-option>
-                        <mat-option value="Cable operator">Cable operator</mat-option>
-                        <mat-option value="Digital services provider (e.g. IoT, smart cities)">Digital services provider (e.g. IoT, smart cities)</mat-option>
-                        <mat-option value="Other">Other</mat-option>   
-                    </mat-select>
+                    <mat-select placeholder="What are your primary products and services?" [formControl]="primaryProductsAndServicesFormControl" [(ngModel)]="primaryProductsAndServicesSelected" multiple trigger>
+                        <mat-option *ngFor="let productsAndServices of primaryProductsAndServicesList" [value]="productsAndServices">{{productsAndServices.value}}</mat-option>
+                    </mat-select> 
                 </mat-form-field>
             </div>
-    
-            <!-- <div class="form">
-                <mat-form-field>
-                    <mat-select placeholder="Which region(s) does your organization operate in? " formControlName="regions">
-                        <mat-option value="North America">North America</mat-option>
-                        <mat-option value="Latin/America/Caribbean">Latin/America/Caribbean</mat-option>
-                        <mat-option value="Europe and/or Russia">Europe and/or Russia</mat-option>
-                        <mat-option value="Middle East and/or Africa">Middle East and/or Africa</mat-option>
-                        <mat-option value="Asia/Pacific">Asia/Pacific</mat-option>
-                        <mat-option value="Global">Global</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div> -->
 
-            <!--  -->
             <div class="form">
                 <mat-form-field>
                     <mat-select placeholder="Regions" [formControl]="regionsFormControl" [(ngModel)]="resultLocation" multiple trigger>
                         <mat-option *ngFor="let region of regionsList" [value]="region" selected>{{region.value}}</mat-option>
-                        <!-- <mat-option value="North America">North America</mat-option> -->
-                        <!-- <mat-option value="Latin/America/Caribbean">Latin/America/Caribbean</mat-option> -->
-                        <!-- <mat-option value="Europe and/or Russia">Europe and/or Russia</mat-option> -->
-                        <!-- <mat-option value="Middle East and/or Africa">Middle East and/or Africa</mat-option> -->
-                        <!-- <mat-option value="Asia/Pacific">Asia/Pacific</mat-option> -->
-                        <!-- <mat-option value="Global">Global</mat-option> -->
                     </mat-select> 
                 </mat-form-field>
             </div>
-    
-    
+
             <div class="form">
                 <mat-form-field>
-                    <mat-select placeholder="Which sectors does your company primarily serve?" formControlName="sectors">
-                        <mat-option value="Aerospace industry">Aerospace industry</mat-option>
-                        <mat-option value="Agriculture industry">Agriculture industry</mat-option>
-                        <mat-option value="Chemical industry">Chemical industry</mat-option>
-                        <mat-option value="Pharmaceutical industry">Pharmaceutical industry</mat-option>
-                        <mat-option value="Computer industry">Computer industry</mat-option>
-                        <mat-option value="Software industry">Software industry</mat-option>
-                        <mat-option value="Construction industry">Construction industry</mat-option>
-                        <mat-option value="Defense industry">Defense industry</mat-option>
-                        <mat-option value="Education industry">Education industry</mat-option>
-                        <mat-option value="Energy industry">Energy industry</mat-option>
-                        <mat-option value="Entertainment industry">Entertainment industry</mat-option>
-                        <mat-option value="Financial services industry">Financial services industry</mat-option>
-                        <mat-option value="Food industry">Food industry</mat-option>
-                        <mat-option value="Health care industry">Health care industry</mat-option>
-                        <mat-option value="Hospitality industry">Hospitality industry</mat-option>
-                        <mat-option value="Information industry">Information industry</mat-option>
-                        <mat-option value="Manufacturing">Manufacturing</mat-option>
-                        <mat-option value="Mass media">Mass media</mat-option>
-                        <mat-option value="Telecommunications industry">Telecommunications industry</mat-option>
-                        <mat-option value="Transport industry">Transport industry</mat-option>
-                        <mat-option value="Water industry">Water industry</mat-option>
-                        <mat-option value="All of the above">All of the above</mat-option>
-                        <mat-option value="Other">Other</mat-option>
-                    </mat-select>
+                    <mat-select placeholder="Which sectors does your company primarily serve?" [formControl]="sectorsFormControl" [(ngModel)]="sectorsSelected" multiple trigger>
+                        <mat-option *ngFor="let sector of sectorsList" [value]="sector" selected>{{sector.value}}</mat-option>
+                    </mat-select> 
+                </mat-form-field>
+            </div>
+
+            <div class="form">
+                <mat-form-field>
+                    <mat-select placeholder="Which customer types do you serve?" [formControl]="customersFormControl" [(ngModel)]="customersSelected" multiple trigger>
+                        <mat-option *ngFor="let customer of customersList" [value]="customer" selected>{{customer.value}}</mat-option>
+                    </mat-select> 
                 </mat-form-field>
             </div>
     
@@ -153,11 +113,6 @@
                 </mat-form-field>
             </div>
     
-            <div class="form">
-                    <mat-form-field>
-                        <input matInput placeholder="Where is your headquarters?" type="text" formControlName="headquartersLocation">
-                    </mat-form-field>
-            </div>
     
         </div>
         <button mat-button matDialogClose>Cancel</button>

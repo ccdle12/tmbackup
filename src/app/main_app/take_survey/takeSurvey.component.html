@@ -10,6 +10,7 @@
         <!-- </div> -->
 </div>
 
+<!-- ||  -->
 <div *ngIf="inChildComponents() && getUserSurveyCount()" class="container">
     <div class="row" *ngFor="let eachSurvey of surveyModules; let i = index">
         <h4>{{surveyModules[i][0].areaText}}</h4>
@@ -24,7 +25,8 @@
     </div>
 </div>
 
-<div *ngIf="inChildComponents() && !getUserSurveyCount()" class="container">
+<!-- && !this.authService.isAdmin() && !this.authService.isSuperUser() -->
+<div *ngIf="inChildComponents() && !getUserSurveyCount() && !this.authService.isAdmin() && !this.authService.isSuperUser()" class="container">
     <div class="row" *ngFor="let eachSurvey of surveyModules; let i = index">
         <h4>{{surveyModules[i][0].areaText}}</h4>
         <div id="cardsContainer">

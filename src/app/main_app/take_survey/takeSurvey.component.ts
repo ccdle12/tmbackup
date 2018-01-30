@@ -62,7 +62,9 @@ export class TakeSurveyComponent {
           localStorage.setItem("user_profiling", response.payload);
 
           // SHOW A MODAL
-          let dialogRef = this.dialog.open(UserProfilingModal);
+          if (!this.authService.isAdmin() && !this.authService.isSuperUser()) {
+            let dialogRef = this.dialog.open(UserProfilingModal);
+          }
           
           // SHOW HTML BOXES THAT CAN'T BE ACCESSED?
           // FLAG IN THE HTML?
@@ -83,7 +85,7 @@ export class TakeSurveyComponent {
     console.log("User PRofiling: ")
     console.log(user_profiling);
 
-    if (Number(user_profiling) > 0)
+    if (Number(user_profiling) > 0 || this.authService.isAdmin() || this.authService.isSuperUser())
       return true;
     else
       return false;
