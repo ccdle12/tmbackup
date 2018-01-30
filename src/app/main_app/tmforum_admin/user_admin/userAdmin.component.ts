@@ -9,6 +9,7 @@ import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
 import { ValidationService } from '../../../shared/services/validation.service';
 import { InviteUserDialog } from 'app/main_app/team_admin/teamAdmin.component';
 import { ElementSchemaRegistry } from '@angular/compiler';
+import { StylingService } from '../../../shared/services/styling.service';
 
 @Component({
   selector: 'userAdminComponent',
@@ -41,10 +42,25 @@ export class UserAdminComponent {
   public surveyGroupAndIdDict: Map<any, any>;
   
 
-  constructor(public router: Router, public kumulosService: KumulosService, public dialog: MatDialog,
-              public loadingSnackBar: LoadingSnackBar) {
+  constructor(public router: Router, 
+              public kumulosService: KumulosService, 
+              public dialog: MatDialog,
+              public loadingSnackBar: LoadingSnackBar,
+              public stylingService: StylingService) 
+  {
     this.initMemberVariables(); 
     this.getAllOrganizationsAndSurveyGroups();
+  }
+
+  public navStyle()
+  {
+    return {'background-color': this.stylingService.getPrimaryColour('grey')}
+  }
+
+  public userAdminStyle()
+  {
+    return { 'background-color': this.stylingService.getPrimaryColour('red'),
+    'color': 'white' };    
   }
 
   private initMemberVariables(): void {

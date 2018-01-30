@@ -53,6 +53,7 @@ import { AdminInviteUserDialog, AdminEditUserRoleDialog } from './main_app/tmfor
 import {PublishedDataEmailResultsDialog} from './main_app/tmforum_admin/published_data_admin/publishedDataAdmin.component';
 import { UserProfilingModal } from './main_app/take_survey/takeSurvey.component';
 // import { HeatMapComponent } from './main_app/view_results/heat_map/heatMap.component';
+import { StylingService } from './shared/services/styling.service';
 
 @NgModule({
   imports: 
@@ -160,7 +161,8 @@ import { UserProfilingModal } from './main_app/take_survey/takeSurvey.component'
     UserSavedService, 
     EditRoleService, 
     CreateAndDeleteDimensionOwnerService, 
-    EvidenceService 
+    EvidenceService,
+    StylingService 
   ],
   bootstrap: [AppComponent]
 })

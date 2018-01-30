@@ -126,9 +126,9 @@ export class BenchmarkComponent {
       else
       {
         if (!this.isLicenseValid)
-          this.allCityNames.unshift({label: "DEMO Benchmark", value: {id:i, name:"DEMO Benchmark"}});
+          this.allCityNames.unshift({label: "DEMO Global Digital Benchmark", value: {id:i, name:"DEMO Global Digital Benchmark"}});
         else
-          this.allCityNames.unshift({label: "Benchmark", value: {id:i, name:"Benchmark"}});
+          this.allCityNames.unshift({label: "Global Digital Benchmark", value: {id:i, name:"Global Digital Benchmark"}});
       }
     }
   }
@@ -140,9 +140,9 @@ export class BenchmarkComponent {
           this.cityNameMappedToData.set(this.allCitiesData[i]['cityName'], this.allCitiesData[i]['aggregateSurveys']);
         else
           if (!this.isLicenseValid)
-            this.cityNameMappedToData.set("DEMO Benchmark", this.allCitiesData[i]);
+            this.cityNameMappedToData.set("DEMO Global Digital Benchmark", this.allCitiesData[i]);
           else
-            this.cityNameMappedToData.set("Benchmark", this.allCitiesData[i]);
+            this.cityNameMappedToData.set("Global Digital Benchmark", this.allCitiesData[i]);
             
     }
   }
@@ -152,9 +152,9 @@ export class BenchmarkComponent {
 
       if (i == this.allCitiesData.length - 1) {
         if (!this.isLicenseValid)
-          this.cityMapToVersionID.set("DEMO Benchmark", localStorage.getItem('activeCityVersion'));
+          this.cityMapToVersionID.set("DEMO Global Digital Benchmark", localStorage.getItem('activeCityVersion'));
         else
-          this.cityMapToVersionID.set("Benchmark", localStorage.getItem('activeCityVersion'));
+          this.cityMapToVersionID.set("Global Digital Benchmark", localStorage.getItem('activeCityVersion'));
       } else {
         this.cityMapToVersionID.set(this.allCitiesData[i]['cityName'], this.allCitiesData[i]['versionID']);
       }

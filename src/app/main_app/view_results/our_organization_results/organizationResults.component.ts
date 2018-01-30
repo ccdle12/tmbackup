@@ -10,6 +10,8 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 
 import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 
+import { StylingService } from '../../../shared/services/styling.service';
+
 @Component({
   selector: 'organizationResultsComponent',
   templateUrl: './organizationResults.component.html',
@@ -23,8 +25,14 @@ export class OrganizationResultsComponent {
   backToDashboardTooltip: String;
   emailResults: String;
 
-  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MatSnackBar,
-             public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MatDialog) {
+  constructor(public router: Router, 
+              public kumulosService: KumulosService, 
+              public snackBar: MatSnackBar,
+              public loadingSnackBar: LoadingSnackBar, 
+              public authService: AuthService, 
+              public dialog: MatDialog,
+              public stylingService: StylingService) 
+  {
     this.initializeMemberVariables();
     this.getOrgResults();
   }
@@ -34,6 +42,11 @@ export class OrganizationResultsComponent {
     this.comboCharts = new Array();
     this.backToDashboardTooltip = "Back To Dashboard";
     this.emailResults = "Email Results";
+  }
+
+  public navStyle() 
+  {
+      return {'background-color': this.stylingService.getPrimaryColour('grey')}
   }
 
   private getOrgResults(): any { 
@@ -200,7 +213,12 @@ export class OrganizationResultsComponent {
                 },
                   ticks: [0, 1, 2, 3, 4, 5] 
                 },
-                colors: ['#348bb5', '#e28a1d', '#589e2d'],
+                colors: 
+                [
+                  this.stylingService.getHexPrimaryColour('grey'), 
+                  this.stylingService.getHexPrimaryColour('black'), 
+                  this.stylingService.getHexPrimaryColour('red')
+                ],
                 tooltip: {
                   trigger: 'focus',
                   ignoreBounds: 'false',
@@ -230,7 +248,7 @@ export class OrganizationResultsComponent {
         let currentUrl: string = window.location.pathname;
 
         if (currentUrl ===  "/main/viewresults/organizationresults") {
-            return { 'background-color': '#469ac0',
+            return { 'background-color': this.stylingService.getPrimaryColour('red'),
                   'color': 'white' };    
         } else {
             return { 'background-color': '#62B3D1',

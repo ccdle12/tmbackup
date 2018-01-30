@@ -3,6 +3,7 @@ import { AuthService }       from './shared/services/auth.service';
 import { LocalStorageService } from './shared/services/localStorage.service';
 import { KumulosService } from './shared/services/kumulos.service';
 import { EditRoleService } from './shared/services/editRole.service';
+import { StylingService } from './shared/services/styling.service'; 
 import { MatDialog } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -37,10 +38,14 @@ export class AppComponent {
     // see template snippet below this script
     @ViewChild('spinnerElement') spinnerElement: ElementRef;
 
-   constructor(private router: Router,  private ngZone: NgZone,
-               private renderer: Renderer, public authService: AuthService, 
+   constructor(private router: Router,  
+               private ngZone: NgZone,
+               private renderer: Renderer, 
+               public authService: AuthService, 
                public localStorageService: LocalStorageService, 
-               public dialog: MatDialog) {
+               public dialog: MatDialog,
+               public stylingService: StylingService) 
+    {
 
         this.authService.handleAuthentication();
         this.authService.revertToDemoIfTokenExpires();
@@ -48,11 +53,17 @@ export class AppComponent {
 
         this.setWidthAndHeight();
 
-        this.infoTooltip = "TM Forum Digial Maturity Model and Metrics. v1.0 UAT (build. 1.0.0.2). 2017 Cotham Technologies and TM Forum. In-app iocs by Icons8 (https://icons8.com/)."
+        this.infoTooltip = "TM Forum Digial Maturity Model and Metrics. v3.0 (build. 3.0.0.0). 2017 Cotham Technologies and TM Forum. In-app iocs by Icons8 (https://icons8.com/)."
         
-        this.routerEventListener();
-    
-        
+        this.routerEventListener();    
+    }
+
+    /**
+     * View Methods
+     */
+    public footerBackground() 
+    {
+        return { 'background-color': this.stylingService.getPrimaryColour("grey") };
     }
 
     private setWidthAndHeight(): void {

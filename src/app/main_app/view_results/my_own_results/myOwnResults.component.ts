@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
 import { AuthService } from '../../../shared/services/auth.service';
+import { StylingService } from '../../../shared/services/styling.service';
 import { MatSnackBar } from '@angular/material';
 
 import { MatDialog, MatTooltip } from '@angular/material';
@@ -22,13 +23,24 @@ export class MyOwnResultsComponent {
   backToDashboardTooltip: String;
   emailResults: String;
 
-  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MatSnackBar, 
-              public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MatDialog) {
+  constructor(public router: Router, 
+              public kumulosService: KumulosService, 
+              public snackBar: MatSnackBar, 
+              public loadingSnackBar: LoadingSnackBar, 
+              public authService: AuthService, 
+              public dialog: MatDialog,
+              public stylingService: StylingService) {
     
     this.loadingSnackBar.showLoadingSnackBar();
     this.initializeMemberVariables();
     this.getOwnResultsData();
   }
+
+  public navStyle() 
+  {
+      return {'background-color': this.stylingService.getPrimaryColour('grey')}
+  }
+
 
   private initializeMemberVariables(): void {
     this.comboCharts = new Array();
@@ -105,7 +117,12 @@ export class MyOwnResultsComponent {
                 },
                   ticks: [0, 1, 2, 3, 4, 5],
                 },
-                colors: ['#348bb5', '#e28a1d', '#589e2d'], 
+                colors: 
+                [
+                  this.stylingService.getHexPrimaryColour('grey'), 
+                  this.stylingService.getHexPrimaryColour('black'), 
+                  this.stylingService.getHexPrimaryColour('red')
+                ], 
               }
             }
       this.comboCharts[currentModule] = comboChart;
@@ -157,8 +174,8 @@ export class MyOwnResultsComponent {
         let currentUrl: string = window.location.pathname;
 
         if (currentUrl ===  "/main/viewresults/myownresults") {
-            return { 'background-color': '#469ac0',
-                  'color': 'white' };    
+          return {'background-color': this.stylingService.getPrimaryColour('red')}
+
         } else {
         console.log(window.location.pathname);
         return { 'background-color': '#62B3D1',

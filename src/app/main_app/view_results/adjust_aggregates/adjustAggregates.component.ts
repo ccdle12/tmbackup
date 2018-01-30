@@ -9,6 +9,7 @@ import { MatDialog, MatTooltip } from '@angular/material';
 import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 
 import { SavingSnackBar } from '../../../shared/components/savingSnackBar';
+import { StylingService } from '../../../shared/services/styling.service';
 
 @Component({
   selector: 'adjustAggregatesComponent',
@@ -38,8 +39,14 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
 
   pageLoaded: boolean;
 
-  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MatSnackBar, 
-              public savingSnackBar: SavingSnackBar, public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MatDialog) 
+  constructor(public router: Router, 
+              public kumulosService: KumulosService, 
+              public snackBar: MatSnackBar, 
+              public savingSnackBar: SavingSnackBar, 
+              public loadingSnackBar: LoadingSnackBar, 
+              public authService: AuthService, 
+              public dialog: MatDialog,
+              public stylingService: StylingService) 
   { 
     this.loadingSnackBar.showLoadingSnackBar(); 
   }
@@ -61,6 +68,11 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
     this.resetTargetValMapToIndex = new  Map<string, string>();
 
     this.pageLoaded = false;
+  }
+
+  public navStyle() 
+  {
+      return {'background-color': this.stylingService.getPrimaryColour('grey')}
   }
 
   public ngOnInit() 
@@ -648,7 +660,7 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
         let currentUrl: string = window.location.pathname;
 
         if (currentUrl ===  "/main/viewresults/adjustaggregates") {
-            return { 'background-color': '#469ac0',
+            return { 'background-color': this.stylingService.getPrimaryColour('red'),
                   'color': 'white' };    
         } else {
         return { 'background-color': '#62B3D1',

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../shared/services/auth.service';
 import { KumulosService } from '../shared/services/kumulos.service';
 import { Router } from '@angular/router';
+import { StylingService } from '../shared/services/styling.service';
 
 @Component({
     selector: 'mainApp-page',
@@ -13,8 +14,11 @@ import { Router } from '@angular/router';
 }) 
 
 export class MainAppComponent{
-    constructor(public authService: AuthService, public kumulosService: KumulosService,
-                public router: Router) {
+    constructor(public authService: AuthService, 
+                public kumulosService: KumulosService,
+                public router: Router,
+                public stylingService: StylingService) 
+    {
         this.inDemoOrInMainApp();
     }
 

@@ -5,6 +5,7 @@ import { MatSnackBar, MatProgressBar, MatDialog, MatTooltip, MAT_DIALOG_DATA} fr
 import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
 import { AuthService } from '../../shared/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { StylingService } from '../../shared/services/styling.service';
 
 
 @Component({
@@ -29,7 +30,8 @@ export class TakeSurveyComponent {
               public authService: AuthService, 
               public loadingSnackBar: LoadingSnackBar, 
               public kumulosService: KumulosService,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              public stylingService: StylingService) {
     
     this.surveyModules = new Array();
     this.sectionModules = new Array();
@@ -43,6 +45,11 @@ export class TakeSurveyComponent {
     this.loadingSnackBar.showLoadingSnackBar();
     this.getActiveVersionForCity();
     this.hasUserAnsweredProfiling();
+  }
+
+  public navStyle() 
+  {
+      return {'background-color': this.stylingService.getPrimaryColour('grey')}
   }
 
   private hasUserAnsweredProfiling() {

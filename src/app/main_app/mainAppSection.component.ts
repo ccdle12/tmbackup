@@ -2,6 +2,7 @@ import { Component }   from '@angular/core';
 import { AuthService } from '../shared/services/auth.service';
 import { Router }      from '@angular/router';
 import { KumulosService } from '../shared/services/kumulos.service';
+import { StylingService } from '../shared/services/styling.service';
 
 @Component({
     templateUrl: './mainAppSection.component.html',
@@ -10,7 +11,10 @@ import { KumulosService } from '../shared/services/kumulos.service';
 
 export class MainAppSectionComponent {
 
-    constructor(public authService: AuthService, private router: Router, public kumulosService: KumulosService) {
+    constructor(public authService: AuthService, 
+                private router: Router, 
+                public kumulosService: KumulosService,
+                public stylingService: StylingService) {
         // this.inDemoOrInMainApp();
      }
 
@@ -106,7 +110,7 @@ export class MainAppSectionComponent {
         let currentUrl: string = window.location.pathname;
 
         if (currentUrl ===  "/main/takesurvey") {
-            return { 'background-color': '#469ac0',
+            return { 'background-color': this.stylingService.getPrimaryColour('red'),
                   'color': 'white' };    
         } 
     }
@@ -137,6 +141,11 @@ export class MainAppSectionComponent {
             return { 'background-color': '#469ac0',
                   'color': 'white' };    
         } 
+    }
+
+    public navStyle() 
+    {
+        return {'background-color': this.stylingService.getPrimaryColour('grey')}
     }
 
 

@@ -9,6 +9,8 @@ import { MatDialog } from '@angular/material';
 
 import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 
+import { StylingService } from '../../../shared/services/styling.service';
+
 
 @Component({
   selector: 'teamDynamicsComponent',
@@ -44,8 +46,13 @@ export class TeamDynamicsComponent {
   backToDashboardTooltip: String;
   emailResults: String;
 
-  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MatSnackBar, public authService: AuthService,
-              public loadingSnackBar: LoadingSnackBar, public dialog: MatDialog) {
+  constructor(public router: Router, 
+              public kumulosService: KumulosService, 
+              public snackBar: MatSnackBar, 
+              public authService: AuthService,
+              public loadingSnackBar: LoadingSnackBar, 
+              public dialog: MatDialog,
+              public stylingService: StylingService) {
     this.initializeMemberVariables();
     this.getTeamDynamicsData();
    }
@@ -61,6 +68,11 @@ export class TeamDynamicsComponent {
 
     this.backToDashboardTooltip = "Back To Dashboard";
     this.emailResults = "Email Results";
+  }
+
+  public navStyle() 
+  {
+      return {'background-color': this.stylingService.getPrimaryColour('grey')}
   }
 
   private getTeamDynamicsData(): void {
@@ -334,7 +346,7 @@ export class TeamDynamicsComponent {
         let currentUrl: string = window.location.pathname;
 
         if (currentUrl ===  "/main/viewresults/teamdynamics") {
-            return { 'background-color': '#469ac0',
+            return { 'background-color': this.stylingService.getPrimaryColour('red'),
                   'color': 'white' };    
         } else {
         return { 'background-color': '#62B3D1',

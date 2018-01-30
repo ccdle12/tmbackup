@@ -25,7 +25,8 @@
 
 #smartCityPerson {
   float: left;
-  margin-right: 70px; 
+  margin-left: 700px;
+  /* margin-right: 70px;  */
   width: 250px;    
   height: auto;
   /*height: 100px;*/
@@ -37,20 +38,30 @@
 }
 
 #tmForumBanner {
-  width: 700px; /* you can use % */
-  height: auto;
-  margin-top: 40px;
-  margin-bottom: 65px;
+  right: 25px;
+  /* width: 700px; you can use % */
+  /* height: auto; */
+  /* margin-top: 40px; */
+  /* margin-bottom: 65px; */
+}
+
+#DMM {
+  right: 50px;
+  top: 100px;
 }
 
 #sloganBanner {
-   width: 700px; 
-
+   right: 50px;
+   top: 200px;
 }
 
-#seeDemo {
+#sloganImg {
+  width: 700px;
+}
+
+/* #seeDemo {
   background-color: #EEB242;
-}
+} */
 
 
 a:hover  {
@@ -63,6 +74,13 @@ a:hover  {
   width: auto;
 }
 
+.outer_div {
+  position: relative;
+}
+
+.inner_div {
+  position: absolute;
+}
 /* @media (max-width: 1100px) {
   .dmmPartners {
     width: 1000px;

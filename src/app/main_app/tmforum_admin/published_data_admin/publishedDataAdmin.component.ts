@@ -9,6 +9,7 @@ import { NgZone, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { ValidationService } from '../../../shared/services/validation.service';
 import { Observable } from 'rxjs/Observable';
 import { LicenseService } from '../../../shared/services/license.service';
+import { StylingService } from '../../../shared/services/styling.service';
 
 @Component({
   selector: 'publishedDataAdminComponent',
@@ -41,8 +42,12 @@ export class PublishedDataAdminComponent {
   public surveyDashboard;
 
   
-  constructor(public router: Router, public kumulosService: KumulosService, public dialog: MatDialog,
-              public loadingSnackBar: LoadingSnackBar, public licenseService: LicenseService) {
+  constructor(public router: Router, 
+              public kumulosService: KumulosService, 
+              public dialog: MatDialog,
+              public loadingSnackBar: LoadingSnackBar, 
+              public licenseService: LicenseService,
+              public stylingService: StylingService) {
     this.initMemberVariables(); 
     // this.getAllOrganizationsAndCompanies();
 
@@ -87,6 +92,18 @@ export class PublishedDataAdminComponent {
 
     // }); 
   }
+
+  public navStyle()
+  {
+    return {'background-color': this.stylingService.getPrimaryColour('grey')}
+  }
+
+  public publishedDataStyle()
+  {
+    return { 'background-color': this.stylingService.getPrimaryColour('red'),
+    'color': 'white' };  
+  }
+         
 
    // Adds all the citie names to a cached array starting from the last city
    private updateAllCityNames(): void {
@@ -268,7 +285,12 @@ export class PublishedDataAdminComponent {
                     },
                       ticks: [0, 1, 2, 3, 4, 5] 
                     }, 
-                    colors: ['#348bb5', '#e28a1d', '#589e2d'],
+                    colors: 
+                    [
+                      this.stylingService.getHexPrimaryColour('grey'), 
+                      this.stylingService.getHexPrimaryColour('black'), 
+                      this.stylingService.getHexPrimaryColour('red')
+                    ],
                     focusTarget: 'category',
                     tooltip: {
                       trigger: 'focus',
@@ -340,10 +362,10 @@ export class PublishedDataEmailResultsDialog {
 
   @ViewChild('spinnerElement') loadingElement: ElementRef;
 
-  constructor(public router: Router,  public authService: AuthService, public kumulosService: KumulosService,
-              public dialog: MatDialog) {
-  }
-
+  constructor(public router: Router,  
+              public authService: AuthService, 
+              public kumulosService: KumulosService,
+              public dialog: MatDialog) { }
 
   public sendSurveyRequest(): void {
     let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));

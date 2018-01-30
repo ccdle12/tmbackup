@@ -1,5 +1,5 @@
 
-<nav mat-tab-nav-bar>
+<nav mat-tab-nav-bar [ngStyle]="navStyle()">
 
 <div id="navigationIcon">
   <img id="backToDashboard" src="../../../assets/Back To-100-white.png" (click)="backToDashboard()" [matTooltip]="backToDashboardTooltip">

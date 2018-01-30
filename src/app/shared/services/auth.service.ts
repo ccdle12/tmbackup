@@ -21,10 +21,10 @@ constructor(public router: Router, public snackbar: MatSnackBar, public dialog: 
   this.options = {
     allowSignUp: false,
     languageDictionary: {
-      title: 'TMF DMM',
+      title: '',
     },
     theme: {
-      logo: '../../../assets/DMMLogo.png',
+      logo: '../../../assets/TMForum_logoRedGray.png',
     },
     auth: {
     redirectUrl: window.location.origin + '/callback',

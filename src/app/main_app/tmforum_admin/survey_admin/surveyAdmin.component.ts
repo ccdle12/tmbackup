@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
 import { ValidationService } from '../../../shared/services/validation.service';
 import { Observable } from 'rxjs/Observable';
+import { StylingService } from '../../../shared/services/styling.service';
 
 @Component({
   selector: 'surveyAdminComponent',
@@ -24,8 +25,12 @@ export class SurveyAdminComponent {
   private organizationAndCompanyPairs;
   public organizationAndIdDict;
 
-  constructor(public router: Router, public kumulosService: KumulosService, public dialog: MatDialog,
-              public loadingSnackBar: LoadingSnackBar) {
+  constructor(public router: Router, 
+              public kumulosService: KumulosService, 
+              public dialog: MatDialog,
+              public loadingSnackBar: LoadingSnackBar,
+              public stylingService: StylingService) 
+  {
     this.initMemberVariables(); 
     this.getAllOrganizationsAndCompanies();
   }
@@ -44,6 +49,17 @@ export class SurveyAdminComponent {
   /* Get all organizations and companies */
   private getAllOrganizationsAndCompanies() {
     this.webGetOrganizations();
+  }
+
+  public navStyle()
+  {
+    return {'background-color': this.stylingService.getPrimaryColour('grey')}
+  }
+
+  public surveyStyle()
+  {
+    return { 'background-color': this.stylingService.getPrimaryColour('red'),
+    'color': 'white' };    
   }
 
   private webGetOrganizations() {

@@ -7,6 +7,7 @@ import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
 import { ValidationService } from '../../../shared/services/validation.service';
+import { StylingService } from '../../../shared/services/styling.service';
 import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
@@ -19,8 +20,12 @@ export class OrganizationAdminComponent {
     public backToDashboardTooltip;
     public organizationsJSON;
 
-    constructor(public router: Router, public kumulosService: KumulosService, public dialog: MatDialog,
-                public loadingSnackBar: LoadingSnackBar) {
+    constructor(public router: Router, 
+                public kumulosService: KumulosService, 
+                public dialog: MatDialog,
+                public loadingSnackBar: LoadingSnackBar,
+                public stylingService: StylingService) 
+    {
       this.webGetOrganizations();
       this.initializeMemberVariables();    
     
@@ -40,7 +45,10 @@ export class OrganizationAdminComponent {
       this.backToDashboardTooltip = "Back To Dashboard";
     }
 
-
+    public navStyle() 
+    {
+      return {'background-color': this.stylingService.getPrimaryColour('grey')}
+    }
   
     /* Highlighting the nav tab */
     public inOrganizationAdmin() {
@@ -48,7 +56,7 @@ export class OrganizationAdminComponent {
 
       if (currentUrl ===  "/main/tmforumadmin/organizationadmin") {
           // console.log("returning blue background?");
-          return { 'background-color': '#469ac0',
+          return { 'background-color': this.stylingService.getPrimaryColour('red'),
                 'color': 'white' };    
       } else {
       // console.log(window.location.pathname);

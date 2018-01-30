@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../shared/services/validation.service';
 import { KumulosService } from '../shared/services/kumulos.service';
 import { Router } from '@angular/router';
+import { StylingService } from '../shared/services/styling.service'
 
 @Component({
     selector: 'registration-page',
@@ -15,8 +16,10 @@ export class RegistrationComponent implements OnInit  {
 
     registrationForm: FormGroup;
 
-    constructor(private formBuilder: FormBuilder, private kumulosService: KumulosService,
-                private router: Router) 
+    constructor(private formBuilder: FormBuilder, 
+                private kumulosService: KumulosService,
+                private router: Router,
+                public styleService: StylingService) 
     { 
         this.getDemoUserJWT();
     }
@@ -52,5 +55,10 @@ export class RegistrationComponent implements OnInit  {
             this.registrationForm.value.comments).subscribe(response => {
                 this.router.navigate(['welcome']);
             }) 
+    }
+
+    public btnStyle()
+    {
+        return {'background-color': this.styleService.getPrimaryColour('red')}
     }
 }

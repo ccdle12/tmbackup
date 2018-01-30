@@ -9,6 +9,7 @@ import { MatDialog, MatTooltip } from '@angular/material';
 import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 import { MatCard } from '@angular/material';
 import { forEach } from '@angular/router/src/utils/collection';
+import { StylingService } from '../../../shared/services/styling.service';
 
 
 @Component({
@@ -36,8 +37,13 @@ export class HeatMapComponent {
 
 
 
-  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MatSnackBar, 
-    public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MatDialog) {
+  constructor(public router: Router, 
+              public kumulosService: KumulosService, 
+              public snackBar: MatSnackBar, 
+              public loadingSnackBar: LoadingSnackBar, 
+              public authService: AuthService, 
+              public dialog: MatDialog,
+              public stylingService: StylingService) {
 
       this.loadingSnackBar.showLoadingSnackBar();
 
@@ -58,6 +64,11 @@ export class HeatMapComponent {
     this.backToDashboardTooltip = "Back to Dashboard";
 
     this.currentHoverText = "dummy text";
+  }
+
+  public navStyle() 
+  {
+      return {'background-color': this.stylingService.getPrimaryColour('grey')}
   }
 
   /**
@@ -212,7 +223,7 @@ export class HeatMapComponent {
     let currentUrl: string = window.location.pathname;
 
     if (currentUrl ===  "/main/viewresults/heatmap") {
-        return { 'background-color': '#469ac0',
+        return { 'background-color': this.stylingService.getPrimaryColour('red'),
               'color': 'white' };    
     } else {
     // console.log(window.location.pathname);
