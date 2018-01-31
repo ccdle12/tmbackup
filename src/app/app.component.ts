@@ -66,6 +66,7 @@ export class AppComponent {
         return { 'background-color': this.stylingService.getPrimaryColour("grey") };
     }
 
+
     private setWidthAndHeight(): void {
         this.width = window.innerWidth;
         this.height = window.innerHeight;

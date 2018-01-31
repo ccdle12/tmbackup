@@ -11,6 +11,7 @@ import { ComponentCanDeactivate } from '../../../../shared/services/saveSurvey-g
 import {Observable} from 'rxjs/Observable';
 import { UserSavedService } from '../../../../shared/services/userSaved.service';
 import { CreateAndDeleteDimensionOwnerService } from '../../../../shared/services/createAndDeleteDimensionOwner.service';
+import { StylingService } from 'app/shared/services/styling.service';
 
 // import { jqxSliderComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxslider';
 
@@ -63,8 +64,16 @@ export class SurveyComponent {
 
   sliderMoved: boolean;
   
-  constructor(public kumulosService: KumulosService, public router: Router, public dialog: MatDialog, public authService: AuthService,public snackBar: MatSnackBar, private eRef: ElementRef, public userSavedService: UserSavedService, public loadingSnackBar: LoadingSnackBar,
-              public createAndDeleteDimensionOwner: CreateAndDeleteDimensionOwnerService) { 
+  constructor(public kumulosService: KumulosService, 
+              public router: Router, 
+              public dialog: MatDialog, 
+              public authService: AuthService,
+              public snackBar: MatSnackBar, 
+              private eRef: ElementRef, 
+              public userSavedService: UserSavedService, 
+              public loadingSnackBar: LoadingSnackBar,
+              public createAndDeleteDimensionOwner: CreateAndDeleteDimensionOwnerService,
+              public stylingService: StylingService) { 
     
     this.initializeMemberVariables();
     this.getWebSurveyQuestions(); 
@@ -95,6 +104,11 @@ export class SurveyComponent {
     this.surveyHasOwner = false;
     this.getDimensionOwner();
   }
+
+  // public navStyle()
+  // {
+  //   return {'background-color': this.stylingService.getPrimaryColour('grey')}
+  // }
 
   private getUserSelectedModule(): any {
     return localStorage.getItem('userSelectedModule');

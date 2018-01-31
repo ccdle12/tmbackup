@@ -26,6 +26,11 @@ export class SurveyModuleComponent  {
         return { 'background-color': this.stylingService.getPrimaryColour('red'), 'color': 'white' }; 
     }
 
+    public navStyle()
+    {
+        return {'background-color': this.stylingService.getPrimaryColour('grey')}
+    }
+
     public routeToPage(surveyPage: String) {
        console.log('routetoPage activated: ' + surveyPage);
         switch(surveyPage) {

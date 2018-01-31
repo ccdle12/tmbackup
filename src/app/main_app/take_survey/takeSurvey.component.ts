@@ -369,6 +369,8 @@ export class UserProfilingModal {
   public submitUserSurvey(): void {
     let version = localStorage.getItem("activeCityVersion");
     this.httpRequestFlag = true;
+
+    
     this.kumulosService.createUpdateUserProfiling(version, this.userProfilingForm).subscribe(result => {
       // console.log("RESULT FROM UPDATING USER PROFILING");
       // console.log(result);

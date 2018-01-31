@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { KumulosService } from '../../shared/services/kumulos.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { LicenseService } from '../../shared/services/license.service';
+import { StylingService } from '../../shared/services/styling.service';
 import { MatDialog } from '@angular/material';
 
 import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
@@ -34,8 +35,11 @@ export class BenchmarkComponent {
 
   public surveyDashboard;
 
-  constructor(public kumulosService: KumulosService, public dialog: MatDialog, public loadingSnackBar: LoadingSnackBar,
-              public licenseService: LicenseService) 
+  constructor(public kumulosService: KumulosService, 
+              public dialog: MatDialog, 
+              public loadingSnackBar: LoadingSnackBar,
+              public licenseService: LicenseService,
+              public stylingService: StylingService) 
   {
     this.setIsLicenseValid();
     this.initializeMemberVariables();
@@ -280,7 +284,12 @@ export class BenchmarkComponent {
                 },
                   ticks: [0, 1, 2, 3, 4, 5] 
                 }, 
-                colors: ['#348bb5', '#e28a1d', '#589e2d'],
+                colors: 
+                [
+                  this.stylingService.getHexPrimaryColour('grey'), 
+                  this.stylingService.getHexPrimaryColour('black'), 
+                  this.stylingService.getHexPrimaryColour('red')
+                ],
                 focusTarget: 'category',
                 tooltip: {
                   trigger: 'focus',

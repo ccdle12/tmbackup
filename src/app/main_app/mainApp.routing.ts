@@ -6,6 +6,7 @@ import { BulkInviteComponent } from './bulk_invite/bulkInvite.component';
 import { MainAppSectionComponent } from './mainAppSection.component';
 import { AuthGuardService } from '../shared/services/auth-guard.service';
 import { UserRoleGuardService } from '../shared/services/userRole-guard.service';
+import { AdminGuardService } from '../shared/services/admin-guard.service';
 
 const mainAppRoutes: Routes = [
     {
@@ -54,7 +55,7 @@ const mainAppRoutes: Routes = [
         {
             path: 'tmforumadmin',
             loadChildren: './tmforum_admin/tmforumAdmin.module#TMForumAdminModule',
-            canActivate: [UserRoleGuardService, AuthGuardService],
+            canActivate: [UserRoleGuardService, AuthGuardService, AdminGuardService],
         },
     ],
     }

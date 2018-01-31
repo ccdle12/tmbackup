@@ -94,7 +94,7 @@ export class MainAppSectionComponent {
         let currentUrl: string = window.location.pathname;
 
         if (currentUrl ===  "/main/teamadmin") {
-            return { 'background-color': '#469ac0',
+            return { 'background-color': this.stylingService.getPrimaryColour('red'),
                   'color': 'white' };    
         } 
     }
@@ -129,7 +129,7 @@ export class MainAppSectionComponent {
         let currentUrl: string = window.location.pathname;
 
         if (currentUrl ===  "/main/publication") {
-            return { 'background-color': '#469ac0',
+            return { 'background-color': this.stylingService.getPrimaryColour('red'),
                   'color': 'white' };    
         } 
     }
@@ -138,7 +138,7 @@ export class MainAppSectionComponent {
         let currentUrl: string = window.location.pathname;
 
         if (currentUrl ===  "/main/benchmark") {
-            return { 'background-color': '#469ac0',
+            return { 'background-color': this.stylingService.getPrimaryColour('red'),
                   'color': 'white' };    
         } 
     }

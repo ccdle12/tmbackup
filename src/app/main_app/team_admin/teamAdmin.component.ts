@@ -20,6 +20,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { LicenseService } from '../../shared/services/license.service';
 
 import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
+import { StylingService } from '../../shared/services/styling.service';
 
 @Component({
   selector: 'teamAdmin',
@@ -31,10 +32,16 @@ export class TeamAdminComponent  {
   userProfiles:  JSON[];
   userProfilesSize;
 
-  constructor(public authService: AuthService, private kumulosService: KumulosService, public dialog: MatDialog, 
-    public loadingSnackBar: LoadingSnackBar, public deleteUserService: DeleteUserService, public editRoleService: EditRoleService,
-    public licenseService: LicenseService, public snackbar: MatSnackBar, public router: Router) {
-  
+  constructor(public authService: AuthService, 
+              private kumulosService: KumulosService, 
+              public dialog: MatDialog, 
+              public loadingSnackBar: LoadingSnackBar, 
+              public deleteUserService: DeleteUserService, 
+              public editRoleService: EditRoleService,
+              public licenseService: LicenseService, 
+              public snackbar: MatSnackBar, 
+              public router: Router) 
+  {
     this.getAllUsers();
   }
 

@@ -2,6 +2,9 @@
     margin-bottom: 25px;
 }
 
+jqxSlider {
+  color: yellow
+}
 
 .example-container {
   width: 100vw;
@@ -20,7 +23,7 @@ mat-button-toggle {
 }
 
 button {
-  background-color: #62B3D1;
+  background-color: #f4121d;
   color: white;
 }
 
@@ -117,7 +120,7 @@ nav a {
 }
 
 .importanceCustomTooltip {
-  background-color:#62B3D1; 
+  background-color:#f4121d; 
   color: white;
   z-index:1;
   position: absolute;
@@ -129,7 +132,7 @@ nav a {
 }
 
 .capabilityCustomTooltip {
-  background-color:#62B3D1; 
+  background-color:#f4121d; 
   color: white;
   z-index:1;
   position: absolute;
@@ -141,7 +144,7 @@ nav a {
 }
 
 .targetCustomTooltip {
-  background-color:#62B3D1; 
+  background-color:#f4121d; 
   color: white;
   z-index:1;
   position: absolute;

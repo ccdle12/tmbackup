@@ -15,8 +15,12 @@ export class PublicationComponent {
 
   public publicationLevel: number;
 
-  constructor(public kumulosService: KumulosService, public loadingSnackBar: LoadingSnackBar, 
-              public dialog: MatDialog, public authService: AuthService, public licenseService: LicenseService) {
+  constructor(public kumulosService: KumulosService, 
+              public loadingSnackBar: LoadingSnackBar, 
+              public dialog: MatDialog, 
+              public authService: AuthService, 
+              public licenseService: LicenseService) 
+  {
     this.getPublicationLevel();
     this.licenseService.getLicenseType();
    };
@@ -47,22 +51,22 @@ export class PublicationComponent {
 
    public openLevel(): any {
      if (this.publicationLevel == 1) 
-      return { 'background-color': '#589e2d', 'color': 'white' };
+      return { 'background-color': '#666363', 'color': 'white' };
    }
 
    public openWithinGroupLevel(): any {
      if (this.publicationLevel == 2) 
-      return { 'background-color': '#589e2d', 'color': 'white' };
+      return { 'background-color': '#666363', 'color': 'white' };
    }
 
    public anonymousLevel(): any {
      if (this.publicationLevel == 3) 
-      return { 'background-color': '#589e2d', 'color': 'white' };
+      return { 'background-color': '#666363', 'color': 'white' };
    }
 
    public closedLevel(): any {
      if (this.publicationLevel == 4) 
-      return { 'background-color': '#589e2d', 'color': 'white' };
+      return { 'background-color': '#666363', 'color': 'white' };
    }
    
    public setPublicationLevel(selectedLevel: string) {
