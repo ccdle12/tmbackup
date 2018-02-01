@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { viewResultsRouting } from './viewResults.routing';
 import { ViewResultsComponent } from './viewResults.component';
 
-// import { sharedModu } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxslider';
 import { SharedModule } from '../../shared/modules/sharedModule';
 import {GoogleChart} from 'angular2-google-chart/directives/angular2-google-chart.directive';
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';

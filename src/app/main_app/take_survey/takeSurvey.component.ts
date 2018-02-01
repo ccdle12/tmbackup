@@ -55,7 +55,6 @@ export class TakeSurveyComponent {
   private hasUserAnsweredProfiling() {
     // let version = this.getActiveVersionForCity();
     console.log("CALLING IF USER HAS ANSWERED PROFILE!");
-    // console.log(version);
     
     let version = localStorage.getItem("activeCityVersion");
 
@@ -83,7 +82,6 @@ export class TakeSurveyComponent {
   }
 
   public showSurveyModal() {
-    // console.log("Survey Modal");
     let dialogRef = this.dialog.open(UserProfilingModal);
   }
 
@@ -133,7 +131,6 @@ export class TakeSurveyComponent {
         .subscribe(responseJSON => {
             let activeCityVersion: string = responseJSON.payload;
             localStorage.setItem('activeCityVersion', activeCityVersion);
-            // console.log("Active version using response json: " + responseJSON.payload);
 
             this.getWebDashboard(activeCityVersion);
         });
@@ -142,19 +139,14 @@ export class TakeSurveyComponent {
   private getWebDashboard(activeCityVersion: string): void {
     this.kumulosService.getWebDashboard(activeCityVersion)
       .subscribe(responseJSON => { 
-        // console.log(responseJSON);
         localStorage.setItem('surveydashboard', JSON.stringify(responseJSON.payload));
 
-        // this.takeSurveyDashboard = JSON.parse(localStorage.getItem('surveydashboard'));
         this.takeSurveyDashboard = responseJSON.payload;
-        // console.log("From Local Storage - Survey Dashboard:")
-        // console.log(responseJSON.payload);
 
         if (responseJSON.payload) {
           this.removeTotalFromDashboard();
           this.calculateProgressValue();
           this.addModules(this.takeSurveyDashboard.length - 1);
-          // console.log("API callback: " + (this.takeSurveyDashboard.length - 1));
           this.loadingSnackBar.dismissLoadingSnackBar();
 
           //SHORT TERM SOLUTION - SURVEY MODULES ARE DUPLICATED, DOUBLE ENTRIES
@@ -172,8 +164,6 @@ export class TakeSurveyComponent {
     let statementCount: number = this.totalProgress['statementCount'];
     let surveyCount: number = this.totalProgress['surveyCount'];
 
-    // console.log("statment count: " + statementCount);
-    // console.log("survey count: " + surveyCount);
 
     if (!statementCount || !surveyCount)
       this.progressValue = 0;
@@ -199,73 +189,27 @@ export class TakeSurveyComponent {
 
     this.indexModuleSelected = this.calculateIndexPosition(outerIndex, innerIndex);
 
-    // console.log("selected module: " + this.indexModuleSelected);
- 
     this.storeSelectedModule();
 
     this.router.navigateByUrl('/main/takesurvey/surveymodule/survey');
   }
 
   private calculateIndexPosition(outerIndexPosition:number, innerIndexPosition:number): number {
-    // console.log("Outer index position: " + outerIndexPosition);
-    // console.log("Inner index position: " + innerIndexPosition);
+
 
     let lastObjectPosition: number = 0;
     let lengthOfCurrentModule = this.surveyModules[outerIndexPosition].length - 1;
 
-    // console.log("LENGTH OF MODULE: " + lengthOfCurrentModule);
-
     for (let i = 0; i <= outerIndexPosition; i++)
       lastObjectPosition += this.surveyModules[i].length;
     
-    // console.log("LAST OB POS: " + lastObjectPosition);
-
-    // return lastObjectPosition;
       lastObjectPosition -= 1;
-      // console.log("last object pos: " + lastObjectPosition);
-      // console.log("innerIndexPos: " + innerIndexPosition);
 
-      // console.log("CURRENT MODULE LEN: " + lengthOfCurrentModule);
       let difference: number = lengthOfCurrentModule - innerIndexPosition;
 
-      // console.log("difference: " + difference);
       let correctIndexPosition: number = lastObjectPosition - difference;
 
     return correctIndexPosition;
-
-
-
-
-
-
-
-      // let lengthOfModules: number[] = [];
-
-      // for (let i = 1; i < this.surveyModules.length; i++)
-      //   lengthOfModules[i] = this.surveyModules[i].length;
-
-      // console.log("Len of modules: " + lengthOfModules[2]);
-
-      // let totalArraySizeSoFar = 0;
-      // console.log("Outer index pos: " + outerIndexPosition);
-
-      // if (outerIndexPosition == 0)
-      //   totalArraySizeSoFar = lengthOfModules[0];
-      // else {
-      //   for (let j = 0; j < outerIndexPosition; j++)
-      //   {
-      //     console.log("Len of mod: " + lengthOfModules[j]);
-      //     totalArraySizeSoFar += lengthOfModules[j];
-      //   }
-      // }
-
-      // console.log("Total arr size: " + totalArraySizeSoFar);
-      
-      // // let result = Number(totalArraySizeSoFar - (lengthOfModules[outerIndexPosition] - innerIndexPosition + 1));
-
-      // let result = totalArraySizeSoFar;
-      // console.log("USER SELECTED RESULT: " + result);
-      // return result;
   }
 
   private storeSelectedModule(): void {
@@ -277,13 +221,13 @@ export class TakeSurveyComponent {
     let statementCount = this.surveyModules[i][j]['statementCount'];
 
     if (surveyCount == 0) {
-      return { 'background-color': '#7abed8' };
+      return { 'background-color': '#f4121d', 'color': '#ffffff' };
     }
     else if (surveyCount < statementCount) {
-      return { 'background-color': '#f1be5e' };
+      return { 'background-color': '#eec12e' };
     }
     else {
-      return { 'background-color': '#9aca71' };
+      return { 'background-color': '#2aab4f' };
     }    
   }
 
@@ -372,8 +316,6 @@ export class UserProfilingModal {
 
     
     this.kumulosService.createUpdateUserProfiling(version, this.userProfilingForm).subscribe(result => {
-      // console.log("RESULT FROM UPDATING USER PROFILING");
-      // console.log(result);
 
       localStorage.setItem("user_profiling", "1");
       this.httpRequestFlag = false;
@@ -383,8 +325,6 @@ export class UserProfilingModal {
 
   public enableSubmitButton(): boolean 
   {
-
-    // console.log(this.userProfilingForm);
 
     let submitButtonState: boolean = true;
 

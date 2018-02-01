@@ -1,10 +1,11 @@
 /*@import '~@angular/material/prebuilt-themes/indigo-pink.css';*/
 /*@import '~@angular/material/theming';*/
 /*@import '~@angular/material/core/theming/all-theme';*/
-@import url('https://fonts.googleapis.com/css?family=Lato');
+/* @import url('https://fonts.googleapis.com/css?family=Lato');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 @import url('https://fonts.googleapis.com/css?family=Work+Sans');
-@import url('https://fonts.googleapis.com/css?family=Libre+Franklin');
+@import url('https://fonts.googleapis.com/css?family=Libre+Franklin'); */
+@import url('https://fonts.googleapis.com/css?family=Georgia');
 @import '~bootstrap/dist/css/bootstrap.css';
 
 /* You can add global styles to this file, and also import other style files */
@@ -167,4 +168,18 @@ h1 {
 
 .mat-tooltip {
   font-size: 12px !important;
+}
+
+.red {
+  color: #f4121d;
+  font-family: Georgia;
+}
+
+.black {
+  color: #29313b;
+  font-family: Georgia;
+}
+
+.redBackground {
+  background-color: #f4121d;
 }

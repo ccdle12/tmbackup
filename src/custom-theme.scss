@@ -36,31 +36,31 @@ $mat-TMF-blue: (
     )
 );
 
-$mat-TMF-orange: (
-    50 : #fd7f3e,
-    100 : #fd7f3e,
-    200 : #fd7f3e,
-    300 : #fd7f3e,
-    400 : #fd7f3e,
-    500 : #fd7f3e,
-    600 : #fd7f3e,
-    700 : #fd7f3e,
-    800 : #fd7f3e,
-    900 : #fd7f3e,
+$mat-TMF-red: (
+    50 : #fee3e4,
+    100 : #fcb8bb,
+    200 : #fa898e,
+    300 : #f75961,
+    400 : #f6363f,
+    500 : #f4121d,
+    600 : #f3101a,
+    700 : #f10d15,
+    800 : #ef0a11,
+    900 : #ec050a,
     A100 : #ffffff,
-    A200 : #fff2e5,
-    A400 : #ffdab2,
-    A700 : #ffce98,
+    A200 : #ffe1e1,
+    A400 : #ffaeae,
+    A700 : #ff9495,
     contrast: (
         50 : #000000,
         100 : #000000,
         200 : #000000,
         300 : #000000,
-        400 : #000000,
-        500 : #000000,
-        600 : #000000,
-        700 : #000000,
-        800 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
         900 : #ffffff,
         A100 : #000000,
         A200 : #000000,
@@ -103,7 +103,7 @@ $mat-TMF-green: (
 );
 
 
-$my-app-primary: mat-palette($mat-TMF-orange);
+$my-app-primary: mat-palette($mat-TMF-red);
 $my-app-accent:  mat-palette($mat-TMF-blue);
 $my-app-warn:    mat-palette($mat-TMF-green);
 
