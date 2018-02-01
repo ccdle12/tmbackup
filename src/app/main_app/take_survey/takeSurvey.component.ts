@@ -227,7 +227,7 @@ export class TakeSurveyComponent {
       return { 'background-color': '#eec12e' };
     }
     else {
-      return { 'background-color': '#2aab4f' };
+      return { 'background-color': '#2aab4f', 'color': '#ffffff' };
     }    
   }
 

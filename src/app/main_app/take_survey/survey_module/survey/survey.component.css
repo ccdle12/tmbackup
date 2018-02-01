@@ -38,6 +38,7 @@ button {
 
 .sliderTitles {
   padding-left: 30px;
+  /* margin-left: 50px */
 }
 
 /*Nav Bar*/
@@ -207,4 +208,9 @@ mat-slider {
 
 .highMaturity {
   /* margin-right: 10px; */
+}
+
+.maturityTitles {
+  /* float: left; */
+  padding-left: 50px;
 }

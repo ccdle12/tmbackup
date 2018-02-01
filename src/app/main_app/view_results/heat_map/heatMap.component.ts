@@ -287,11 +287,11 @@ public colorToScore(i, j, k) {
 
     case(3):
       // Red
-      return { 'background-color': '#ff0000', 'color': 'white' };
+      return { 'background-color': this.stylingService.getHexPrimaryColour('red'), 'color': 'white' };
 
     case(4):
       // Red
-      return { 'background-color': '#ff0000', 'color': 'white' };
+      return { 'background-color': this.stylingService.getHexPrimaryColour('red'), 'color': 'white' };
 
     case(9):
       // return { 'background-color': '#ff0000', 'color': 'white' };

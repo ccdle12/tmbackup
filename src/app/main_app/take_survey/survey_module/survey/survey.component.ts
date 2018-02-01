@@ -103,11 +103,6 @@ export class SurveyComponent {
     this.getDimensionOwner();
   }
 
-  // public navStyle()
-  // {
-  //   return {'background-color': this.stylingService.getPrimaryColour('grey')}
-  // }
-
   private getUserSelectedModule(): any {
     return localStorage.getItem('userSelectedModule');
   }

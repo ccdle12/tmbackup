@@ -144,6 +144,7 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
 
         if (!response.payload) {
           this.nullAggregateAdjustmentID = "";
+          console.log("NO ADJUSTMENT DATA")
         } else {
           this.aggregateAdjustmentArray = response.payload;
           localStorage.setItem('adjusteddata', response.payload);
@@ -275,6 +276,7 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
 
 
   public importanceSliderChanged(index, event) {
+    console.log(event.args.value)
     this.importanceValues[index] = event.args.value;
   }
 

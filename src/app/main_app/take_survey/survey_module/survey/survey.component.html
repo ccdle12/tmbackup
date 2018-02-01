@@ -17,13 +17,13 @@
         <button *ngIf="surveyHasOwner" mat-button id="userIsResponsible" class="col-xs-4" (click)="launchRemoveOwnershipDialog()">You are responsible for parts of this section. Touch to change</button>    
     </div>
 
-    <div class="row">
+    <div class="row maturityLabels">
         <img class="col-sm-2 imgIcon" src="../../../../../assets/Info-50.png" [matTooltip]="dimensionLongText">
         <h1 class="col-sm-8 header"> {{dimensionText}}</h1>
     </div>
 
     <div class="row">
-        <span class="col-sm-2 col-sm-offset-8 sliderTitles"><strong>1 = Low Maturity</strong></span>
+        <span class="col-sm-2 col-sm-offset-7 maturityTitles"><strong>1 = Low Maturity</strong></span>
         <span class="col-sm-2 highMaturity"><strong>5 = High Maturity</strong></span>
     </div>
 

@@ -33,12 +33,32 @@ export class MyOwnResultsComponent {
     
     this.loadingSnackBar.showLoadingSnackBar();
     this.initializeMemberVariables();
-    this.getOwnResultsData();
+    this.getOrgResults();
   }
 
   public navStyle() 
   {
       return {'background-color': this.stylingService.getPrimaryColour('grey')}
+  }
+
+  private getOrgResults(): any { 
+    this.loadingSnackBar.showLoadingSnackBar();
+
+    //Current city version
+    let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+
+    let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
+    
+    this.kumulosService.getAggregatesForOrganizationResults(activeCityVersion)
+        .subscribe(responseJSON => {
+          this.cacheUnadjustedGraphData(responseJSON.payload);
+
+          this.getOwnResultsData()
+    });
+  }
+
+  private cacheUnadjustedGraphData(response) {
+    localStorage.setItem('unadjustedData', JSON.stringify(response));
   }
 
 
@@ -60,8 +80,6 @@ export class MyOwnResultsComponent {
     this.kumulosService.getAggregatesByVersionandUser(activeCityVersion, userID)
         .subscribe(responseJSON => {
           this.graphData = responseJSON.payload;
-          // console.log("Graph Data: ");
-          // console.log(responseJSON.payload);
           this.createComboCharts();
           this.loadingSnackBar.dismissLoadingSnackBar();
     });

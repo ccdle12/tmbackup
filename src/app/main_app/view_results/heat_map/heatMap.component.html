@@ -1,7 +1,3 @@
-<!-- <div class="loading-overlay" #loadingElement style="opacity: 100;">
-    <mat-spinner *ngIf="this.httpRequestFlag"></mat-spinner>
-</div> -->
-
 <nav mat-tab-nav-bar [ngStyle]="navStyle()">
     <div id="navigationIcon">
       <img id="backToDashboard" src="../../../assets/Back To-100-white.png" (click)="backToDashboard()" [matTooltip]="backToDashboardTooltip">
@@ -20,7 +16,7 @@
 
 
   <div id="surveyProgressBarArea" *ngIf="inChildComponents()">
-    <h2><strong>Digital Heat Map</strong></h2>
+    <h2><strong>Heat Map</strong></h2>
        <p id="subHeading">Please select Detailed View for a criteria level</p>
   </div>
 
@@ -30,7 +26,6 @@
       <h4>{{surveyModules[i][0].areaText}}</h4>  
       
       <div id="cardsContainer">
-          <!-- [ngStyle]="areaColorToScore(i, j)" -->
         <mat-expansion-panel class="col-xs-2" *ngFor="let test of eachSurvey; let j = index"  [style.background-color]="revertToDropDownColor(i , j)" (click)="toggleSurveyModuleColor(i, j)">
             <mat-expansion-panel-header>
               <mat-panel-title>
