@@ -21,14 +21,11 @@ export class BestPracticeComponent {
 
         this.kumulos.getBestPractices(areaID, dimensionID).subscribe(responseJSON => {
             this.bestPractices = responseJSON.payload;
-            console.log("Best Practices: ", this.bestPractices);
         });
 
-        console.log('BEST PRACTICE CONSTRUCTED');
     }
 
      public routeToPage(surveyPage: String) {
-       console.log('routetoPage activated: ' + surveyPage);
         switch(surveyPage) {
           case('survey'):
             this.router.navigateByUrl('main/takesurvey/surveymodule/survey');

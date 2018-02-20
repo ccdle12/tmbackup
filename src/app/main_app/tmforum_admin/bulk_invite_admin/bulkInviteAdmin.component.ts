@@ -55,7 +55,6 @@ export class BulkInviteAdminComponent {
         this.getCompaniesFromOrganizations();
       }
       else {
-        console.log("there was an error");
         this.loadingSnackBar.dismissLoadingSnackBar();
       }
     });
@@ -90,9 +89,6 @@ export class BulkInviteAdminComponent {
     let retrievedListOfCompanies = this.organizationAndCompanyPairs.get(this.currentOrganizationSelected.name);
     let firstCompany = retrievedListOfCompanies[0];
     this.currentCitySelected = firstCompany;
-
-    console.log("CURRENT CITY SELECTED:");
-    console.log(this.currentCitySelected);
 
     this.companiesInView = [];
 
@@ -153,11 +149,9 @@ export class BulkInviteAdminComponent {
           if (this.splitBulkEmails[i] == "")
               continue;
           
-          console.log("Split Emails: " + this.splitBulkEmails[i]);
 
           if (!this.splitBulkEmails[i].match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/))
           {   
-              console.log("Regex failed"); 
               this.regexEmailFailedCache.push(this.splitBulkEmails[i]);
               this.invalidEmailsFlag = false;
           }
@@ -168,8 +162,6 @@ export class BulkInviteAdminComponent {
   {
       this.loadingSnackBar.showLoadingSnackBar();
 
-      console.log("CURRENT CITY SELECTED");
-      console.log(this.currentCitySelected);
       let formattedEmails: string = this.formatBulkEmails();
 
       let currentCityJson = this.companyNameAndJsonPairs.get(this.currentCitySelectedName.name);
@@ -179,8 +171,6 @@ export class BulkInviteAdminComponent {
 
       this.kumulosService.webBulkInviteUser(formattedEmails, city, cityID).subscribe(response => {
           this.loadingSnackBar.dismissLoadingSnackBar();
-          console.log("RESPONSE AFTER SENDING BULK EMAILS");
-          console.log(response);
       });
   }
 
@@ -238,18 +228,10 @@ export class BulkInviteAdminComponent {
 public organizationHasChanged(): void {
   this.updateCompaniesInView();
 
-  console.log("Current Org: ");
-  console.log(this.currentOrganizationSelected.name);
-  console.log(this.companiesInView);
 }
 
 public cityHasChanged(): void {
-  console.log("city has changed");
-  console.log(this.currentCitySelectedName.name);
 
-  console.log(this.companyNameAndJsonPairs.get(this.currentCitySelectedName.name));
-
-  // this.currentCitySelected = this.companyNameAndJsonPairs.get(this.cur);
 }
 
 }

@@ -15,9 +15,7 @@ export class AdminGuardService implements CanActivate {
     
     if (user) 
     {
-      let userRole: string = user['user_role'];
-      console.log("User Role: " + userRole);
-      
+      let userRole: string = user['user_role'];      
 
 
       //if logged in and user is not leader and consultant
@@ -28,7 +26,6 @@ export class AdminGuardService implements CanActivate {
       }
 
   } else {
-    console.log("user has no user raw json");
     this.router.navigate(['main']);
     return false;
   }

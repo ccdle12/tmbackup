@@ -132,10 +132,6 @@ export class SurveyComponent {
   private updateCurrentModuleDetails(): void {
     let parsedSurveyDashboard: JSON = this.retrieveParsedSurveyDashboard();
 
-    console.log("User selected module: " + this.userSelectedModule);
-    console.log("length of parsed survey: " + Object.keys(parsedSurveyDashboard).length);
-    console.log("Last object apparently: " + parsedSurveyDashboard[27]['dimensionText']);
-    console.log("User selected module: " + parsedSurveyDashboard[0]);
     this.areaID = parsedSurveyDashboard[this.userSelectedModule]['areaID'];
     this.dimensionID = parsedSurveyDashboard[this.userSelectedModule]['dimensionID'];
     this.dimensionText = parsedSurveyDashboard[this.userSelectedModule]['dimensionText'];
@@ -188,8 +184,6 @@ export class SurveyComponent {
         
         if (this.surveyQuestions[eachQuestion]['importance'] == " " || this.surveyQuestions[eachQuestion]['importance'] == "0") {
           this.importanceValues[eachQuestion] = 0;
-          console.log("importance value is empty");
-          console.log(this.importanceValues[eachQuestion]);
         } else {
           this.importanceValues[eachQuestion] = this.surveyQuestions[eachQuestion]['importance'];
         }
@@ -255,7 +249,6 @@ export class SurveyComponent {
     // Events for user touching the sliders
     public userMovedSlider(indexPos: any, sliderColumn: number): void {
         this.revertFlagsToFalse();
-        console.log("User moving slider");
 
         this.updateShowToolTipFlag(indexPos);
         this.updateSliderColumnsFlag(sliderColumn);
@@ -271,7 +264,6 @@ export class SurveyComponent {
     }
 
     private updateSliderColumnsFlag(sliderColumn: number) {
-      console.log(sliderColumn);
       switch(sliderColumn) {
         case 0:
           this.importanceSliderFlag = true;
@@ -495,7 +487,6 @@ export class SurveyComponent {
 
   public clickedAwayFromSlider(): void {
       this.revertFlagsToFalse();  
-      console.log("Clicked away from slider");
   }
 }
 
@@ -536,7 +527,6 @@ export class ResponsibleForSectionDialog {
 
     this.kumulosService.updateDimensionOwner(ownerData)
       .subscribe(response => {
-        console.log(response);
         // window.location.reload();
         this.dialog.closeAll();
       });
@@ -559,8 +549,7 @@ export class RemoveResponsibilityForSectionDialog {
   public removeResponsibility(): void {
     this.kumulosService.deleteDimensionOwner(this.dimensionOwnerID)
       .subscribe(response => {
-        console.log("delete responsibility");
-        console.log(response);
+
         // window.location.reload();
         this.dialog.closeAll();
       })

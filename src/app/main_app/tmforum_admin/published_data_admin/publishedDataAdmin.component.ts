@@ -114,9 +114,9 @@ export class PublishedDataAdminComponent {
       else
       {
         if (!this.isLicenseValid)
-          this.allCityNames.unshift({label: "DEMO Benchmark", value: {id:i, name:"DEMO Benchmark"}});
+          this.allCityNames.unshift({label: "Global Digital Benchmark", value: {id:i, name:"Global Digital Benchmark"}});
         else
-          this.allCityNames.unshift({label: "Benchmark", value: {id:i, name:"Benchmark"}});
+          this.allCityNames.unshift({label: "Global Digital Benchmark", value: {id:i, name:"Global Digital Benchmark"}});
       }
     }
   }
@@ -128,9 +128,9 @@ export class PublishedDataAdminComponent {
               this.cityNameMappedToData.set(this.allCitiesData[i]['cityName'], this.allCitiesData[i]['aggregateSurveys']);
             else
               if (!this.isLicenseValid)
-                this.cityNameMappedToData.set("DEMO Benchmark", this.allCitiesData[i]);
+                this.cityNameMappedToData.set("Global Digital Benchmark", this.allCitiesData[i]);
               else
-                this.cityNameMappedToData.set("Benchmark", this.allCitiesData[i]);
+                this.cityNameMappedToData.set("Global Digital Benchmark", this.allCitiesData[i]);
                 
         }
   }
@@ -140,9 +140,9 @@ export class PublishedDataAdminComponent {
 
       if (i == this.allCitiesData.length - 1) {
         if (!this.isLicenseValid)
-          this.cityMapToVersionID.set("DEMO Benchmark", localStorage.getItem('activeCityVersion'));
+          this.cityMapToVersionID.set("Global Digital Benchmark", localStorage.getItem('activeCityVersion'));
         else
-          this.cityMapToVersionID.set("Benchmark", localStorage.getItem('activeCityVersion'));
+          this.cityMapToVersionID.set("Global Digital Benchmark", localStorage.getItem('activeCityVersion'));
       } else {
         this.cityMapToVersionID.set(this.allCitiesData[i]['cityName'], this.allCitiesData[i]['versionID']);
       }
@@ -153,7 +153,6 @@ export class PublishedDataAdminComponent {
   private setIsLicenseValid()
   {
     this.isLicenseValid = this.licenseService.isLicenseValid();
-    // console.log("is license valid: " + this.isLicenseValid);
   }
 
   private initMemberVariables(): void {
@@ -194,8 +193,6 @@ export class PublishedDataAdminComponent {
         let dimensionToIndexPos = new Map<Number, Number>();
     
         // Last City Data in the payload from getAllBenchMarkData (most likely will be benchmark data)
-        // console.log("Last city: ") 
-        // console.log(this.allCitiesData[this.allCitiesData.length -1]);
         let lastCityData = this.allCitiesData[this.allCitiesData.length - 1];
     
         //Check if last city data has aggregate surveys, if they do then this is not the benchmark data
@@ -210,8 +207,6 @@ export class PublishedDataAdminComponent {
     
         // Object Data for the current city
         let currentCityData = this.cityNameMappedToData.get(this.currentCitySelected.name);
-        console.log("FETCHED CURRENT CITY DATA:")
-        console.log(currentCityData);
         
         let dataTableArray: any = new Array();
     
@@ -269,8 +264,7 @@ export class PublishedDataAdminComponent {
               dataTableArray.push([dimensionText, importance, score, target]);
             }
           }
-          console.log("Area Text: " + areaText);
-          console.log("---------------- Area Finished -------------")
+
     
           let comboChart = {
                 chartType: 'ComboChart',
@@ -371,14 +365,14 @@ export class PublishedDataEmailResultsDialog {
     let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
 
     let emailAddress: string = userProfile['email'];
-    console.log("EMAIL ADDRESS");
-    console.log(emailAddress);
+    ("EMAIL ADDRESS");
+    (emailAddress);
 
     this.httpRequestFlag = true;
       this.kumulosService.webAdminRequestPublishedDataCSV(emailAddress)
         .subscribe(responseJSON => {
-          console.log("Request for csv extract");
-          console.log(responseJSON.payload);
+          ("Request for csv extract");
+          (responseJSON.payload);
           this.dialog.closeAll();
       });
   }

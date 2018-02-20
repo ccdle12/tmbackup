@@ -50,7 +50,6 @@ export class OrganizationResultsComponent {
   }
 
   private getOrgResults(): any { 
-    console.log('launching org results');
     this.loadingSnackBar.showLoadingSnackBar();
 
     //Current city version
@@ -58,23 +57,20 @@ export class OrganizationResultsComponent {
 
 
     //Benchmark version
-    // let activeCityVersion: string = localStorage.getItem('benchmarkId');
+
 
     let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
     
     this.kumulosService.getAggregatesForOrganizationResults(activeCityVersion)
         .subscribe(responseJSON => {
-          console.log("Retreived org results");
           this.cacheUnadjustedGraphData(responseJSON.payload);
           this.adjustedGraphData = responseJSON.payload;
-          console.log("adjsuted graph: " + this.adjustedGraphData[0]['importance']);
 
           this.getAggregateAdjustments();
     });
   }
 
   private cacheUnadjustedGraphData(response) {
-    // localStorage.removeItem('unadjustedData');
     localStorage.setItem('unadjustedData', JSON.stringify(response));
   }
 
@@ -172,7 +168,6 @@ export class OrganizationResultsComponent {
 
         if (areaID == currentModule) {
 
-          // if (unadjustDataShowingOwners[i])
           if (unadjustDataShowingOwners[i]['owners']) {
             let ownerObject = unadjustDataShowingOwners[i]['owners'][0];
 
@@ -373,15 +368,13 @@ export class AdjustAggregatesDialog implements OnInit {
         if (mapDimenIdOfAdjustmentVal.has(currentDimension)) {
           let adjustmentVal = mapDimenIdOfAdjustmentVal.get(currentDimension);
           
-          console.log("Receiving adjustment Val: ");
-          console.log(adjustmentVal);
+  
 
           if (adjustmentVal['importance'] != "9") {
             this.importanceValues[i] = adjustmentVal['importance'];
             this.mapImportanceUnadjustedValToIndexPos(i, this.unAdjustedData[i]['importance']);
             
             let index: String = String(i);
-            console.log("Mapped val: " + this.resetImportanceValMapToIndex.get(index));
             
           } else {
             if (this.unAdjustedData[i]['importance'] == " " || this.unAdjustedData[i]['importance'] == "0") {
@@ -393,7 +386,6 @@ export class AdjustAggregatesDialog implements OnInit {
 
           if (adjustmentVal['score'] != "9") {
             this.capabilityValues[i] = adjustmentVal['score'];
-            console.log("Needle in a haystack: " + this.unAdjustedData[i]['score']);
             this.mapScoreUnadjustedValToIndexPos(i, this.unAdjustedData[i]['score']);
           } else {
             if (this.unAdjustedData[i]['score'] == " " || this.unAdjustedData[i]['score'] == "0") {
@@ -507,15 +499,11 @@ export class AdjustAggregatesDialog implements OnInit {
   public sliderChanged(index: any) {
     let dimensionID = this.unAdjustedData[index]['dimensionID'];      
 
-      // if (this.importanceValues[index] == 0 || this.importanceValues[index] == null && this.capabilityValues[index] == 0 || this.capabilityValues[index] == null && this.twoYearTargetValues[index] == 0 || this.twoYearTargetValues[index] == null) {
-        // console.log("cant send");
-      // } else {
         if (!this.isDimensionIDInAdjustmentDataArray(dimensionID)) {
           this.buildAggregateAdjustmentKV(index);
         } else {
           this.updateExistingAdjustKV(dimensionID, index);
         }
-      // }
   }
 
   private isDimensionIDInAdjustmentDataArray(dimensionID): boolean {
@@ -657,29 +645,15 @@ export class AdjustAggregatesDialog implements OnInit {
 
    public sendSurveyRequest(): void {
 
-    // Receiving Success in callback
-    // Not Deleting from the serve side
-
-    // if (this.adjustmentDataHasAllReset()) {
-    //   console.log("Adjustment data array has all reset");
-    //   this.removeAdjustmentData();
-
-    //   for (let i = 0; i < this.adjustmentDataArray.length; i++) {
-    //     console.log(this.adjustmentDataArray[i]);
-    //   }
-
-    // } else {
-
       let adjustmentData: string = this.getAdjustmentData();
 
       this.httpRequestFlag = true;
       this.kumulosService.createUpdateAdjustmentData(adjustmentData)
         .subscribe(responseJSON => {
-          console.log(responseJSON.payload);
+          (responseJSON.payload);
 
           this.dialog.closeAll();
         });
-    // }
   }
 
   private adjustmentDataHasAllReset(): boolean {
@@ -706,8 +680,8 @@ export class AdjustAggregatesDialog implements OnInit {
       let target = this.adjustmentDataArray[i]['target'];
 
       if(importance == "9" && score == "9" && target == "9") {
-        console.log("Adjustment to Delete");
-        console.log(this.adjustmentDataArray[i]['aggregateAdjustmentID']);
+        ("Adjustment to Delete");
+        (this.adjustmentDataArray[i]['aggregateAdjustmentID']);
         this.kumulosService.deleteSingleAdjustmentWithJWT(this.adjustmentDataArray[i]['aggregateAdjustmentID'])
           .subscribe(response => {
             this.adjustmentDataArray.splice(i, 1);

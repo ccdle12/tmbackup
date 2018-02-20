@@ -37,8 +37,7 @@ export class TakeSurveyComponent {
     this.sectionModules = new Array();
 
     let activeCityVersion: string = localStorage.getItem('activeCityVersion');
-    console.log("Active Version From Localstorage before call?")
-    console.log(activeCityVersion);
+
 
     this.inDemoOrInMainApp();
 
@@ -53,18 +52,15 @@ export class TakeSurveyComponent {
   }
 
   private hasUserAnsweredProfiling() {
-    // let version = this.getActiveVersionForCity();
-    console.log("CALLING IF USER HAS ANSWERED PROFILE!");
+
     
     let version = localStorage.getItem("activeCityVersion");
 
     this.kumulosService.getUserProfileCount(version)
       .subscribe(response => {
-        console.log("PAYLOAD FOR USER PROFILE COUNT");
-        console.log(response.payload);
+
 
         if (response.payload === 0) {
-          console.log("User has not DONE PROFILE");
           localStorage.setItem("user_profiling", response.payload);
 
           // SHOW A MODAL
@@ -72,8 +68,6 @@ export class TakeSurveyComponent {
             let dialogRef = this.dialog.open(UserProfilingModal);
           }
           
-          // SHOW HTML BOXES THAT CAN'T BE ACCESSED?
-          // FLAG IN THE HTML?
           
         } else {
           localStorage.setItem("user_profiling", response.payload);
@@ -87,8 +81,6 @@ export class TakeSurveyComponent {
 
   public getUserSurveyCount() {
     let user_profiling = localStorage.getItem("user_profiling");
-    console.log("User PRofiling: ")
-    console.log(user_profiling);
 
     if (Number(user_profiling) > 0 || this.authService.isAdmin() || this.authService.isSuperUser())
       return true;
@@ -172,8 +164,7 @@ export class TakeSurveyComponent {
 
       if (this.progressValue > 100) 
         this.progressValue = 100;
-      
-      console.log("progressValue: ", this.progressValue);
+
       
   }
 
@@ -227,7 +218,7 @@ export class TakeSurveyComponent {
       return { 'background-color': '#eec12e' };
     }
     else {
-      return { 'background-color': '#2aab4f', 'color': '#ffffff' };
+      return { 'background-color': '#88C158', 'color': '#ffffff' };
     }    
   }
 
@@ -239,7 +230,6 @@ export class TakeSurveyComponent {
 
 
     let currentAreaId: number = this.takeSurveyDashboard[size]['areaID'];
-    // console.log("AREA ID: " + currentAreaId);
     let nextAreaId: number;
 
     if (size != 0)

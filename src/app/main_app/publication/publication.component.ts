@@ -180,7 +180,6 @@ export class UpdatePublicationLevelDialog {
         this.kumulosService.updateCityPublicationLevel(cityID, publicationLevel, publicationCtyOrGroup)
           .subscribe(responseJSON => 
           {
-            console.log(responseJSON.payload);
             this.dialog.closeAll();
           });
       }
@@ -240,7 +239,6 @@ export class PublishSurveyDialog {
      this.kumulosService.publishVersion(activeCityVersion)
       .subscribe(responseJSON =>
         {
-          console.log(responseJSON.payload);
           this.dialog.closeAll();
         })
     }
@@ -309,8 +307,6 @@ export class SelectCityOrgDialog {
 
   public orgHasChanged() 
   {
-    //  this.currentOrgSelected = this.orgNameMappedToData.get(this.currentOrgSelected.name);
-    //  console.log(this.currentOrgSelected.name);
   }
 
   public updateCityPubLevelWithGroup()
@@ -320,11 +316,8 @@ export class SelectCityOrgDialog {
         let user: JSON = JSON.parse(localStorage.getItem('user'));
 
         let cityID: string = user['city_id'];
-        console.log(cityID);
 
         let publicationLevel: string = this.getSelectedPubLevel();
-        console.log(publicationLevel);
-
         let publicationCtyOrGroup: string;
 
         if (!this.currentOrgSelected.name)
@@ -332,13 +325,10 @@ export class SelectCityOrgDialog {
         else
           publicationCtyOrGroup = this.currentOrgSelected.name;
 
-        console.log(publicationCtyOrGroup);
-
         this.httpRequestFlag = true;
         this.kumulosService.updateCityPublicationLevel(cityID, publicationLevel, publicationCtyOrGroup)
           .subscribe(responseJSON => 
           {
-            console.log(responseJSON.payload);
             window.location.reload();
           });
       }

@@ -77,7 +77,7 @@ export class HeatMapComponent {
   public getWebDashboard() {
 
     let version = this.getActiveVersion();
-    // console.log(version);
+    // (version);
 
     this.kumulosService.getWebDashboard(version).subscribe(response => {
 
@@ -105,7 +105,6 @@ export class HeatMapComponent {
       return;
 
     let currentAreaId: number = this.surveyDashboard[size]['areaID'];
-    // console.log("AREA ID: " + currentAreaId);
     let nextAreaId: number;
 
     if (size != 0)
@@ -226,7 +225,7 @@ export class HeatMapComponent {
         return { 'background-color': this.stylingService.getPrimaryColour('red'),
               'color': 'white' };    
     } else {
-    // console.log(window.location.pathname);
+    // (window.location.pathname);
     return { 'background-color': '#62B3D1',
               'color': 'white' };
     }
@@ -294,12 +293,8 @@ public colorToScore(i, j, k) {
       return { 'background-color': this.stylingService.getHexPrimaryColour('red'), 'color': 'white' };
 
     case(9):
-      // return { 'background-color': '#ff0000', 'color': 'white' };
-      // return { 'background-color': '#ff6600', 'color': 'white' };
-      // return { 'background-color': '#FFBF00', 'color': 'white' };
-      // return { 'background-color': '#88C158', 'color': 'white' };
-      // return { 'background-color': '#88C158', 'color': 'white' };
       // Grey - is the default
+      // "rgb(230, 230, 230)"
       // Currently testing - Red
       // return { 'background-color': '#ff0000', 'color': 'white' };
       break;
@@ -318,31 +313,28 @@ public colorToScore(i, j, k) {
       let dropDownArray = this.sortedSurveyAndHeatMap[i][j];
       let greenLevelCount = 0;
       let nineCount = 0;
+      let amberCount = 0;
 
       for (let k = 0; k < dropDownArray.length; k++) {
         let gap = Number(dropDownArray[k]["gap"]);
         
+        // If anything is grey then the top level is grey
+        if (gap == 9) return "rgb(230, 230, 230)"
+
+        // If anything is 3 or 4 then return red straight away
         if (gap == 3 || gap == 4) return "#ff0000";
 
-        //If all grey, then the top level is grey
-        if (gap == 9) nineCount++;
-        
+        // If green increment
         if (gap == 0) greenLevelCount++
+
+        // If amber incremeent
+        if (gap == 1 || gap == 2) amberCount++
       }
 
-      if (dropDownArray.length == nineCount) {
-        // console.log("All nines")
-        return "rgb(230, 230, 230)"
-      }
-
-      let greenLevelPercentage = (greenLevelCount/dropDownArray.length);
-
-      if (greenLevelPercentage > 0.5) {
+      if (greenLevelCount > amberCount)
         return "#88C158"
-      }
-      else {
+      else
         return "#FFBF00"
-      }
     }
   }
 
@@ -354,9 +346,6 @@ public colorToScore(i, j, k) {
   }
 
   public mouseEnter(i, j, k) {
-    console.log("hover event");
-    console.log(this.sortedSurveyAndHeatMap[i][j][k]);
-
     let highlightedArea: JSON = this.sortedSurveyAndHeatMap[i][j][k];
     let importance = highlightedArea["importance"];
     let score = highlightedArea["score"];
@@ -365,6 +354,5 @@ public colorToScore(i, j, k) {
     let statementText = highlightedArea["statementText"];
 
     this.currentHoverText =  "Importance: " + importance + "\n, " + "Score: " + score + "\n, " + "Target: " + target + "\n, " + "Gap: " + gap + "\n, " + "Statement: " + statementText;
-    console.log(i, j, k);
   }
 }

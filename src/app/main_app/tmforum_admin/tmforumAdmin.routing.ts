@@ -27,35 +27,14 @@ const tmforumAdminRoutes: Routes = [
         path: 'useradmin',
         component: UserAdminComponent,
     },
-    {
-        path: 'bulkinviteadmin',
-        component: BulkInviteAdminComponent,
-    },
+    // {
+    //     path: 'bulkinviteadmin',
+    //     component: BulkInviteAdminComponent,
+    // },
     {
         path: 'publisheddataadmin',
         component: PublishedDataAdminComponent,
     }
-    
-    // },
-    // {
-    //     path: 'myownresults',
-    //     component: MyOwnResultsComponent,
-    // },
-    // {
-    //     path: 'organizationresults',
-    //     component: OrganizationResultsComponent,
-    //     canActivate: [UserRoleGuardService]
-    // },
-    // {
-    //     path: 'teamdynamics',
-    //     component: TeamDynamicsComponent,
-    //     canActivate: [UserRoleGuardService]
-    // },
-    // {
-    //     path: 'adjustaggregates',
-    //     component: AdjustAggregatesComponent,
-    
-    // }
 ]   
 
 export const tmforumAdminRouting: ModuleWithProviders = RouterModule.forChild(tmforumAdminRoutes); 

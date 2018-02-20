@@ -21,6 +21,8 @@
 .header {
     /* margin-bottom: 50px; */
     text-align: center;
+    padding-left: 75px;
+    padding-right: 75px;
 }
 
 .subHeader {

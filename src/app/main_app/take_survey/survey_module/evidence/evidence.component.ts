@@ -49,7 +49,6 @@ export class EvidenceComponent implements AfterViewInit {
 
         this.kumulos.getWebGetEvidence(activeCityVersion, areaID, dimensionID).subscribe(responseJSON => {
             this.evidence = responseJSON.payload;
-            console.log(responseJSON);
 
             let evidenceID = "";
             
@@ -77,7 +76,6 @@ export class EvidenceComponent implements AfterViewInit {
     }
 
     ngAfterViewInit() {
-      console.log("ngOnInit called");
      
     }
 
@@ -149,25 +147,16 @@ export class EvidenceComponent implements AfterViewInit {
 
     let splitString = webLink.split("http://", 2);
 
-    console.log("First Split: ");
-    console.log(splitString);
-    console.log("Split String Length: ");
-    console.log(splitString.length);
 
     if (splitString.length <= 1) {
-      console.log("Splitting for HTTPS:")
        splitString = webLink.split("https://", 2);
     }
 
-    console.log("Second Split: ");
-    console.log(splitString);
 
     if (splitString.length > 1) {
-      console.log(this.evidenceWebLinks[index]);
       window.location.href= this.evidenceWebLinks[index];
     }
     else {
-      console.log("http://" + this.evidenceWebLinks[index]);
       window.location.href="http://" + this.evidenceWebLinks[index];
     }
   }
@@ -194,16 +183,12 @@ export class EvidenceDialog {
 
   public createUpdateEvidence() {
     let evidenceData: string = this.evidenceService.getEvidenceData(this.addNewEvidence.value.evidenceTitle, this.addNewEvidence.value.evidenceDescription + "[[ff-weblink]]" + this.addNewEvidence.value.evidenceReference);
-    console.log("calling update evidence");
-    console.log("Evidence Data: ");
-    console.log(evidenceData);
+
 
     this.httpRequestFlag = true;
     this.kumulosService.createUpdateEvidence(evidenceData)
       .subscribe(response =>
         {
-          console.log("response from update evidence");
-          console.log(response);
           this.closeDialog();
           this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/takesurvey/surveymodule/evidence'));
         })
@@ -235,7 +220,6 @@ export class DeleteEvidenceDialog {
     this.kumulosService.deleteEvidence(this.evidenceService.getEvidenceID())
       .subscribe(response => 
       {
-        console.log(response);
         this.closeDialog();
         this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/takesurvey/surveymodule/evidence'));
       })
@@ -282,8 +266,6 @@ export class EditEvidenceDialog {
     this.evidenceID =  this.selectedEvidence['evidenceID'];
       
 
-    console.log(this.selectedEvidence.evidenceDescription);
-
     this.title = this.selectedEvidence.evidenceDescription;
     this.description = this.selectedEvidence.evidenceText;
     this.weblink = localStorage.getItem('selectedWebLink');
@@ -296,8 +278,7 @@ export class EditEvidenceDialog {
   }
 
   public createUpdateEvidence() {
-    console.log(this.selectedEvidence);
-    console.log(this.selectedEvidence['areaID']);
+
 
     let evidenceData: string = this.evidenceService.getUpdateEvidenceData(
       this.areaID,
@@ -308,20 +289,14 @@ export class EditEvidenceDialog {
       this.userID,
       this.evidenceID)
 
-      console.log("Evidence ID: " + this.evidenceID);
-      console.log("Evidence Data: ");
-      console.log(evidenceData);
 
     this.httpRequestFlag = true;
     this.kumulos.createUpdateEvidence(evidenceData)
       .subscribe(response =>
         {
-          console.log("response from update evidence");
-          console.log(response);
           this.closeDialog();
           this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/takesurvey/surveymodule/evidence'));
         })
-    console.log(this.addNewEvidence.value.evidenceReference);
   }
 
   private closeDialog() {

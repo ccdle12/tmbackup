@@ -21,12 +21,10 @@ export class CaseStudiesComponent {
 
         this.kumulos.getCaseStudies(areaID, dimensionID).subscribe(responseJSON => {
             this.caseStudies = responseJSON.payload;
-            console.log("case studies: ", this.caseStudies);
         })
     }
 
      public routeToPage(surveyPage: String) {
-       console.log('routetoPage activated: ' + surveyPage);
         switch(surveyPage) {
           case('survey'):
             this.router.navigateByUrl('main/takesurvey/surveymodule/survey');

@@ -19,6 +19,7 @@ export class OrganizationAdminComponent {
 
     public backToDashboardTooltip;
     public organizationsJSON;
+    public requestOrgCSVTooltip;
 
     constructor(public router: Router, 
                 public kumulosService: KumulosService, 
@@ -36,13 +37,13 @@ export class OrganizationAdminComponent {
       this.loadingSnackBar.showLoadingSnackBar();
       this.kumulosService.webGetOrganizations().subscribe(response => {
         this.organizationsJSON = response.payload;
-        console.log(this.organizationsJSON);
         this.loadingSnackBar.dismissLoadingSnackBar();
       });
     }
 
     private initializeMemberVariables(): void {
       this.backToDashboardTooltip = "Back To Dashboard";
+      this.requestOrgCSVTooltip = "Email Organization Details CSV";
     }
 
     public navStyle() 
@@ -55,11 +56,9 @@ export class OrganizationAdminComponent {
       let currentUrl: string = window.location.pathname;
 
       if (currentUrl ===  "/main/tmforumadmin/organizationadmin") {
-          // console.log("returning blue background?");
           return { 'background-color': this.stylingService.getPrimaryColour('red'),
                 'color': 'white' };    
       } else {
-      // console.log(window.location.pathname);
       return { 'background-color': '#62B3D1',
                 'color': 'white' };
       }
@@ -100,6 +99,20 @@ export class OrganizationAdminComponent {
 
 
   /* methods called from view */
+  public requestOrgCSV(index): void 
+  {
+    this.loadingSnackBar.showLoadingSnackBarWithMessageAndTimer("Sending CSV extract to your email...");
+
+    let emailAddress = localStorage.getItem("userEmail");
+    emailAddress = emailAddress.replace(/['"']+/g, '');
+
+    let organizationName = this.organizationsJSON[index].organizationName
+
+    this.kumulosService.utilityDashboardForOrgCSV(emailAddress, organizationName ).subscribe(response => {
+      console.log(response);
+    })
+  }
+
   public addNewOrganization(): void 
   {
     let dialogRef = this.dialog.open(AddNewOrgDialog, {
@@ -118,11 +131,8 @@ export class OrganizationAdminComponent {
     let contactName = this.organizationsJSON[index].contactName;
     let orgID = this.organizationsJSON[index].organizationID;
     let organizationName = this.organizationsJSON[index].organizationName;
-    // let customerTypes = this.organizationsJSON[index].customerTypes;
     let headquartersLocation = this.organizationsJSON[index].headquartersLocation;
     let operatingTime = this.organizationsJSON[index].operatingTime;
-    // let primaryProductsAndServices = this.organizationsJSON[index].primaryProductsAndServices;
-    // let sectors = this.organizationsJSON[index].sectors;
 
     /**
      * Unpacking the regions multi select
@@ -227,12 +237,6 @@ export class AddNewOrgDialog {
      totalAnnualRevenue: [''],
      operatingTime: [''],
      headquartersLocation: [''],
-    //  transformation: [''],
-    //  personalInvolvment: [''],
-    //  personalAssociation: [''],
-    //  businessFunction: [''],
-    //  levelOfManagement: [''],
-    //  productLine: [''],
     });
   }
 
@@ -241,7 +245,7 @@ export class AddNewOrgDialog {
    */
   public initMemberVariables(): void {
     this.regionsList = ['North America', 'Latin/America/Caribbean', 'Europe and/or Russia', 'Middle East and/or Africa', 'Asia/Pacific', 'Global'];
-    this.primaryProductsAndServicesList = ['Fixed Operator', 'Mobile Operator', 'Converged Operator (some combination of mobile, fixed voice and data, and TV)', 'Cable operator', 'Digital services provider (e.g. IoT, smart cities)', 'other'];
+    this.primaryProductsAndServicesList = ['Fixed Operator', 'Mobile Operator', 'Converged Operator (some combination of mobile, fixed voice and data, and TV)', 'Cable operator', 'Digital services provider (e.g. IoT, smart cities)', 'Data Centre/Cloud Provider', 'other'];
     this.sectorsList = ['Aerospace industry', 'Agriculture industry', 'Chemical industry', 'Pharmaceutical industry', 'Computer industry', 'Software industry', 'Construction industry', 'Defense industry', 'Education industry', 'Energy industry', 'Entertainment industry', 'Financial services industry', 'Food industry', 'Health care industry', 'Hospitality industry', 'Information industry', 'Manufacturing', 'Mass media', 'Telecommunications industry', 'Transport industry', 'Water industry', 'All of the above', 'Other'];
     this.customerTypesList = ['Business', 'SME', 'Consumer', 'Wholesale']
   }
@@ -272,13 +276,11 @@ export class AddNewOrgDialog {
     if (this.regionsFormControl.value != null) {
       let regionsAsString = this.multiSelectAdd(this.regionsFormControl)
       this.inviteOrganizationForm.value.regions = regionsAsString
-      console.log(regionsAsString)
     } else {
       this.inviteOrganizationForm.value.regions = ""
     }
 
     if (this.sectorsFormControl.value != null) {
-      // console.log(this.sectorsFormControl)
       let sectorsAsString = this.multiSelectAdd(this.sectorsFormControl)
       this.inviteOrganizationForm.value.sectors = sectorsAsString
     } else {
@@ -286,17 +288,14 @@ export class AddNewOrgDialog {
     }
 
     if (this.customerTypesFormControl.value != null) {
-      // console.log(this.customerTypesFormControl)
       let customerTypesAsString = this.multiSelectAdd(this.customerTypesFormControl)
       this.inviteOrganizationForm.value.customerTypes = customerTypesAsString
-      console.log(customerTypesAsString)
     } else {
       this.inviteOrganizationForm.value.customerTypes = ""
     }
 
     this.kumulosService.webCreateUpdateOrganizations(organizationName, contactName, email, false, null, this.inviteOrganizationForm).subscribe(responseJSON => {
-        console.log("Response");
-        console.log(responseJSON);
+
       this.dialog.closeAll();
     })
   }
@@ -454,6 +453,10 @@ export class EditOrgDialog {
         value: 'Digital services provider (e.g. IoT, smart cities)'
       },
       {
+        id: "DC",
+        value: 'Data Centre/Cloud Provider'
+      },
+      {
         id: "other",
         value: "other"
       }
@@ -588,7 +591,6 @@ export class EditOrgDialog {
     this.headquartersLocation = data.headquartersLocation;
     this.operatingTime = data.operatingTime;
     this.primaryProductsAndServices = data.primaryProductsAndServices;
-    console.log(this.primaryProductsAndServices)
     this.regions = data.regions;
     this.sectors = data.sectors;
     this.totalEmployees = data.totalEmployees;
@@ -673,9 +675,6 @@ export class EditOrgDialog {
   {
     this.editOrganizationForm.valueChanges.subscribe(data => {
       this.userMadeChangesFlag = true;
-
-      console.log("Values changed listener has picked this up");
-      console.log("user made changes: " + this.userMadeChangesFlag);
    });
   }
 

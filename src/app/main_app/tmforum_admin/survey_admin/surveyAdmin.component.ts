@@ -21,7 +21,6 @@ export class SurveyAdminComponent {
   public companiesInView: Array<any>;
   public organizations: Array<any>;
   public currentOrganizationSelected: any;
-  // public lastSelectedOrg: any;
   private organizationAndCompanyPairs;
   public organizationAndIdDict;
 
@@ -67,7 +66,6 @@ export class SurveyAdminComponent {
 
     this.kumulosService.webGetOrganizations().subscribe(response => 
     {
-      console.log(response)
       if (response.responseCode == 1) 
       {
 
@@ -89,7 +87,6 @@ export class SurveyAdminComponent {
       }
       else 
       {
-        console.log("there was an error");
         this.loadingSnackBar.dismissLoadingSnackBar();
       }
     });
@@ -155,9 +152,6 @@ export class SurveyAdminComponent {
 public organizationHasChanged(): void {
   this.updateCompaniesInView();
 
-  console.log("Current Org: ");
-  console.log(this.currentOrganizationSelected.name);
-  console.log(this.companiesInView);
 }
 
 public addCompany(): void {
@@ -174,7 +168,6 @@ public addCompany(): void {
 }
 
 public editCompany(company: any): void {
-  console.log(company);
 
     let dialogRef = this.dialog.open(EditCompanyDialog, {
       data: {
@@ -198,7 +191,6 @@ public editCompany(company: any): void {
 export class AddCompanyDialog {
 
   public httpRequestFlag: boolean;
-  // public company: any;
   public userMadeChangesFlag;
   public addCompanyForm: FormGroup;
   public orgName;
@@ -306,8 +298,6 @@ export class EditCompanyDialog {
     let startDate = new Date(parseInt(this.company.startDate) * 1000);
     let expiryDate = new Date(parseInt(this.company.expiryDate) * 1000);
 
-    console.log("LICENSE TYPE!");
-    console.log(this.company.licenseType);
 
     let companyExcludeFromBenchmark = false
     
@@ -338,24 +328,12 @@ export class EditCompanyDialog {
 
     if (this.editCompanyForm.value.archive == "")
       archiveFlag = false;
-    else
-    {
-      console.log("THERES SOMETHING THERE");
-      console.log(this.editCompanyForm.value.archive);
-    }
 
-    // if (this.editCompanyForm.value.excludeFromBenchmark == "")
-      
 
-    console.log("ARCHIVE FLAG");
-    console.log(this.editCompanyForm.value.archive);
-
-    console.log("Exlcude from Benchmark Flag")
-    console.log(this.editCompanyForm.value.excludeFromBenchmark)
     let excludeFromBenchmarkFlag = this.editCompanyForm.value.excludeFromBenchmark
 
     this.kumulosService.webCreateUpdateSurveys(this.orgName, this.editCompanyForm.value, this.company.cityID, archiveFlag, excludeFromBenchmarkFlag).subscribe(responseJSON => {
-      console.log(responseJSON);
+
       this.dialog.closeAll();
     })
 

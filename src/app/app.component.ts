@@ -53,10 +53,11 @@ export class AppComponent {
 
         this.setWidthAndHeight();
 
-        this.infoTooltip = "TM Forum Digial Maturity Model and Metrics. v3.0 (build. 3.0.0.0). 2017 Cotham Technologies and TM Forum. In-app iocs by Icons8 (https://icons8.com/)."
+        this.infoTooltip = "TM Forum Digial Maturity Model and Metrics. v3.0 (build. 3.0.0.0). 2017 Cotham Technologies and TM Forum. In-app icons by Icons8 (https://icons8.com/)."
         
         this.routerEventListener();    
     }
+
 
     /**
      * View Methods
@@ -293,15 +294,10 @@ export class EditUserDetailsDialog {
     let userName = this.editUserDetailsForm.value.name;
     let userTitle = this.editUserDetailsForm.value.jobTitle;
 
-    // console.log("user name");
-    // console.log(userName)
-    // console.log("user title")
-    // console.log(userTitle)
  
     this.kumulosService.updateUserNameAndJobTitle(userId, userName, userTitle, cityId, surveyGroupName,)
         .subscribe(responseJSON => 
         {
-            console.log(responseJSON.payload);
             this.updateUserProfile();
         });
   }
@@ -327,7 +323,6 @@ export class EditUserDetailsDialog {
 
   private getUserTitle(): string {
       let userProfile: JSON = this.getUserProfile();
-      console.log(userProfile);
       if (this.isUserMetaData(userProfile)) {
         if (this.isMetaDataNameEmpty(userProfile)) {
             return "";

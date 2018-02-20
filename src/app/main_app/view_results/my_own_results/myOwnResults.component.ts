@@ -195,7 +195,7 @@ export class MyOwnResultsComponent {
           return {'background-color': this.stylingService.getPrimaryColour('red')}
 
         } else {
-        console.log(window.location.pathname);
+        (window.location.pathname);
         return { 'background-color': '#62B3D1',
                   'color': 'white' };
         }
@@ -213,8 +213,8 @@ export class MyOwnResultsComponent {
       }
     }
 
-    console.log("Is Logged In: " + loggedIn);
-    console.log("Is Leader: " + isLeaderOrConsultant);
+    ("Is Logged In: " + loggedIn);
+    ("Is Leader: " + isLeaderOrConsultant);
 
     return false;
 
@@ -237,7 +237,6 @@ export class EmailSentSnackBarComponent {}
 export class EmailMyOwnResultsDialog {
   constructor(public router: Router,  public authService: AuthService, public kumulosService: KumulosService,
               public dialog: MatDialog) {
-    console.log(this.router.url);
   }
 
   public sendSurveyRequest(): void {
@@ -248,7 +247,6 @@ export class EmailMyOwnResultsDialog {
 
       this.kumulosService.requestIndividualSurveyCSV(activeCityVersion, emailAddress)
         .subscribe(responseJSON => {
-          console.log(responseJSON.payload);
           this.dialog.closeAll();
       });
   }

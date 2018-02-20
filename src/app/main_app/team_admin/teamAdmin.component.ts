@@ -31,6 +31,7 @@ import { StylingService } from '../../shared/services/styling.service';
 export class TeamAdminComponent  { 
   userProfiles:  JSON[];
   userProfilesSize;
+  public loadingFlag: boolean;
 
   constructor(public authService: AuthService, 
               private kumulosService: KumulosService, 
@@ -42,6 +43,7 @@ export class TeamAdminComponent  {
               public snackbar: MatSnackBar, 
               public router: Router) 
   {
+    this.loadingFlag = true
     this.getAllUsers();
   }
 
@@ -49,13 +51,10 @@ export class TeamAdminComponent  {
     this.loadingSnackBar.showLoadingSnackBar();
     
     this.kumulosService.getWebUsers().subscribe(response => {
-          console.log("RESPONSE:") 
-          console.log(response.payload);
           this.userProfiles = response.payload
-          console.log("Size of User Profiles: " + Object.keys(this.userProfiles).length);
           this.userProfilesSize = Object.keys(this.userProfiles).length;
-          console.log(this.userProfiles);
           this.loadingSnackBar.dismissLoadingSnackBar();
+          this.loadingFlag = false;
     });
   }
 
@@ -81,8 +80,6 @@ export class TeamAdminComponent  {
   public deleteUser(index: number): void {
     let deleteUser: JSON = this.userProfiles[index];
     let userId: string = deleteUser['user_id']; 
-    console.log(deleteUser);
-    console.log(userId);
     this.deleteUserService.deleteUser(index, userId);
     let dialogRef = this.dialog.open(DeleteUserDialog);
 
@@ -95,7 +92,6 @@ export class TeamAdminComponent  {
     let editUser: string = JSON.stringify(this.userProfiles[index]);
 
     this.editRoleService.cacheUserJSON(editUser);
-    console.log("from edit role service: " + this.editRoleService.getUserJSON());
     let dialogRef = this.dialog.open(EditUserRole);
 
     dialogRef.afterClosed()
@@ -104,65 +100,77 @@ export class TeamAdminComponent  {
       });
   }
 
-
-  /**
-   * Temporary Fix since auth0 app_meta data is not working in the dev environment
-   */
-  // public getUsersName(index: number): string {
-  //   let userName: string;
-
-  //   if (this.hasUserMetaData(index))
-  //   {
-  //     userName = this.userProfiles[index]['user_metadata']['name'];
-      
-  //     if (userName.length < 1)
-  //       userName = "Name not set by user";
-  //   }
-  //   else 
-  //     userName = "Name not set by user";
-    
-  //   return userName;
-  // }
-
-  // public getUsersTitle(index: number): string {
-  //   let userTitle: string;
-
-  //   if (this.hasUserMetaData(index))
-  //     userTitle = this.userProfiles[index]['user_metadata']['jobTitle'];
-  //   else  if (this.userProfiles[index]['headline'])
-  //     userTitle = this.userProfiles[index]['headline'];
-  //   else 
-  //     userTitle = "Job title not set by user";
-    
-  //   if (userTitle.length > 100)
-  //     userTitle = userTitle.slice(0, 60);
-
-  //   return userTitle;
-  // }  
-
-  // private hasUserMetaData(index: number): boolean {
-  //   return this.userProfiles[index]['user_metadata'] ? true : false;
-  // }
   public getUsersName(index: number): string {
     let userName: string;
-    
-      if (this.userProfiles[index]['name'])
+
+    if(!this.userProfiles[index])
+      return "Name not set by user"
+
+    if (this.userProfiles[index]['name'])
+    {
+      if (this.userProfiles[index]['name'].length > 30) {
+        userName = this.userProfiles[index]['name'].slice(0, 23) + "..."
+      }
+      else {
         userName = this.userProfiles[index]['name'];
-      else
-        userName = "Name not set by user";
-    
-      return userName;
+      }
+    }
+    else
+      userName = "Name not set by user";
+  
+    return userName;
   }
 
   public getUsersTitle(index: number): string {
     let userTitle: string;
-    
-    if (this.userProfiles[index]['headline'])
-      userTitle = this.userProfiles[index]['headline'];
+
+    if(!this.userProfiles[index])
+      return "Title not set by user"
+
+    if (this.userProfiles[index]['headline']) {
+      if (this.userProfiles[index]['headline'].length > 30) {
+        userTitle = this.userProfiles[index]['headline'].slice(0, 23) + "..."
+      }
+      else {
+        userTitle = this.userProfiles[index]['headline'];
+      }
+      
+    }
     else
       userTitle = "Job title not set by user";
   
     return userTitle;
+  }
+
+  public getUsersEmail(index: number): string {
+    let userEmail: string;
+
+
+    if(!this.userProfiles[index])
+      return "Email not set by user"
+
+    if (this.userProfiles[index]["email"]) {
+      if (this.userProfiles[index]['email'].length > 30) {
+        userEmail = this.userProfiles[index]["email"].slice(0, 23) + "..."
+      }
+      else {
+        userEmail = this.userProfiles[index]["email"];
+      }
+    }
+    else {
+      userEmail = "User Email not set by user"
+    }
+
+    return userEmail;
+  }
+
+  public notAdminOrSuperUser(index: number) {
+    let userRole = this.userProfiles[index]["app_metadata"]["user_role"];
+
+    if (userRole == "Admin" || userRole == "Super User") {
+      return false;
+    }
+    return true;
   }
 }
 
@@ -188,13 +196,11 @@ export class InviteUserDialog {
 
   public inviteNewUser(): void {
     let cityName: string = this.getCityName();
-    console.log("City Name: " + cityName);
     let cityId: string = this.getCityId();
     let email: string = this.inviteUserForm.value.email;
     
     this.httpRequestFlag = true;
     this.kumulosService.inviteUser(email, cityName, cityId).subscribe(responseJSON => {
-      console.log("response", responseJSON.payload);
       // this.reloadPage();
       this.dialog.closeAll();
     })
@@ -236,11 +242,6 @@ export class DeleteUserDialog {
     
     this.httpRequestFlag = true;
     this.kumulosService.deleteUser(deleteUserId).subscribe(responseJSON => {
-      
-      console.log("Delete response:");
-      console.log(responseJSON);
-      console.log("response", responseJSON.payload);
-      // window.location.reload();
       
       this.dialog.closeAll();
      }); 

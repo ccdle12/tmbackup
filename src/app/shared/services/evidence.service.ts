@@ -19,14 +19,12 @@ export class EvidenceService {
 
     public setDimensionID(ID: string) {
         this.dimensionID = ID;
-        console.log("Dimension ID set in evidence service");
-        console.log(this.dimensionID);
+ 
     }
 
     public setActiveVersion(version: string) {
         this.activeVersion = version;
-        console.log("Evidence ID set in evidence service");
-        console.log(this.evidenceID);
+
     }
 
     public setUserID(ID: string) {

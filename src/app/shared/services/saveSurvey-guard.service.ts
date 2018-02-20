@@ -14,26 +14,11 @@ export class SaveSurveyGuardService implements CanDeactivate<ComponentCanDeactiv
 
   constructor(private auth: AuthService, private router: Router) { }
   
-  // canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    //  console.log(next.component.toString());
 
-    // if (!this.auth.isAuthenticated()) {
-    //   this.router.navigate(['/main']);
-    //   return false;
-    // }
-    
-    // if (this.auth.isAuthenticated() && !this.auth.isVerified()) {
-    //   this.router.navigate(['welcome']);
-    //   return false;
-    // }
     
     canDeactivate(component: ComponentCanDeactivate): boolean | Observable<boolean> {
-      console.log('can deactivate');
-      console.log(component);
       return true;
-      // return component.canDeactivate() ? true : confirm('WARNING: You have unsaved changes. Press Cancel to go back and save these changes, or OK to lose these changes.');
     }
 
-    // return true;
-  // }
+
 }

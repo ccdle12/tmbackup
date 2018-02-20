@@ -6,7 +6,7 @@
 <form [formGroup]="inviteUserForm" (ngSubmit)="onSubmit()">
     <div>
         <mat-form-field>
-            <input matInput placeholder="Email" value="email" type="text" formControlName="email">
+            <input matInput placeholder="Email" type="text" formControlName="email">
             <control-messages [control]="inviteUserForm.controls.email"></control-messages>
         </mat-form-field>
     </div>

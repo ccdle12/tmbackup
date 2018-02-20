@@ -40,13 +40,13 @@ constructor(public router: Router, public snackbar: MatSnackBar, public dialog: 
   //'dvSdZ0n8HSYuGEkBQSdQQNG1FiW78i9V', 'tmfdmmdev.eu.auth0.com'
 
   //Live Env
-  //'4PQhmzeQzyDp3F6vM39cPriygAHbx4bX','tmfdmm.eu.auth0.com'
-this.lock = new Auth0Lock('dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V', 'tmfdmmdev.eu.auth0.com', this.options, {});
+  // '4PQhmzeQzyDp3F6vM39cPriygAHbx4bX','tmfdmm.eu.auth0.com'
+this.lock = new Auth0Lock('4PQhmzeQzyDp3F6vM39cPriygAHbx4bX','tmfdmm.eu.auth0.com', this.options, {});
 }
 
 public handleAuthentication(): void {
   this.lock.on('authorization_error', (authResult) => {
-    console.log("AUTH ERROR!");
+    ("AUTH ERROR!");
 
     let dialogRef = this.dialog.open(LicenseInvalidDialog, {
       disableClose: true,
@@ -58,11 +58,9 @@ public handleAuthentication(): void {
   })
 
   this.lock.on("authenticated", (authResult) => {
-    console.log("HANDLE AUTH CALLED");
     this.lock.getUserInfo(authResult.accessToken, (error, userProfile) => {
 
       if (error) {
-        console.log("Error: ", error);
         return;
       }
 
@@ -199,18 +197,18 @@ public isVerified(): boolean {
 
 public inDemoMode(): boolean {
   if (!this.isVerified()) {
-    // console.log("not verified");
+    // ("not verified");
     return true;
   }
 
   if (this.isVerified() && this.isLeaderConsultant()) {
     
-    // console.log("verified and leader or consultant");
+    // ("verified and leader or consultant");
     return false;
   }
     
   if (this.isVerified() && !this.isLeaderConsultant()) { 
-    // console.log("verified but not leader or consultant");   
+    // ("verified but not leader or consultant");   
     return true;
   } 
 }

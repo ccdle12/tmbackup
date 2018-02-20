@@ -25,10 +25,10 @@ nav {
 
 #emailDocument {
     height: auto;
-    width: 38px;
+    width: 30px;
     margin-top: 5px;
     opacity: 1;
-    float: left;
+    /* float: left; */
 }
 
 #emailDocument:hover {

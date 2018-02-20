@@ -80,16 +80,18 @@ export class KumulosService {
 
     private createUpdateUserProfilingURI: string;
 
+    private utilityDashboardForOrgCSVURI: string;
+
     constructor(private http: Http, public authService: AuthService) {
         this.initializeAllInstanceVariables();
     }
 
     public initializeAllInstanceVariables(): void {
         //Dev Env
-        this.domain = "https://api.kumulos.com/b2.2/ee263e29-20c7-471f-92eb-5fe34a19e80f/";
+        // this.domain = "https://api.kumulos.com/b2.2/ee263e29-20c7-471f-92eb-5fe34a19e80f/";
         
         //Live Env
-        // this.domain = "https://api.kumulos.com/b2.2/9c9f10ef-65ac-48a2-bf24-54097d590429/";
+        this.domain = "https://api.kumulos.com/b2.2/9c9f10ef-65ac-48a2-bf24-54097d590429/";
 
         this.getAllCitiesURI = "getAllCities.json/";
         this.getActiveVersionForCityURI = "getActiveVersionForCity.json/";
@@ -161,18 +163,20 @@ export class KumulosService {
         this.getUserProfileCountURI = "getUserProfileCount.json/"
 
         this.createUpdateUserProfilingURI = "create_updateUserProfiling.json/"
+
+        this.utilityDashboardForOrgCSVURI = "utilityDashboardForOrgCSV.json/"
     }
 
     public createAuthorizationHeader(): Headers {
         let headers = new Headers();
 
         //Dev Env
-        headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        headers.append('Authorization', 'Basic ZWUyNjNlMjktMjBjNy00NzFmLTkyZWItNWZlMzRhMTllODBmOmx2WElGZUlpQlNkOXErNnVIbXFEUlJrUVA4TzNNVXlKdmV3MA=='); 
+        // headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        // headers.append('Authorization', 'Basic ZWUyNjNlMjktMjBjNy00NzFmLTkyZWItNWZlMzRhMTllODBmOmx2WElGZUlpQlNkOXErNnVIbXFEUlJrUVA4TzNNVXlKdmV3MA=='); 
         
         //Live Env
-        // headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        // headers.append('Authorization', 'Basic OWM5ZjEwZWYtNjVhYy00OGEyLWJmMjQtNTQwOTdkNTkwNDI5OjN3Z2U0eVAycXJXbTAwcGlORndVbUVDdjB1SUt2d1ZzUWdDaA=='); 
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        headers.append('Authorization', 'Basic OWM5ZjEwZWYtNjVhYy00OGEyLWJmMjQtNTQwOTdkNTkwNDI5OjN3Z2U0eVAycXJXbTAwcGlORndVbUVDdjB1SUt2d1ZzUWdDaA=='); 
         
 
         return headers;
@@ -183,10 +187,10 @@ export class KumulosService {
         let userJWT: string;
 
         if (!this.authService.isVerified() || !this.authService.isAuthenticated()) {
-            console.log('using demo JWT');
+            ('using demo JWT');
             userJWT = localStorage.getItem('demoJWT');
         } else {
-            console.log('using id_token JWT');
+            ('using id_token JWT');
             userJWT = localStorage.getItem('id_token');
         }
 
@@ -214,22 +218,22 @@ export class KumulosService {
 
         if (!this.authService.isVerified() || !this.authService.isAuthenticated()) {
             userCityId = localStorage.getItem('demoCity');
-            // console.log("getting demo city: " + userCityId);
+            // ("getting demo city: " + userCityId);
         } else {
             let userProfile: any = JSON.parse(localStorage.getItem('user'));
             userCityId = userProfile.city_id;
-            // console.log("getting User Profile City Id");
+            // ("getting User Profile City Id");
         }
 
-        // console.log("getting demo city in body: " + userCityId);
+        // ("getting demo city in body: " + userCityId);
         urlSearchParams.append('params[cityID]', userCityId);
 
         let body: String = urlSearchParams.toString();
 
-        // console.log("body for active city versions: " + body);
+        // ("body for active city versions: " + body);
          return this.http.post(this.domain + this.getActiveVersionForCityURI, body, {headers: headers})
                 .map(response => {
-                    // console.log("response from active city", response.json());
+                    // ("response from active city", response.json());
                     return response.json()
         });
     }
@@ -238,7 +242,7 @@ export class KumulosService {
         let headers: Headers = this.createAuthorizationHeader();
         let urlSearchParams: URLSearchParams = this.createBody();
         
-        // console.log('kumulos get web dashboard', 'active version number: ' + activeVersionNumber);
+        // ('kumulos get web dashboard', 'active version number: ' + activeVersionNumber);
         urlSearchParams.append('params[version]', activeVersionNumber);
 
         var body: String = urlSearchParams.toString();
@@ -270,7 +274,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getDemoCityURI, null, {headers: headers})
             .map(response => {
-                // console.log("Demo City: " + response.toString());
+                // ("Demo City: " + response.toString());
                 return response.json();
             });
     }
@@ -280,7 +284,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getDemoUserJWTURI, null, {headers: headers})
             .map(response => {
-                // console.log("Demo JWT: " + response.toString());
+                // ("Demo JWT: " + response.toString());
                 return response.json();
             });
     }
@@ -296,7 +300,7 @@ export class KumulosService {
 
         return this.http.post(this. domain + this.getCreateUpdateUserSurveyDataURI, body, {headers: headers})
             .map(response => {
-                // console.log(response.json());
+                // (response.json());
                 return response.json();
             }); 
     }
@@ -314,12 +318,7 @@ export class KumulosService {
             cityId = userJSON['city_id'];
         }
 
-        console.log("User JSON");
-        console.log(userJSON);
-        
         urlSearchParams.append('params[groupId]', cityId);
-
-        console.log("CITY ID: " + cityId);
 
         let body: String = urlSearchParams.toString();
         
@@ -355,7 +354,7 @@ export class KumulosService {
 
           return this.http.post(this.domain + this.getCaseStudiesURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             });
     }
@@ -372,7 +371,7 @@ export class KumulosService {
 
           return this.http.post(this.domain + this.getBestPracticesURI, body, {headers: headers})
             .map(response => {
-                // console.log(response.json());
+                // (response.json());
                 return response.json();
             });
     }
@@ -390,7 +389,7 @@ export class KumulosService {
 
           return this.http.post(this.domain + this.getWebEvidenceURI, body, {headers: headers})
             .map(response => {
-                // console.log(response.json());
+                // (response.json());
                 return response.json();
             });
     }
@@ -406,7 +405,7 @@ export class KumulosService {
 
           return this.http.post(this.domain + this.createUpdateEvidenceURI, body, {headers: headers})
             .map(response => {
-                // console.log(response.json());
+                // (response.json());
                 return response.json();
             });
     }
@@ -430,7 +429,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getSubmitInterestRequestURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             });
     }
@@ -448,7 +447,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getWebAggregatesByVersionandUserURI, body, {headers: headers})
             .map(response => {
-                // console.log(response.json());
+                // (response.json());
                 return response.json();
             });
     }
@@ -479,7 +478,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getWebWhiskerBoxDataByVersionURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             });
     }
@@ -496,7 +495,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.requestSurveyURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             });
     }
@@ -514,7 +513,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.requestSurveyURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             });
     }
@@ -532,7 +531,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.requestSurveyURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             });
     }
@@ -552,7 +551,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.updateNameAndTitleURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             });
     }
@@ -568,7 +567,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.userProfileURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             });
     }
@@ -586,7 +585,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.inviteUsersURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             })
     }
@@ -602,7 +601,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.deleteUserURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             })
     }
@@ -618,7 +617,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getSingleCityURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             })
     }
@@ -636,7 +635,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.updateCityPublicationLevelURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             })
     }
@@ -652,7 +651,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.publishVersionURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             })
     }
@@ -668,7 +667,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.allBenchmarkDataURI, body, {headers: headers})
             .map(response => {
-                // console.log(response.json());
+                // (response.json());
                 return response.json();
             })
     }
@@ -687,7 +686,7 @@ export class KumulosService {
         return this.http.post(this.domain + this.getDimensionOwnerURI, body, {headers: headers})
             .map(response => 
             {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             }
         )
@@ -704,7 +703,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.updateDimensionOwnerURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             })
     }
@@ -720,7 +719,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.deleteDimensionOwnerURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             })
     }
@@ -739,7 +738,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.updateUserRoleURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             })
     }
@@ -755,7 +754,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.deleteEvidenceURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             })
     }
@@ -771,7 +770,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getAdjustmentsByVersionURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             })
     }
@@ -787,7 +786,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.createUpdateAdjustmentDataURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             })
     }
@@ -803,7 +802,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.deleteSingleAdjustmentWithJWTURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             })
     }
@@ -820,7 +819,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getGroupsandCountriesURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             })
     }
@@ -839,7 +838,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.webBulkInviteUserURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             })
     }
@@ -854,7 +853,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.webGetOrganizationsURI, body, {headers: headers})
             .map(response => {
-                console.log(response.json());
+                (response.json());
                 return response.json();
             })
     }
@@ -868,8 +867,6 @@ export class KumulosService {
         //Unpacking orgData
         let primaryProductsAndServices = orgData.value.primaryProductsAndServices;
         let regions = orgData.value.regions;
-        console.log("Multi select")
-        console.log(regions);
         let sectors = orgData.value.sectors;
         let customerTypes = orgData.value.customerTypes;
         let totalEmployees = orgData.value.totalEmployees;
@@ -882,7 +879,7 @@ export class KumulosService {
             organizationData = '{"organizationData":[{"organizationName":' + '"' + orgName + '"' + ',"contactName":' + '"' + contactName + '"'  + ',"contactEmail":' + '"' + contactEmail + '"' + ',"archivedFlag":"", "organizationID":"", "primaryProductsAndServices":' + '"' + primaryProductsAndServices + '"' + ', "regions":' + '"' + regions + '"' + ', "sectors":' + '"' + sectors + '"' + ', "customerTypes":' + '"' + customerTypes + '"' + ',"totalEmployees":' + '"' + totalEmployees + '"' + ', "totalAnnualRevenue":' + '"' + totalAnnualRevenue + '"' + ', "operatingTime":' + '"' + operatingTime + '"' + ',"headquartersLocation":' + '"' + headquartersLocation + '"' + ' }]}';
         else
         {
-            console.log("Should be editing an org");
+            ("Should be editing an org");
         //Update an existing organization
             let orgIDAsString = String(orgID); 
             if (archivedFlag == true)
@@ -899,14 +896,14 @@ export class KumulosService {
             
         }
 
-        console.log("Organization Data: " + organizationData);
+        ("Organization Data: " + organizationData);
         urlSearchParams.append('params[organizationData]', organizationData);
 
         let body: string = urlSearchParams.toString();
 
         return this.http.post(this.domain + this.webCreateUpdateOrganizationsURI, body, {headers: headers})
             .map(response => {
-                console.log("Web Create response: " + response.json());
+                ("Web Create response: " + response.json());
                 return response.json();
             })
     }
@@ -921,7 +918,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.webGetSurveysByOrgURI, body, {headers: headers})
             .map(response => {
-                // console.log(response.json());
+                // (response.json());
                 return response.json();
             })
     }
@@ -931,7 +928,7 @@ export class KumulosService {
         let headers: Headers = this.createAuthorizationHeader();
         let urlSearchParams: URLSearchParams = this.createBody();
 
-        console.log(cityID);
+        (cityID);
         let surveyData: string;
         
         let archive: string;
@@ -955,7 +952,7 @@ export class KumulosService {
         else
             surveyData = '{"surveyData":[{"name":' + '"' + survey.name + '"' + ',"exBenchmark":' + '"' + excludeFromBenchmark  + '"' + ',"licenseType":' + '"' + survey.license + '"' + ',"maxUsers":' + '"' + survey.maxUsers + '"' + ',"startDate":' + '"' + (survey.validFrom.getTime() / 1000) + '"' + ',"expiryDate":' + '"' + (survey.validTo.getTime() / 1000) + '"' + ',"archivedFlag":' + '"' + archive  + '"' + ',"cityID":' + '"'+ cityID + '"' +'}]}';
         
-        console.log(surveyData);
+        (surveyData);
         urlSearchParams.append('params[organizationName]', orgName);
         urlSearchParams.append('params[surveyData]', surveyData);
 
@@ -963,8 +960,8 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.webCreateUpdateSurveysURI, body, {headers: headers})
             .map(response => {
-                console.log("RESPONSE FROM UPDATING EDIT:");
-                console.log(response);
+                ("RESPONSE FROM UPDATING EDIT:");
+                (response);
                 return response.json();
             })
     }
@@ -984,8 +981,8 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.webAdminInviteUserURI, body, {headers: headers})
             .map(response => {
-                console.log("Web Invite User response");
-                console.log(response);
+                ("Web Invite User response");
+                (response);
 
                 return response.json();
             })
@@ -1003,11 +1000,11 @@ export class KumulosService {
         urlSearchParams.append('params[city_id]', city_id);
 
         let body: string = urlSearchParams.toString();
-        console.log("Email address in webAdminUpdateUser: " + email)
+        ("Email address in webAdminUpdateUser: " + email)
         return this.http.post(this.domain + this.webAdminUpdateUserURI, body, {headers: headers})
             .map(response => {
-                console.log("Admin Web Edit User Response");
-                console.log(response);
+                ("Admin Web Edit User Response");
+                (response);
 
                 return response.json();
             });
@@ -1034,8 +1031,8 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.webAdminRequestPublishedDataCSVURI, body, {headers: headers})
             .map(response => {
-                console.log("Web adminr equest published data CSV response");
-                console.log(response);
+                ("Web adminr equest published data CSV response");
+                (response);
                 return response.json();
             })
     }
@@ -1049,8 +1046,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.webDeleteUserURI, body, {headers: headers})
             .map(response => {
-                console.log("Response from calling web delete user api")
-                console.log(response)
+
                 return response.json();
             })
     }
@@ -1064,8 +1060,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.utilityEmailAllUsersURI, body, {headers: headers})
             .map(response => {
-                console.log("Response from calling get all user emails api")
-                console.log(response)
+
                 return response.json();
             })
     }
@@ -1079,8 +1074,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.webGetOrgbyCityIDURI, body, {headers: headers})
             .map(response => {
-                console.log("Response from calling get org by city id")
-                console.log(response)
+
                 return response.json();
             })
     }
@@ -1107,8 +1101,7 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.getUserProfileCountURI, body, {headers: headers})
             .map(response => {
-                console.log("RESPONSE FROM USER COUNT")
-                console.log(response.json());
+
                 return response.json()
             })
     }
@@ -1119,13 +1112,9 @@ export class KumulosService {
 
         let surveyData: string;
 
-        console.log("PROFILING!!!");
-        console.log(profiling);
-        
+
         urlSearchParams.append('params[version]', version);
-        console.log("PROFILING!!!")
-        console.log(profiling.value)
-        console.log(profiling.value.programStatusAnswer);
+
         urlSearchParams.append('params[programStatusAnswer]', profiling.value.programStatusAnswer);
         urlSearchParams.append('params[personallyEngagedAnswer]', profiling.value.personallyEngagedAnswer);
         urlSearchParams.append('params[dimensionAnswer]', profiling.value.dimensionAnswer);
@@ -1137,8 +1126,23 @@ export class KumulosService {
 
         return this.http.post(this.domain + this.createUpdateUserProfilingURI, body, {headers: headers})
             .map(response => {
-                console.log("RESPONSE FROM CREATE UPDATE USER PROFILING:");
-                console.log(response);
+
+                return response.json();
+            })
+    }
+
+    public utilityDashboardForOrgCSV(emailAddress, organizationName)
+    {
+        let headers: Headers = this.createAuthorizationHeader();
+        let urlSearchParams: URLSearchParams = this.createBody();
+
+        urlSearchParams.append('params[emailAddress]', emailAddress)
+        urlSearchParams.append('params[organizationName]', organizationName)
+
+        let body: string = urlSearchParams.toString();
+
+        return this.http.post(this.domain + this.utilityDashboardForOrgCSVURI, body, {headers: headers})
+            .map(response => {
                 return response.json();
             })
     }

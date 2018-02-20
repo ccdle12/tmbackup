@@ -102,11 +102,10 @@ export class BulkInviteComponent
             if (this.splitBulkEmails[i] == "")
                 continue;
             
-            console.log("Split Emails: " + this.splitBulkEmails[i]);
+
 
             if (!this.splitBulkEmails[i].match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/))
             {   
-                console.log("Regex failed"); 
                 this.regexEmailFailedCache.push(this.splitBulkEmails[i]);
                 this.invalidEmailsFlag = false;
             }
@@ -194,7 +193,7 @@ export class EmailInvalidDialog
 {
     constructor(@Inject(MAT_DIALOG_DATA) public data: any) 
     {
-        console.log(data.failedEmails);
+
     };
 }
 
@@ -240,7 +239,6 @@ export class SuccessBulkInviteDialog
             }
             else
             {
-                console.log("email: " + data.responseArr[i]['email']); 
                 this.successEmailsArr[i] = data.responseArr[i]['email'];
             }
         }

@@ -69,7 +69,6 @@ export class RegisterCityDialog {
       .subscribe(responseJSON => {
         responseJSON.payload.map(eachCity => { this.allCities.push(eachCity.name); }); 
       });
-    
-    console.log('allCities', this.allCities);
+
   }
 }

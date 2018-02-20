@@ -13,8 +13,8 @@ export class WelcomeGuardService {
   canActivate() {
     // If user is logged in we'll send them to the main page
 
-    // console.log('in can activate welcome');
-    // console.log('this.auth.loggedin status  ', this.auth.isAuthenticated());
+    // ('in can activate welcome');
+    // ('this.auth.loggedin status  ', this.auth.isAuthenticated());
     
     if (this.auth.isAuthenticated() && this.auth.isVerified()) {
       this.router.navigate(['main']);

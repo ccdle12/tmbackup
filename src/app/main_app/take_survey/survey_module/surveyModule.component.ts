@@ -32,7 +32,6 @@ export class SurveyModuleComponent  {
     }
 
     public routeToPage(surveyPage: String) {
-       console.log('routetoPage activated: ' + surveyPage);
         switch(surveyPage) {
           case('survey'):
             this.router.navigateByUrl('main/takesurvey/surveymodule/survey');
@@ -60,7 +59,6 @@ export class SurveyModuleComponent  {
 
     public inEvidence() {
         let currentUrl: string = window.location.pathname;
-        // console.log("In Evidence CALLED");
         if (currentUrl ===  "/main/takesurvey/surveymodule/evidence") {
             return { 'background-color': this.stylingService.getPrimaryColour('red'), 'color': 'white' };    
         } 

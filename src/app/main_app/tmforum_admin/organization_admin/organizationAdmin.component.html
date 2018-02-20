@@ -37,6 +37,7 @@
 
          <mat-card-actions>
            <button mat-button class="editButton" (click)="editOrganization(i)">Edit</button>
+           <img src="../../../assets/Email Document-100-black.png" id="emailDocument" (click)="requestOrgCSV(i)" [matTooltip]="requestOrgCSVTooltip">
          </mat-card-actions>
        </div> 
     </mat-card>
