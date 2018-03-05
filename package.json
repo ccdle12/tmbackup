@@ -28,6 +28,7 @@
     "angular2-google-chart": "^2.3.0",
     "angular2-jwt": "^0.2.3",
     "auth0-js": "^8.7.0",
+    "auth0-lock": "^11.2.3",
     "bootstrap": "^3.3.7",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.4.1",

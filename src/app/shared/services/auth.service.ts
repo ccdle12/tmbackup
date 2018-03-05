@@ -19,6 +19,7 @@ options: any;
 constructor(public router: Router, public snackbar: MatSnackBar, public dialog: MatDialog) { 
 
   this.options = {
+    configurationBaseUrl: "https://cdn.eu.auth0.com/",
     allowSignUp: false,
     languageDictionary: {
       title: '',
@@ -46,7 +47,6 @@ this.lock = new Auth0Lock('4PQhmzeQzyDp3F6vM39cPriygAHbx4bX','tmfdmm.eu.auth0.co
 
 public handleAuthentication(): void {
   this.lock.on('authorization_error', (authResult) => {
-    ("AUTH ERROR!");
 
     let dialogRef = this.dialog.open(LicenseInvalidDialog, {
       disableClose: true,
