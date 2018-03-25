@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { MdSliderModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule} from '@angular/material';
+import { MatSliderModule, MatTooltipModule, MatSidenavModule, MatButtonToggleModule, MatTabsModule, MatButtonModule, MatIconModule} from '@angular/material';
 import { KumulosService } from '../../../../shared/services/kumulos.service';
 import { Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ export class CaseStudiesComponent {
 
     caseStudies: JSON[];
 
-    @ViewChild('start') sidenav: MdSidenavModule;
+    @ViewChild('start') sidenav: MatSidenavModule;
 
     constructor(public kumulos: KumulosService, public router: Router) {
         let parsedSurveyDashboard = JSON.parse(localStorage.getItem('surveydashboard'));
@@ -21,12 +21,10 @@ export class CaseStudiesComponent {
 
         this.kumulos.getCaseStudies(areaID, dimensionID).subscribe(responseJSON => {
             this.caseStudies = responseJSON.payload;
-            console.log("case studies: ", this.caseStudies);
         })
     }
 
      public routeToPage(surveyPage: String) {
-       console.log('routetoPage activated: ' + surveyPage);
         switch(surveyPage) {
           case('survey'):
             this.router.navigateByUrl('main/takesurvey/surveymodule/survey');

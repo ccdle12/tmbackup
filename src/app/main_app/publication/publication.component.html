@@ -36,8 +36,8 @@
             and all user's data will be returned to a starting position.
         </p>
         <div class="row">
-            <button md-button *ngIf="this.licenseService.isLicenseValid() && hasPublicationLevel()" class="col-xs-12" id="publishBtn" (click)="publishVersion()" ><h3>Publish Now</h3></button>
-             <button md-button *ngIf="!this.licenseService.isLicenseValid() || !hasPublicationLevel()" class="col-xs-12" id="disabledPublishBtn"><h3>Publish Now</h3></button> 
+            <button mat-button *ngIf="this.licenseService.isLicenseValid() && hasPublicationLevel()" class="col-xs-12" id="publishBtn" (click)="publishVersion()" ><h3>Publish Now</h3></button>
+             <button mat-button *ngIf="!this.licenseService.isLicenseValid() || !hasPublicationLevel()" class="col-xs-12" id="disabledPublishBtn"><h3>Publish Now</h3></button> 
         </div>
     </div>
 

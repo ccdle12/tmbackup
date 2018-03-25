@@ -1,0 +1,41 @@
+<nav mat-tab-nav-bar [ngStyle]="navStyle()">
+    <div id="navigationIcon">
+      <img id="backToDashboard" src="../../../assets/Back To-100-white.png" (click)="backToDashboard()" [matTooltip]="backToDashboardTooltip">
+    </div>
+    
+    <div class="container">
+      <div class="row">
+        <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('myownresults')"><h4>My Own Results</h4></a>
+        <a mat-tab-link *ngIf="showResultsTab()" class="whiteText navTitle"  (click)="routeToPage('organizationresults')"><h4>Our Organization's Results</h4></a>
+        <a mat-tab-link *ngIf="showResultsTab()" class="whiteText navTitle"  (click)="routeToPage('teamdynamics')"><h4>Team Dynamics</h4></a>
+        <a mat-tab-link *ngIf="showResultsTab()" class="whiteText navTitle"  (click)="routeToPage('adjustaggregates')"><h4>Adjust Aggregates</h4></a>
+        <a mat-tab-link *ngIf="showResultsTab()" [ngStyle]="inHeatMap()" class="whiteText navTitle" (click)="routeToPage('heatmap')"><h4>Our Organization's Heatmap</h4></a>
+    </div>
+  </div>
+  </nav>  
+
+
+  <div id="surveyProgressBarArea" *ngIf="inChildComponents()">
+    <h2><strong>Digital Heatmap</strong></h2>
+       <p id="subHeading">Select sub-dimension for detailed criteria view</p>
+  </div>
+
+  <div *ngIf="inChildComponents() && this.heatMapUnpacked" class="container">
+    
+    <div class="row" *ngFor="let eachSurvey of surveyModules; let i = index">
+      <h4>{{surveyModules[i][0].areaText}}</h4>  
+      
+      <div id="cardsContainer">
+        <mat-expansion-panel class="col-xs-2" *ngFor="let test of eachSurvey; let j = index"  [style.background-color]="revertToDropDownColor(i , j)" (click)="toggleSurveyModuleColor(i, j)">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <h5>{{surveyModules[i][j].dimensionText}}</h5>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="heat-map-dropdown" *ngFor="let eachDropDown of sortedSurveyAndHeatMap[i][j]; let k = index" [ngStyle]="colorToScore(i, j, k)"  (mouseenter)="mouseEnter(i ,j ,k)" [matTooltip]="currentHoverText"> {{sortedSurveyAndHeatMap[i][j][k]["statementShortText"]}}</div>
+        </mat-expansion-panel> 
+      </div>
+
+    </div>
+</div>

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import {MdProgressSpinner} from '@angular/material';
+import {MatProgressSpinner} from '@angular/material';
 
 @Injectable()
 export class SpinnerService {
     
-    constructor(spinner: MdProgressSpinner) { }
+    constructor(spinner: MatProgressSpinner) { }
 
     public start(): void {
         

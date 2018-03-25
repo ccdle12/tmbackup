@@ -2,6 +2,9 @@
     margin-bottom: 25px;
 }
 
+jqxSlider {
+  color: yellow
+}
 
 .example-container {
   width: 100vw;
@@ -15,12 +18,12 @@
   height: 100%;
 }
 
-md-button-toggle {
+mat-button-toggle {
   text-align: center;
 }
 
 button {
-  background-color: #62B3D1;
+  background-color: #f4121d;
   color: white;
 }
 
@@ -35,6 +38,7 @@ button {
 
 .sliderTitles {
   padding-left: 30px;
+  /* margin-left: 50px */
 }
 
 /*Nav Bar*/
@@ -117,7 +121,7 @@ nav a {
 }
 
 .importanceCustomTooltip {
-  background-color:#62B3D1; 
+  background-color:#f4121d; 
   color: white;
   z-index:1;
   position: absolute;
@@ -129,7 +133,7 @@ nav a {
 }
 
 .capabilityCustomTooltip {
-  background-color:#62B3D1; 
+  background-color:#f4121d; 
   color: white;
   z-index:1;
   position: absolute;
@@ -141,7 +145,7 @@ nav a {
 }
 
 .targetCustomTooltip {
-  background-color:#62B3D1; 
+  background-color:#f4121d; 
   color: white;
   z-index:1;
   position: absolute;
@@ -152,7 +156,7 @@ nav a {
    margin-left: 950px; 
 }
 
-md-slider {
+mat-slider {
   z-index: 0;
 }
 
@@ -202,3 +206,19 @@ md-slider {
     height: auto;
 } 
 
+.highMaturity {
+  /* margin-right: 10px; */
+  /* padding-right: 50px; */
+}
+
+.maturityTitles {
+  /* float: left; */
+  padding-left: 60px;
+}
+
+pre {
+  background-color: white !important;
+  border: none !important;
+  font-family: Arial !important;
+  font-size: 100%;
+}

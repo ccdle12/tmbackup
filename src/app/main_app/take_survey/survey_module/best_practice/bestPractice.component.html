@@ -1,41 +1,41 @@
 
-<!--<md-sidenav-container fullscreen>
-        <md-sidenav #start mode="push" style="width: 200px;" [opened]="true">
+<!--<mat-sidenav-container fullscreen>
+        <mat-sidenav #start mode="push" style="width: 200px;" [opened]="true">
             <div class="surveyTopMargins"></div>
             <div class="row">
-                <md-button-toggle-group vertical class="col-xs-12" value="bestPractice">
-                    <md-button-toggle value="survey" (click)="routeToPage('survey')"> 
+                <mat-button-toggle-group vertical class="col-xs-12" value="bestPractice">
+                    <mat-button-toggle value="survey" (click)="routeToPage('survey')"> 
                         Survey
-                    </md-button-toggle>
-                    <md-button-toggle value="evidence" (click)="routeToPage('evidence')">
+                    </mat-button-toggle>
+                    <mat-button-toggle value="evidence" (click)="routeToPage('evidence')">
                         Evidence
-                    </md-button-toggle>-->
-                    <!--<md-button-toggle value="bestPractice" (click)="routeToPage('bestPractice')">
+                    </mat-button-toggle>-->
+                    <!--<mat-button-toggle value="bestPractice" (click)="routeToPage('bestPractice')">
                         Best Practices
-                    </md-button-toggle>
-                    <md-button-toggle value="caseStudies" (click)="routeToPage('caseStudies')">
+                    </mat-button-toggle>
+                    <mat-button-toggle value="caseStudies" (click)="routeToPage('caseStudies')">
                         Case Studies
-                    </md-button-toggle>
-                </md-button-toggle-group>
+                    </mat-button-toggle>
+                </mat-button-toggle-group>
             </div>
-        </md-sidenav>
+        </mat-sidenav>
 <div class="surveyTopMargins"></div>-->
 
 <div class="bodyTopMarginSurveyModules"></div>
 <div class="container">
 <div class="row">
-    <!--<button md-button class="col-xs-1" id="navigationButton" (click)="this.start.toggle()"> Navigation</button>-->
-    <button md-button class="col-xs-3" (click)="backToTakeSurvey()" id="backToDashboard">Back To Survey Dashboard</button>
+    <!--<button mat-button class="col-xs-1" id="navigationButton" (click)="this.start.toggle()"> Navigation</button>-->
+    <button mat-button class="col-xs-3" (click)="backToTakeSurvey()" id="backToDashboard">Back To Survey Dashboard</button>
 </div>
 <h1>Best Practices</h1>
 
 <div class="row" id="cardsContainer">
-<md-card class="col-sm-2" *ngFor="let bestPractice of bestPractices; let i = index">
-        <md-card-title>Best Practice for {{bestPractice.statementID}}</md-card-title>
-        <md-card-content>
+<mat-card class="col-sm-2" *ngFor="let bestPractice of bestPractices; let i = index">
+        <mat-card-title>Best Practice for {{bestPractice.statementID}}</mat-card-title>
+        <mat-card-content>
             <a href="{{bestPractice.bpLink}}" target="_blank"><p>{{bestPractice.bpText}}</p></a>
-        </md-card-content>
-</md-card>
+        </mat-card-content>
+</mat-card>
 </div>
 </div>
-<!--</md-sidenav-container>-->
+<!--</mat-sidenav-container>-->

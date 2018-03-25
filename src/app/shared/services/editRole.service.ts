@@ -84,5 +84,12 @@ export class EditRoleService {
         return userJSON['user_id'];
     }
 
+    public getCityId() {
+        (this.parseUser())
+        // let userJSON: JSON = this.parseUser();
+
+        // return userJSON['city_id'];
+    }
+
 
 }

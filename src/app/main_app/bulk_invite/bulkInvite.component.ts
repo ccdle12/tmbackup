@@ -2,12 +2,13 @@ import { Component, Inject } from '@angular/core';
 import { KumulosService } from '../../shared/services/kumulos.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../shared/services/validation.service';
-import { MdInputContainer, MdDialog, MdSnackBar, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { LicenseService } from '../../shared/services/license.service';
 import { LocalStorageService } from '../../shared/services/localStorage.service';
 import { Router } from '@angular/router';
 import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
+import { StylingService } from '../../shared/services/styling.service';
 
 @Component({
   selector: 'bulkInvite',
@@ -23,9 +24,15 @@ export class BulkInviteComponent
 
     invalidEmailsFlag: boolean;
 
-    constructor(public formBuilder: FormBuilder, public kumulosService: KumulosService, public licenseService: LicenseService,
-                public localStorageService: LocalStorageService, public snackbar: MdSnackBar, public dialog: MdDialog,
-                public router: Router,  public loadingSnackBar: LoadingSnackBar) 
+    constructor(public formBuilder: FormBuilder, 
+                public kumulosService: KumulosService, 
+                public licenseService: LicenseService,
+                public localStorageService: LocalStorageService, 
+                public snackbar: MatSnackBar, 
+                public dialog: MatDialog,
+                public router: Router,  
+                public loadingSnackBar: LoadingSnackBar,
+                public stylingService: StylingService) 
     {
         this.initMemberVariables();
         this.getAllUsers();
@@ -40,7 +47,10 @@ export class BulkInviteComponent
     }
 
 
-
+    public submitBtnStyle()
+    {
+        return {'background-color': this.stylingService.getPrimaryColour('red')}
+    }
 
 
     //API call for size of users
@@ -92,11 +102,10 @@ export class BulkInviteComponent
             if (this.splitBulkEmails[i] == "")
                 continue;
             
-            console.log("Split Emails: " + this.splitBulkEmails[i]);
+
 
             if (!this.splitBulkEmails[i].match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/))
             {   
-                console.log("Regex failed"); 
                 this.regexEmailFailedCache.push(this.splitBulkEmails[i]);
                 this.invalidEmailsFlag = false;
             }
@@ -182,9 +191,9 @@ export class BulkInviteComponent
 })
 export class EmailInvalidDialog
 {
-    constructor(@Inject(MD_DIALOG_DATA) public data: any) 
+    constructor(@Inject(MAT_DIALOG_DATA) public data: any) 
     {
-        console.log(data.failedEmails);
+
     };
 }
 
@@ -198,7 +207,7 @@ export class SuccessBulkInviteDialog
     successEmailsArr;
     failedEmailsArr;
 
-    constructor(@Inject(MD_DIALOG_DATA) public data: any)
+    constructor(@Inject(MAT_DIALOG_DATA) public data: any)
     {
         this.initMemberVariables();
         this.filterSuccessAndFailedEmails(data);
@@ -230,7 +239,6 @@ export class SuccessBulkInviteDialog
             }
             else
             {
-                console.log("email: " + data.responseArr[i]['email']); 
                 this.successEmailsArr[i] = data.responseArr[i]['email'];
             }
         }

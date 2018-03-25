@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { KumulosService } from '../../shared/services/kumulos.service';
 import { AuthService } from '../../shared/services/auth.service';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
 import { LicenseService } from '../../shared/services/license.service';
@@ -15,8 +15,12 @@ export class PublicationComponent {
 
   public publicationLevel: number;
 
-  constructor(public kumulosService: KumulosService, public loadingSnackBar: LoadingSnackBar, 
-              public dialog: MdDialog, public authService: AuthService, public licenseService: LicenseService) {
+  constructor(public kumulosService: KumulosService, 
+              public loadingSnackBar: LoadingSnackBar, 
+              public dialog: MatDialog, 
+              public authService: AuthService, 
+              public licenseService: LicenseService) 
+  {
     this.getPublicationLevel();
     this.licenseService.getLicenseType();
    };
@@ -47,22 +51,22 @@ export class PublicationComponent {
 
    public openLevel(): any {
      if (this.publicationLevel == 1) 
-      return { 'background-color': '#589e2d', 'color': 'white' };
+      return { 'background-color': '#666363', 'color': 'white' };
    }
 
    public openWithinGroupLevel(): any {
      if (this.publicationLevel == 2) 
-      return { 'background-color': '#589e2d', 'color': 'white' };
+      return { 'background-color': '#666363', 'color': 'white' };
    }
 
    public anonymousLevel(): any {
      if (this.publicationLevel == 3) 
-      return { 'background-color': '#589e2d', 'color': 'white' };
+      return { 'background-color': '#666363', 'color': 'white' };
    }
 
    public closedLevel(): any {
      if (this.publicationLevel == 4) 
-      return { 'background-color': '#589e2d', 'color': 'white' };
+      return { 'background-color': '#666363', 'color': 'white' };
    }
    
    public setPublicationLevel(selectedLevel: string) {
@@ -104,7 +108,7 @@ export class UpdatePublicationLevelDialog {
   public publicationLevelText: string;
   public isLicenseValid: boolean;
 
-  constructor(public kumulosService: KumulosService, public dialog: MdDialog, public licenseService: LicenseService) {
+  constructor(public kumulosService: KumulosService, public dialog: MatDialog, public licenseService: LicenseService) {
     this.setLicenseValid();
     this.setPublicationLevel();
     this.setSelectedPubLevel();
@@ -176,7 +180,6 @@ export class UpdatePublicationLevelDialog {
         this.kumulosService.updateCityPublicationLevel(cityID, publicationLevel, publicationCtyOrGroup)
           .subscribe(responseJSON => 
           {
-            console.log(responseJSON.payload);
             this.dialog.closeAll();
           });
       }
@@ -220,7 +223,7 @@ export class PublishSurveyDialog {
   httpRequestFlag: boolean;
   isLicenseValid: boolean;
   
-  constructor(public kumulosService: KumulosService, public dialog: MdDialog, public licenseService: LicenseService) 
+  constructor(public kumulosService: KumulosService, public dialog: MatDialog, public licenseService: LicenseService) 
   {
     this.setIsLicenseValid();
   }
@@ -236,7 +239,6 @@ export class PublishSurveyDialog {
      this.kumulosService.publishVersion(activeCityVersion)
       .subscribe(responseJSON =>
         {
-          console.log(responseJSON.payload);
           this.dialog.closeAll();
         })
     }
@@ -260,7 +262,7 @@ export class SelectCityOrgDialog {
   orgNameMappedToData: Map<string, any>;
   httpRequestFlag: boolean;
 
-  constructor(public kumulosService: KumulosService, public dialog: MdDialog) 
+  constructor(public kumulosService: KumulosService, public dialog: MatDialog) 
   {
     this.initializeMemberVariables();
     this.getGroupsandCountries();
@@ -305,8 +307,6 @@ export class SelectCityOrgDialog {
 
   public orgHasChanged() 
   {
-    //  this.currentOrgSelected = this.orgNameMappedToData.get(this.currentOrgSelected.name);
-    //  console.log(this.currentOrgSelected.name);
   }
 
   public updateCityPubLevelWithGroup()
@@ -316,11 +316,8 @@ export class SelectCityOrgDialog {
         let user: JSON = JSON.parse(localStorage.getItem('user'));
 
         let cityID: string = user['city_id'];
-        console.log(cityID);
 
         let publicationLevel: string = this.getSelectedPubLevel();
-        console.log(publicationLevel);
-
         let publicationCtyOrGroup: string;
 
         if (!this.currentOrgSelected.name)
@@ -328,13 +325,10 @@ export class SelectCityOrgDialog {
         else
           publicationCtyOrGroup = this.currentOrgSelected.name;
 
-        console.log(publicationCtyOrGroup);
-
         this.httpRequestFlag = true;
         this.kumulosService.updateCityPublicationLevel(cityID, publicationLevel, publicationCtyOrGroup)
           .subscribe(responseJSON => 
           {
-            console.log(responseJSON.payload);
             window.location.reload();
           });
       }

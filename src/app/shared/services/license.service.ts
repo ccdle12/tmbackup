@@ -28,7 +28,7 @@ export class LicenseService
         let userMetaData = this.getUserMetaData();
 
         if (userMetaData){
-           console.log("From licnesE: " + JSON.stringify(userMetaData['license']['licenseType']));
+           ("From licnesE: " + JSON.stringify(userMetaData['license']['licenseType']));
            return JSON.stringify(userMetaData['license']['licenseType']);
         }
         else

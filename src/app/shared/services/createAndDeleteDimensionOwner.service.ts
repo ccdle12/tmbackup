@@ -11,16 +11,11 @@ export class CreateAndDeleteDimensionOwnerService {
     public setAreaAndDimensionID(areaID: string, dimensionID: string): void {
         this.areaID = areaID;
         this.dimensionID = dimensionID;
-
-        console.log("From Create and Delete Dimension Owner Service");
-        console.log(this.areaID);
-        console.log(this.dimensionID);
     }
 
     public setDimensionOwnerID(ownerID: string) {
         this.dimensionOwnerID = ownerID;
-          console.log("From Create and Delete Dimension Owner Service - DIMENSION OWNER ID");
-          console.log(this.dimensionOwnerID);
+
     }
 
     public getAreaID(): string {

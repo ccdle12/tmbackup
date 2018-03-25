@@ -2,13 +2,14 @@ import { Component, Inject, OnInit, AfterViewInit, AfterViewChecked } from '@ang
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
-import { MdDialog, MdTooltip } from '@angular/material';
+import { MatDialog, MatTooltip } from '@angular/material';
 
 import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 
 import { SavingSnackBar } from '../../../shared/components/savingSnackBar';
+import { StylingService } from '../../../shared/services/styling.service';
 
 @Component({
   selector: 'adjustAggregatesComponent',
@@ -38,8 +39,14 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
 
   pageLoaded: boolean;
 
-  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar, 
-              public savingSnackBar: SavingSnackBar, public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MdDialog) 
+  constructor(public router: Router, 
+              public kumulosService: KumulosService, 
+              public snackBar: MatSnackBar, 
+              public savingSnackBar: SavingSnackBar, 
+              public loadingSnackBar: LoadingSnackBar, 
+              public authService: AuthService, 
+              public dialog: MatDialog,
+              public stylingService: StylingService) 
   { 
     this.loadingSnackBar.showLoadingSnackBar(); 
   }
@@ -61,6 +68,11 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
     this.resetTargetValMapToIndex = new  Map<string, string>();
 
     this.pageLoaded = false;
+  }
+
+  public navStyle() 
+  {
+      return {'background-color': this.stylingService.getPrimaryColour('grey')}
   }
 
   public ngOnInit() 
@@ -100,8 +112,6 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
 
   private getUnadjustedFromKumulos(): any 
   { 
-    //CURRENT ACTIVE CITY
-    // let activeCityVersion: string = localStorage.getItem('activeCityVersion');
 
     //BENCHMARK CITY DATA
     let activeCityVersion: string = localStorage.getItem('benchmarkId');
@@ -263,6 +273,7 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
 
 
   public importanceSliderChanged(index, event) {
+    (event.args.value)
     this.importanceValues[index] = event.args.value;
   }
 
@@ -359,17 +370,17 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
 
     if (this.importanceValues[index] != 0 && this.capabilityValues[index] != 0 && this.twoYearTargetValues[index] != 0)
     {
-      console.log("CREATING ADJUSTMENT");
+      ("CREATING ADJUSTMENT");
       let adjustmentKV = this.createAdjustmentDataKV(areaID, dimensionID, importance, score, target, version, updatedBy, aggregateAdjustmentID);
       this.adjustmentDataArray.push(adjustmentKV);
     } else {
-      console.log("NOT CREATING ADJUSTMENT");
+      ("NOT CREATING ADJUSTMENT");
     }
   }
 
   private updateExistingAdjustKV(dimensionID, index) {
 
-    console.log("slider adjusted on existing data");
+    ("slider adjusted on existing data");
     let indexPosInAdjustmentDataArray = this.getIndexPositionInAdjustmentData(dimensionID);
 
     let importance;
@@ -400,12 +411,12 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
     //NEED TO ASK JAMES - IF USER RESETS TO 0 THEY ARE UNABLE TO
     if (this.importanceValues[index] != "0" && this.capabilityValues[index] != "0" && this.twoYearTargetValues[index] != "0")
     {
-      console.log("Updating existing data");
+      ("Updating existing data");
       this.adjustmentDataArray[indexPosInAdjustmentDataArray]['importance'] = this.importanceValues[index];
       this.adjustmentDataArray[indexPosInAdjustmentDataArray]['score'] = this.capabilityValues[index];
       this.adjustmentDataArray[indexPosInAdjustmentDataArray]['target'] = this.twoYearTargetValues[index];
     } else {
-      console.log("NOT Updating existing data");
+      ("NOT Updating existing data");
     }
   }
 
@@ -475,7 +486,7 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
       this.httpRequestFlag = true;
       this.kumulosService.createUpdateAdjustmentData(adjustmentData)
         .subscribe(responseJSON => {
-          console.log(responseJSON.payload);
+          (responseJSON.payload);
 
           this.savingSnackBar.showSavedSnackBar();
           // this.savingSnackBar.dismissSavingSnackBar();
@@ -632,6 +643,9 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
       case ('adjustaggregates'):
         this.router.navigateByUrl('main/viewresults/adjustaggregates');
         break;
+      case ('heatmap'):
+        this.router.navigateByUrl('main/viewresults/heatmap');
+        break;
       }
     }
 
@@ -645,7 +659,7 @@ export class AdjustAggregatesComponent implements OnInit, AfterViewInit, AfterVi
         let currentUrl: string = window.location.pathname;
 
         if (currentUrl ===  "/main/viewresults/adjustaggregates") {
-            return { 'background-color': '#469ac0',
+            return { 'background-color': this.stylingService.getPrimaryColour('red'),
                   'color': 'white' };    
         } else {
         return { 'background-color': '#62B3D1',

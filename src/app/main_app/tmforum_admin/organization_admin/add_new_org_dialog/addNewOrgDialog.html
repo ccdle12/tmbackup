@@ -1,0 +1,117 @@
+<div class="loading-overlay" #loadingElement style="opacity: 100;">
+    <mat-spinner *ngIf="httpRequestFlag"></mat-spinner>
+</div>
+
+<h4>Add a new Organization</h4>
+<form [formGroup]="inviteOrganizationForm" (ngSubmit)="onSubmit()">
+    <div>
+        
+        <div class="form">
+            <mat-form-field>
+                <input matInput placeholder="Organization Name" type="text" formControlName="organizationName">
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field>
+                <input matInput placeholder="Contact Name" type="text" formControlName="contactName">
+            </mat-form-field>
+        </div>
+    
+        <div class="form">
+            <mat-form-field>
+                <input matInput placeholder="Email"  type="text" formControlName="email">
+                <control-messages [control]="inviteOrganizationForm.controls.email"></control-messages>
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field>
+                <mat-select placeholder="What are your primary products and services?" [formControl]="primaryProductsAndServicesFormControl" multiple>
+                    <mat-option *ngFor="let productsAndServices of primaryProductsAndServicesList" [value]="productsAndServices">{{productsAndServices}}</mat-option>
+                </mat-select> 
+            </mat-form-field>
+        </div>
+
+
+        <div class="form">
+                <mat-form-field>
+                    <mat-select placeholder="Which region(s) does this survey focus on?" [formControl]="regionsFormControl" multiple>
+                        <mat-option *ngFor="let region of regionsList" [value]="region">{{region}}</mat-option>
+                    </mat-select> 
+                </mat-form-field>
+            </div>
+
+            <div class="form">
+                <mat-form-field>
+                    <mat-select placeholder="Which sectors does your company primarily serve?" [formControl]="sectorsFormControl" multiple>
+                        <mat-option *ngFor="let sector of sectorsList" [value]="sector">{{sector}}</mat-option>
+                    </mat-select> 
+                </mat-form-field>
+            </div>
+
+        <div class="form">
+            <mat-form-field>
+                <mat-select placeholder="Which customer types do you serve?" [formControl]="customerTypesFormControl" multiple>
+                    <mat-option *ngFor="let customerType of customerTypesList" [value]="customerType">{{customerType}}</mat-option>
+                </mat-select> 
+            </mat-form-field>
+        </div>
+
+        <!-- <div class="form">
+            <mat-form-field>
+                <mat-select placeholder="Which customer types do you serve?" formControlName="customerTypes">
+                    <mat-option value="Business">Business</mat-option>
+                    <mat-option value="SME">SME</mat-option>
+                    <mat-option value="Consumer">Consumer</mat-option>
+                    <mat-option value="Wholesale">Wholesale</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div> -->
+
+        <div class="form">
+            <mat-form-field>
+                <mat-select placeholder="How many total employees does your organization have?" formControlName="totalEmployees">
+                    <mat-option value="Fewer than 100">Fewer than 100</mat-option>
+                    <mat-option value="100-500">100-500</mat-option>
+                    <mat-option value="500-1,000">500-1,000</mat-option>
+                    <mat-option value="1,000-10,000">1,000-10,000</mat-option>
+                    <mat-option value="10,000-100,0000">10,000-100,0000</mat-option>
+                    <mat-option value="More than 100,000">More than 100,000</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field>
+                <mat-select placeholder="What was your organization’s total annual revenue last year?" formControlName="totalAnnualRevenue">
+                    <mat-option value="less than $1 million USD">less than $1 million USD</mat-option>
+                    <mat-option value="$ 1 million to $25 million USD">$ 1 million to $25 million USD</mat-option>
+                    <mat-option value="$ 25 million to $100 million USD">$ 25 million to $100 million USD</mat-option>
+                    <mat-option value="$ 100 million to $1 billion USD">$ 100 million to $1 billion USD</mat-option>
+                    <mat-option value="$ 1 billion to $10 billion USD">$ 1 billion to $10 billion USD</mat-option>
+                    <mat-option value="$ 10 billion to $25 billion USD">$ 10 billion to $25 billion USD</mat-option>
+                    <mat-option value="$ 25 billion to $40 billion USD">$ 25 billion to $40 billion USD</mat-option>
+                    <mat-option value="More than $40 billion USD">More than $40 billion USD</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field>
+                <mat-select placeholder="How long has your company been in business?" formControlName="operatingTime">
+                    <mat-option value="less then 1 year">less then 1 year</mat-option>
+                    <mat-option value="1 year to 5 years">1 year to 5 years</mat-option>
+                    <mat-option value="5 years to 10 years">5 years to 10 years</mat-option>
+                    <mat-option value="10 years to 20 years">10 years to 20 years</mat-option>
+                    <mat-option value="20 years to 50 years">20 years to 50 years</mat-option>
+                    <mat-option value="greater than  50 years">greater than  50 years</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+
+    </div>
+    <button mat-button matDialogClose>Cancel</button>
+    <button mat-button (click)="addNewOrganization()" [disabled]="!inviteOrganizationForm.valid">Add Organization</button>
+</form>

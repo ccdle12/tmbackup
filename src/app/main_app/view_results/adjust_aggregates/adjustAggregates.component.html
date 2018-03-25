@@ -1,21 +1,22 @@
-<nav md-tab-nav-bar>
+<nav mat-tab-nav-bar [ngStyle]="navStyle()">
   <div id="navigationIcon">
-    <img id="backToDashboard" src="../../../assets/Back To-100-white.png" (click)="backToDashboard()" [mdTooltip]="backToDashboardTooltip">
+    <img id="backToDashboard" src="../../../assets/Back To-100-white.png" (click)="backToDashboard()" [matTooltip]="backToDashboardTooltip">
     <img id="saveAdjustments" src="../../../assets/Save-100.png" (click)="sendSurveyRequest()">
 </div>
   
   <div class="container">
     <div class="row">
-      <a md-tab-link class="whiteText navTitle" (click)="routeToPage('myownresults')"><h4>My Own Results</h4></a>
-      <a md-tab-link *ngIf="showResultsTab()" class="whiteText navTitle"  (click)="routeToPage('organizationresults')"><h4>Our Organization's Results</h4></a>
-      <a md-tab-link *ngIf="showResultsTab()" class="whiteText navTitle"  (click)="routeToPage('teamdynamics')"><h4>Team Dynamics</h4></a>
-      <a md-tab-link *ngIf="showResultsTab()" class="whiteText navTitle"  [ngStyle]="inAdjustAggregates()" (click)="routeToPage('adjustaggregates')"><h4>Adjust Aggregates</h4></a>
+      <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('myownresults')"><h4>My Own Results</h4></a>
+      <a mat-tab-link *ngIf="showResultsTab()" class="whiteText navTitle"  (click)="routeToPage('organizationresults')"><h4>Our Organization's Results</h4></a>
+      <a mat-tab-link *ngIf="showResultsTab()" class="whiteText navTitle"  (click)="routeToPage('teamdynamics')"><h4>Team Dynamics</h4></a>
+      <a mat-tab-link *ngIf="showResultsTab()" class="whiteText navTitle"  [ngStyle]="inAdjustAggregates()" (click)="routeToPage('adjustaggregates')"><h4>Adjust Aggregates</h4></a>
+      <a mat-tab-link *ngIf="showResultsTab()" class="whiteText navTitle"  (click)="routeToPage('heatmap')"><h4>Our Organization's Heatmap</h4></a>
   </div>
 </div>
 </nav>
 
 <div class="loading-overlay" #loadingElement style="opacity: 100;">
-    <md-spinner *ngIf="httpRequestFlag"></md-spinner>
+    <mat-spinner *ngIf="httpRequestFlag"></mat-spinner>
 </div>
 
 <div class="container">
@@ -33,44 +34,39 @@
         <span class="col-sm-4 dimensionLabel">{{result['dimensionID']}} {{result['dimensionText']}}</span>  
 
          <div class="relativeParent">
-            <span *ngIf="resetImportanceValHasIndex(i)" class="resetImportanceVal" (click)="setImportanceValToDefault(i)">Reset to {{getImportanceResetVal(i)}}</span> 
+            <span *ngIf="resetImportanceValHasIndex(i)" class="resetImportanceVal redBackground" (click)="setImportanceValToDefault(i)">Reset to {{getImportanceResetVal(i)}}</span> 
         </div>
 
         <span class="col-sm-2 sliders">
             <span class="col-sm-1 col-sm-offset-9" *ngIf="importanceValues[i] != 0">{{importanceValues[i]}}</span>
             <span class="col-sm-1 col-sm-offset-9" *ngIf="importanceValues[i] == null || importanceValues[i] == 0" class="clearScore">0</span> 
-            <jqxSlider *ngIf="importanceValues[i] != 0" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=importanceValues[i] (onChange)="importanceSliderChanged(i, $event)" (click)="importanceSliderClicked(i)" [showButtons]="false" [template]="'info'"></jqxSlider>  
-            <jqxSlider *ngIf="importanceValues[i] == 0" [disabled]="true" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=importanceValues[i] [showButtons]="false" [template]="'info'"></jqxSlider>  
+            <jqxSlider *ngIf="importanceValues[i] != 0" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=importanceValues[i] (onChange)="importanceSliderChanged(i, $event)" (click)="importanceSliderClicked(i)" [showButtons]="false"></jqxSlider>  
+            <jqxSlider *ngIf="importanceValues[i] == 0" [disabled]="true" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=importanceValues[i] [showButtons]="false"></jqxSlider>  
         </span>       
         
          <div class="relativeParent">
-            <span *ngIf="resetScoreValHasIndex(i)" class="resetScoreVal" (click)="setScoreValToDefault(i)">Reset to {{getScoreResetVal(i)}}</span>
+            <span *ngIf="resetScoreValHasIndex(i)" class="resetScoreVal redBackground" (click)="setScoreValToDefault(i)">Reset to {{getScoreResetVal(i)}}</span>
         </div>
 
         <span class="col-sm-2 sliders">
             <span class="col-sm-1 col-sm-offset-9" *ngIf="capabilityValues [i] != 0">{{capabilityValues[i]}}</span>
             <span class="col-sm-1 col-sm-offset-9" *ngIf="capabilityValues[i] == null || capabilityValues[i] == 0" class="clearScore">0</span> 
-            <jqxSlider *ngIf="capabilityValues[i] != 0" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=capabilityValues[i] (onChange)="scoreSliderChanged(i, $event)" (click)="scoreSliderClicked(i)" [showButtons]="false" [template]="'info'"></jqxSlider>  
-            <jqxSlider *ngIf="capabilityValues[i] == 0" [disabled]="true" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=capabilityValues[i]  [showButtons]="false" [template]="'info'"></jqxSlider>  
+            <jqxSlider *ngIf="capabilityValues[i] != 0" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=capabilityValues[i] (onChange)="scoreSliderChanged(i, $event)" (click)="scoreSliderClicked(i)" [showButtons]="false"></jqxSlider>  
+            <jqxSlider *ngIf="capabilityValues[i] == 0" [disabled]="true" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=capabilityValues[i]  [showButtons]="false"></jqxSlider>  
         </span>       
 
         <div class="relativeParent">
-            <span *ngIf="resetTargetValHasIndex(i)" class="resetTargetVal" (click)="setTargetValToDefault(i)">Reset to {{getTargetResetVal(i)}}</span>
+            <span *ngIf="resetTargetValHasIndex(i)" class="resetTargetVal redBackground" (click)="setTargetValToDefault(i)">Reset to {{getTargetResetVal(i)}}</span>
         </div> 
 
         <span class="col-sm-2 sliders"> 
             <span class="col-sm-1 col-sm-offset-9" *ngIf="twoYearTargetValues[i] != 0">{{twoYearTargetValues[i]}}</span>
             <span class="col-sm-1 col-sm-offset-9" *ngIf="twoYearTargetValues[i] == null || twoYearTargetValues[i] == 0" class="clearScore">0</span> 
-            <jqxSlider *ngIf="twoYearTargetValues[i] != 0" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=twoYearTargetValues[i] (onChange)="targetSliderChanged(i, $event)" (click)="targetSliderClicked(i)" [showButtons]="false" [template]="'info'"></jqxSlider>
-             <jqxSlider *ngIf="twoYearTargetValues[i] == 0" [disabled]="true" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=twoYearTargetValues[i] [showButtons]="false" [template]="'info'"></jqxSlider>   
+            <jqxSlider *ngIf="twoYearTargetValues[i] != 0" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=twoYearTargetValues[i] (onChange)="targetSliderChanged(i, $event)" (click)="targetSliderClicked(i)" [showButtons]="false"></jqxSlider>
+             <jqxSlider *ngIf="twoYearTargetValues[i] == 0" [disabled]="true" [height]="height" [min]="0" [max]="5" [ticksFrequency]="1" [mode]='"fixed"' [width]=180 [value]=twoYearTargetValues[i] [showButtons]="false"></jqxSlider>   
          </span>           
 
      </div>  
   </div>    
 
-  <div class="marginBottom"></div>
-     <!-- </div>  -->
-
-    <!-- <button class="adjustAggregatesBtn" md-button md-dialog-close>Cancel</button>
-    <button class="adjustAggregatesBtn" md-button (click)="sendSurveyRequest()">Save</button> -->
-<!-- </div>  -->
+  <div class="marginBottom"></div> 

@@ -1,0 +1,12 @@
+<div class="loading-overlay" #loadingElement style="opacity: 100;">
+    <mat-spinner *ngIf="httpRequestFlag"></mat-spinner>
+</div>
+
+<h3> Email Published Data Results </h3>
+<p> This will the Published Data in a comma separated values (CSV) format to your email address. </p>
+<p>Do you wish to Proceed? </p>
+
+<div class="row">
+    <button mat-button matDialogClose class="col-xs-6">Cancel</button>
+    <button mat-button class="col-xs-6" (click)="sendSurveyRequest()">Yes</button>
+</div>

@@ -25,7 +25,7 @@ export class ViewResultsComponent {
     }
 
     public routeToPage(surveyPage: String) {
-    console.log('routetoPage activated: ' + surveyPage);
+    ('routetoPage activated: ' + surveyPage);
     switch(surveyPage) {
       case('myownresults'):
         this.router.navigateByUrl('main/viewresults/myownresults');

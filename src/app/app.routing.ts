@@ -28,10 +28,10 @@ const appRoutes: Routes = [
         component: WelcomeComponent, 
         canActivate: [WelcomeGuardService]
     },
-    {
-        path: 'registration',
-        loadChildren: 'app/registration/registration.module#RegistrationModule'
-    },
+    // {
+    //     path: 'registration',
+    //     loadChildren: 'app/registration/registration.module#RegistrationModule'
+    // },
     {path: '**', component: NotFoundComponent},
 ]
 

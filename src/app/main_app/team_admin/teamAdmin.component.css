@@ -1,6 +1,6 @@
 /*Team Admin*/
 
-md-card {
+mat-card {
     /*height: 350px;*/
     /*width: 300px;*/
     height: 200px;
@@ -21,7 +21,7 @@ img {
   /*text-align: center;*/
 }
 
-md-card-content {
+mat-card-content {
   margin-bottom: 10px;
 }
 
@@ -67,7 +67,7 @@ md-card-content {
   margin-bottom: 350px;
 }
 
-md-card-actions {
+mat-card-actions {
   position: relative;
 }
 

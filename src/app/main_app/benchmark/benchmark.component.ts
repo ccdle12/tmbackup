@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { KumulosService } from '../../shared/services/kumulos.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { LicenseService } from '../../shared/services/license.service';
-import { MdDialog } from '@angular/material';
+import { StylingService } from '../../shared/services/styling.service';
+import { MatDialog } from '@angular/material';
 
 import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
 
@@ -34,8 +35,11 @@ export class BenchmarkComponent {
 
   public surveyDashboard;
 
-  constructor(public kumulosService: KumulosService, public dialog: MdDialog, public loadingSnackBar: LoadingSnackBar,
-              public licenseService: LicenseService) 
+  constructor(public kumulosService: KumulosService, 
+              public dialog: MatDialog, 
+              public loadingSnackBar: LoadingSnackBar,
+              public licenseService: LicenseService,
+              public stylingService: StylingService) 
   {
     this.setIsLicenseValid();
     this.initializeMemberVariables();
@@ -45,7 +49,6 @@ export class BenchmarkComponent {
   private setIsLicenseValid()
   {
     this.isLicenseValid = this.licenseService.isLicenseValid();
-    // console.log("is license valid: " + this.isLicenseValid);
   }
 
   private initializeMemberVariables(): void {
@@ -74,17 +77,9 @@ export class BenchmarkComponent {
       this.kumulosService.getAllBenchmarkData(cityID)
       .subscribe(responseJSON => 
         {
-          // console.log("All benchmark data");
-          console.log("RETRIEVED ALL DATA BELOW:");
-          console.log(responseJSON.payload);
-          
           this.allCitiesData = responseJSON.payload;
 
-          // console.log("ALL DATA: ");
-          // console.log(responseJSON.payload);
-          
           let cityDataLength = this.allCitiesData.length;
-          // console.log("All cities data: " + JSON.stringify(this.allCitiesData[1]));
           this.currentCityData = this.allCitiesData[cityDataLength - 1];
 
           this.updateAllCityNames();
@@ -92,8 +87,6 @@ export class BenchmarkComponent {
           this.mapCityToVersionId();
 
           this.currentCitySelected = this.allCityNames[0].value;
-          // console.log("Response JSON: ");
-          // console.log(responseJSON.payload[0].versionID);
           localStorage.setItem('benchmarkId', responseJSON.payload[0].versionID);
 
           this.createComboCharts();
@@ -109,6 +102,7 @@ export class BenchmarkComponent {
   private getCityId(): string {
     let user: JSON = JSON.parse(localStorage.getItem('user'));
     let cityId: string = user['city_id'];
+
     
     return cityId;
   }
@@ -123,9 +117,9 @@ export class BenchmarkComponent {
       else
       {
         if (!this.isLicenseValid)
-          this.allCityNames.unshift({label: "DEMO Benchmark", value: {id:i, name:"DEMO Benchmark"}});
+          this.allCityNames.unshift({label: "DEMO Global Digital Benchmark", value: {id:i, name:"DEMO Global Digital Benchmark"}});
         else
-          this.allCityNames.unshift({label: "Benchmark", value: {id:i, name:"Benchmark"}});
+          this.allCityNames.unshift({label: "Global Digital Benchmark", value: {id:i, name:"Global Digital Benchmark"}});
       }
     }
   }
@@ -137,9 +131,9 @@ export class BenchmarkComponent {
           this.cityNameMappedToData.set(this.allCitiesData[i]['cityName'], this.allCitiesData[i]['aggregateSurveys']);
         else
           if (!this.isLicenseValid)
-            this.cityNameMappedToData.set("DEMO Benchmark", this.allCitiesData[i]);
+            this.cityNameMappedToData.set("DEMO Global Digital Benchmark", this.allCitiesData[i]);
           else
-            this.cityNameMappedToData.set("Benchmark", this.allCitiesData[i]);
+            this.cityNameMappedToData.set("Global Digital Benchmark", this.allCitiesData[i]);
             
     }
   }
@@ -149,9 +143,9 @@ export class BenchmarkComponent {
 
       if (i == this.allCitiesData.length - 1) {
         if (!this.isLicenseValid)
-          this.cityMapToVersionID.set("DEMO Benchmark", localStorage.getItem('activeCityVersion'));
+          this.cityMapToVersionID.set("DEMO Global Digital Benchmark", localStorage.getItem('activeCityVersion'));
         else
-          this.cityMapToVersionID.set("Benchmark", localStorage.getItem('activeCityVersion'));
+          this.cityMapToVersionID.set("Global Digital Benchmark", localStorage.getItem('activeCityVersion'));
       } else {
         this.cityMapToVersionID.set(this.allCitiesData[i]['cityName'], this.allCitiesData[i]['versionID']);
       }
@@ -160,12 +154,10 @@ export class BenchmarkComponent {
   }
 
   public cityHasChanged() {
-    // console.log("City has changed: " + this.currentCitySelected.name);
 
       this.currentCityData = (this.cityNameMappedToData.get(this.currentCitySelected.name));
 
-      // console.log("Setting a version ID in local storage");
-      // console.log(this.cityMapToVersionID.get(this.currentCitySelected.name));
+  
       localStorage.setItem("benchmarkId", this.cityMapToVersionID.get(this.currentCitySelected.name));
 
       this.createComboCharts();
@@ -185,11 +177,8 @@ export class BenchmarkComponent {
 
     let dimensionToIndexPos = new Map<Number, Number>();
 
-    
-
     // Last City Data in the payload from getAllBenchMarkData (most likely will be benchmark data)
-    // console.log("Last city: ") 
-    // console.log(this.allCitiesData[this.allCitiesData.length -1]);
+
     let lastCityData = this.allCitiesData[this.allCitiesData.length - 1];
 
     //Check if last city data has aggregate surveys, if they do then this is not the benchmark data
@@ -204,9 +193,7 @@ export class BenchmarkComponent {
 
     // Object Data for the current city
     let currentCityData = this.cityNameMappedToData.get(this.currentCitySelected.name);
-    console.log("FETCHED CURRENT CITY DATA:")
-    console.log(currentCityData);
-    
+
     let dataTableArray: any = new Array();
 
 
@@ -263,9 +250,6 @@ export class BenchmarkComponent {
           dataTableArray.push([dimensionText, importance, score, target]);
         }
       }
-      console.log("Area Text: " + areaText);
-      console.log("---------------- Area Finished -------------")
-
       let comboChart = {
             chartType: 'ComboChart',
             dataTable: dataTableArray,
@@ -279,7 +263,12 @@ export class BenchmarkComponent {
                 },
                   ticks: [0, 1, 2, 3, 4, 5] 
                 }, 
-                colors: ['#348bb5', '#e28a1d', '#589e2d'],
+                colors: 
+                [
+                  this.stylingService.getHexPrimaryColour('grey'), 
+                  this.stylingService.getHexPrimaryColour('black'), 
+                  this.stylingService.getHexPrimaryColour('red')
+                ],
                 focusTarget: 'category',
                 tooltip: {
                   trigger: 'focus',
@@ -305,18 +294,16 @@ export class BenchmarkComponent {
   styleUrls: ['./emailBenchmarkResults.css'],
 })
 export class EmailBenchmarkResults {
-  constructor(public kumulosService: KumulosService, public dialog: MdDialog, public authService: AuthService) { }
+  constructor(public kumulosService: KumulosService, public dialog: MatDialog, public authService: AuthService) { }
 
   public sendSurveyRequest(): void {
     let benchmarkID: string = localStorage.getItem('benchmarkId');
-    // console.log("benchmark Id: " + benchmarkID);
     let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
 
     let emailAddress: string = userProfile['email'];
 
       this.kumulosService.requestBenchmarkSurveyCSV(benchmarkID, emailAddress)
         .subscribe(responseJSON => {
-          // console.log(responseJSON.payload);
           this.dialog.closeAll();
       });
   }

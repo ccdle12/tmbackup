@@ -16,7 +16,7 @@ export class UserRoleGuardService implements CanActivate {
     if (user) 
     {
       let userRole: string = user['user_role'];
-      console.log("User Role: " + userRole);
+      ("User Role: " + userRole);
       
       //If in demo mode
       if (!this.auth.isAuthenticated && !this.auth.isVerified)
@@ -26,14 +26,14 @@ export class UserRoleGuardService implements CanActivate {
       }
 
       //if logged in and user is not leader and consultant
-      if (userRole !== "Leader" && userRole !== "Consultant") 
+      if (userRole !== "Leader" && userRole !== "Consultant" && userRole !== "Admin" && userRole !== "Super User") 
       {
         this.router.navigate(['main']);
         return false;
       }
 
   } else {
-    console.log("user has no user raw json");
+    ("user has no user raw json");
     this.router.navigate(['main']);
     return false;
   }

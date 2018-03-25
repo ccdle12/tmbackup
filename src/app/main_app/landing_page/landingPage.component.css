@@ -19,8 +19,10 @@
     /* width: 90%; */
 }
 .header {
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
     text-align: center;
+    padding-left: 75px;
+    padding-right: 75px;
 }
 
 .subHeader {
@@ -32,7 +34,7 @@
     background-color: lightgrey;
     /* width: 500px;    */
     min-height: 683px;  
-     padding-top: 120px; 
+     /* padding-top: 120px;  */
     /* max-height: 100%;   */
     max-width: 50%;
     height: auto;

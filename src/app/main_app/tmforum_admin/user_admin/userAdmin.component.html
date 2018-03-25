@@ -1,0 +1,56 @@
+<div class="loading-overlay" #loadingElement style="opacity: 100;">
+  <mat-spinner *ngIf="httpRequestFlag"></mat-spinner>
+</div>
+
+<nav mat-tab-nav-bar [ngStyle]="navStyle()">
+    <div id="navigationIcon">
+      <img id="backToDashboard" src="../../../assets/Back To-100-white.png" (click)="backToDashboard()" [matTooltip]="backToDashboardTooltip">
+      <img *ngIf="!loadingFlag" id="emailDocument" src="../../../assets/Email Document-100-white.png"  (click)="getAllUserEmails()"  [matTooltip]="getUserEmails">
+    </div>
+    
+    <div class="container">
+      <div class="row">
+        <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('organizationadmin')"><h4>Organization Admin</h4></a>
+        <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('surveyadmin')"><h4>Survey Admin</h4></a>
+        <a mat-tab-link class="whiteText navTitle" [ngStyle]="userAdminStyle()"><h4>User Admin</h4></a>
+        <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('publisheddataadmin')"><h4>Published Data</h4></a>
+      </div>
+    </div> 
+</nav>
+
+<div class="container">
+  <div class="row">
+    <h1>Maintain Users</h1>
+    <h5>Maintain Survey Groups Users</h5>
+    <button id="addUser" mat-mini-fab class="col-xs-3" color="primary" (click)="inviteUser()" [disabled]="loadingFlag"><mat-icon>add</mat-icon></button>
+  </div>
+
+<div>
+  <h3>Organizations</h3>
+  <p-dropdown id="dropDownMenu" [options]="organizationsInView" [(ngModel)]="currentOrganizationSelected" (onChange)="organizationHasChanged()" [style]="{'width':'250px'}" [disabled]="loadingFlag"></p-dropdown>
+</div>
+<div>
+  <h3>Survey Groups</h3>
+  <p-dropdown id="dropDownMenu" [options]="surveyGroupsInView" [(ngModel)]="currentSurveyGroupSelected" (onChange)="surveyGroupHasChanged()" [style]="{'width':'250px'}" [disabled]="loadingFlag"></p-dropdown>
+</div>
+
+<div class="row"  id="cardsContainer">
+  <mat-card class="col-sm-1" *ngFor="let user of usersInView; let i = index">
+      <img class="roundImage reduceImageSize" [src]="user.picture"/>
+
+      <div class="cardBody">
+        <h5><strong>{{getUsersName(i)}}</strong></h5>
+        <h6>{{getUserRole(i)}}</h6>
+
+        <mat-card-content>
+          <h6>{{getUsersTitle(i)}}</h6>
+          <h6>{{getUsersEmail(i)}}</h6>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button (click)="editUserRole(i)" mat-button [disabled]="loadingFlag">Edit Role</button>
+          <button (click)="deleteUser(i)" mat-button [disabled]="loadingFlag">Delete</button>
+        </mat-card-actions>
+      </div>
+  </mat-card>
+ </div>

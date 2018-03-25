@@ -7,6 +7,7 @@ import { MyOwnResultsComponent } from './my_own_results/myOwnResults.component';
 import { OrganizationResultsComponent } from './our_organization_results/organizationResults.component';
 import { TeamDynamicsComponent } from './team_dynamics/teamDynamics.component';
 import { UserRoleGuardService } from '../../shared/services/userRole-guard.service';
+import { HeatMapComponent } from './heat_map/heatMap.component';
 
 const viewResultsRoutes: Routes = [
     {
@@ -30,7 +31,10 @@ const viewResultsRoutes: Routes = [
     {
         path: 'adjustaggregates',
         component: AdjustAggregatesComponent,
-    
+    }, 
+    {
+        path: 'heatmap',
+        component: HeatMapComponent,
     }
 ]   
 

@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService }       from './shared/services/auth.service';
 import { LocalStorageService } from './shared/services/localStorage.service';
 import { KumulosService } from './shared/services/kumulos.service';
-import { MdDialog } from '@angular/material';
+import { EditRoleService } from './shared/services/editRole.service';
+import { StylingService } from './shared/services/styling.service'; 
+import { MatDialog } from '@angular/material';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import {
     Router,
@@ -15,6 +18,8 @@ import {
 } from '@angular/router';
 
 import {NgZone, Renderer, ElementRef, ViewChild} from '@angular/core';
+import { forEach } from '@angular/router/src/utils/collection';
+import { LoadingSnackBar } from 'app/shared/components/loadingSnackBar';
 
 @Component({
   selector: 'app-root',
@@ -33,9 +38,14 @@ export class AppComponent {
     // see template snippet below this script
     @ViewChild('spinnerElement') spinnerElement: ElementRef;
 
-   constructor(private router: Router,  private ngZone: NgZone,
-               private renderer: Renderer, public authService: AuthService, 
-               public localStorageService: LocalStorageService, public dialog: MdDialog) {
+   constructor(private router: Router,  
+               private ngZone: NgZone,
+               private renderer: Renderer, 
+               public authService: AuthService, 
+               public localStorageService: LocalStorageService, 
+               public dialog: MatDialog,
+               public stylingService: StylingService) 
+    {
 
         this.authService.handleAuthentication();
         this.authService.revertToDemoIfTokenExpires();
@@ -43,12 +53,20 @@ export class AppComponent {
 
         this.setWidthAndHeight();
 
-        this.infoTooltip = "TM Forum Digial Maturity Model and Metrics. v1.0 UAT (build. 1.0.0.2). 2017 Cotham Technologies and TM Forum. In-app iocs by Icons8 (https://icons8.com/)."
+        this.infoTooltip = "TM Forum Digial Maturity Model and Metrics. v3.0 (build. 3.0.0.0). 2017 Cotham Technologies and TM Forum. In-app icons by Icons8 (https://icons8.com/)."
         
-        this.routerEventListener();
-    
-        
+        this.routerEventListener();    
     }
+
+
+    /**
+     * View Methods
+     */
+    public footerBackground() 
+    {
+        return { 'background-color': this.stylingService.getPrimaryColour("grey") };
+    }
+
 
     private setWidthAndHeight(): void {
         this.width = window.innerWidth;
@@ -165,13 +183,85 @@ export class EditUserDetailsDialog {
 
   userName: string;
   userTitle: string;
+  surveyGroup: string;
+
+  /** Survey Groups that will allow Super User to switch between */
+  surveyGroupObjects: Array<any>;
+  namesOfSurveyGroups: Array<string>;
+  mapOfSurveyGroupNameToIndexPostion: Map<any, any>;
+  currentSurveyGroup: any;
+//   positionOfCurrentSurveyGroup: any;
+
+
+  /** Trying to use form groups */
+  public editUserDetailsForm: FormGroup;
 
   httpRequestFlag: boolean;
+  surveyGroupChangedFlag: boolean;
   
   @ViewChild('spinnerElement') loadingElement: ElementRef;
 
-  constructor(public kumulosService: KumulosService, public authService: AuthService,  public dialog: MdDialog) { 
-      this.setUserNameAndTitle();
+  constructor(public kumulosService: KumulosService, 
+              public authService: AuthService,  
+              public dialog: MatDialog, 
+              public userJSON: EditRoleService,
+              public formBuilder: FormBuilder,
+              public loadingSnackBar: LoadingSnackBar) { 
+    this.setupInstanceVariables();
+    this.getSurveyGroupsInOrg();  
+    this.setUserNameAndTitle();
+  }
+
+  public setupInstanceVariables() {
+      this.initEditUserDetailsForm();
+      this.mapOfSurveyGroupNameToIndexPostion = new Map();
+      this.surveyGroupObjects = new Array();
+      this.namesOfSurveyGroups = new Array();
+      this.surveyGroupChangedFlag = false;
+  }
+
+  private initEditUserDetailsForm(): void 
+  {
+    this.editUserDetailsForm = this.formBuilder.group({
+      name: [this.getUserName()],
+      jobTitle: [this.getUserTitle()],
+      surveyGroup: [this.getUserCity()],
+     });
+  }
+
+  public getSurveyGroupsInOrg(): void {
+    let user = JSON.parse(localStorage.getItem('user'));
+    let cityId = user["city_id"];
+    
+    this.kumulosService.webGetOrgbyCityID(cityId)
+        .toPromise().then(response => {
+            //Retrieving org by city id
+            // returning the org object
+            return response.payload;
+        }).then(payload => {
+            //getting the org name from the org object
+            let orgName = payload["name"];
+
+            //passing the org name to get all the survey groups associated with it 
+            this.kumulosService.webGetSurveysByOrg(orgName).toPromise()
+                .then(response => {
+
+                    //Adding all the survey groups to a cached array for displaying on the view
+                    for (let i = 0; i < response.payload.length; i++) {
+                        this.surveyGroupObjects.push(response.payload[i]);
+                        this.namesOfSurveyGroups.push(response.payload[i]["name"])
+
+                        // Mapping name of each survey group to it's index position
+                        this.mapOfSurveyGroupNameToIndexPostion.set(response.payload[i]["name"], i);
+
+                        // Setting current survey group according to the city_id
+                        if (cityId == response.payload[i]["cityID"]) {
+                            this.currentSurveyGroup = response.payload[i];
+                        }
+                    }
+                });
+
+        });
   }
 
   public setUserNameAndTitle(): void {
@@ -183,10 +273,31 @@ export class EditUserDetailsDialog {
     let userId: string = this.getUserId();
 
     this.httpRequestFlag = true;
-    this.kumulosService.updateUserNameAndJobTitle(userId, this.userName, this.userTitle)
+
+    //Retrieving selected survey group
+    let cityId;
+    let surveyGroupName;
+
+    if (this.editUserDetailsForm.value.surveyGroup) {
+        surveyGroupName = this.editUserDetailsForm.value.surveyGroup
+        let indexPosition = this.mapOfSurveyGroupNameToIndexPostion.get(surveyGroupName);
+
+        let selectedSurveyGroupObject = this.surveyGroupObjects[indexPosition];
+
+        cityId = selectedSurveyGroupObject["cityID"];
+    } else {
+        cityId = "";
+        surveyGroupName = "";
+    }
+
+    // User name and User title
+    let userName = this.editUserDetailsForm.value.name;
+    let userTitle = this.editUserDetailsForm.value.jobTitle;
+
+ 
+    this.kumulosService.updateUserNameAndJobTitle(userId, userName, userTitle, cityId, surveyGroupName,)
         .subscribe(responseJSON => 
         {
-            console.log(responseJSON.payload);
             this.updateUserProfile();
         });
   }
@@ -212,7 +323,6 @@ export class EditUserDetailsDialog {
 
   private getUserTitle(): string {
       let userProfile: JSON = this.getUserProfile();
-      console.log(userProfile);
       if (this.isUserMetaData(userProfile)) {
         if (this.isMetaDataNameEmpty(userProfile)) {
             return "";
@@ -222,6 +332,12 @@ export class EditUserDetailsDialog {
     }
 
     return "";
+  }
+
+  private getUserCity(): string {
+      let user = JSON.parse(localStorage.getItem('user'));
+
+      return user["city"];
   }
 
   private getUserProfile(): JSON {
@@ -238,8 +354,22 @@ export class EditUserDetailsDialog {
   }
 
 
+  /**
+   * Function bind to view
+   */
+  public surveyGroupChanged() {
+      this.surveyGroupChangedFlag = true;
+  }
+
   private updateUserProfile(): void {
-    this.requestUpdatedUserProfile();
+    if (this.surveyGroupChangedFlag) {
+        let snackBarRef= this.loadingSnackBar.customSnackBar("The application will automatically logout");
+        snackBarRef.afterDismissed().subscribe(() => {
+            this.requestUpdatedUserProfile();
+        })
+    } else {
+        this.requestUpdatedUserProfile();
+    }
   }
 
   private requestUpdatedUserProfile(): void {
@@ -252,6 +382,10 @@ export class EditUserDetailsDialog {
             this.cacheUserProfile(userProfile);
             this.cacheUserName(userProfile);
             this.dialog.closeAll();
+
+            if (this.surveyGroupChangedFlag) {
+                this.authService.logout();
+            }
             
         });
   }
@@ -268,4 +402,6 @@ export class EditUserDetailsDialog {
   private reloadPage(): void {
       window.location.reload();
   }
+
+  onSubmit() {}
 }

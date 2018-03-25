@@ -1,0 +1,52 @@
+<nav mat-tab-nav-bar [ngStyle]="navStyle()">
+        <div id="navigationIcon">
+          <img id="backToDashboard" src="../../../assets/Back To-100-white.png" (click)="backToDashboard()" [matTooltip]="backToDashboardTooltip">
+        </div>
+        
+        <div class="container">
+          <div class="row">
+            <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('organizationadmin')"><h4>Organization Admin</h4></a>
+            <a mat-tab-link class="whiteText navTitle" [ngStyle]="surveyStyle()" (click)="routeToPage('surveyadmin')"><h4>Survey Admin</h4></a>
+            <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('useradmin')"><h4>User Admin</h4></a>
+            <!-- <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('bulkinviteadmin')"><h4>Bulk Invite</h4></a> -->
+            <a mat-tab-link class="whiteText navTitle" (click)="routeToPage('publisheddataadmin')"><h4>Published Data</h4></a>
+          </div>
+        </div> 
+    </nav>
+    
+    <div class="container">
+      <div class="row">
+        <h1>Maintain Surveys</h1>
+        <h5>Maintain Survey Groups with an Organizations</h5>
+        <button id="addOrganization" mat-mini-fab class="col-xs-3" color="primary" (click)="addCompany()"><mat-icon>add</mat-icon></button>
+      </div>
+    
+    <h2>Organizations</h2>
+    <p-dropdown id="dropDownMenu" [options]="organizations" [(ngModel)]="currentOrganizationSelected" (onChange)="organizationHasChanged()" [style]="{'width':'250px'}"></p-dropdown>
+    
+    <!-- <mat-form-field>
+      <mat-select placeholder="Select" [(ngModel)]="currentOrganizationSelected" (onChange)="organizationHasChanged()">
+        <mat-option *ngFor="let orgs of organizations; let i = index">{{organizations[i].label}}</mat-option>
+      </mat-select>
+    </mat-form-field> -->
+
+    <div class="row"  id="cardsContainer">
+      <mat-card class="col-sm-1" *ngFor="let companies of companiesInView; let i = index">
+         <div class="cardBody">
+           <h5>{{companies.name}}</h5>
+
+           <h6>License</h6>
+           <mat-card-content>
+             <p>{{companies.licenseType}}</p>
+             <p>Max Users: {{companies.maxUsers}}</p>
+             <p>Valid From: {{companies.startDate * 1000 | date}}</p>
+             <p>Valid To: {{companies.expiryDate * 1000 | date}}</p>
+           </mat-card-content>
+  
+           <mat-card-actions>
+             <button mat-button class="editButton" (click)="editCompany(companies)">Edit</button>
+           </mat-card-actions>
+         </div> 
+      </mat-card>
+     </div>
+    

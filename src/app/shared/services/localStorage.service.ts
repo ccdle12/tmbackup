@@ -47,14 +47,12 @@ public getUserJWT(): string {
        
         return userJWT;
     }
-    console.log("demoJWT", localStorage.getItem('demoJWT'));
     return localStorage.getItem('demoJWT');
 }
 
 public getUserCityId(): string {
     if (localStorage.getItem('user') !== null) {
         let userProfile: any = JSON.parse(localStorage.getItem('user'));
-        console.log('city_id in local storage service', userProfile.city_id);
         return userProfile.city_id;
     }
     return localStorage.getItem('demoCity');

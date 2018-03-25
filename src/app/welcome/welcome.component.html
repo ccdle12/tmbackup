@@ -1,14 +1,17 @@
 <div id="welcomeComponent">
-    <div id="smartCityPerson"><img src="assets/DMMPersonEdit.png" width="300" alt="Picture of Smart City Person"/></div>
-    <div><img id="tmForumBanner" src="assets/DMMLogo.png"   alt="Banner for smart city"/></div>
-    <div><img id="sloganBanner" src="assets/AppForDigitalTransformers.png" alt="slogan banner"/></div>
+<div class="smartCityPerson"><img src="assets/DMMPersonEdit.png" width="300" alt="Picture of Smart City Person"/></div>
+
+    <div class="outer_div">
+        <div class="inner_div" id="tmForumDiv"><img id="tmForumBanner" src="assets/TMForum_logoRedGray-300x67.png" alt="Banner for smart city"/></div>
+        <div id="DMM" class="red dmmDiv"><h1>Digital Maturity Model</h1></div>
+        <div class="digitalTransf" id="sloganBanner" [ngStyle]="digitalTransformers()"><h1>An App made for Digital Transformers</h1></div>
+    </div>
 
 <div class="btn-group btn-group-justified navigationButtons">
-        <a routerLink="/main" id="seeDemo" class="btn"><h4>See Demo</h4></a>    
-     <a *ngIf="!authService.isAuthenticated()" class="btn orangeBtn" routerLink="/registration"><h4>Register My Interest</h4></a> 
-    <a *ngIf="authService.isAuthenticated()" (click)="openDialog()" class="btn defaultBtn">Register My Interest</a>
+        <a routerLink="/main" [ngStyle]="seeDemoStyle()" class="btn"><h4>See Demo</h4></a>    
+    <a *ngIf="authService.isAuthenticated()"  [ngStyle]="registerMyInterestStyle()" (click)="openDialog()" class="btn defaultBtn">Register My Interest</a>
 
-     <a *ngIf="!authService.isAuthenticated()" (click)="authService.login()" class="btn defaultBtn"><h4>Login</h4></a> 
+     <a *ngIf="!authService.isAuthenticated()" [ngStyle]="loginStyle()" (click)="authService.login()" class="btn defaultBtn"><h4>Login</h4></a> 
 </div>
 
 <div id="togetherAndSponsorArea">

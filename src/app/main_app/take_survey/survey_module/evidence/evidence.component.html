@@ -5,19 +5,19 @@
 <h3>{{currentDimension}}</h3>
 <h5>This section, if populated, may provide you with specific organizational evidence to support your rating choice</h5>
 
-<button id="provideEvidence" md-mini-fab class="col-xs-3" color="primary" (click)="launchEvidenceDialog()" mdTooltip="Provide new evidence" *ngIf="this.auth.isEvidencer() || !this.auth.inDemoMode()"><md-icon>add</md-icon></button>
- <button id="provideEvidence" md-mini-fab class="col-xs-3" color="primary"  mdTooltip="Provide new evidence" *ngIf="!this.auth.isTeam() && !this.auth.isLeaderConsultant && !this.auth.isEvidencer() && this.auth.inDemoMode()"><md-icon>add</md-icon></button> 
+<button id="provideEvidence" mat-mini-fab class="col-xs-3" color="primary" (click)="launchEvidenceDialog()" matTooltip="Provide new evidence" *ngIf="this.auth.isEvidencer() || !this.auth.inDemoMode()"><mat-icon>add</mat-icon></button>
+ <button id="provideEvidence" mat-mini-fab class="col-xs-3" color="primary"  matTooltip="Provide new evidence" *ngIf="!this.auth.isTeam() && !this.auth.isLeaderConsultant && !this.auth.isEvidencer() && this.auth.inDemoMode()"><mat-icon>add</mat-icon></button> 
 <div class="row" id="cardsContainer">
-<md-card class="col-sm-2" *ngFor="let evidence of evidence; let i = index">
-        <md-card-title>{{evidence.evidenceDescription}}</md-card-title>
-        <md-card-content>
+<mat-card class="col-sm-2" *ngFor="let evidence of evidence; let i = index">
+        <mat-card-title>{{evidence.evidenceDescription}}</mat-card-title>
+        <mat-card-content>
             <a (click)="routeToEvidenceLink(i)"><p>{{evidence.evidenceText}}</p></a>
             <!-- <a target="_blank" href="{{evidence.evidenceText}}"><p>{{evidence.evidenceText}}</p></a> -->
-            <button md-button class="col-sm-12" (click)="launchEditEvidenceDialog(i)" *ngIf="this.auth.isEvidencer() || !this.auth.inDemoMode()">Edit</button>
-            <button md-button class="col-sm-12" (click)="launchDeleteEvidenceDialog()" *ngIf="this.auth.isEvidencer() || !this.auth.inDemoMode()">Delete</button>
-             <button md-button class="col-sm-12" *ngIf="!this.auth.isTeam() && !this.auth.isLeaderConsultant && !this.auth.isEvidencer() && this.auth.inDemoMode()">Edit</button> 
-             <button md-button class="col-sm-12"  *ngIf="!this.auth.isTeam() &&  !this.auth.isLeaderConsultant && !this.auth.isEvidencer() && this.auth.inDemoMode()">Delete</button> 
-        </md-card-content>
-</md-card>
+            <button mat-button class="col-sm-12" (click)="launchEditEvidenceDialog(i)" *ngIf="this.auth.isEvidencer() || !this.auth.inDemoMode()">Edit</button>
+            <button mat-button class="col-sm-12" (click)="launchDeleteEvidenceDialog()" *ngIf="this.auth.isEvidencer() || !this.auth.inDemoMode()">Delete</button>
+             <button mat-button class="col-sm-12" *ngIf="!this.auth.isTeam() && !this.auth.isLeaderConsultant && !this.auth.isEvidencer() && this.auth.inDemoMode()">Edit</button> 
+             <button mat-button class="col-sm-12"  *ngIf="!this.auth.isTeam() &&  !this.auth.isLeaderConsultant && !this.auth.isEvidencer() && this.auth.inDemoMode()">Delete</button> 
+        </mat-card-content>
+</mat-card>
 </div>
 </div>

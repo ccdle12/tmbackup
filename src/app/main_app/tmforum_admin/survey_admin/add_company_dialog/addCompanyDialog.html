@@ -1,0 +1,62 @@
+<div class="loading-overlay" #loadingElement style="opacity: 100;">
+    <mat-spinner *ngIf="httpRequestFlag"></mat-spinner>
+</div>
+
+<h4>Add New Survey</h4>
+<form [formGroup]="addCompanyForm" (ngSubmit)="onSubmit()">
+    <div>
+        
+        <div class="form">
+            <mat-form-field>
+                <input matInput placeholder="Name" type="text" formControlName="name">
+            </mat-form-field>
+        </div>
+<!-- 
+        <div>
+            <mat-form-field>
+                <mat-select placeholder="User Role" formControlName="userRole">
+                    <mat-option value="Leader">Leader</mat-option>
+                    <mat-option value="Consultant">Consultant</mat-option>
+                    <mat-option value="Evidencer">Evidencer</mat-option>
+                    <mat-option value="Team">Team</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div> -->
+        <!-- <input matInput placeholder="License" type="text" formControlName="license">
+         -->
+         <div class="form">
+                <mat-form-field>
+                    <mat-select placeholder="License" formControlName="license">
+                        <mat-option value="DEMO">DEMO</mat-option>
+                        <mat-option value="WORKSHOP">WORKSHOP</mat-option>
+                        <mat-option value="FULL">FULL</mat-option>
+                    </mat-select>
+                </mat-form-field>
+        </div>
+    
+        <div class="form">
+            <mat-form-field>
+                <input matInput placeholder="Max Users" type="text" formControlName="maxUsers">
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field>
+                <input matInput [matDatepicker]="myDatepicker" placeholder="Valid From:" formControlName="validFrom">
+                <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
+                <mat-datepicker #myDatepicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field>
+                <input matInput [matDatepicker]="myDatepicker2" placeholder="Valid To:" formControlName="validTo">
+                <mat-datepicker-toggle [for]="myDatepicker2"></mat-datepicker-toggle>
+                <mat-datepicker #myDatepicker2></mat-datepicker>
+            </mat-form-field>
+        </div>
+
+    </div>
+    <button mat-button matDialogClose>Cancel</button>
+    <button mat-button (click)="addCompany()" [disabled]="enableSubmitButton()">Add Survey</button>
+</form>

@@ -44,7 +44,7 @@
                     <input id="userDetail" type="text" class="form-control" formControlName="userDetail">
                 </div>
 
-                <button id="submitButton" type="submit" class="btn btn-primary col-sm-12" [disabled]="!registrationForm.valid">Submit</button>
+                <button id="submitButton" type="submit" [ngStyle]="btnStyle()" class="btn col-sm-12" [disabled]="!registrationForm.valid">Submit</button>
             </form>
         </div>
 </div>

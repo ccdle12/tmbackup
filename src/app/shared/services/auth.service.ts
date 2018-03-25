@@ -1,7 +1,7 @@
 import { Component, Input }  from '@angular/core';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { MdSnackBar, MdDialog } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { tokenNotExpired } from 'angular2-jwt';
 import auth0 from 'auth0-js';
 import 'rxjs/add/operator/filter';
@@ -16,15 +16,16 @@ lock: any;
 options: any;
 
 
-constructor(public router: Router, public snackbar: MdSnackBar, public dialog: MdDialog) { 
+constructor(public router: Router, public snackbar: MatSnackBar, public dialog: MatDialog) { 
 
   this.options = {
+    configurationBaseUrl: "https://cdn.eu.auth0.com/",
     allowSignUp: false,
     languageDictionary: {
-      title: 'TMF DMM',
+      title: '',
     },
     theme: {
-      logo: '../../../assets/DMMLogo.png',
+      logo: '../../../assets/TMForum_logoRedGray.png',
     },
     auth: {
     redirectUrl: window.location.origin + '/callback',
@@ -40,13 +41,12 @@ constructor(public router: Router, public snackbar: MdSnackBar, public dialog: M
   //'dvSdZ0n8HSYuGEkBQSdQQNG1FiW78i9V', 'tmfdmmdev.eu.auth0.com'
 
   //Live Env
-  //'4PQhmzeQzyDp3F6vM39cPriygAHbx4bX','tmfdmm.eu.auth0.com'
-this.lock = new Auth0Lock('dvSdZOn8HSYuGEkBQSdQQNG1FiW78i9V', 'tmfdmmdev.eu.auth0.com', this.options, {});
+  // '4PQhmzeQzyDp3F6vM39cPriygAHbx4bX','tmfdmm.eu.auth0.com'
+this.lock = new Auth0Lock('4PQhmzeQzyDp3F6vM39cPriygAHbx4bX','tmfdmm.eu.auth0.com', this.options, {});
 }
 
 public handleAuthentication(): void {
   this.lock.on('authorization_error', (authResult) => {
-    console.log("AUTH ERROR!");
 
     let dialogRef = this.dialog.open(LicenseInvalidDialog, {
       disableClose: true,
@@ -58,11 +58,9 @@ public handleAuthentication(): void {
   })
 
   this.lock.on("authenticated", (authResult) => {
-    console.log("HANDLE AUTH CALLED");
     this.lock.getUserInfo(authResult.accessToken, (error, userProfile) => {
 
       if (error) {
-        console.log("Error: ", error);
         return;
       }
 
@@ -146,11 +144,25 @@ public revertToDemoIfTokenExpires(): void {
    }
 }
 
+public isAdmin(): boolean {
+  if (localStorage.getItem('user') !== null) {
+    var user = JSON.parse(localStorage.getItem('user'));
+    return user.user_role == 'Admin';
+  }
+}
+
+public isSuperUser(): boolean {
+  if (localStorage.getItem('user') !== null) {
+    var user = JSON.parse(localStorage.getItem('user'))
+
+    return user.user_role == 'Super User';
+  }
+}
 
 public isLeaderConsultant(): boolean {
   if (localStorage.getItem('user') !== null) {
     var userLeaderConsultant = JSON.parse(localStorage.getItem('user'));
-    return userLeaderConsultant.user_role == 'Leader' || userLeaderConsultant.user_role == 'Consultant' ;
+    return userLeaderConsultant.user_role == 'Leader' || userLeaderConsultant.user_role == 'Consultant' ||   userLeaderConsultant.user_role == 'Admin' || userLeaderConsultant.user_role == 'Super User';
   }
   return false;
 }
@@ -185,18 +197,18 @@ public isVerified(): boolean {
 
 public inDemoMode(): boolean {
   if (!this.isVerified()) {
-    // console.log("not verified");
+    // ("not verified");
     return true;
   }
 
   if (this.isVerified() && this.isLeaderConsultant()) {
     
-    // console.log("verified and leader or consultant");
+    // ("verified and leader or consultant");
     return false;
   }
     
   if (this.isVerified() && !this.isLeaderConsultant()) { 
-    // console.log("verified but not leader or consultant");   
+    // ("verified but not leader or consultant");   
     return true;
   } 
 }

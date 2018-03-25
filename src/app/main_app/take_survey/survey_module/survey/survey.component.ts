@@ -1,18 +1,17 @@
 import { Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
 import { KumulosService } from '../../../../shared/services/kumulos.service';
 import { AuthService } from '../../../../shared/services/auth.service';
-import { MdSliderModule, MdSidenavModule  } from '@angular/material';
+import { MatSliderModule, MatSidenavModule  } from '@angular/material';
 import { Router } from '@angular/router';
-import { MdDialog } from '@angular/material';
-import { MdSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { LoadingSnackBar } from '../../../../shared/components/loadingSnackBar';
 
 import { ComponentCanDeactivate } from '../../../../shared/services/saveSurvey-guard.service';
 import {Observable} from 'rxjs/Observable';
 import { UserSavedService } from '../../../../shared/services/userSaved.service';
 import { CreateAndDeleteDimensionOwnerService } from '../../../../shared/services/createAndDeleteDimensionOwner.service';
-
-// import { jqxSliderComponent } from 'jqwidgets-framework/jqwidgets-ts/angular_jqxslider';
+import { StylingService } from 'app/shared/services/styling.service';
 
 @Component({
   selector: 'survey',
@@ -63,8 +62,16 @@ export class SurveyComponent {
 
   sliderMoved: boolean;
   
-  constructor(public kumulosService: KumulosService, public router: Router, public dialog: MdDialog, public authService: AuthService,public snackBar: MdSnackBar, private eRef: ElementRef, public userSavedService: UserSavedService, public loadingSnackBar: LoadingSnackBar,
-              public createAndDeleteDimensionOwner: CreateAndDeleteDimensionOwnerService) { 
+  constructor(public kumulosService: KumulosService, 
+              public router: Router, 
+              public dialog: MatDialog, 
+              public authService: AuthService,
+              public snackBar: MatSnackBar, 
+              private eRef: ElementRef, 
+              public userSavedService: UserSavedService, 
+              public loadingSnackBar: LoadingSnackBar,
+              public createAndDeleteDimensionOwner: CreateAndDeleteDimensionOwnerService,
+              public stylingService: StylingService) { 
     
     this.initializeMemberVariables();
     this.getWebSurveyQuestions(); 
@@ -125,10 +132,6 @@ export class SurveyComponent {
   private updateCurrentModuleDetails(): void {
     let parsedSurveyDashboard: JSON = this.retrieveParsedSurveyDashboard();
 
-    console.log("User selected module: " + this.userSelectedModule);
-    console.log("length of parsed survey: " + Object.keys(parsedSurveyDashboard).length);
-    console.log("Last object apparently: " + parsedSurveyDashboard[27]['dimensionText']);
-    console.log("User selected module: " + parsedSurveyDashboard[0]);
     this.areaID = parsedSurveyDashboard[this.userSelectedModule]['areaID'];
     this.dimensionID = parsedSurveyDashboard[this.userSelectedModule]['dimensionID'];
     this.dimensionText = parsedSurveyDashboard[this.userSelectedModule]['dimensionText'];
@@ -181,8 +184,6 @@ export class SurveyComponent {
         
         if (this.surveyQuestions[eachQuestion]['importance'] == " " || this.surveyQuestions[eachQuestion]['importance'] == "0") {
           this.importanceValues[eachQuestion] = 0;
-          console.log("importance value is empty");
-          console.log(this.importanceValues[eachQuestion]);
         } else {
           this.importanceValues[eachQuestion] = this.surveyQuestions[eachQuestion]['importance'];
         }
@@ -248,7 +249,6 @@ export class SurveyComponent {
     // Events for user touching the sliders
     public userMovedSlider(indexPos: any, sliderColumn: number): void {
         this.revertFlagsToFalse();
-        console.log("User moving slider");
 
         this.updateShowToolTipFlag(indexPos);
         this.updateSliderColumnsFlag(sliderColumn);
@@ -264,7 +264,6 @@ export class SurveyComponent {
     }
 
     private updateSliderColumnsFlag(sliderColumn: number) {
-      console.log(sliderColumn);
       switch(sliderColumn) {
         case 0:
           this.importanceSliderFlag = true;
@@ -488,7 +487,6 @@ export class SurveyComponent {
 
   public clickedAwayFromSlider(): void {
       this.revertFlagsToFalse();  
-      console.log("Clicked away from slider");
   }
 }
 
@@ -519,7 +517,7 @@ export class SaveSnackBarComponent {}
 })
 export class ResponsibleForSectionDialog {
 
-  constructor(public dimensionOwnerService: CreateAndDeleteDimensionOwnerService, public kumulosService: KumulosService, public dialog: MdDialog) {}
+  constructor(public dimensionOwnerService: CreateAndDeleteDimensionOwnerService, public kumulosService: KumulosService, public dialog: MatDialog) {}
 
   public takeResponsibility(): void {
     this.dimensionOwnerService.retrieveA0ProfileKeys();
@@ -529,7 +527,6 @@ export class ResponsibleForSectionDialog {
 
     this.kumulosService.updateDimensionOwner(ownerData)
       .subscribe(response => {
-        console.log(response);
         // window.location.reload();
         this.dialog.closeAll();
       });
@@ -545,15 +542,14 @@ export class RemoveResponsibilityForSectionDialog {
 
   public dimensionOwnerID: string;
 
-  constructor(public dimensionOwnerService: CreateAndDeleteDimensionOwnerService, public kumulosService: KumulosService, public dialog: MdDialog) {
+  constructor(public dimensionOwnerService: CreateAndDeleteDimensionOwnerService, public kumulosService: KumulosService, public dialog: MatDialog) {
     this.dimensionOwnerID = this.dimensionOwnerService.getDimensionOwnerID();
   }
 
   public removeResponsibility(): void {
     this.kumulosService.deleteDimensionOwner(this.dimensionOwnerID)
       .subscribe(response => {
-        console.log("delete responsibility");
-        console.log(response);
+
         // window.location.reload();
         this.dialog.closeAll();
       })

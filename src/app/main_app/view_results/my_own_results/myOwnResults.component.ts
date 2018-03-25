@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { KumulosService } from '../../../shared/services/kumulos.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { MdSnackBar } from '@angular/material';
+import { StylingService } from '../../../shared/services/styling.service';
+import { MatSnackBar } from '@angular/material';
 
-import { MdDialog, MdTooltip } from '@angular/material';
+import { MatDialog, MatTooltip } from '@angular/material';
 
 import { LoadingSnackBar } from '../../../shared/components/loadingSnackBar';
 
@@ -22,13 +23,44 @@ export class MyOwnResultsComponent {
   backToDashboardTooltip: String;
   emailResults: String;
 
-  constructor(public router: Router, public kumulosService: KumulosService, public snackBar: MdSnackBar, 
-              public loadingSnackBar: LoadingSnackBar, public authService: AuthService, public dialog: MdDialog) {
+  constructor(public router: Router, 
+              public kumulosService: KumulosService, 
+              public snackBar: MatSnackBar, 
+              public loadingSnackBar: LoadingSnackBar, 
+              public authService: AuthService, 
+              public dialog: MatDialog,
+              public stylingService: StylingService) {
     
     this.loadingSnackBar.showLoadingSnackBar();
     this.initializeMemberVariables();
-    this.getOwnResultsData();
+    this.getOrgResults();
   }
+
+  public navStyle() 
+  {
+      return {'background-color': this.stylingService.getPrimaryColour('grey')}
+  }
+
+  private getOrgResults(): any { 
+    this.loadingSnackBar.showLoadingSnackBar();
+
+    //Current city version
+    let activeCityVersion: string = localStorage.getItem('activeCityVersion');
+
+    let userProfile: JSON = JSON.parse(localStorage.getItem('userProfile'));
+    
+    this.kumulosService.getAggregatesForOrganizationResults(activeCityVersion)
+        .subscribe(responseJSON => {
+          this.cacheUnadjustedGraphData(responseJSON.payload);
+
+          this.getOwnResultsData()
+    });
+  }
+
+  private cacheUnadjustedGraphData(response) {
+    localStorage.setItem('unadjustedData', JSON.stringify(response));
+  }
+
 
   private initializeMemberVariables(): void {
     this.comboCharts = new Array();
@@ -48,8 +80,6 @@ export class MyOwnResultsComponent {
     this.kumulosService.getAggregatesByVersionandUser(activeCityVersion, userID)
         .subscribe(responseJSON => {
           this.graphData = responseJSON.payload;
-          // console.log("Graph Data: ");
-          // console.log(responseJSON.payload);
           this.createComboCharts();
           this.loadingSnackBar.dismissLoadingSnackBar();
     });
@@ -105,7 +135,12 @@ export class MyOwnResultsComponent {
                 },
                   ticks: [0, 1, 2, 3, 4, 5],
                 },
-                colors: ['#348bb5', '#e28a1d', '#589e2d'], 
+                colors: 
+                [
+                  this.stylingService.getHexPrimaryColour('grey'), 
+                  this.stylingService.getHexPrimaryColour('black'), 
+                  this.stylingService.getHexPrimaryColour('red')
+                ], 
               }
             }
       this.comboCharts[currentModule] = comboChart;
@@ -132,6 +167,10 @@ export class MyOwnResultsComponent {
         this.loadingSnackBar.showLoadingSnackBar();
         this.router.navigateByUrl('main/viewresults/adjustaggregates');
         break;
+
+      case ('heatmap'):
+        this.router.navigateByUrl('main/viewresults/heatmap');
+        break;
       }
     }
 
@@ -153,10 +192,10 @@ export class MyOwnResultsComponent {
         let currentUrl: string = window.location.pathname;
 
         if (currentUrl ===  "/main/viewresults/myownresults") {
-            return { 'background-color': '#469ac0',
-                  'color': 'white' };    
+          return {'background-color': this.stylingService.getPrimaryColour('red')}
+
         } else {
-        console.log(window.location.pathname);
+        (window.location.pathname);
         return { 'background-color': '#62B3D1',
                   'color': 'white' };
         }
@@ -174,8 +213,8 @@ export class MyOwnResultsComponent {
       }
     }
 
-    console.log("Is Logged In: " + loggedIn);
-    console.log("Is Leader: " + isLeaderOrConsultant);
+    ("Is Logged In: " + loggedIn);
+    ("Is Leader: " + isLeaderOrConsultant);
 
     return false;
 
@@ -197,8 +236,7 @@ export class EmailSentSnackBarComponent {}
 })
 export class EmailMyOwnResultsDialog {
   constructor(public router: Router,  public authService: AuthService, public kumulosService: KumulosService,
-              public dialog: MdDialog) {
-    console.log(this.router.url);
+              public dialog: MatDialog) {
   }
 
   public sendSurveyRequest(): void {
@@ -209,9 +247,7 @@ export class EmailMyOwnResultsDialog {
 
       this.kumulosService.requestIndividualSurveyCSV(activeCityVersion, emailAddress)
         .subscribe(responseJSON => {
-          console.log(responseJSON.payload);
           this.dialog.closeAll();
-          // this.showSnackBar();
       });
   }
 

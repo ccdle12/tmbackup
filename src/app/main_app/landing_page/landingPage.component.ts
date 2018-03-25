@@ -16,7 +16,6 @@ export class LandingPageComponent {
         .subscribe(responseJSON => {
             let activeCityVersion: string = responseJSON.payload;
             localStorage.setItem('activeCityVersion', activeCityVersion);
-            console.log("Active version using response json: " + responseJSON.payload);
 
             this.getWebDashboard(activeCityVersion);
         });
@@ -25,7 +24,6 @@ export class LandingPageComponent {
    private getWebDashboard(activeCityVersion: string): void {
     this.kumulosService.getWebDashboard(activeCityVersion)
       .subscribe(responseJSON => { 
-        console.log(responseJSON);
         localStorage.setItem('surveydashboard', JSON.stringify(responseJSON.payload));
     });
   }

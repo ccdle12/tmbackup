@@ -1,6 +1,6 @@
 import { Component, Input }  from '@angular/core';
 import { KumulosService } from '../../shared/services/kumulos.service';
-import { MdDialog, MdSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../shared/services/validation.service';
 import { DeleteUserService } from '../../shared/services/deleteUser.service';
@@ -20,6 +20,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { LicenseService } from '../../shared/services/license.service';
 
 import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
+import { StylingService } from '../../shared/services/styling.service';
 
 @Component({
   selector: 'teamAdmin',
@@ -30,23 +31,30 @@ import { LoadingSnackBar } from '../../shared/components/loadingSnackBar';
 export class TeamAdminComponent  { 
   userProfiles:  JSON[];
   userProfilesSize;
+  public loadingFlag: boolean;
 
-  constructor(public authService: AuthService, private kumulosService: KumulosService, public dialog: MdDialog, 
-    public loadingSnackBar: LoadingSnackBar, public deleteUserService: DeleteUserService, public editRoleService: EditRoleService,
-    public licenseService: LicenseService, public snackbar: MdSnackBar, public router: Router) {
-  
+  constructor(public authService: AuthService, 
+              private kumulosService: KumulosService, 
+              public dialog: MatDialog, 
+              public loadingSnackBar: LoadingSnackBar, 
+              public deleteUserService: DeleteUserService, 
+              public editRoleService: EditRoleService,
+              public licenseService: LicenseService, 
+              public snackbar: MatSnackBar, 
+              public router: Router) 
+  {
+    this.loadingFlag = true
     this.getAllUsers();
   }
 
   private getAllUsers(): void {
     this.loadingSnackBar.showLoadingSnackBar();
+    
     this.kumulosService.getWebUsers().subscribe(response => {
-          console.log("response", response.payload);
           this.userProfiles = response.payload
-          console.log("Size of User Profiles: " + Object.keys(this.userProfiles).length);
           this.userProfilesSize = Object.keys(this.userProfiles).length;
-          console.log(this.userProfiles);
           this.loadingSnackBar.dismissLoadingSnackBar();
+          this.loadingFlag = false;
     });
   }
 
@@ -72,9 +80,7 @@ export class TeamAdminComponent  {
   public deleteUser(index: number): void {
     let deleteUser: JSON = this.userProfiles[index];
     let userId: string = deleteUser['user_id']; 
-    
     this.deleteUserService.deleteUser(index, userId);
-
     let dialogRef = this.dialog.open(DeleteUserDialog);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -86,7 +92,6 @@ export class TeamAdminComponent  {
     let editUser: string = JSON.stringify(this.userProfiles[index]);
 
     this.editRoleService.cacheUserJSON(editUser);
-    console.log("from edit role service: " + this.editRoleService.getUserJSON());
     let dialogRef = this.dialog.open(EditUserRole);
 
     dialogRef.afterClosed()
@@ -95,42 +100,77 @@ export class TeamAdminComponent  {
       });
   }
 
-
-
   public getUsersName(index: number): string {
     let userName: string;
 
-    if (this.hasUserMetaData(index))
+    if(!this.userProfiles[index])
+      return "Name not set by user"
+
+    if (this.userProfiles[index]['name'])
     {
-      userName = this.userProfiles[index]['user_metadata']['name'];
-      
-      if (userName.length < 1)
-        userName = "Name not set by user";
+      if (this.userProfiles[index]['name'].length > 30) {
+        userName = this.userProfiles[index]['name'].slice(0, 23) + "..."
+      }
+      else {
+        userName = this.userProfiles[index]['name'];
+      }
     }
-    else 
+    else
       userName = "Name not set by user";
-    
+  
     return userName;
   }
 
   public getUsersTitle(index: number): string {
     let userTitle: string;
 
-    if (this.hasUserMetaData(index))
-      userTitle = this.userProfiles[index]['user_metadata']['jobTitle'];
-    else  if (this.userProfiles[index]['headline'])
-      userTitle = this.userProfiles[index]['headline'];
-    else 
+    if(!this.userProfiles[index])
+      return "Title not set by user"
+
+    if (this.userProfiles[index]['headline']) {
+      if (this.userProfiles[index]['headline'].length > 30) {
+        userTitle = this.userProfiles[index]['headline'].slice(0, 23) + "..."
+      }
+      else {
+        userTitle = this.userProfiles[index]['headline'];
+      }
+      
+    }
+    else
       userTitle = "Job title not set by user";
-    
-    if (userTitle.length > 100)
-      userTitle = userTitle.slice(0, 60);
-
+  
     return userTitle;
-  }  
+  }
 
-  private hasUserMetaData(index: number): boolean {
-    return this.userProfiles[index]['user_metadata'] ? true : false;
+  public getUsersEmail(index: number): string {
+    let userEmail: string;
+
+
+    if(!this.userProfiles[index])
+      return "Email not set by user"
+
+    if (this.userProfiles[index]["email"]) {
+      if (this.userProfiles[index]['email'].length > 30) {
+        userEmail = this.userProfiles[index]["email"].slice(0, 23) + "..."
+      }
+      else {
+        userEmail = this.userProfiles[index]["email"];
+      }
+    }
+    else {
+      userEmail = "User Email not set by user"
+    }
+
+    return userEmail;
+  }
+
+  public notAdminOrSuperUser(index: number) {
+    let userRole = this.userProfiles[index]["app_metadata"]["user_role"];
+
+    if (userRole == "Admin" || userRole == "Super User") {
+      return false;
+    }
+    return true;
   }
 }
 
@@ -146,7 +186,7 @@ export class InviteUserDialog {
   
   @ViewChild('spinnerElement') loadingElement: ElementRef;
 
-  constructor(public dialog: MdDialog, private formBuilder: FormBuilder, public kumulosService: KumulosService, 
+  constructor(public dialog: MatDialog, private formBuilder: FormBuilder, public kumulosService: KumulosService, 
               public renderer: Renderer, private ngZone: NgZone) {
     
     this.inviteUserForm = this.formBuilder.group({
@@ -156,13 +196,11 @@ export class InviteUserDialog {
 
   public inviteNewUser(): void {
     let cityName: string = this.getCityName();
-    console.log("City Name: " + cityName);
     let cityId: string = this.getCityId();
     let email: string = this.inviteUserForm.value.email;
     
     this.httpRequestFlag = true;
     this.kumulosService.inviteUser(email, cityName, cityId).subscribe(responseJSON => {
-      console.log("response", responseJSON.payload);
       // this.reloadPage();
       this.dialog.closeAll();
     })
@@ -196,7 +234,7 @@ export class InviteUserDialog {
 export class DeleteUserDialog {
   httpRequestFlag: boolean;
   
-  constructor(public dialog: MdDialog, public router: Router, public deleteUserService: DeleteUserService, public kumulosService: KumulosService) {
+  constructor(public dialog: MatDialog, public router: Router, public deleteUserService: DeleteUserService, public kumulosService: KumulosService) {
   }
 
   public deleteUser() {
@@ -204,9 +242,6 @@ export class DeleteUserDialog {
     
     this.httpRequestFlag = true;
     this.kumulosService.deleteUser(deleteUserId).subscribe(responseJSON => {
-      
-      // console.log("response", responseJSON.payload);
-      // window.location.reload();
       
       this.dialog.closeAll();
      }); 
@@ -228,7 +263,7 @@ export class EditUserRole {
   public userEmail: string;
   public userId: string;
 
-  constructor(public router: Router, public editRoleService: EditRoleService, public kumulosService: KumulosService, public dialog: MdDialog) {
+  constructor(public router: Router, public editRoleService: EditRoleService, public kumulosService: KumulosService, public dialog: MatDialog) {
     this.userRole = this.editRoleService.getUserRole();
     this.userName = this.editRoleService.getUserName();
     this.userJobTitle = this.editRoleService.getUserJobTitle();

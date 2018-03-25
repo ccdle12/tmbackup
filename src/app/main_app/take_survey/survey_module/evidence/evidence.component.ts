@@ -1,9 +1,9 @@
 import { Component, ViewChild, AfterViewInit, Inject} from '@angular/core';
-import { MdSliderModule, MdTooltipModule, MdSidenavModule, MdButtonToggleModule, MdTabsModule, MdButtonModule, MdIconModule} from '@angular/material';
+import { MatSliderModule, MatTooltipModule, MatSidenavModule, MatButtonToggleModule, MatTabsModule, MatButtonModule, MatIconModule} from '@angular/material';
 import { KumulosService } from '../../../../shared/services/kumulos.service';
 import { EvidenceService } from '../../../../shared/services/evidence.service';
 import { Router } from '@angular/router';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../../../shared/services/validation.service';
 import { AuthService } from '../../../../shared/services/auth.service';
@@ -21,7 +21,7 @@ export class EvidenceComponent implements AfterViewInit {
     currentDimension: string;
 
     constructor(public kumulos: KumulosService, public router: Router, public evidenceService: EvidenceService,
-                public dialog: MdDialog, public auth: AuthService) {
+                public dialog: MatDialog, public auth: AuthService) {
 
         this.evidenceWebLinks = new Array<string>();
 
@@ -49,7 +49,6 @@ export class EvidenceComponent implements AfterViewInit {
 
         this.kumulos.getWebGetEvidence(activeCityVersion, areaID, dimensionID).subscribe(responseJSON => {
             this.evidence = responseJSON.payload;
-            console.log(responseJSON);
 
             let evidenceID = "";
             
@@ -77,7 +76,6 @@ export class EvidenceComponent implements AfterViewInit {
     }
 
     ngAfterViewInit() {
-      console.log("ngOnInit called");
      
     }
 
@@ -149,25 +147,16 @@ export class EvidenceComponent implements AfterViewInit {
 
     let splitString = webLink.split("http://", 2);
 
-    console.log("First Split: ");
-    console.log(splitString);
-    console.log("Split String Length: ");
-    console.log(splitString.length);
 
     if (splitString.length <= 1) {
-      console.log("Splitting for HTTPS:")
        splitString = webLink.split("https://", 2);
     }
 
-    console.log("Second Split: ");
-    console.log(splitString);
 
     if (splitString.length > 1) {
-      console.log(this.evidenceWebLinks[index]);
       window.location.href= this.evidenceWebLinks[index];
     }
     else {
-      console.log("http://" + this.evidenceWebLinks[index]);
       window.location.href="http://" + this.evidenceWebLinks[index];
     }
   }
@@ -183,7 +172,7 @@ export class EvidenceDialog {
   addNewEvidence: FormGroup;
   httpRequestFlag: boolean;
 
-  constructor(public dialog: MdDialog, public formBuilder: FormBuilder, public kumulosService: KumulosService, public evidenceService: EvidenceService, public router: Router) 
+  constructor(public dialog: MatDialog, public formBuilder: FormBuilder, public kumulosService: KumulosService, public evidenceService: EvidenceService, public router: Router) 
   {
     this.addNewEvidence = this.formBuilder.group({
       evidenceTitle: ['', Validators.required],
@@ -194,16 +183,12 @@ export class EvidenceDialog {
 
   public createUpdateEvidence() {
     let evidenceData: string = this.evidenceService.getEvidenceData(this.addNewEvidence.value.evidenceTitle, this.addNewEvidence.value.evidenceDescription + "[[ff-weblink]]" + this.addNewEvidence.value.evidenceReference);
-    console.log("calling update evidence");
-    console.log("Evidence Data: ");
-    console.log(evidenceData);
+
 
     this.httpRequestFlag = true;
     this.kumulosService.createUpdateEvidence(evidenceData)
       .subscribe(response =>
         {
-          console.log("response from update evidence");
-          console.log(response);
           this.closeDialog();
           this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/takesurvey/surveymodule/evidence'));
         })
@@ -224,7 +209,7 @@ export class DeleteEvidenceDialog {
   addNewEvidence: FormGroup;
   httpRequestFlag: boolean;
 
-  constructor(public dialog: MdDialog, public formBuilder: FormBuilder, public kumulosService: KumulosService, public evidenceService: EvidenceService, public router: Router) 
+  constructor(public dialog: MatDialog, public formBuilder: FormBuilder, public kumulosService: KumulosService, public evidenceService: EvidenceService, public router: Router) 
   {
  
   }
@@ -235,7 +220,6 @@ export class DeleteEvidenceDialog {
     this.kumulosService.deleteEvidence(this.evidenceService.getEvidenceID())
       .subscribe(response => 
       {
-        console.log(response);
         this.closeDialog();
         this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/takesurvey/surveymodule/evidence'));
       })
@@ -270,7 +254,7 @@ export class EditEvidenceDialog {
   userID;
   evidenceID;
 
-  constructor(public dialog: MdDialog, public formBuilder: FormBuilder, public kumulos: KumulosService, public evidenceService: EvidenceService, public router: Router) 
+  constructor(public dialog: MatDialog, public formBuilder: FormBuilder, public kumulos: KumulosService, public evidenceService: EvidenceService, public router: Router) 
   {
 
     // this.webGetEvidence();
@@ -281,8 +265,6 @@ export class EditEvidenceDialog {
     this.userID = this.selectedEvidence['userID'];
     this.evidenceID =  this.selectedEvidence['evidenceID'];
       
-
-    console.log(this.selectedEvidence.evidenceDescription);
 
     this.title = this.selectedEvidence.evidenceDescription;
     this.description = this.selectedEvidence.evidenceText;
@@ -296,8 +278,7 @@ export class EditEvidenceDialog {
   }
 
   public createUpdateEvidence() {
-    console.log(this.selectedEvidence);
-    console.log(this.selectedEvidence['areaID']);
+
 
     let evidenceData: string = this.evidenceService.getUpdateEvidenceData(
       this.areaID,
@@ -308,20 +289,14 @@ export class EditEvidenceDialog {
       this.userID,
       this.evidenceID)
 
-      console.log("Evidence ID: " + this.evidenceID);
-      console.log("Evidence Data: ");
-      console.log(evidenceData);
 
     this.httpRequestFlag = true;
     this.kumulos.createUpdateEvidence(evidenceData)
       .subscribe(response =>
         {
-          console.log("response from update evidence");
-          console.log(response);
           this.closeDialog();
           this.router.navigateByUrl('/callback').then(() => this.router.navigateByUrl('/main/takesurvey/surveymodule/evidence'));
         })
-    console.log(this.addNewEvidence.value.evidenceReference);
   }
 
   private closeDialog() {
